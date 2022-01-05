@@ -16,7 +16,7 @@ document.addEventListener("keydown", function (evt) {
     if (!evt.code.includes("Shift")) {
         barcode += evt.key;
     }
-    interval = setInterval(() => barcode = '', 18);
+    interval = setInterval(() => barcode = '', 20);
 });
 
 function handleBarcode(scanned_barcode) {
@@ -27,12 +27,12 @@ function handleBarcode(scanned_barcode) {
         $(document).ready(function () {
             $.ajax({
                 type: "GET",
-                url: "/Product/GetJson",
+                url: "/Home/GetJson",
                 data: { productID: scanned_barcode },
                 dataType: "json",
                 success: function (msg) {
                     if (msg != false) {
-                        /*console.log(msg);*/
+                        console.log(msg);
                         postHtml(msg);
                     }
                 },
