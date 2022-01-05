@@ -1,0 +1,42 @@
+﻿
+.optionMenu-Container {
+    width: 750px;
+    height: 400px;
+/*    background-color: yellow;*/
+    margin: 0 auto;
+}
+
+.optionMenu-Item-Container {
+    width: 250px;
+    height: 200px;
+/*    background-color: #e9ecef;*/
+    padding: 6px;
+    float: left;
+}
+
+.optionMenu-Item {
+    width: 100%;
+    height: 100%;
+    /*#181c1f #212529*/
+    background-color: #25292e;
+}
+
+    .optionMenu-Item > a {
+        display: block;
+        text-align: center;
+        height: 100%;
+        line-height: 188px;
+        font-size: 21px;
+        text-decoration: none;
+        color: #f8f9fa;
+        user-select: none;
+/*        -moz-transition: all 0.23s;
+        -o-transition: all 0.23s;
+        -webkit-transition: all 0.23s;
+        transition: all 0.23s;*/
+    }
+
+.optionMenu-Item > a:hover {
+    background-color: #181c1f;
+    color: #edeef0;
+}

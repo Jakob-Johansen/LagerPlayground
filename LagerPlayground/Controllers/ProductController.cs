@@ -13,18 +13,6 @@ namespace LagerPlayground.Controllers
             _context = context;
         }
 
-        public async Task<JsonResult> GetJson(string productID)
-        {
-            var product = await _context.Products.FirstOrDefaultAsync(x => x.ProductID == productID);
-
-            if (product == null)
-            {
-                return Json(false);
-            }
-
-            return Json(product);
-        }
-
         public async Task<IActionResult> Index()
         {
             return View(await _context.Products.ToListAsync());
