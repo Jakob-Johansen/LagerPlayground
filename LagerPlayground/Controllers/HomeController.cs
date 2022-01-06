@@ -27,17 +27,10 @@ namespace LagerPlayground.Controllers
             return View();
         }
 
-        // Scanner Fun
-        public async Task<JsonResult> GetJson(string productID)
+        // Arrivals
+        public IActionResult Arrivals()
         {
-            var product = await _context.Products.FirstOrDefaultAsync(x => x.ProductID == productID);
-
-            if (product == null)
-            {
-                return Json(false);
-            }
-
-            return Json(product);
+            return View();
         }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
