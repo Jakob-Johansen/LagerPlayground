@@ -1,4 +1,7 @@
-﻿
+﻿.clearBoth {
+    clear: both !important;
+}
+
 .optionMenu-Container {
     width: 750px;
     height: 400px;
@@ -39,4 +42,54 @@
 .optionMenu-Item > a:hover {
     background-color: #181c1f;
     color: #edeef0;
+}
+
+/*----Arrivals----*/
+
+.arrivals-btns-holder-container {
+    width: 500px;
+    height: auto;
+/*    background-color: red;*/
+    margin: 0 auto;
+}
+
+.arrivals-btn-container {
+    float: left;
+    width: 50%;
+    height: 70px;
+/*    background-color: yellow;*/
+    position: relative;
+}
+
+.arrivals-btn {
+    background-color: blanchedalmond;
+    text-align: center;
+    width: 93%;
+    display: block;
+    margin: 0 auto;
+    line-height: 70px;
+    font-size: 20px;
+    text-decoration: none;
+    color: #f8f9fa;
+    user-select: none;
+}
+
+.arrivals-btn-edit {
+    background-color: #1269e3;
+}
+
+    .arrivals-btn-edit:hover {
+        background-color: #0f60d1;
+    }
+
+.arrivals-btn-create {
+    background-color: #2bbf17;
+}
+
+    .arrivals-btn-create:hover {
+        background-color: #27ad15;
+    }
+
+.arrivals-btn:hover {
+    color: #f8f9fa;
 }
