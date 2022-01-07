@@ -53,11 +53,14 @@ function handleBarcode(scanned_barcode) {
                 result = true;
                 loader.css("display", "none");
                 if (dataResult != false) {
-                    console.log("This product already exist");
-
+                    errorTextIconColor("#dc3545");
                     errorTextOutputTag.text("This product already exist");
                     errorIconOutputTag.text("error_outline");
-
+                }
+                else {
+                    errorTextIconColor("#28a745")
+                    errorTextOutputTag.text("This product does not exist");
+                    errorIconOutputTag.text("check_circle_outline");
                 }
             },
             error: function (req, status, error) {
@@ -71,3 +74,8 @@ function handleBarcode(scanned_barcode) {
 $(".create-overlay-modal-close-btn").click(function () {
     $(".create-overlay-container").css("display", "none");
 });
+
+function errorTextIconColor(color) {
+    errorTextOutputTag.css("color", color);
+    errorIconOutputTag.css("color", color);
+}
