@@ -2,7 +2,7 @@
     background-color: rgb(20, 22, 23) !important;
 }
 
-.light-text, p, h1, h2, h3, h4, h5, li, th, td, dt, dd, label, input, textarea, .create-overlay-icon-container > span {
+.light-text, p, h1, h2, h3, h4, h5, li, th, td, dt, dd, label, input, textarea, .create-overlay-icon-container, button > span {
     color: rgb(215, 215, 215) !important;
 }
 
@@ -184,6 +184,24 @@
 .create-overlay-modal-error-icon {
     font-size: 48px;
     margin-top: 8px;
+}
+
+.create-overlay-modal-enter-btn {
+    display: block;
+    margin: 25px auto 0 auto;
+    border: none;
+    font-size: 20px;
+    padding: 6px 35px;
+    user-select: none;
+    -moz-border-radius: 100px;
+    -webkit-border-radius: 100px;
+    border-radius: 100px;
+    outline: none;
+}
+
+.create-overlay-modal-enter-btn:focus, .create-overlay-modal-enter-btn:active {
+    border: none !important;
+    outline: none !important;
 }
 
 /*---Loader---*/
