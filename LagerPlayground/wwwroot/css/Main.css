@@ -141,13 +141,13 @@
     text-align: right;
 }
 
-.create-overlay-icon-container > span {
+.create-overlay-modal-close-btn {
     font-size: 45px;
     padding: 5px;
     user-select: none;
 }
 
-.create-overlay-icon-container > span:hover {
+.create-overlay-modal-close-btn:hover {
     cursor: pointer;
 }
 
@@ -171,4 +171,11 @@
     border: none;
     text-align: center;
     font-size: 20px;
+}
+
+.create-overlay-modal-error-text {
+    display: block;
+    margin-top: 5px;
+    text-align: center;
+    font-size: 19px;
 }
