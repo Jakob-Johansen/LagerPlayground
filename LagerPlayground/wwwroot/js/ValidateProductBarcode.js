@@ -1,13 +1,13 @@
 ﻿var barcode = '';
 var interval;
 
-var errorTextOutputTag = $(".create-overlay-modal-error-text");
-var errorIconOutputTag = $(".create-overlay-modal-error-icon");
-var submitBtn = $(".create-overlay-modal-enter-btn");
-var modalInput = $(".create-overlay-modal-input");
-var modalInputValue = modalInput.val().trim();
-var loader = $(".loader");
-var result = false;
+const errorTextOutputTag = $(".create-overlay-modal-error-text");
+const errorIconOutputTag = $(".create-overlay-modal-error-icon");
+const submitBtn = $(".create-overlay-modal-enter-btn");
+const modalInput = $(".create-overlay-modal-input");
+const loader = $(".loader");
+let modalInputValue = modalInput.val().trim();
+let result = false;
 
 document.addEventListener("keydown", function (evt) {
     if ($(".create-overlay-container").is(":visible")) {
@@ -22,15 +22,16 @@ document.addEventListener("keydown", function (evt) {
                 return;
             }
         }
-        if (!evt.code.includes("Shift")) {
+        //!evt.code.includes("Shift")
+        if (!evt.code.includes("Shift") && !evt.code.includes("CapsLock")) {
             barcode += evt.key;
         }
         interval = setInterval(() => barcode = '', 20);
     }
 
     if (modalInput.is(":focus") && evt.code.includes("Enter") && modalInput.val().trim().length != 0) {
-        ajaxCall(modalInput.val().trim())
         loadingTimeout();
+        ajaxCall(modalInput.val().trim())
     }
 });
 
@@ -44,8 +45,8 @@ modalInput.on('input', function () {
 
 submitBtn.click(function () {
     if (modalInput.val().trim().length != 0) {
-        ajaxCall(modalInput.val().trim());
         loadingTimeout();
+        ajaxCall(modalInput.val().trim());
     }
 });
 
