@@ -173,9 +173,15 @@
     font-size: 20px;
 }
 
-.create-overlay-modal-error-text {
+.create-overlay-modal-error-text, .create-overlay-modal-error-icon {
     display: block;
-    margin-top: 5px;
+    margin-top: 6px;
     text-align: center;
-    font-size: 19px;
+    font-size: 22px;
+    user-select: none;
+}
+
+.create-overlay-modal-error-icon {
+    font-size: 48px;
+    margin-top: 8px;
 }

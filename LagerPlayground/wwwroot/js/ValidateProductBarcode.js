@@ -4,12 +4,11 @@
 var barcode = '';
 var interval;
 
-var errorOutputTag = $(".create-overlay-modal-error-text");
+var errorTextOutputTag = $(".create-overlay-modal-error-text");
+var errorIconOutputTag = $(".create-overlay-modal-error-icon");
 
 document.addEventListener("keydown", function (evt) {
     if ($(".create-overlay-container").is(":visible")) {
-        errorOutputTag.text("");
-
         if (interval) {
             clearInterval(interval);
         }
@@ -30,6 +29,10 @@ document.addEventListener("keydown", function (evt) {
 
 function handleBarcode(scanned_barcode) {
     if (scanned_barcode.length >= 1) {
+
+        errorTextOutputTag.text("");
+        errorIconOutputTag.text("");
+
         console.log(scanned_barcode);
         $(".inputTest").val(scanned_barcode);
 
@@ -41,7 +44,11 @@ function handleBarcode(scanned_barcode) {
             success: function (dataResult) {
                 if (dataResult != false) {
                     console.log("This product already exist");
-                    errorOutputTag.text("This product already exist");
+                    /*                    errorOutputTag.text("This product already exist");*/
+
+                    errorTextOutputTag.text("This product already exist");
+                    errorIconOutputTag.text("error_outline");
+
                 }
             },
             error: function (req, status, error) {
