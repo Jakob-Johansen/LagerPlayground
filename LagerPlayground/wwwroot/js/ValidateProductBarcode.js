@@ -6,6 +6,8 @@ var interval;
 
 var errorTextOutputTag = $(".create-overlay-modal-error-text");
 var errorIconOutputTag = $(".create-overlay-modal-error-icon");
+var loader = $(".loader");
+var result = false;
 
 document.addEventListener("keydown", function (evt) {
     if ($(".create-overlay-container").is(":visible")) {
@@ -33,6 +35,12 @@ function handleBarcode(scanned_barcode) {
         errorTextOutputTag.text("");
         errorIconOutputTag.text("");
 
+        setTimeout(function () {
+            if (result == false) {
+                loader.css("display", "block");
+            }
+        }, 20)
+
         console.log(scanned_barcode);
         $(".inputTest").val(scanned_barcode);
 
@@ -42,9 +50,10 @@ function handleBarcode(scanned_barcode) {
             data: { productID: scanned_barcode },
             dataType: "json",
             success: function (dataResult) {
+                result = true;
+                loader.css("display", "none");
                 if (dataResult != false) {
                     console.log("This product already exist");
-                    /*                    errorOutputTag.text("This product already exist");*/
 
                     errorTextOutputTag.text("This product already exist");
                     errorIconOutputTag.text("error_outline");
