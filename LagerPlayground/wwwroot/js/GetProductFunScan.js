@@ -13,7 +13,7 @@ document.addEventListener("keydown", function (evt) {
             return;
         }
     }
-    if (!evt.code.includes("Shift")) {
+    if (!evt.code.includes("Shift") && !evt.code.includes("CapsLock")) {
         barcode += evt.key;
     }
     interval = setInterval(() => barcode = '', 20);
@@ -31,7 +31,6 @@ function handleBarcode(scanned_barcode) {
             dataType: "json",
             success: function (returnData) {
                 if (returnData != false) {
-                    console.log(returnData);
                     postHtml(returnData);
                 }
             },
