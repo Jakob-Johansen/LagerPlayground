@@ -26,6 +26,16 @@ namespace LagerPlayground.Controllers
         }
 
         // Arrivals
+        public async Task<JsonResult> BarcodeExist(string productID)
+        {
+            var product = await _context.Products.FirstOrDefaultAsync(x => x.ProductID == productID);
 
+            if (product == null)
+            {
+                return Json(false);
+            }
+
+            return Json(true);
+        }
     }
 }

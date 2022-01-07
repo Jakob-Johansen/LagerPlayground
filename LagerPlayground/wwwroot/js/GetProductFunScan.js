@@ -24,22 +24,20 @@ function handleBarcode(scanned_barcode) {
 
         /*        console.log(scanned_barcode);*/
 
-        $(document).ready(function () {
-            $.ajax({
-                type: "GET",
-                url: "/Scanner/GetJson",
-                data: { productID: scanned_barcode },
-                dataType: "json",
-                success: function (msg) {
-                    if (msg != false) {
-                        console.log(msg);
-                        postHtml(msg);
-                    }
-                },
-                error: function (req, status, error) {
-                    Console.log(error);
+        $.ajax({
+            type: "GET",
+            url: "/Scanner/GetJson",
+            data: { productID: scanned_barcode },
+            dataType: "json",
+            success: function (returnData) {
+                if (returnData != false) {
+                    console.log(returnData);
+                    postHtml(returnData);
                 }
-            });
+            },
+            error: function (req, status, error) {
+                Console.log(error);
+            }
         });
     }
 }
