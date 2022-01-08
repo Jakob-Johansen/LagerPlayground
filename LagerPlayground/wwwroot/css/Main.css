@@ -123,7 +123,7 @@
 
 .create-overlay-modal-container {
     width: 550px;
-    height: 600px;
+    height: 585px;
     z-index: 999;
     background-color: rgba(20, 22, 23);
     position: absolute;

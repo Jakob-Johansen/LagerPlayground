@@ -118,6 +118,11 @@ function ajaxCall(barcode) {
                 errorTextOutputTag.text("This product does not exist");
                 errorIconOutputTag.text("check_circle_outline");
                 createBarcodeInput.val(barcode);
+
+                setTimeout(function () {
+                    createOverlayContainer.css("display", "none");
+                    $("#Name").focus();
+                }, 820);
             }
         },
         error: function (req, status, error) {
