@@ -60,6 +60,7 @@ $(".create-overlay-modal-close-btn").click(function () {
 // Click function that open the Modal
 createBarcodeInput.click(function () {
     createOverlayContainer.css("display", "block");
+    createBarcodeInput.blur();
 });
 
 function errorTextIconColor(color) {
