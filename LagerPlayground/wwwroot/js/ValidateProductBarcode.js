@@ -1,16 +1,18 @@
 ﻿var barcode = '';
 var interval;
 
+const createOverlayContainer = $(".create-overlay-container");
 const errorTextOutputTag = $(".create-overlay-modal-error-text");
 const errorIconOutputTag = $(".create-overlay-modal-error-icon");
 const submitBtn = $(".create-overlay-modal-enter-btn");
 const modalInput = $(".create-overlay-modal-input");
+const createBarcodeInput = $(".productIDInputClass");
 const loader = $(".loader");
 let modalInputValue = modalInput.val().trim();
 let result = false;
 
 document.addEventListener("keydown", function (evt) {
-    if ($(".create-overlay-container").is(":visible")) {
+    if (createOverlayContainer.is(":visible")) {
         if (interval) {
             clearInterval(interval);
         }
@@ -52,7 +54,12 @@ submitBtn.click(function () {
 
 // Click function that close the Modal.
 $(".create-overlay-modal-close-btn").click(function () {
-    $(".create-overlay-container").css("display", "none");
+    createOverlayContainer.css("display", "none");
+});
+
+// Click function that open the Modal
+createBarcodeInput.click(function () {
+    createOverlayContainer.css("display", "block");
 });
 
 function errorTextIconColor(color) {
@@ -67,6 +74,7 @@ function errorTextIconClearText() {
 
 function loadingTimeout() {
     submitBtn.css("display", "none");
+    createBarcodeInput.val("");
     setTimeout(function () {
         if (result == false) {
             loader.css("display", "block");
@@ -108,6 +116,7 @@ function ajaxCall(barcode) {
                 errorTextIconColor("#28a745")
                 errorTextOutputTag.text("This product does not exist");
                 errorIconOutputTag.text("check_circle_outline");
+                createBarcodeInput.val(barcode);
             }
         },
         error: function (req, status, error) {

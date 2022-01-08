@@ -202,6 +202,21 @@
 .create-overlay-modal-enter-btn:focus, .create-overlay-modal-enter-btn:active {
     border: none !important;
     outline: none !important;
+    -moz-box-shadow: none !important;
+    -webkit-box-shadow: none !important;
+    box-shadow: none !important;
+}
+
+.productIDInputClass:hover {
+    cursor: pointer;
+}
+
+.productIDInputClass:focus, .productIDInputClass:active {
+    border: 1px solid #ced4da !important;
+    outline: none !important;
+    -moz-box-shadow: none !important;
+    -webkit-box-shadow: none !important;
+    box-shadow: none !important;
 }
 
 /*---Loader---*/
