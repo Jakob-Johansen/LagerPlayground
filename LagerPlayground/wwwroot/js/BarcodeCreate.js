@@ -108,14 +108,14 @@ function ajaxCall(barcode) {
         success: function (dataResult) {
             result = true;
             loader.css("display", "none");
-            if (dataResult != false) {
+
+            errorTextOutputTag.text(dataResult.msg);
+            if (dataResult.boolean == false) {
                 errorTextIconColor("#dc3545");
-                errorTextOutputTag.text("This product already exist");
                 errorIconOutputTag.text("error_outline");
             }
             else {
                 errorTextIconColor("#28a745")
-                errorTextOutputTag.text("This product does not exist");
                 errorIconOutputTag.text("check_circle_outline");
                 createBarcodeInput.val(barcode);
 

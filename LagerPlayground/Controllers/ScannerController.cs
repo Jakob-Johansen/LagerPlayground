@@ -1,4 +1,5 @@
 ﻿using LagerPlayground.Data;
+using LagerPlayground.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -26,16 +27,32 @@ namespace LagerPlayground.Controllers
         }
 
         // Arrivals
-        public async Task<JsonResult> BarcodeExist(string productID)
+        public async Task<JsonResult> BarcodeExist(int? id, string productID)
         {
             var product = await _context.Products.FirstOrDefaultAsync(x => x.ProductID == productID);
 
-            if (product == null)
+            JsonEditModel jsonEditModel = new();
+
+            if (product != null)
             {
-                return Json(false);
+                if (product.ID == id)
+                {
+                    jsonEditModel.Boolean = true;
+                    jsonEditModel.Msg = "The same product";
+                }
+                else
+                {
+                    jsonEditModel.Boolean = false;
+                    jsonEditModel.Msg = "This product already exist";
+                }
+            }
+            else
+            {
+                jsonEditModel.Boolean = true;
+                jsonEditModel.Msg = "This product does not exist";
             }
 
-            return Json(true);
+            return Json(jsonEditModel);
         }
     }
 }
