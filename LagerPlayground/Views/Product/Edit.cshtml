@@ -14,7 +14,7 @@
             <input type="hidden" asp-for="ID" />
             <div class="form-group">
                 <label asp-for="ProductID" class="control-label"></label>
-                <input asp-for="ProductID" class="form-control background-light" />
+                <input asp-for="ProductID" readonly class="productIDInputClass form-control background-light" />
                 <span asp-validation-for="ProductID" class="text-danger"></span>
                 <br />
             </div>
@@ -61,6 +61,25 @@
     <a asp-action="Index">Back to list</a>
 </div>
 
+@*-Overlay-*@
+<div class="create-overlay-container" style="display: none;">
+    <div class="create-overlay-modal-container">
+        <div class="create-overlay-icon-container">
+            <span class="material-icons create-overlay-modal-close-btn">close</span>
+        </div>
+        <img src="~/Images/4329934.png" class="create-overlay-modal-image" />
+        <p>Scan the products barcode</p>
+        <input placeholder="0000" class="form-control create-overlay-modal-input background-light" />
+        
+        <button class="create-overlay-modal-enter-btn btn-primary">Submit</button>
+        
+        <div class="loader"></div>
+        <span class="create-overlay-modal-error-text"></span>
+        <span class="create-overlay-modal-error-icon material-icons"></span>
+    </div>
+</div>
+
 @section Scripts {
+    <script src="~/js/BarcodeEdit.js"></script>
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
 }

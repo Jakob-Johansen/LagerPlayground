@@ -12,6 +12,12 @@
         <form asp-action="Create">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
+                <label asp-for="ProductID" class="control-label"></label>
+                <input asp-for="ProductID" readonly class="productIDInputClass form-control background-light" />
+                <span asp-validation-for="ProductID" class="text-danger"></span>
+                <br />
+            </div>
+            <div class="form-group">
                 <label asp-for="Name" class="control-label"></label>
                 <input asp-for="Name" class="form-control background-light" />
                 <span asp-validation-for="Name" class="text-danger"></span>
@@ -39,12 +45,6 @@
                 <label asp-for="Quantity" class="control-label"></label>
                 <input asp-for="Quantity" type="number" class="form-control background-light" />
                 <span asp-validation-for="Quantity" class="text-danger"></span>
-                <br />
-            </div>
-            <div class="form-group">
-                <label asp-for="ProductID" class="control-label"></label>
-                <input asp-for="ProductID" readonly class="productIDInputClass form-control background-light" />
-                <span asp-validation-for="ProductID" class="text-danger"></span>
                 <br />
             </div>
             <div class="form-group">
@@ -80,6 +80,6 @@
 
 
 @section Scripts {
-    <script src="~/js/ValidateProductBarcode.js"></script>
+    <script src="~/js/BarcodeCreate.js"></script>
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
 }
