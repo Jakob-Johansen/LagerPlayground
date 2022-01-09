@@ -33,6 +33,8 @@ namespace LagerPlayground.Controllers
             return View();
         }
 
+        //public IActionResult 
+
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()
         {

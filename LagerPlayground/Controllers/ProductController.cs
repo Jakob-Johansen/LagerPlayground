@@ -18,6 +18,11 @@ namespace LagerPlayground.Controllers
             return View(await _context.Products.ToListAsync());
         }
 
+        public IActionResult AddExistingProduct()
+        {
+            return View();
+        }
+
         public async Task<IActionResult> Details(int? Id)
         {
             if (Id == null)

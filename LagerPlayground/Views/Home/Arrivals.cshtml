@@ -1,10 +1,10 @@
 ﻿@{
-    ViewData["Title"] = "Arrivals";
+    ViewData["Title"] = "Arrivals Create";
 }
 
 <div class="arrivals-btns-holder-container">
     <div class="arrivals-btn-container">
-        <a href="#" class="arrivals-btn arrivals-btn-edit">Add Existing Product</a>
+        <a class="arrivals-btn arrivals-btn-edit" asp-controller="Product" asp-action="AddExistingProduct">Add Existing Product</a>
     </div>
     <div class="arrivals-btn-container">
         <a class="arrivals-btn arrivals-btn-create" asp-controller="Product" asp-action="Create">Create New Product</a>
