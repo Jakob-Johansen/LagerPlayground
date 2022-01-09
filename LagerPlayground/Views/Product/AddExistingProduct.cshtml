@@ -3,6 +3,22 @@
     ViewData["Title"] = "Add Existing Product";
 }
 
-<div class="addExisting-container">
-
+<div class="addOrSubtract-container">
+    <div class="addOrSubtract-control-container">
+        <div class="addOrSubtract-btn-container">
+            <button class="addOrSubtract-btn addOrSubtract-subtract-btn">-</button>
+        </div>
+        <div class="addOrSubtract-input-contianer">
+            <input class="addOrSubtract-input form-control background-light" value="0" />
+        </div>
+        <div class="addOrSubtract-btn-container">
+            <button class="addOrSubtract-btn addOrSubtract-add-btn">+</button>
+        </div>
+        <div class="clearBoth"></div>
+    </div>
 </div>
+
+
+@section Scripts {
+    <script src="~/js/AddOrSubtract.js"></script>
+}
