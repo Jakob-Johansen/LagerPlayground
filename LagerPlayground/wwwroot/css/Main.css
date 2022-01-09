@@ -199,7 +199,7 @@
     outline: none;
 }
 
-    .create-overlay-modal-enter-btn:focus, .create-overlay-modal-enter-btn:active, .addOrSubstract-input:focus, .addOrSubstract-input:active {
+    .create-overlay-modal-enter-btn:focus, .create-overlay-modal-enter-btn:active, .addOrSubtract-input:focus, .addOrSubtract-input:active {
         border: none !important;
         outline: none !important;
         -moz-box-shadow: none !important;
@@ -220,6 +220,7 @@
 }
 
 /*---Loader---*/
+
 .loader {
     display: none;
     margin: 18px auto 0 auto;
@@ -254,6 +255,7 @@
 }
 
 /*---AddExistingProduct---*/
+
 .addOrSubtract-container {
     width: 550px;
     height: 400px;
@@ -288,9 +290,21 @@
     text-align: center;
 }
 
+/* Chrome, Safari, Edge, Opera */
+.addOrSubtract-input::-webkit-outer-spin-button,
+.addOrSubtract-input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+/* Firefox */
+.addOrSubtract-input[type=number] {
+    -moz-appearance: textfield;
+}
+
 .addOrSubtract-btn {
     height: auto;
     font-size: 45px;
-    background-color: white;
+    background-color: deeppink;
     line-height: unset !important;
 }
