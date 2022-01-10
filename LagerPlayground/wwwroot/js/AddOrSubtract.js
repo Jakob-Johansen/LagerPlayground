@@ -45,11 +45,11 @@ function InputFunction(addOrSubtract) {
 
 // Sends a post request to the backend
 updateProductBtn.click(function () {
-    if (productExist == true) {
+    if (productExist == true && quantityInputField.val() != '0') {
         console.log("Save");
+        ajaxPost();
     }
 });
-
 
 document.addEventListener("keydown", function (evt) {
     if (interval) {
@@ -88,6 +88,15 @@ function handleBarcode(scanned_barcode) {
     }
 }
 
+//function resetAll() {
+//    currentBarcode = '';
+//    inputValue = 0;
+//    lastScannedBarcode = '';
+//    productExist = false;
+//    barcodeInputField.val('');
+//    quantityInputField.val('0');
+//}
+
 // Gets the scanned product
 function ajaxGet(scanned_barcode) {
     $.ajax({
@@ -116,12 +125,13 @@ function ajaxGet(scanned_barcode) {
 
 // Post the scanned product and updates the producs quantity
 function ajaxPost() {
-    $ajax({
+    $.ajax({
         type: "POST",
         url: "/Scanner/AddMoreStock",
+        headers: { "RequestVerificationToken": "@GetAntiXsrfRequestToken()" },
         data: { quantity: quantityInputField.val(), productID: currentBarcode },
         success: function (result) {
-            console.log(result);
+            console.log("AjaxPost: " + result);
         },
         error: function (req, status, error) {
             console.log(error);
