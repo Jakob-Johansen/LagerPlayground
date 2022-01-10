@@ -13,22 +13,28 @@
 
 <div class="addOrSubtract-container">
 
-    <div class="addOrSubtract-productInfo-container">
-        <h2 class="text-danger errorMsg"></h2>
+    <div class="addOrSubtract-productInfo-image-container">
+        <img class="addOrSubtract-productInfo-image" src="" />
     </div>
+    
+    <div class="addOrSubtract-productInfo">
+        <p class="addOrSubtract-productInfo-name"></p>
+    </div>
+
+@*    <h2 class="text-danger errorMsg"></h2>*@
 
     <div class="addOrSubtract-control-container">
         <div class="addOrSubtract-search-container">
             <input type="text" class="addOrSubtract-search form-control background-light" placeholder="0000" />
         </div>
         <div class="addOrSubtract-btn-container addOrSubtract-btn-container-left invisibleWhileLoading">
-            <button class="addOrSubtract-btn addOrSubtract-subtract-btn">-</button>
+            <button class="addOrSubtract-btn addOrSubtract-subtract-btn" style="background-color: #dc3545 !important;">-</button>
         </div>
         <div class="addOrSubtract-input-contianer invisibleWhileLoading">
             <input class="addOrSubtract-input form-control background-light" type="number" value="0" />
         </div>
         <div class="addOrSubtract-btn-container addOrSubtract-btn-container-right invisibleWhileLoading">
-            <button class="addOrSubtract-btn addOrSubtract-add-btn">+</button>
+            <button class="addOrSubtract-btn addOrSubtract-add-btn" style="background-color: #1a9c23 !important;">+</button>
         </div>
         <div class="clearBoth"></div>
         <div class="addOrSubtract-save-btn-container invisibleWhileLoading">
@@ -65,6 +71,9 @@ const updateProductBtn = $(".addOrSubtract-save-btn");
 
 const functionControls = $(".invisibleWhileLoading");
 const loader = $(".loader");
+
+const productInfoImageContainer = $(".addOrSubtract-productInfo-image-container");
+const productInfoImage = $(".addOrSubtract-productInfo-image");
 const errorMsg = $(".errorMsg");
 
 let ajaxResult = false;
@@ -165,6 +174,21 @@ function loadingTimeout() {
     }, 20);
 }
 
+function AppendData(productData) {
+    if (productData.image != null) {
+        productInfoImageContainer.css("display", "block");
+        //productInfoImage.css("display", "block");
+        productInfoImage.attr("src", "/Images/Products/" + productData.image);
+        $(".addOrSubtract-productInfo-name").text(productData.name);
+    }
+    else {
+        productInfoImageContainer.css("display", "none");
+        //productInfoImage.css("display", "none");
+        productInfoImage.attr("src", "");
+        $(".addOrSubtract-productInfo-name").text("");
+    }
+}
+
 // Gets the scanned product
 function ajaxGet(scanned_barcode) {
     $.ajax({
@@ -179,6 +203,8 @@ function ajaxGet(scanned_barcode) {
 
             if (productData != false) {
                 productExist = true;
+                AppendData(productData);
+
                 barcodeInputField.val(scanned_barcode);
                 quantityInputField.val("1");
             }
@@ -186,6 +212,11 @@ function ajaxGet(scanned_barcode) {
                 productExist = false;
                 barcodeInputField.val("");
                 quantityInputField.val("0");
+
+                productInfoImageContainer.css("display", "none");
+                //productInfoImage.css("display", "none");
+                productInfoImage.attr("src", "");
+                $(".addOrSubtract-productInfo-name").text("");
             }
         },
         error: function (req, status, error) {

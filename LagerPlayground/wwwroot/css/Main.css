@@ -259,20 +259,40 @@
 .addOrSubtract-container {
     width: 500px;
     height: auto;
-    margin: 40px auto 0 auto;
+    margin: 25px auto 0 auto;
 /*    background-color: red;*/
 }
 
-.addOrSubtract-productInfo-container {
+.addOrSubtract-productInfo-image-container {
+    display: none;
     width: 100%;
     height: 400px;
-    background-color: cadetblue;
+    background-color: white;
+}
+
+.addOrSubtract-productInfo-image {
+    display: block;
+    margin: 0 auto;
+    width: 80%;
+}
+
+.addOrSubtract-productInfo {
+    width: 100%;
+    height: auto;
+}
+
+.addOrSubtract-productInfo-name {
+    text-align: center;
+/*    background-color: red;*/
+    font-size: 24px;
+    padding: 5px 0;
+    margin: 0;
 }
 
 .addOrSubtract-control-container {
     width: 100%;
     height: auto;
-/*    background-color: burlywood;*/
+    /*    background-color: burlywood;*/
 }
 
 .addOrSubtract-search-container {
