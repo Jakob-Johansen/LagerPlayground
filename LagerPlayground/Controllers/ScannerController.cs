@@ -55,12 +55,37 @@ namespace LagerPlayground.Controllers
             return Json(jsonEditModel);
         }
 
-        //[HttpPost]
-        //[ValidateAntiForgeryToken]
-        //public async Task<JsonResult> AddMoreStock(int productID, int quantity)
-        //{
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<JsonResult> AddMoreStock(string productID, int Quantity)
+        {
+            var productToUpdate = await _context.Products.FirstOrDefaultAsync(x => x.ProductID == productID);
 
-        //    return Json(true);
-        //}
+            int newQuantity = productToUpdate.Quantity + Quantity;
+
+            if (productToUpdate == null)
+            {
+                return Json(false);
+            }
+
+            if (await TryUpdateModelAsync<Product>(
+                productToUpdate,
+                "",
+                p => p.Quantity))
+            {
+                try
+                {
+                    productToUpdate.Quantity = newQuantity;
+                    await _context.SaveChangesAsync();
+                }
+                catch (DbUpdateException)
+                {
+
+                    return Json(false);
+                }
+            }
+
+            return Json(true);
+        }
     }
 }
