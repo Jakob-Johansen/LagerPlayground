@@ -14,7 +14,7 @@ namespace LagerPlayground.Controllers
         }
 
         // Scanner Fun
-        public async Task<JsonResult> GetJson(string productID)
+        public async Task<JsonResult> GetProduct(string productID)
         {
             var product = await _context.Products.FirstOrDefaultAsync(x => x.ProductID == productID);
 
@@ -54,5 +54,13 @@ namespace LagerPlayground.Controllers
 
             return Json(jsonEditModel);
         }
+
+        //[HttpPost]
+        //[ValidateAntiForgeryToken]
+        //public async Task<JsonResult> AddMoreStock(int productID, int quantity)
+        //{
+
+        //    return Json(true);
+        //}
     }
 }
