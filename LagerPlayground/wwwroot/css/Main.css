@@ -199,7 +199,7 @@
     outline: none;
 }
 
-    .create-overlay-modal-enter-btn:focus, .create-overlay-modal-enter-btn:active, .addOrSubtract-input:focus, .addOrSubtract-input:active {
+    .create-overlay-modal-enter-btn:focus, .create-overlay-modal-enter-btn:active, .addOrSubtract-input:focus, .addOrSubtract-input:active, .addOrSubtract-search:focus, .addOrSubtract-search:active {
         border: none !important;
         outline: none !important;
         -moz-box-shadow: none !important;
@@ -258,36 +258,85 @@
 
 .addOrSubtract-container {
     width: 550px;
-    height: 400px;
+    height: auto;
     margin: 50px auto 0 auto;
-    background-color: red;
+/*    background-color: red;*/
 }
 
 .addOrSubtract-control-container {
     width: 100%;
-    height: 100px;
-    background-color: burlywood;
+    height: auto;
+/*    background-color: burlywood;*/
+}
+
+.addOrSubtract-search-container {
+    width: 100%;
+    height: auto;
+}
+
+.addOrSubtract-search {
+    width: 100%;
+    font-size: 21px;
+    border: none;
+    border-radius: 0px;
+    text-align: center;
 }
 
 .addOrSubtract-btn-container, .addOrSubtract-input-contianer {
     float: left;
-    width: 33.333%;
+    /*    width: 33.333%;*/
+    height: auto;
+    padding: 5px;
+}
+
+.addOrSubtract-input-contianer {
+    width: 40% !important;
+    padding-left: 0px !important;
+    padding-right: 0px !important; 
+}
+
+.addOrSubtract-btn-container {
+    width: 30% !important;
+}
+
+.addOrSubtract-btn-container-left {
+    padding-left: 0px !important;
+}
+
+.addOrSubtract-btn-container-right {
+    padding-right: 0px !important;
+}
+
+.addOrSubtract-save-btn-container {
+    width: 100%;
     height: auto;
 }
 
 .addOrSubtract-btn, .addOrSubtract-input {
     width: 100%;
+    height: 80px !important;
+    line-height: 80px;
     border: none;
     border-radius: unset;
     padding: 0;
+    color: #f8f9fa;
     font-family: Arial, Helvetica, sans-serif !important;
 }
 
 .addOrSubtract-input {
-    font-size: 38px;
+    font-size: 35px;
     height: auto;
     padding: 0 5px;
     text-align: center;
+}
+
+.addOrSubtract-save-btn {
+    background-color: aliceblue !important;
+    font-size: 27px !important;
+    height: 66px !important;
+    color: #f8f9fa;
+    background-color: #1d1f21 !important;
+    font-family: Arial, Helvetica, sans-serif !important;
 }
 
 /* Chrome, Safari, Edge, Opera */

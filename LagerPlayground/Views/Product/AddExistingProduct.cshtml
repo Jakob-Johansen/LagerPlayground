@@ -5,19 +5,26 @@
 
 <div class="addOrSubtract-container">
     <div class="addOrSubtract-control-container">
-        <div class="addOrSubtract-btn-container">
+        <div class="addOrSubtract-search-container">
+            <input type="text" class="addOrSubtract-search form-control background-light" placeholder="0000" />
+        </div>
+        <div class="addOrSubtract-btn-container addOrSubtract-btn-container-left">
             <button class="addOrSubtract-btn addOrSubtract-subtract-btn">-</button>
         </div>
         <div class="addOrSubtract-input-contianer">
             <input class="addOrSubtract-input form-control background-light" type="number" value="0" />
         </div>
-        <div class="addOrSubtract-btn-container">
+        <div class="addOrSubtract-btn-container addOrSubtract-btn-container-right">
             <button class="addOrSubtract-btn addOrSubtract-add-btn">+</button>
         </div>
         <div class="clearBoth"></div>
+        <div class="addOrSubtract-save-btn-container">
+            <button class="addOrSubtract-btn addOrSubtract-save-btn">Save</button>
+        </div>
     </div>
 </div>
 
+<p style="text-align: center;">Husk at fixe så stregkoden ikke bliver sat ind quantity input feltet hvis det er i focus</p>
 
 @section Scripts {
     <script src="~/js/AddOrSubtract.js"></script>

@@ -26,7 +26,7 @@ function handleBarcode(scanned_barcode) {
 
         $.ajax({
             type: "GET",
-            url: "/Scanner/GetJson",
+            url: "/Scanner/GetProduct",
             data: { productID: scanned_barcode },
             dataType: "json",
             success: function (returnData) {
