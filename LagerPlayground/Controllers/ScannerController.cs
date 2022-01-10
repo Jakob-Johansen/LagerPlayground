@@ -80,12 +80,11 @@ namespace LagerPlayground.Controllers
                 }
                 catch (DbUpdateException)
                 {
-
-                    return Json(false);
+                    return Json(new { boolean = false, msg = "An database error has occurred, try again or contact support" });
                 }
             }
 
-            return Json(true);
+            return Json(new { boolean = true, msg = "" });
         }
     }
 }

@@ -14,7 +14,11 @@ let inputValue = 0;
 const barcodeInputField = $(".addOrSubtract-search");
 const updateProductBtn = $(".addOrSubtract-save-btn");
 
+const functionControls = $(".invisibleWhileLoading");
+const loader = $(".loader");
+const errorMsg = $(".errorMsg");
 
+let ajaxResult = false;
 
 addBtn.click(function () {
     InputFunction("+")
@@ -45,10 +49,23 @@ function InputFunction(addOrSubtract) {
 
 // Sends a post request to the backend
 updateProductBtn.click(function () {
-    if (productExist == true && quantityInputField.val() != '0') {
-        console.log("Save");
-        ajaxPost();
+    if (barcodeInputField.val().trim().length == 0) {
+        errorMsg.text("You need to scan a product");
+        return;
     }
+
+    if (productExist == false) {
+        errorMsg.text("The product dosent exist");
+        return;
+    }
+
+    if (quantityInputField.val() == '0') {
+        errorMsg.text("You need to add more than 0 products");
+        return;
+    }
+
+    console.log("Save");
+    ajaxPost();
 });
 
 document.addEventListener("keydown", function (evt) {
@@ -70,32 +87,34 @@ document.addEventListener("keydown", function (evt) {
 });
 
 function handleBarcode(scanned_barcode) {
+    scanned_barcode = scanned_barcode.trim();
     if (scanned_barcode.length >= 1) {
+        errorMsg.text("");
         if (scanned_barcode != lastScannedBarcode) {
 
-/*            console.log(lastScannedBarcode);*/
+            loadingTimeout();
             currentBarcode = scanned_barcode;
             lastScannedBarcode = scanned_barcode;
-
+            barcodeInputField.val(scanned_barcode);
             ajaxGet(scanned_barcode);
         }
         else {
             if (productExist) {
                 InputFunction("+")
             }
-            console.log("Test");
+            console.log("Scan");
         }
     }
 }
 
-//function resetAll() {
-//    currentBarcode = '';
-//    inputValue = 0;
-//    lastScannedBarcode = '';
-//    productExist = false;
-//    barcodeInputField.val('');
-//    quantityInputField.val('0');
-//}
+function loadingTimeout() {
+    setTimeout(function () {
+        if (ajaxResult == false) {
+            functionControls.css("display", "none");
+            loader.css("display", "block");
+        }
+    }, 20);
+}
 
 // Gets the scanned product
 function ajaxGet(scanned_barcode) {
@@ -105,14 +124,17 @@ function ajaxGet(scanned_barcode) {
         data: { productID: scanned_barcode },
         dataType: "json",
         success: function (productData) {
+            ajaxResult = true;
+            loader.css("display", "none");
+            functionControls.css("display", "block");
+
             if (productData != false) {
                 productExist = true;
+                barcodeInputField.val(scanned_barcode);
                 quantityInputField.val("1");
-                barcodeInputField.val(productData.productID);
             }
             else {
                 productExist = false;
-                console.log(false);
                 barcodeInputField.val("");
                 quantityInputField.val("0");
             }
@@ -131,7 +153,12 @@ function ajaxPost() {
         headers: { "RequestVerificationToken": "@GetAntiXsrfRequestToken()" },
         data: { quantity: quantityInputField.val(), productID: currentBarcode },
         success: function (result) {
-            console.log("AjaxPost: " + result);
+            if (result.boolean == true) {
+                console.log("Den er true");
+            }
+            else {
+                console.log("Den er false");
+            }
         },
         error: function (req, status, error) {
             console.log(error);
