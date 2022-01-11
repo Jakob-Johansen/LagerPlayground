@@ -38,7 +38,7 @@
         </div>
         <div class="clearBoth"></div>
         <div class="addOrSubtract-save-btn-container invisibleWhileLoading">
-            <button class="addOrSubtract-btn addOrSubtract-save-btn">Save</button>
+            <a class="addOrSubtract-btn addOrSubtract-save-btn">Save</a>
         </div>
         <div class="loader"></div>
     </div>
@@ -48,8 +48,9 @@
 <p style="text-align: center;">Husk at fixe så stregkoden ikke bliver sat ind quantity input feltet hvis det er i focus</p>
 <p style="text-align: center;">Tjek om det som står i quantity input kun er tal</p>
 <p style="text-align: center;">Gør så man kan lave en manual søgning</p>
+@*
 <h2 style="text-align: center;">Når man scanner efter at have tilføjet noget i inputfeltet så sætter den focus på knappet og tilføjer for hvergang man scanner</h2>
-
+*@
 
 @section Scripts {
 @*    <script src="~/js/AddOrSubtract.js"></script>*@
@@ -134,9 +135,12 @@ document.addEventListener("keydown", function (evt) {
     }
     // if input is enter
     if (evt.code.includes("Enter")) {
+        subtractBtn.blur();
+        updateProductBtn.blur();
         if (barcode) {
             handleBarcode(barcode);
             barcode = '';
+
             return;
         }
     }
