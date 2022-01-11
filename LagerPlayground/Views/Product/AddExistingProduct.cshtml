@@ -15,6 +15,14 @@
 
     <div class="addOrSubtract-productInfo-image-container">
         <img class="addOrSubtract-productInfo-image" src="" />
+
+        <div class="savedInDbModal-container">
+            <div class="savedInDbModal-logo-container">
+@*                <img src="~/Images/Logoer/check_circle_outline_black_24dp.svg" />*@
+                <span class="material-icons savedInDbModal-logo">check_circle_outline</span>
+            </div>
+            <p class="savedInDbModal-text">The products has been added!</p>
+        </div>
     </div>
     
     <div class="addOrSubtract-productInfo">
@@ -77,6 +85,8 @@ const loader = $(".loader");
 
 const productInfoImageContainer = $(".addOrSubtract-productInfo-image-container");
 const productInfoImage = $(".addOrSubtract-productInfo-image");
+
+const savedProductModal = $(".savedInDbModal-container");
 const errorMsg = $(".errorMsg");
 
 let ajaxResult = false;
@@ -110,6 +120,9 @@ function InputFunction(addOrSubtract) {
 
 // Sends a post request to the backend
 updateProductBtn.click(function () {
+    savedProductModal.css("display", "none");
+    console.log("Click");
+
     if (barcodeInputField.val().trim().length == 0) {
         errorMsg.text("You need to scan a product");
         return;
@@ -124,8 +137,7 @@ updateProductBtn.click(function () {
         errorMsg.text("You need to add more than 0 products");
         return;
     }
-
-     console.log("Save");
+     //console.log("Save");
      ajaxPost();
 });
 
@@ -135,11 +147,12 @@ document.addEventListener("keydown", function (evt) {
     }
     // if input is enter
     if (evt.code.includes("Enter")) {
-        subtractBtn.blur();
-        updateProductBtn.blur();
         if (barcode) {
             handleBarcode(barcode);
             barcode = '';
+
+            addBtn.blur();
+            subtractBtn.blur();
 
             return;
         }
@@ -152,6 +165,7 @@ document.addEventListener("keydown", function (evt) {
 
 function handleBarcode(scanned_barcode) {
     scanned_barcode = scanned_barcode.trim();
+    savedProductModal.css("display", "none");
     if (scanned_barcode.length >= 1) {
         errorMsg.text("");
         if (scanned_barcode != lastScannedBarcode) {
@@ -166,7 +180,7 @@ function handleBarcode(scanned_barcode) {
             if (productExist) {
                 InputFunction("+")
             }
-            console.log("Scan");
+            //console.log("Scan");
         }
     }
 }
@@ -183,13 +197,11 @@ function loadingTimeout() {
 function AppendData(productData) {
     if (productData.image != null) {
         productInfoImageContainer.css("display", "block");
-        //productInfoImage.css("display", "block");
         productInfoImage.attr("src", "/Images/Products/" + productData.image);
         $(".addOrSubtract-productInfo-name").text(productData.name);
     }
     else {
         productInfoImageContainer.css("display", "none");
-        //productInfoImage.css("display", "none");
         productInfoImage.attr("src", "");
         $(".addOrSubtract-productInfo-name").text("");
     }
@@ -239,8 +251,10 @@ function ajaxPost() {
         headers: { "RequestVerificationToken": "@GetAntiXsrfRequestToken()" },
         data: { quantity: quantityInputField.val(), productID: currentBarcode },
         success: function (result) {
+            quantityInputField.val('0');
             if (result.boolean == true) {
-                console.log("Den er true");
+                savedProductModal.css("display", "block");
+                //console.log("Den er true");
             }
             else {
                 console.log("Den er false");
