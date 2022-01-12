@@ -17,9 +17,9 @@
 
         <div class="savedInDbModal-container">
             <div class="savedInDbModal-logo-container">
-                <span class="material-icons savedInDbModal-logo">check_circle_outline</span>
+                <span class="material-icons savedInDbModal-logo"></span>
             </div>
-            <p class="savedInDbModal-text">The products has been added!</p>
+            <p class="savedInDbModal-text"></p>
         </div>
 
 @*        <div class="startScanModal-contianer">
@@ -31,8 +31,6 @@
     <div class="addOrSubtract-productInfo">
         <p class="addOrSubtract-productInfo-name"></p>
     </div>
-
-@*    <h2 class="text-danger errorMsg"></h2>*@
 
     <div class="addOrSubtract-control-container">
         <div class="addOrSubtract-search-container">
@@ -55,6 +53,7 @@
     </div>
 </div>
 
+    <h2 class="text-danger errorMsg" style="text-align: center;"></h2>
 
 <p style="text-align: center;">Husk at fixe så stregkoden ikke bliver sat ind quantity input feltet hvis det er i focus</p>
 <p style="text-align: center;">Tjek om det som står i quantity input kun er tal</p>
@@ -89,10 +88,20 @@ const loader = $(".loader");
 const productInfoImageContainer = $(".addOrSubtract-productInfo-image-container");
 const productInfoImage = $(".addOrSubtract-productInfo-image");
 
-const savedProductModal = $(".savedInDbModal-container");
 const errorMsg = $(".errorMsg");
 
+// Save product modal variables
+const savedProductModalContainer = $(".savedInDbModal-container");
+const savedProductModalIcon = $(".savedInDbModal-logo");
+const savedProductModalText = $(".savedInDbModal-text");
+
+var red = "#dc3545";
+var yellow = "#ffc107";
+var green = "#28a745";
+
 let ajaxResult = false;
+
+// ---Btn click events an functions
 
 addBtn.click(function () {
     InputFunction("+")
@@ -121,10 +130,12 @@ function InputFunction(addOrSubtract) {
     }
 }
 
+// ###
+
+// ---Save btn
 // Sends a post request to the backend
 updateProductBtn.click(function () {
-    savedProductModal.css("display", "none");
-    console.log("Click");
+    SaveModalFunction("none","","","");
 
     if (barcodeInputField.val().trim().length == 0) {
         errorMsg.text("You need to scan a product");
@@ -144,6 +155,9 @@ updateProductBtn.click(function () {
      ajaxPost();
 });
 
+// ###
+
+// ---Scanner event and functions
 document.addEventListener("keydown", function (evt) {
     if (interval) {
         clearInterval(interval);
@@ -168,7 +182,8 @@ document.addEventListener("keydown", function (evt) {
 
 function handleBarcode(scanned_barcode) {
     scanned_barcode = scanned_barcode.trim();
-    savedProductModal.css("display", "none");
+    SaveModalFunction("none","","","");
+
     if (scanned_barcode.length >= 1) {
         errorMsg.text("");
         if (scanned_barcode != lastScannedBarcode) {
@@ -183,11 +198,13 @@ function handleBarcode(scanned_barcode) {
             if (productExist) {
                 InputFunction("+")
             }
-            //console.log("Scan");
         }
     }
 }
 
+// ###
+
+// ---Timeout/delay functions
 function loadingTimeout() {
     setTimeout(function () {
         if (ajaxResult == false) {
@@ -197,6 +214,9 @@ function loadingTimeout() {
     }, 20);
 }
 
+// ###
+
+// ---Output data to html functions
 function AppendData(productData) {
     if (productData.image != null) {
         productInfoImageContainer.css("display", "block");
@@ -210,6 +230,9 @@ function AppendData(productData) {
     }
 }
 
+// ###
+
+// ---Ajax functions
 // Gets the scanned product
 function ajaxGet(scanned_barcode) {
     $.ajax({
@@ -235,13 +258,13 @@ function ajaxGet(scanned_barcode) {
                 quantityInputField.val("0");
 
                 productInfoImageContainer.css("display", "none");
-                //productInfoImage.css("display", "none");
                 productInfoImage.attr("src", "");
                 $(".addOrSubtract-productInfo-name").text("");
             }
         },
         error: function (req, status, error) {
-            Console.log(error);
+            console.log(status);
+            SaveModalFunction("block", "warning_amber", yellow, "CONTACT SUPPORT");
         }
     });
 }
@@ -256,17 +279,37 @@ function ajaxPost() {
         success: function (result) {
             quantityInputField.val('0');
             if (result.boolean == true) {
-                savedProductModal.css("display", "block");
-                //console.log("Den er true");
+
+                SaveModalFunction("block", "check_circle_outline", green, result.msg);
             }
             else {
-                console.log("Den er false");
+                if (result.exception == true) {
+                    SaveModalFunction("block", "warning_amber", yellow, result.msg);
+                }
+                else {
+                    SaveModalFunction("block", "error_outline", red, result.msg);
+                }
             }
         },
         error: function (req, status, error) {
-            console.log(error);
+            console.log(status);
+            SaveModalFunction("block", "warning_amber", yellow, "CONTACT SUPPORT");
         }
     });
 }
+
+// ###
+
+// if true:  Icon: check_circle_outline   Text: The products has been added!                                  Color: Green
+// if false: Icon: error_outline          Text: No product with the scanned barcode was found                 Color: Red
+// if error: Icon: warning_amber          Text: An database error has occurred, try again or contact support  Color: Yellow
+
+function SaveModalFunction(displayStyle, icon, iconColor, message) {
+    savedProductModalContainer.css("display", displayStyle);
+    savedProductModalIcon.css("color", iconColor);
+    savedProductModalIcon.text(icon);
+    savedProductModalText.text(message);
+}
+
 </script>
 }

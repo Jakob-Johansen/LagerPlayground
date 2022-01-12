@@ -23,6 +23,7 @@ namespace LagerPlayground.Controllers
                 return Json(false);
             }
 
+            // Ikke en god ide at sende hele product modellen tilbage, med alt data om modellen.
             return Json(product);
         }
 
@@ -61,12 +62,12 @@ namespace LagerPlayground.Controllers
         {
             var productToUpdate = await _context.Products.FirstOrDefaultAsync(x => x.ProductID == productID);
 
-            int newQuantity = productToUpdate.Quantity + Quantity;
-
             if (productToUpdate == null)
             {
-                return Json(false);
+                return Json(new { boolean = false, exception = false, msg = "No product with the scanned barcode was found" });
             }
+
+            int newQuantity = productToUpdate.Quantity + Quantity;
 
             if (await TryUpdateModelAsync<Product>(
                 productToUpdate,
@@ -80,11 +81,11 @@ namespace LagerPlayground.Controllers
                 }
                 catch (DbUpdateException)
                 {
-                    return Json(new { boolean = false, msg = "An database error has occurred, try again or contact support" });
+                    return Json(new { boolean = false, exception = true, msg = "An database error has occurred, try again or contact support" });
                 }
             }
 
-            return Json(new { boolean = true, msg = "" });
+            return Json(new { boolean = true, exception = false, msg = "The products has been added!" });
         }
     }
 }
