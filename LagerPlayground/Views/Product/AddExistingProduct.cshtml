@@ -54,6 +54,8 @@
 <p style="text-align: center;">Tjek om det som står i quantity input kun er tal</p>
 <p style="text-align: center;">Gør så man kan lave en manual søgning</p>
 <p style="text-align: center;">Når den loader og man scanner et product kommer den og siger fejl meddelse med at produktet ikke findes</p>
+<p style="text-align: center;">Man kan sætte produkter ind hvis man skriver 0 foran og så et tal</p>
+<p style="text-align: center;">Hvis man ændre en scanned stregkode og man trykker save gemmer den til den gamle stregkode</p>
 
 @*
 <p style="text-align: center;">Når man scanner et product som ikke er i databasen skal den komme med en fejl meddelse</p>
@@ -162,12 +164,16 @@ updateProductBtn.click(function () {
     }
 
     if (productExist == false) {
-        errorMsg.text("Product does not exist");
+        productInfoImage.css("display", "none");
+        ImageStyling(true);
+        SaveModalFunction("block", "error_outline", red, "No product with the scanned barcode was found", false);
         return;
     }
 
     if (quantityInputField.val() == '0') {
-        errorMsg.text("You need to add more than 0 products");
+        ImageStyling(false);
+        SaveModalFunction("block", "error_outline", red, "You need to add more than 0 products", true);
+        //errorMsg.text("You need to add more than 0 products");
         return;
     }
      ajaxPost();
@@ -205,6 +211,7 @@ function handleBarcode(scanned_barcode) {
         if (scanned_barcode != lastScannedBarcode) {
 
             loadingTimeout();
+
             currentBarcode = scanned_barcode;
             lastScannedBarcode = scanned_barcode;
             barcodeInputField.val(scanned_barcode);
@@ -215,9 +222,12 @@ function handleBarcode(scanned_barcode) {
                 InputFunction("+")
             }
             else {
+                // Quick fix.
+                if (ajaxResult == true) {
                 ImageStyling(true);
                 productInfoImage.css("display", "none");
                 SaveModalFunction("block", "error_outline", red, "No product with the scanned barcode was found", false);
+                }
             }
         }
     }
@@ -259,6 +269,7 @@ function ajaxGet(scanned_barcode) {
         success: function (productData) {
             ajaxResult = true;
             loader.css("display", "none");
+            SaveModalFunction("none", "", "", "", false);
             functionControls.css("display", "block");
 
             if (productData != false) {
@@ -276,7 +287,7 @@ function ajaxGet(scanned_barcode) {
                 ImageStyling(true);
 
                 productInfoImage.css("display", "none");
-                barcodeInputField.val("");
+                //barcodeInputField.val("");
                 quantityInputField.val("0");
 
                 productInfoImage.attr("src", "");
@@ -336,8 +347,6 @@ function SaveModalFunction(displayStyle, icon, iconColor, message, backgroundcol
     else {
         savedProductModalContainer.css("background-color", "rgba(0,0,0, 0.0)");
     }
-
 }
-
 </script>
 }
