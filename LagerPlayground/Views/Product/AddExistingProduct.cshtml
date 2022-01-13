@@ -53,6 +53,7 @@
 <p style="text-align: center;">Husk at fixe så stregkoden ikke bliver sat ind quantity input feltet hvis det er i focus</p>
 <p style="text-align: center;">Tjek om det som står i quantity input kun er tal</p>
 <p style="text-align: center;">Gør så man kan lave en manual søgning</p>
+<p style="text-align: center;">Når den loader og man scanner et product kommer den og siger fejl meddelse med at produktet ikke findes</p>
 
 @*
 <p style="text-align: center;">Når man scanner et product som ikke er i databasen skal den komme med en fejl meddelse</p>
@@ -84,7 +85,6 @@ const loader = $(".loader");
 
 const productInfoImageContainer = $(".addOrSubtract-productInfo-image-container");
 const productInfoImage = $(".addOrSubtract-productInfo-image");
-
 const productInfoName = $(".addOrSubtract-productInfo-name");
 
 const errorMsg = $(".errorMsg");
@@ -101,12 +101,17 @@ var green = "#28a745";
 let ajaxResult = false;
 
 $(document).ready(function () {
-    imageStyling(true);
-    productInfoImage.attr("src", "/Images/Logoer/4329934.png");
-    productInfoName.text("Scan the product");
+    DefaultPlaceholderInfo();
 });
 
-function imageStyling(boolean) {
+function DefaultPlaceholderInfo() {
+    ImageStyling(true);
+    productInfoImage.css("display", "block");
+    productInfoImage.attr("src", "/Images/Logoer/4329934.png");
+    productInfoName.text("Scan the product");
+}
+
+function ImageStyling(boolean) {
     if (boolean == true) {
         productInfoImageContainer.css("background-color", "rgb(25, 26, 28)");
         productInfoImage.css("width", "55%");
@@ -117,7 +122,7 @@ function imageStyling(boolean) {
     }
 }
 
-// ---Btn click events an functions
+// Btn click events an functions
 
 addBtn.click(function () {
     InputFunction("+")
@@ -146,20 +151,18 @@ function InputFunction(addOrSubtract) {
     }
 }
 
-// ###
-
-// ---Save btn
+// Save btn
 // Sends a post request to the backend
 updateProductBtn.click(function () {
     SaveModalFunction("none","","","", false);
 
     if (barcodeInputField.val().trim().length == 0) {
-        errorMsg.text("You need to scan a product");
+        DefaultPlaceholderInfo();
         return;
     }
 
     if (productExist == false) {
-        errorMsg.text("The product dosent exist");
+        errorMsg.text("Product does not exist");
         return;
     }
 
@@ -167,13 +170,10 @@ updateProductBtn.click(function () {
         errorMsg.text("You need to add more than 0 products");
         return;
     }
-     //console.log("Save");
      ajaxPost();
 });
 
-// ###
-
-// ---Scanner event and functions
+// Scanner event and functions
 document.addEventListener("keydown", function (evt) {
     if (interval) {
         clearInterval(interval);
@@ -215,29 +215,27 @@ function handleBarcode(scanned_barcode) {
                 InputFunction("+")
             }
             else {
-                imageStyling(true);
+                ImageStyling(true);
+                productInfoImage.css("display", "none");
                 SaveModalFunction("block", "error_outline", red, "No product with the scanned barcode was found", false);
             }
         }
     }
 }
 
-// ###
-
-// ---Timeout/delay functions
+// Timeout/delay functions
 function loadingTimeout() {
     setTimeout(function () {
         if (ajaxResult == false) {
             functionControls.css("display", "none");
             productInfoImage.css("display", "none");
+            productInfoName.text("Searching for product");
             loader.css("display", "block");
         }
     }, 20);
 }
 
-// ###
-
-// ---Output data to html functions
+// Output data to html functions
 function AppendData(productData) {
     if (productData.image != null) {
         productInfoImageContainer.css("display", "block");
@@ -247,22 +245,7 @@ function AppendData(productData) {
     else {
         productInfoImageContainer.css("display", "none");
         productInfoImage.attr("src", "");
-        productInfoName.text("");
-    }
-}
-
-// ###
-
-function ajaxGetCodeCleanUp (boolean, scanned_barcode) {
-    if (boolean == true) {
-        productExist = true;
-        imageStyling(false);
-        productInfoImage.css("display", "block");
-        barcodeInputField.val(scanned_barcode);
-        quantityInputField.val("1");
-    }
-    else {
-
+        productInfoName.text("Scan the product");
     }
 }
 
@@ -280,7 +263,7 @@ function ajaxGet(scanned_barcode) {
 
             if (productData != false) {
                 productExist = true;
-                imageStyling(false);
+                ImageStyling(false);
 
                 productInfoImage.css("display", "block");
                 barcodeInputField.val(scanned_barcode);
@@ -290,14 +273,14 @@ function ajaxGet(scanned_barcode) {
             }
             else {
                 productExist = false;
-                imageStyling(true);
+                ImageStyling(true);
 
                 productInfoImage.css("display", "none");
                 barcodeInputField.val("");
                 quantityInputField.val("0");
 
                 productInfoImage.attr("src", "");
-                productInfoName.text("");
+                productInfoName.text("Scan the product");
 
                 SaveModalFunction("block", "error_outline", red, "No product with the scanned barcode was found", false);
             }
@@ -349,6 +332,9 @@ function SaveModalFunction(displayStyle, icon, iconColor, message, backgroundcol
     savedProductModalText.text(message);
     if(backgroundcolor == true) {
         savedProductModalContainer.css("background-color", "rgba(0,0,0, 0.91)");
+    }
+    else {
+        savedProductModalContainer.css("background-color", "rgba(0,0,0, 0.0)");
     }
 
 }
