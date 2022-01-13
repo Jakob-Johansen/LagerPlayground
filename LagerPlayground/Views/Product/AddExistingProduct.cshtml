@@ -26,7 +26,6 @@
     <div class="addOrSubtract-productInfo">
         <p class="addOrSubtract-productInfo-name"></p>
     </div>
-
     <div class="addOrSubtract-control-container">
         <div class="addOrSubtract-search-container">
             <input type="text" class="addOrSubtract-search form-control background-dark" placeholder="0000" />
@@ -48,16 +47,14 @@
     </div>
 </div>
 
-    <h2 class="text-danger errorMsg" style="text-align: center;"></h2>
-
 <p style="text-align: center;">Husk at fixe så stregkoden ikke bliver sat ind quantity input feltet hvis det er i focus</p>
 <p style="text-align: center;">Tjek om det som står i quantity input kun er tal</p>
 <p style="text-align: center;">Gør så man kan lave en manual søgning</p>
 <p style="text-align: center;">Når den loader og man scanner et product kommer den og siger fejl meddelse med at produktet ikke findes</p>
-<p style="text-align: center;">Man kan sætte produkter ind hvis man skriver 0 foran og så et tal</p>
-<p style="text-align: center;">Hvis man ændre en scanned stregkode og man trykker save gemmer den til den gamle stregkode</p>
 
 @*
+<p style="text-align: center;">Hvis man ændre en scanned stregkode og man trykker save gemmer den til den gamle stregkode</p>
+<p style="text-align: center;">Man kan sætte produkter ind hvis man skriver 0 foran og så et tal</p>
 <p style="text-align: center;">Når man scanner et product som ikke er i databasen skal den komme med en fejl meddelse</p>
 <h2 style="text-align: center;">Når man scanner efter at have tilføjet noget i inputfeltet så sætter den focus på knappet og tilføjer for hvergang man scanner</h2>
 *@
@@ -88,8 +85,6 @@ const loader = $(".loader");
 const productInfoImageContainer = $(".addOrSubtract-productInfo-image-container");
 const productInfoImage = $(".addOrSubtract-productInfo-image");
 const productInfoName = $(".addOrSubtract-productInfo-name");
-
-const errorMsg = $(".errorMsg");
 
 // Save product modal variables
 const savedProductModalContainer = $(".savedInDbModal-container");
@@ -123,6 +118,22 @@ function ImageStyling(boolean) {
         productInfoImage.css("width", "80%");
     }
 }
+
+// Manual Search
+
+barcodeInputField.on("input", function () {
+    if (!loader.is(":visible")) {
+        productExist = false;
+        DefaultPlaceholderInfo();
+        SaveModalFunction("none", "", "", "", false);
+        currentBarcode = "";
+        quantityInputField.val("0")
+    }
+})
+
+//$(".searchBtn").click(function () {
+//    handleBarcode(barcodeInputField.val().trim());
+//});
 
 // Btn click events an functions
 
@@ -170,10 +181,9 @@ updateProductBtn.click(function () {
         return;
     }
 
-    if (quantityInputField.val() == '0') {
+    if (quantityInputField.val() == '0' || quantityInputField.val().startsWith("0")) {
         ImageStyling(false);
         SaveModalFunction("block", "error_outline", red, "You need to add more than 0 products", true);
-        //errorMsg.text("You need to add more than 0 products");
         return;
     }
      ajaxPost();
@@ -207,8 +217,7 @@ function handleBarcode(scanned_barcode) {
     SaveModalFunction("none","","","", false);
 
     if (scanned_barcode.length >= 1) {
-        errorMsg.text("");
-        if (scanned_barcode != lastScannedBarcode) {
+        if (scanned_barcode != currentBarcode) {
 
             loadingTimeout();
 
