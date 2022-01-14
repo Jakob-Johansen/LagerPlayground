@@ -152,6 +152,12 @@ function InputFunction(addOrSubtract) {
         quantityInputField.val(0);
     }
 
+    if(productExist == false) {
+        return;
+    }
+
+    SaveModalFunction("none","","","", false);
+
     inputValue = quantityInputField.val();
 
     if (addOrSubtract == "+") {
@@ -168,7 +174,6 @@ function InputFunction(addOrSubtract) {
 // Save btn
 // Sends a post request to the backend
 updateProductBtn.click(function () {
-    SaveModalFunction("none","","","", false);
 
     if (barcodeInputField.val().trim().length == 0) {
         DefaultPlaceholderInfo();
@@ -217,7 +222,7 @@ document.addEventListener("keydown", function (evt) {
 
 function handleBarcode(scanned_barcode) {
     scanned_barcode = scanned_barcode.trim();
-    SaveModalFunction("none","","","", false);
+    //SaveModalFunction("none","","","", false);
 
     if (scanned_barcode.length >= 1) {
         if (scanned_barcode != currentBarcode) {
@@ -261,15 +266,15 @@ function loadingTimeout() {
 // Output data to html functions
 function AppendData(productData) {
     if (productData.image != null) {
-        productInfoImageContainer.css("display", "block");
+        ImageStyling(false);
         productInfoImage.attr("src", "/Images/Products/" + productData.image);
-        productInfoName.text(productData.name);
     }
     else {
-        productInfoImageContainer.css("display", "none");
+        ImageStyling(true);
+        productInfoImage.css("display", "none");
         productInfoImage.attr("src", "");
-        productInfoName.text("Scan the product");
     }
+    productInfoName.text(productData.name);
 }
 
 // Gets the scanned product
@@ -286,9 +291,8 @@ function ajaxGet(scanned_barcode) {
             SaveModalFunction("none", "", "", "", false);
             functionControls.css("display", "block");
 
-            if (productData != false) {
+            if (productData.boolean == true) {
                 productExist = true;
-                ImageStyling(false);
 
                 productInfoImage.css("display", "block");
                 barcodeInputField.val(scanned_barcode);
@@ -301,7 +305,6 @@ function ajaxGet(scanned_barcode) {
                 ImageStyling(true);
 
                 productInfoImage.css("display", "none");
-                //barcodeInputField.val("");
                 quantityInputField.val("0");
 
                 productInfoImage.attr("src", "");
