@@ -23,7 +23,7 @@ namespace LagerPlayground.Controllers
                 return Json(new { boolean = false });
             }
 
-            return Json(new { boolean = true, name = product.Name, productID = product.ProductID, brandName = product.BrandName, category = product.Category });
+            return Json(new { boolean = true, name = product.Name, productID = product.ProductID, brandName = product.BrandName, category = product.Category, image = product.Image });
         }
 
         // Arrivals
