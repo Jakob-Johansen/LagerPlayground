@@ -31,28 +31,29 @@ namespace LagerPlayground.Controllers
         {
             var product = await _context.Products.FirstOrDefaultAsync(x => x.ProductID == productID);
 
-            JsonEditModel jsonEditModel = new();
+            bool returnBoolean = false;
+            string message = "";
 
             if (product != null)
             {
                 if (product.ID == id)
                 {
-                    jsonEditModel.Boolean = true;
-                    jsonEditModel.Msg = "The same product";
+                    returnBoolean = true;
+                    message = "The same product";
                 }
                 else
                 {
-                    jsonEditModel.Boolean = false;
-                    jsonEditModel.Msg = "This product already exist";
+                    returnBoolean = false;
+                    message = "This product already exist";
                 }
             }
             else
             {
-                jsonEditModel.Boolean = true;
-                jsonEditModel.Msg = "This product does not exist";
+                returnBoolean = true;
+                message = "This product does not exist";
             }
 
-            return Json(jsonEditModel);
+            return Json(new { boolean = returnBoolean, msg = message });
         }
 
         [HttpPost]
