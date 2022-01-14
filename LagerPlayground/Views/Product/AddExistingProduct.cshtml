@@ -50,9 +50,9 @@
 <p style="text-align: center;">Husk at fixe så stregkoden ikke bliver sat ind quantity input feltet hvis det er i focus</p>
 <p style="text-align: center;">Tjek om det som står i quantity input kun er tal</p>
 <p style="text-align: center;">Gør så man kan lave en manual søgning</p>
-<p style="text-align: center;">Når den loader og man scanner et product kommer den og siger fejl meddelse med at produktet ikke findes</p>
 
 @*
+<p style="text-align: center;">Når den loader og man scanner et product kommer den og siger fejl meddelse med at produktet ikke findes</p>
 <p style="text-align: center;">Hvis man ændre en scanned stregkode og man trykker save gemmer den til den gamle stregkode</p>
 <p style="text-align: center;">Man kan sætte produkter ind hvis man skriver 0 foran og så et tal</p>
 <p style="text-align: center;">Når man scanner et product som ikke er i databasen skal den komme med en fejl meddelse</p>
@@ -91,10 +91,11 @@ const savedProductModalContainer = $(".savedInDbModal-container");
 const savedProductModalIcon = $(".savedInDbModal-logo");
 const savedProductModalText = $(".savedInDbModal-text");
 
-var red = "#dc3545";
-var yellow = "#ffc107";
-var green = "#28a745";
+let red = "#dc3545";
+let yellow = "#ffc107";
+let green = "#28a745";
 
+let loadingIsRunning = false;
 let ajaxResult = false;
 
 $(document).ready(function () {
@@ -197,7 +198,9 @@ document.addEventListener("keydown", function (evt) {
     // if input is enter
     if (evt.code.includes("Enter")) {
         if (barcode) {
-            handleBarcode(barcode);
+            if (loadingIsRunning == false)  {
+                handleBarcode(barcode);
+            }
             barcode = '';
 
             addBtn.blur();
@@ -246,6 +249,7 @@ function handleBarcode(scanned_barcode) {
 function loadingTimeout() {
     setTimeout(function () {
         if (ajaxResult == false) {
+            loadingIsRunning = true;
             functionControls.css("display", "none");
             productInfoImage.css("display", "none");
             productInfoName.text("Searching for product");
@@ -276,6 +280,7 @@ function ajaxGet(scanned_barcode) {
         data: { productID: scanned_barcode },
         dataType: "json",
         success: function (productData) {
+            loadingIsRunning = false
             ajaxResult = true;
             loader.css("display", "none");
             SaveModalFunction("none", "", "", "", false);
@@ -307,7 +312,8 @@ function ajaxGet(scanned_barcode) {
         },
         error: function (req, status, error) {
             console.log(status);
-            SaveModalFunction("block", "warning_amber", yellow, "CONTACT SUPPORT", true);
+            ImageStyling(true);
+            SaveModalFunction("block", "warning_amber", yellow, "CONTACT SUPPORT", false);
         }
     });
 }
@@ -336,7 +342,8 @@ function ajaxPost() {
         },
         error: function (req, status, error) {
             console.log(status);
-            SaveModalFunction("block", "warning_amber", yellow, "CONTACT SUPPORT", true);
+            ImageStyling(true);
+            SaveModalFunction("block", "warning_amber", yellow, "CONTACT SUPPORT", false);
         }
     });
 }
