@@ -27,10 +27,10 @@ function handleBarcode(scanned_barcode) {
         $.ajax({
             type: "GET",
             url: "/Scanner/GetProduct",
-            data: { productID: scanned_barcode },
+            data: { productId: scanned_barcode },
             dataType: "json",
             success: function (returnData) {
-                if (returnData != false) {
+                if (returnData.boolean == true) {
                     postHtml(returnData);
                 }
             },

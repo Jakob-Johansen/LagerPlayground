@@ -14,17 +14,16 @@ namespace LagerPlayground.Controllers
         }
 
         // Scanner Fun
-        public async Task<JsonResult> GetProduct(string productID)
+        public async Task<JsonResult> GetProduct(string productId)
         {
-            var product = await _context.Products.FirstOrDefaultAsync(x => x.ProductID == productID);
+            var product = await _context.Products.FirstOrDefaultAsync(x => x.ProductID == productId);
 
             if (product == null)
             {
-                return Json(false);
+                return Json(new { boolean = false });
             }
 
-            // Ikke en god ide at sende hele product modellen tilbage, med alt data om modellen.
-            return Json(product);
+            return Json(new { boolean = true, name = product.Name, productID = product.ProductID, brandName = product.BrandName, category = product.Category });
         }
 
         // Arrivals
