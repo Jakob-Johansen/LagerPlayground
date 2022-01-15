@@ -85,7 +85,7 @@ namespace LagerPlayground.Controllers
                 }
             }
 
-            return Json(new { boolean = true, exception = false, msg = "The products has been added!" });
+            return Json(new { boolean = true, exception = false, msg = Quantity.ToString() + " products has been added!" });
         }
     }
 }
