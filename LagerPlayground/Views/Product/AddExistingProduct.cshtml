@@ -95,6 +95,7 @@ let red = "#dc3545";
 let yellow = "#ffc107";
 let green = "#28a745";
 
+let quantityInput = "";
 let loadingIsRunning = false;
 let ajaxResult = false;
 
@@ -175,6 +176,8 @@ function InputFunction(addOrSubtract) {
 // Sends a post request to the backend
 updateProductBtn.click(function () {
 
+    quantityInput = quantityInputField.val().trim();
+
     if (barcodeInputField.val().trim().length == 0) {
         DefaultPlaceholderInfo();
         return;
@@ -187,7 +190,13 @@ updateProductBtn.click(function () {
         return;
     }
 
-    if (quantityInputField.val() == '0' || quantityInputField.val().startsWith("0")) {
+    if (quantityInput.match(/^[0-9]+$/) == false && quantityInput != "0" || quantityInput == "") {
+        ImageStyling(false);
+        SaveModalFunction("block", "error_outline", red, "The quantity input field can only contain numbers", true);
+        return;
+    }
+
+    if (quantityInput == '0' || quantityInput.startsWith("0")) {
         ImageStyling(false);
         SaveModalFunction("block", "error_outline", red, "You need to add more than 0 products", true);
         return;
