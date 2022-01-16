@@ -275,6 +275,7 @@
     display: block;
     width: 80%;
     margin: 0 auto;
+    user-select: none;
     position: relative;
     top: 50%;
     transform: translateY(-50%);
@@ -353,6 +354,10 @@
     font-family: Arial, Helvetica, sans-serif !important;
 }
 
+.addOrSubtract-btn {
+    user-select: none;
+}
+
 .addOrSubtract-input {
     font-size: 35px;
     height: auto;
@@ -360,7 +365,7 @@
     text-align: center;
 }
 
-.addOrSubtract-save-btn {
+.addOrSubtract-btn-save-search {
     display: block;
     background-color: aliceblue !important;
     font-size: 27px !important;
@@ -374,7 +379,7 @@
     user-select: none;
 }
 
-.addOrSubtract-save-btn:hover {
+.addOrSubtract-btn-save-search:hover {
     cursor: pointer;
     color: #f8f9fa;
     background-color: #222426 !important;
