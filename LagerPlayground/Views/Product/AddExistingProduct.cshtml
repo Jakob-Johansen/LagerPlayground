@@ -41,16 +41,16 @@
         </div>
         <div class="clearBoth"></div>
         <div class="addOrSubtract-save-btn-container invisibleWhileLoading">
-            <a class="addOrSubtract-btn addOrSubtract-save-btn">Save</a>
+            <a class="addOrSubtract-btn-save-search addOrSubtract-btn addOrSubtract-search-btn">Search</a>
         </div>
         <div class="loader"></div>
     </div>
 </div>
 
 <p style="text-align: center;">Husk at fixe så stregkoden ikke bliver sat ind quantity input feltet hvis det er i focus</p>
-<p style="text-align: center;">Gør så man kan lave en manual søgning</p>
 
 @*
+<p style="text-align: center;">Gør så man kan lave en manual søgning</p>
 <p style="text-align: center;">Tjek om det som står i quantity input kun er tal</p>
 <p style="text-align: center;">Når den loader og man scanner et product kommer den og siger fejl meddelse med at produktet ikke findes</p>
 <p style="text-align: center;">Hvis man ændre en scanned stregkode og man trykker save gemmer den til den gamle stregkode</p>
@@ -77,7 +77,7 @@ const quantityInputField = $(".addOrSubtract-input");
 let inputValue = 0;
 
 const barcodeInputField = $(".addOrSubtract-search");
-const updateProductBtn = $(".addOrSubtract-save-btn");
+const saveOrSearchProductBtn = $(".addOrSubtract-btn-save-search");
 
 const functionControls = $(".invisibleWhileLoading");
 const loader = $(".loader");
@@ -96,8 +96,13 @@ let yellow = "#ffc107";
 let green = "#28a745";
 
 let quantityInput = "";
+let barcodeInput = "";
 let loadingIsRunning = false;
 let ajaxResult = false;
+
+let saveClass = "addOrSubtract-save-btn";
+let searchClass = "addOrSubtract-search-btn";
+
 
 $(document).ready(function () {
     DefaultPlaceholderInfo();
@@ -125,6 +130,13 @@ function ImageStyling(boolean) {
 
 barcodeInputField.on("input", function () {
     if (!loader.is(":visible")) {
+
+        if (saveOrSearchProductBtn.hasClass(saveClass)) {
+            saveOrSearchProductBtn.addClass(searchClass);
+            saveOrSearchProductBtn.removeClass(saveClass);
+            saveOrSearchProductBtn.text("Search");
+        }
+
         productExist = false;
         DefaultPlaceholderInfo();
         SaveModalFunction("none", "", "", "", false);
@@ -132,10 +144,6 @@ barcodeInputField.on("input", function () {
         quantityInputField.val("0")
     }
 })
-
-//$(".searchBtn").click(function () {
-//    handleBarcode(barcodeInputField.val().trim());
-//});
 
 // Btn click events an functions
 
@@ -174,34 +182,41 @@ function InputFunction(addOrSubtract) {
 
 // Save btn
 // Sends a post request to the backend
-updateProductBtn.click(function () {
-
-    quantityInput = quantityInputField.val().trim();
+saveOrSearchProductBtn.click(function () {
 
     if (barcodeInputField.val().trim().length == 0) {
         DefaultPlaceholderInfo();
         return;
     }
 
-    if (productExist == false) {
-        productInfoImage.css("display", "none");
-        ImageStyling(true);
-        SaveModalFunction("block", "error_outline", red, "No product with the scanned barcode was found", false);
-        return;
-    }
+    if (saveOrSearchProductBtn.hasClass(saveClass)) {
+        
+        quantityInput = quantityInputField.val().trim();
 
-    if (quantityInput.match(/^[0-9]+$/) == false && quantityInput != "0" || quantityInput == "") {
-        ImageStyling(false);
-        SaveModalFunction("block", "error_outline", red, "The quantity input field can only contain numbers", true);
-        return;
-    }
+        if (productExist == false) {
+            productInfoImage.css("display", "none");
+            ImageStyling(true);
+            SaveModalFunction("block", "error_outline", red, "No product with the scanned barcode was found", false);
+            return;
+        }
 
-    if (quantityInput == '0' || quantityInput.startsWith("0")) {
-        ImageStyling(false);
-        SaveModalFunction("block", "error_outline", red, "You need to add more than 0 products", true);
-        return;
+        if (quantityInput.match(/^[0-9]+$/) == false && quantityInput != "0" || quantityInput == "") {
+            ImageStyling(false);
+            SaveModalFunction("block", "error_outline", red, "The quantity input field can only contain numbers", true);
+            return;
+        }
+
+        if (quantityInput == '0' || quantityInput.startsWith("0")) {
+            ImageStyling(false);
+            SaveModalFunction("block", "error_outline", red, "You need to add more than 0 products", true);
+            return;
+        }
+   
+        ajaxPost();
     }
-     ajaxPost();
+    else {
+        handleBarcode(barcodeInputField.val().trim());
+    }
 });
 
 // Scanner event and functions
@@ -307,6 +322,10 @@ function ajaxGet(scanned_barcode) {
                 quantityInputField.val("1");
                 
                 AppendData(productData);
+
+                saveOrSearchProductBtn.addClass(saveClass);
+                saveOrSearchProductBtn.removeClass(searchClass);
+                saveOrSearchProductBtn.text("Save");
             }
             else {
                 productExist = false;
