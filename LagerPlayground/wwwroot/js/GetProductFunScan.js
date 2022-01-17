@@ -27,7 +27,7 @@ function handleBarcode(scanned_barcode) {
         $.ajax({
             type: "GET",
             url: "/Scanner/GetProduct",
-            data: { productId: scanned_barcode },
+            data: { barcodeID: scanned_barcode },
             dataType: "json",
             success: function (returnData) {
                 if (returnData.boolean == true) {
@@ -44,6 +44,6 @@ function handleBarcode(scanned_barcode) {
 function postHtml(data) {
     var table = document.getElementById("Table");
 
-    $(table).append('<tr><td>' + data.name + '</td><td>' + data.productID + '</td><td>' + data.brandName + '</td><td>' + data.category + '</td><tr/>');
+    $(table).append('<tr><td>' + data.name + '</td><td>' + data.barcodeID + '</td><td>' + data.brandName + '</td><td>' + data.category + '</td><tr/>');
 
 }

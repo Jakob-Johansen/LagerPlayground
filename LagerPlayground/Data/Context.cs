@@ -15,5 +15,7 @@ namespace LagerPlayground.Data
         }
 
         public DbSet<Product> Products { get; set; }
+        public DbSet<Order_Details> Order_Details { get; set; }
+        public DbSet<Order_Items> Order_Items { get; set; }
     }
 }

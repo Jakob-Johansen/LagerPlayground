@@ -304,7 +304,7 @@ function ajaxGet(scanned_barcode) {
     $.ajax({
         type: "GET",
         url: "/Scanner/GetProduct",
-        data: { productID: scanned_barcode },
+        data: { barcodeID: scanned_barcode },
         dataType: "json",
         success: function (productData) {
             loadingIsRunning = false
@@ -353,7 +353,7 @@ function ajaxPost() {
         type: "POST",
         url: "/Scanner/AddMoreStock",
         headers: { "RequestVerificationToken": "@GetAntiXsrfRequestToken()" },
-        data: { quantity: quantityInputField.val(), productID: currentBarcode },
+        data: { quantity: quantityInputField.val(), barcodeID: currentBarcode },
         success: function (result) {
             quantityInputField.val('0');
             if (result.boolean == true) {

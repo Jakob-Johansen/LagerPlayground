@@ -12,8 +12,8 @@ namespace LagerPlayground.Models
     {
         public int ID { get; set; }
         [DatabaseGenerated(DatabaseGeneratedOption.None)]
-        [Display(Name = "Product-ID")]
-        public string ProductID { get; set; }
+        [Display(Name = "Barcode-ID")]
+        public string BarcodeID { get; set; }
         [Required]
         public string Name { get; set; }
         [Required]
@@ -23,6 +23,7 @@ namespace LagerPlayground.Models
         public string Category { get; set; }
         [Required]
         public int Quantity { get; set; }
+
         public string Image { get; set; }
     }
 }
