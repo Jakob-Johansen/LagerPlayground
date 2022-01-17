@@ -122,7 +122,7 @@ function ImageStyling(boolean) {
     }
     else {
         productInfoImageContainer.css("background-color", "white");
-        productInfoImage.css("width", "80%");
+        productInfoImage.css("width", "100%");
     }
 }
 
@@ -293,9 +293,8 @@ function AppendData(productData) {
         productInfoImage.attr("src", "/Images/Products/" + productData.image);
     }
     else {
-        ImageStyling(true);
-        productInfoImage.css("display", "none");
-        productInfoImage.attr("src", "");
+        ImageStyling(false);
+        productInfoImage.attr("src", "/Images/Placeholders/Placeholder.jpg");
     }
     productInfoName.text(productData.name);
 }
