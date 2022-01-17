@@ -14,22 +14,22 @@ namespace LagerPlayground.Controllers
         }
 
         // Scanner Fun
-        public async Task<JsonResult> GetProduct(string productId)
+        public async Task<JsonResult> GetProduct(string barcodeID)
         {
-            var product = await _context.Products.FirstOrDefaultAsync(x => x.ProductID == productId);
+            var product = await _context.Products.FirstOrDefaultAsync(x => x.BarcodeID == barcodeID);
 
             if (product == null)
             {
                 return Json(new { boolean = false });
             }
 
-            return Json(new { boolean = true, name = product.Name, productID = product.ProductID, brandName = product.BrandName, category = product.Category, image = product.Image });
+            return Json(new { boolean = true, name = product.Name, barcodeID = product.BarcodeID, brandName = product.BrandName, category = product.Category, image = product.Image });
         }
 
         // Arrivals
-        public async Task<JsonResult> BarcodeExist(int? id, string productID)
+        public async Task<JsonResult> BarcodeExist(int? id, string barcodeID)
         {
-            var product = await _context.Products.FirstOrDefaultAsync(x => x.ProductID == productID);
+            var product = await _context.Products.FirstOrDefaultAsync(x => x.BarcodeID == barcodeID);
 
             bool returnBoolean = false;
             string message = "";
@@ -58,9 +58,9 @@ namespace LagerPlayground.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<JsonResult> AddMoreStock(string productID, int Quantity)
+        public async Task<JsonResult> AddMoreStock(string barcodeID, int Quantity)
         {
-            var productToUpdate = await _context.Products.FirstOrDefaultAsync(x => x.ProductID == productID);
+            var productToUpdate = await _context.Products.FirstOrDefaultAsync(x => x.BarcodeID == barcodeID);
 
             if (productToUpdate == null)
             {

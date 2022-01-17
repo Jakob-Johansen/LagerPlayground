@@ -107,7 +107,7 @@ function ajaxCall(barcode) {
     $.ajax({
         type: "GET",
         url: "/Scanner/BarcodeExist",
-        data: { id: getID, productID: barcode },
+        data: { id: getID, barcodeID: barcode },
         dataType: "json",
         success: function (dataResult) {
             result = true;

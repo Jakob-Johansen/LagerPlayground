@@ -49,7 +49,7 @@ namespace LagerPlayground.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("ProductID,Name,BrandName,Description,Category,Quantity")] Product product)
+        public async Task<IActionResult> Create([Bind("BarcodeID,Name,BrandName,Description,Category,Quantity")] Product product)
         {
             try
             {
@@ -103,7 +103,7 @@ namespace LagerPlayground.Controllers
                 if (await TryUpdateModelAsync(
                     productToUpdate,
                     "",
-                    p => p.ProductID, p => p.Name, p => p.Description, p => p.BrandName, p => p.Category, p => p.Quantity))
+                    p => p.BarcodeID, p => p.Name, p => p.Description, p => p.BrandName, p => p.Category, p => p.Quantity))
                 {
                     try
                     {
