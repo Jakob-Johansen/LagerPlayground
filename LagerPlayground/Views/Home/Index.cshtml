@@ -1,4 +1,6 @@
-﻿@{
+﻿@*@using Microsoft.AspNetCore.Http;*@
+
+@{
     ViewData["Title"] = "Home Page";
 }
 
@@ -54,3 +56,6 @@ https://plbonneville.com/blog/sending-an-anti-forgery-token-with-asp.net-core-mv
         </div>
     </div>
 </div>
+
+@*<p>Name: @Context.Session.GetString("_Name")</p> 
+<p>Age: @Context.Session.GetInt32("_Age")</p>*@
