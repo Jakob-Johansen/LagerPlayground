@@ -7,10 +7,20 @@
 
 @if(ViewBag.cart != null)
 {
-    @foreach (var item in ViewBag.cart)
-    {
-        <p>@item.Product.Name</p>
-    }   
+        <table class="shop-table">
+
+        <tbody>
+            @foreach (var item in ViewBag.cart)
+            {
+             <tr class="shop-table-tr">
+                <td class="shop-table-image-td"><img class="shop-table-image" src="~/Images/@(item.Product.Image == null ? "Placeholders/Placeholder.jpg" : "Products/" + @item.Product.Image)" /></td>
+                <td class="shop-table-text-td">@item.Product.Name</td>
+                <td class="shop-table-text-td">@item.Product.Description</td>
+                <td class="shop-table-btn-td"><button>-</button><input class="background-dark" value="@item.Quantity" /><button>+</button></td>
+             </tr>   
+            }
+        </tbody>
+    </table> 
 }
 else {
     <p>Der er ikke nogen produkter i din kurv.</p>
