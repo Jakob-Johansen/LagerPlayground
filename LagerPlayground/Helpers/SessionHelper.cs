@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace LagerPlayground.Helpers
 {
-    public static class SessionExtensions
+    public static class SessionHelper
     {
         public static void SetObjectAsJson<T>(this ISession session, string key, T value)
         {

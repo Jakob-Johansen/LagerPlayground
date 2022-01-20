@@ -1,0 +1,17 @@
+﻿
+@{
+    ViewData["Title"] = "Cart";
+}
+
+<h2>Cart</h2>
+
+@if(ViewBag.cart != null)
+{
+    @foreach (var item in ViewBag.cart)
+    {
+        <p>@item.Product.Name</p>
+    }   
+}
+else {
+    <p>Der er ikke nogen produkter i din kurv.</p>
+}

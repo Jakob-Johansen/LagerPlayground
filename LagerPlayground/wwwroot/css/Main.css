@@ -482,3 +482,17 @@
     padding-right: 35px;
     font-size: 21px;
 }
+
+.shop-table-btn-td > a {
+    display: block;
+    padding: 5px 12px 5px 12px;
+    background-color: lightgray;
+    color: black !important;
+    text-decoration: none;
+    text-align: center;
+}
+
+.shop-table-btn-td > a:hover {
+    cursor: pointer;
+    color: black !important;
+}
