@@ -1,5 +1,26 @@
-﻿@{
+﻿@model IEnumerable<Product>
+
+@{
     ViewData["Title"] = "Shop";
 }
 
-<h2>Shop</h2>
+<div class="shop-overall-container">
+    <h2>Shop</h2>
+    
+    <a class="shop-cart" href="#">Kurv (0)</a>
+
+    <table class="shop-table">
+
+        <tbody>
+            @foreach (var item in Model)
+            {
+             <tr class="shop-table-tr">
+                <td class="shop-table-image-td"><img class="shop-table-image" src="~/Images/@(item.Image == null ? "Placeholders/Placeholder.jpg" : "Products/" + @item.Image)" /></td>
+                <td class="shop-table-text-td">@item.Name</td>
+                <td class="shop-table-text-td">@item.BarcodeID</td>
+                <td><button>Tilføj til kurv</button></td>
+             </tr>   
+            }
+        </tbody>
+    </table>
+</div>
