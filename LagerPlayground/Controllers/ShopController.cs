@@ -9,6 +9,10 @@ namespace LagerPlayground.Controllers
 {
     public class ShopController : Controller
     {
+        // https://stackoverflow.com/questions/46921275/access-session-variable-in-razor-view-net-core-2
+        // https://docs.microsoft.com/en-us/aspnet/core/fundamentals/app-state?view=aspnetcore-6.0
+        // https://learningprogramming.net/net/asp-net-core-mvc/build-shopping-cart-with-session-in-asp-net-core-mvc/
+
         public readonly Context _context;
 
         public ShopController(Context context)
@@ -18,6 +22,9 @@ namespace LagerPlayground.Controllers
 
         public async Task<IActionResult> Index()
         {
+            if (HttpContext.Session.Get("cart") != null)
+                ViewBag.SessionCount = SessionHelper.GetObjectFromJson<List<Item>>(HttpContext.Session, "cart").Count;
+
             var products = await _context.Products.ToListAsync();
             return View(products);
         }
