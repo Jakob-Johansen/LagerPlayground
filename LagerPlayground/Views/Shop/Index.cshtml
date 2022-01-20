@@ -1,4 +1,5 @@
-﻿@model IEnumerable<Product>
+﻿@using Microsoft.AspNetCore.Http;
+@model IEnumerable<Product>
 
 @{
     ViewData["Title"] = "Shop";
@@ -7,7 +8,7 @@
 <div class="shop-overall-container">
     <h2>Shop</h2>
     
-    <a class="shop-cart" href="#">Kurv (0)</a>
+    <a class="shop-cart" asp-controller="Shop" asp-action="Cart">Kurv 0</a>
 
     <table class="shop-table">
 
@@ -18,7 +19,7 @@
                 <td class="shop-table-image-td"><img class="shop-table-image" src="~/Images/@(item.Image == null ? "Placeholders/Placeholder.jpg" : "Products/" + @item.Image)" /></td>
                 <td class="shop-table-text-td">@item.Name</td>
                 <td class="shop-table-text-td">@item.BarcodeID</td>
-                <td><button>Tilføj til kurv</button></td>
+                <td class="shop-table-btn-td"><a asp-controller="Shop" asp-action="Buy" asp-route-id="@item.ID">Tilføj til kurv</a></td>
              </tr>   
             }
         </tbody>
