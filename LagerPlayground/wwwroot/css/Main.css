@@ -496,3 +496,21 @@
     cursor: pointer;
     color: black !important;
 }
+
+/*---Cart---*/
+
+.cart-buy-btn {
+    width: 190px;
+    text-align: center;
+    display: block;
+    padding: 5px 0;
+    background-color: #1a9c23;
+    color: white;
+    text-decoration: none;
+    font-size: 23px;
+    margin:0 auto;
+}
+
+.cart-buy-btn:hover {
+    color: white;
+}

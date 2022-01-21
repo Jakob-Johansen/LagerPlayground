@@ -22,8 +22,16 @@ namespace LagerPlayground.Controllers
 
         public async Task<IActionResult> Index()
         {
+            int sessionCount = 0;
             if (HttpContext.Session.Get("cart") != null)
-                ViewBag.SessionCount = SessionHelper.GetObjectFromJson<List<Item>>(HttpContext.Session, "cart").Count;
+            {
+                foreach (var sessionProduct in SessionHelper.GetObjectFromJson<List<Item>>(HttpContext.Session, "cart"))
+                {
+                    sessionCount += sessionProduct.Quantity;
+                }
+
+                ViewBag.SessionCount = sessionCount;
+            }
 
             var products = await _context.Products.ToListAsync();
             return View(products);
@@ -62,6 +70,15 @@ namespace LagerPlayground.Controllers
             }
 
             return RedirectToAction("Index");
+        }
+
+        public IActionResult Remove(int id)
+        {
+            List<Item> cart = SessionHelper.GetObjectFromJson<List<Item>>(HttpContext.Session, "cart");
+            int index = IsExisting(id);
+            cart.RemoveAt(index);
+            SessionHelper.SetObjectAsJson(HttpContext.Session, "cart", cart);
+            return RedirectToAction("Cart");
         }
 
         private int IsExisting(int id)
