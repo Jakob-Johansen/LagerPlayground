@@ -4,6 +4,7 @@ const cartInput = $(".cart-input");
 let cartInputVal = "";
 
 const addToCartBtn = $(".shop-addToCart-btn");
+const cartProductCount = $(".cart-product-count");
 
 $(document).ready(function () {
     if (cartInput.val() == "0") {
@@ -24,7 +25,8 @@ addToCartBtn.click(function () {
 });
 
 cartRemoveBtn.click(function () {
-    AjaxRemove($(this).attr("data-id"));
+    AjaxRemove($(this).attr("data-id"), $(this));
+/*    $(this).closest("tr").remove();*/
 });
 
 cartSubmitBtn.click(function () {
@@ -38,6 +40,8 @@ function AjaxUpdateOnlyID(ID) {
         data: { id: ID },
         success: function () {
             console.log("Success");
+            let count = parseInt(cartProductCount.closest("span").text());
+            cartProductCount.text(count + 1);
         },
         error: function (req, status, error) {
             console.log(status);
@@ -59,13 +63,14 @@ function AjaxUpdate(ID, Quantity) {
     });
 }
 
-function AjaxRemove(ID) {
+function AjaxRemove(ID, test) {
     $.ajax({
         type: "GET",
         url: "/Shop/Remove",
         data: { id: ID},
         success: function () {
             console.log("Success");
+            test.closest("tr").remove();
         },
         error: function (req, status, error) {
             console.log(status);
