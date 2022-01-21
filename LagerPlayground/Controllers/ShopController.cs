@@ -44,7 +44,7 @@ namespace LagerPlayground.Controllers
             return View();
         }
 
-        public async Task<IActionResult> Buy(int id)
+        public async Task Buy(int id, int? quantity)
         {
             var product = await _context.Products.FirstOrDefaultAsync(x => x.ID == id);
             if (SessionHelper.GetObjectFromJson<List<Item>>(HttpContext.Session, "cart") == null)
@@ -59,7 +59,15 @@ namespace LagerPlayground.Controllers
                 int index = IsExisting(id);
                 if (index != -1)
                 {
-                    cart[index].Quantity++;
+                    if (quantity != null)
+                    {
+                        cart[index].Quantity = 0;
+                        cart[index].Quantity = (int)quantity;
+                    }
+                    else
+                    {
+                        cart[index].Quantity++;
+                    }
                 }
                 else
                 {
@@ -68,16 +76,16 @@ namespace LagerPlayground.Controllers
                 SessionHelper.SetObjectAsJson(HttpContext.Session, "cart", cart);
             }
 
-            return RedirectToAction("Index");
+            //return RedirectToAction("Index");
         }
 
-        public IActionResult Remove(int id)
+        public void Remove(int id)
         {
             List<Item> cart = SessionHelper.GetObjectFromJson<List<Item>>(HttpContext.Session, "cart");
             int index = IsExisting(id);
             cart.RemoveAt(index);
             SessionHelper.SetObjectAsJson(HttpContext.Session, "cart", cart);
-            return RedirectToAction("Cart");
+            //return RedirectToAction("Cart");
         }
 
         private int IsExisting(int id)
