@@ -7,8 +7,9 @@
 
 @if(ViewBag.cart != null)
 {
-        <table class="shop-table">
-
+    if (ViewBag.cart.Count != 0)
+    {
+      <table class="shop-table">
         <tbody>
             @foreach (var item in ViewBag.cart)
             {
@@ -16,11 +17,19 @@
                 <td class="shop-table-image-td"><img class="shop-table-image" src="~/Images/@(item.Product.Image == null ? "Placeholders/Placeholder.jpg" : "Products/" + @item.Product.Image)" /></td>
                 <td class="shop-table-text-td">@item.Product.Name</td>
                 <td class="shop-table-text-td">@item.Product.Description</td>
-                <td class="shop-table-btn-td"><button>-</button><input class="background-dark" value="@item.Quantity" /><button>+</button></td>
+                <td class="shop-table-btn-td"><button>-</button><input class="background-dark" value="@item.Quantity" /><a asp-controller="Shop" asp-action="Buy" asp-route-id="@item.Product.ID">+</a> <a asp-controller="Shop" asp-action="Remove" asp-route-id="@item.Product.ID">Remove</a></td>
              </tr>   
             }
         </tbody>
-    </table> 
+        </table>
+
+        <hr />
+        <a class="cart-buy-btn" asp-controller="Shop" asp-action="">Gå til kassen</a>
+    }
+    else
+    {
+        <p>Der er ikke nogen produkter i din kurv.</p>
+    }
 }
 else {
     <p>Der er ikke nogen produkter i din kurv.</p>
