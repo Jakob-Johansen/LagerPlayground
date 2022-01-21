@@ -32,7 +32,6 @@ function AjaxUpdateOnlyID(ID) {
         url: "/Shop/Buy",
         data: { id: ID },
         success: function () {
-            console.log("Success");
             let count = parseInt(cartProductCount.closest("span").text());
             cartProductCount.text(count + 1);
         },
@@ -47,9 +46,6 @@ function AjaxUpdate(ID, Quantity) {
         type: "GET",
         url: "/Shop/Buy",
         data: { id: ID, quantity: Quantity},
-        success: function () {
-            console.log("Success");
-        },
         error: function (req, status, error) {
             console.log(status);
         }
@@ -62,7 +58,6 @@ function AjaxRemove(ID, test) {
         url: "/Shop/Remove",
         data: { id: ID},
         success: function () {
-            console.log("Success");
             test.closest("tr").remove();
         },
         error: function (req, status, error) {
