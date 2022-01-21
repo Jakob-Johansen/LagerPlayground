@@ -46,7 +46,6 @@ namespace LagerPlayground.Controllers
 
         public async Task<IActionResult> Buy(int id)
         {
-
             var product = await _context.Products.FirstOrDefaultAsync(x => x.ID == id);
             if (SessionHelper.GetObjectFromJson<List<Item>>(HttpContext.Session, "cart") == null)
             {

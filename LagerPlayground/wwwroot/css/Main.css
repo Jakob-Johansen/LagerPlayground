@@ -499,6 +499,24 @@
 
 /*---Cart---*/
 
+.cart-table-btn-td {
+    padding-right: 25px;
+}
+
+.cart-input {
+    width: 50px;
+}
+
+.cart-remove-btn {
+    color: white;
+    text-decoration: none;
+}
+
+.cart-remove-btn:hover {
+    color: white;
+    text-decoration: underline;
+}
+
 .cart-buy-btn {
     width: 190px;
     text-align: center;
@@ -508,7 +526,7 @@
     color: white;
     text-decoration: none;
     font-size: 23px;
-    margin:0 auto;
+    margin: 0 auto;
 }
 
 .cart-buy-btn:hover {
