@@ -6,18 +6,12 @@ let cartInputVal = "";
 const addToCartBtn = $(".shop-addToCart-btn");
 const cartProductCount = $(".cart-product-count");
 
-$(document).ready(function () {
-    if (cartInput.val() == "0") {
-        cartInput.val("1");
-    }
-});
-
 cartInput.on('input', function () {
     cartInputVal = $(this).val().trim();
     if (cartInputVal < 1 && cartInputVal.match(/^[0-9]+$/) == false || cartInput == "0" || cartInputVal == "" || cartInputVal.startsWith("0") || cartInputVal.startsWith("-")) {
         cartInput.val("1");
     }
-    AjaxUpdate($(this).attr("data-id"), cartInputVal);
+    AjaxUpdate($(this).attr("data-id"), $(this).val().trim());
 });
 
 addToCartBtn.click(function () {
@@ -26,7 +20,6 @@ addToCartBtn.click(function () {
 
 cartRemoveBtn.click(function () {
     AjaxRemove($(this).attr("data-id"), $(this));
-/*    $(this).closest("tr").remove();*/
 });
 
 cartSubmitBtn.click(function () {

@@ -22,9 +22,9 @@ namespace LagerPlayground.Controllers
 
         public async Task<IActionResult> Index()
         {
-            int sessionCount = 0;
             if (HttpContext.Session.Get("cart") != null)
             {
+                int sessionCount = 0;
                 foreach (var sessionProduct in SessionHelper.GetObjectFromJson<List<Item>>(HttpContext.Session, "cart"))
                 {
                     sessionCount += sessionProduct.Quantity;
