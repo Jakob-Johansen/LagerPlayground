@@ -1,4 +1,4 @@
-﻿@*@using Microsoft.AspNetCore.Http;*@
+﻿@model IEnumerable<LagerPlayground.Models.Order_Details>
 
 @{
     ViewData["Title"] = "Home Page";
@@ -9,7 +9,7 @@
 </div>
 
 @*
-Under Arrivals lav 2 kknapper en som hedder Add existing product og en der hedder Create new product.
+Under Arrivals lav 2 knapper en som hedder Add existing product og en der hedder Create new product.
 Hvis man vælger add existing product så skal man scanne det produkt man vil tilføje flere af og scanne
 antallet eller selv skrive det ind og derefter trykke add. Der skal være en form for validering af
 sikkeerhed hvis nu man scanner en ny stregkode. Der skal laves en database til Arrivals også.
@@ -57,5 +57,15 @@ https://plbonneville.com/blog/sending-an-anti-forgery-token-with-asp.net-core-mv
     </div>
 </div>
 
-@*<p>Name: @Context.Session.GetString("_Name")</p> 
-<p>Age: @Context.Session.GetInt32("_Age")</p>*@
+@foreach (var item in Model)
+{
+    <p>@item.Custommer.Name</p>
+    <ul>
+    @foreach (var test in @item.Order_Items)
+    {
+       <li>@test.Product.Name @test.Quantity</li>
+    }
+    </ul>
+
+    <br />
+}
