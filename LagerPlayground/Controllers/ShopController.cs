@@ -66,6 +66,30 @@ namespace LagerPlayground.Controllers
                     // https://entityframework.net/retrieve-id-of-inserted-entity
                     // Får id fra den custommer som lige er blevet gemt.
                     //ViewBag.id = custommer.ID;
+
+                    Order_Details order_Details = new();
+                    order_Details.CustommerID = custommer.ID;
+                    order_Details.Created = DateTime.Now;
+                    _context.Add(order_Details);
+                    await _context.SaveChangesAsync();
+
+                    List<Order_Items> order_ItemsList = new();
+
+                    foreach (var item in SessionHelper.GetObjectFromJson<List<Item>>(HttpContext.Session, "cart"))
+                    {
+                        Order_Items order_Items = new();
+                        order_Items.Order_DetailsID = order_Details.ID;
+                        order_Items.ProductID = item.Product.ID;
+                        order_Items.Quantity = item.Quantity;
+                        order_Items.Created = DateTime.Now;
+                        order_ItemsList.Add(order_Items);
+                    }
+
+                    await _context.AddRangeAsync(order_ItemsList);
+                    await _context.SaveChangesAsync();
+
+                    HttpContext.Session.Remove("cart");
+
                     return RedirectToAction("Index");
                 }
             }
@@ -110,8 +134,6 @@ namespace LagerPlayground.Controllers
                 }
                 SessionHelper.SetObjectAsJson(HttpContext.Session, "cart", cart);
             }
-
-            //return RedirectToAction("Index");
         }
 
         public void Remove(int id)
@@ -120,7 +142,6 @@ namespace LagerPlayground.Controllers
             int index = IsExisting(id);
             cart.RemoveAt(index);
             SessionHelper.SetObjectAsJson(HttpContext.Session, "cart", cart);
-            //return RedirectToAction("Cart");
         }
 
         private int IsExisting(int id)
