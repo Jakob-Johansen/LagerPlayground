@@ -10,7 +10,6 @@ namespace LagerPlayground.Models
     {
         public int ID { get; set; }
         public int CustommerID { get; set; }
-        public int Order_ItemsID { get; set; }
         public DateTime Created { get; set; }
         public DateTime Modified { get; set; }
 
