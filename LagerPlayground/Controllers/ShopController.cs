@@ -44,6 +44,13 @@ namespace LagerPlayground.Controllers
             return View();
         }
 
+        public IActionResult CheckOut()
+        {
+            var cart = SessionHelper.GetObjectFromJson<List<Item>>(HttpContext.Session, "cart");
+            ViewBag.cart = cart;
+            return View();
+        }
+
         public async Task Buy(int id, int? quantity)
         {
             var product = await _context.Products.FirstOrDefaultAsync(x => x.ID == id);
