@@ -51,6 +51,33 @@ namespace LagerPlayground.Controllers
             return View();
         }
 
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> CheckOut([Bind("Name,Email,PhoneNumber,MobileNumber,Country,City,Zipcode,Address")] Custommer custommer)
+        {
+            try
+            {
+                if (ModelState.IsValid)
+                {
+                    custommer.Created = DateTime.Now;
+                    _context.Add(custommer);
+                    await _context.SaveChangesAsync();
+
+                    // Får id fra den custommer som lige er blevet gemt.
+                    //ViewBag.id = custommer.ID;
+                    return RedirectToAction("Index");
+                }
+            }
+            catch (DbUpdateException)
+            {
+                ModelState.AddModelError("", "Unable to save changes. " +
+                "Try again, and if the problem persists " +
+                "see your system administrator.");
+            }
+
+            return View(custommer);
+        }
+
         public async Task Buy(int id, int? quantity)
         {
             var product = await _context.Products.FirstOrDefaultAsync(x => x.ID == id);
