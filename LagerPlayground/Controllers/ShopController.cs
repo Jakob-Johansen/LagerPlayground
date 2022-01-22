@@ -63,6 +63,7 @@ namespace LagerPlayground.Controllers
                     _context.Add(custommer);
                     await _context.SaveChangesAsync();
 
+                    // https://entityframework.net/retrieve-id-of-inserted-entity
                     // Får id fra den custommer som lige er blevet gemt.
                     //ViewBag.id = custommer.ID;
                     return RedirectToAction("Index");
