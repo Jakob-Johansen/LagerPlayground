@@ -443,15 +443,36 @@
     height: auto;
     margin: auto;
     background-color: rgba(0,0,0, 0.1);
+    padding: 15px;
+    border-radius: 8px;
+}
+
+.shop-ul {
+    margin: 0;
+    padding: 0;
+}
+
+.shop-ul > li {
+    width: 50%;
+    float: left;
+    list-style: none;
+    padding-bottom: 15px;
+    margin: 0;
+    position: relative;
 }
 
 .shop-cart {
     display: block;
-    width: auto;
+    width: 145px;
+    text-align: center;
+    background-color: #1a9c23;
     font-size: 25px;
     color: white;
     text-decoration: none;
-    padding: 10px 0;
+    border-radius: 100px;
+    padding: 5px 0;
+    position: absolute;
+    right: 0px;
 }
 
 .shop-cart:hover {
@@ -531,9 +552,79 @@
     font-size: 23px;
     margin: 0 auto;
     user-select: none;
+    border-radius: 100px;
 }
 
 .cart-buy-btn:hover {
     color: white;
     cursor: pointer;
+}
+
+/*---Checkout---*/
+
+.checkout-overall-container {
+    width: 90%;
+    height: auto;
+    margin: 0 auto;
+}
+
+.checkout-container {
+    float: left;
+    width: 50%;
+    height: 200px;
+    /*background-color: red;*/
+}
+
+.checkout-product-container {
+    width: 75%;
+    height: auto;
+    background-color: rgba(0,0,0, 0.1);
+    margin: 0 auto 10px auto;
+    position: relative;
+}
+
+.checkout-product-image-container, .checkout-product-info-container {
+    float: left;
+}
+
+.checkout-product-image-container {
+    width: 25%;
+    background-color: white;
+}
+
+.checkout-product-info-container {
+    width: 75%;
+/*    background-color: green;*/
+}
+
+.checkout-product-image-container > img {
+    display: block;
+    width: 100%;
+}
+
+.checkout-product-info-name-container, .checkout-product-info-quantity-container {
+    float: left;
+}
+
+.checkout-product-info-name-container {
+    width: 70%;
+}
+
+.checkout-product-info-quantity-container {
+    width: 30%;
+}
+
+.checkout-product-info-name-container > p, .checkout-product-info-quantity-container > p {
+    display: block;
+    padding: 13px 8px;
+    margin: 0;
+/*    line-height: 115.54px;*/
+}
+
+.checkout-product-info-name-container > p {
+    padding-left: 14px !important;
+}
+
+.checkout-product-info-quantity-container > p {
+    text-align: center;
 }
