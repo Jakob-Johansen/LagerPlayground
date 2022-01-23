@@ -5,9 +5,29 @@
 }
 
 <h2>Totes</h2>
-<br />
 
-<table class="table">
+<div class="tote-create-btn-container">
+    <a class="tote-create-btn">Create Tote</a>
+</div>
+
+<div class="totes-navbar-contianer">
+    <div class="totes-navbar-float">
+        <label class="totes-navbar-label">Vis </label>
+        <select class="totes-navbar-select">
+            <option>10</option>
+        </select>
+        <label class="totes-navbar-label"> linjer</label>
+    </div>
+    <div class="totes-navbar-float">
+        <div class="totes-navbar-search-container">
+            <label class="totes-navbar-label">Søg: </label>
+            <input class="background-dark" type="text" />
+        </div>
+    </div>
+    <div class="clearBoth"></div>
+</div>
+
+<table class="table tote-table">
     <thead>
         <tr>
             <th></th>
@@ -25,15 +45,30 @@
     <tbody>
         @foreach (var item in Model)
         {
-         <tr>
-             <td>Test</td>
-             <td>@Html.DisplayFor(modelItem => item.Name)</td>
-             <td>@Html.DisplayFor(modelItem => item.Barcode)</td>
-             <td>@Html.DisplayFor(modelItem => item.Created)</td>
-         </tr>   
+            <tr>
+                <td>Test</td>
+                <td>@Html.DisplayFor(modelItem => item.Name)</td>
+                <td>@Html.DisplayFor(modelItem => item.Barcode)</td>
+                <td>@Html.DisplayFor(modelItem => item.Created)</td>
+            </tr>
         }
     </tbody>
 </table>
+
+
+<div class="tote-overlay-overall-container">
+    <div class="tote-overlay-container">
+        <div class="tote-overlay-nav-overall-container">
+            <div class="tote-overlay-nav-container">
+                <p>Add New Tote</p>
+            </div>
+            <div class="tote-overlay-nav-container">
+                <span class="material-icons tote-overlay-nav-close-btn">close</span>
+            </div>
+            <div class="clearBoth"></div>
+        </div>
+    </div>
+</div>
 
 <svg class="barcode1"></svg>
 
@@ -41,6 +76,19 @@
 <script>
     $(".barcode1").JsBarcode("JSoft-BOKS-1", {
         format: "CODE128",
+    });
+
+    const openBtn = $(".tote-create-btn");
+    const closeBtn = $(".tote-overlay-nav-close-btn");
+
+    const overlayContainer = $(".tote-overlay-overall-container");
+
+    openBtn.click(function () {
+        overlayContainer.css("display", "block");
+    });
+
+    closeBtn.click(function () {
+        overlayContainer.css("display", "none");
     });
 </script>
 }

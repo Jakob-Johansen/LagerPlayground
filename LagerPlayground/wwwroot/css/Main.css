@@ -666,3 +666,127 @@ li.dropdown {
 .checkout-product-info-quantity-container > p {
     text-align: center;
 }
+
+/*---Totes---*/
+
+.tote-create-btn-container {
+    width: 100%;
+    height: auto;
+    padding-bottom: 6px;
+}
+
+.tote-create-btn {
+    display: block;
+    width: 120px;
+    background-color: #1962b5;
+    color: #f8f9fa;
+    padding: 5px 12px;
+    text-align: center;
+    text-decoration: none;
+    user-select: none;
+    margin-left: auto;
+    margin-right: 0;
+}
+
+.tote-create-btn:hover {
+    color: black;
+    cursor: pointer;
+}
+
+.totes-navbar-contianer {
+    width: 100%;
+    height: auto;
+    padding-top: 13px;
+    position: relative;
+}
+
+.totes-navbar-float {
+    float: left;
+    width: 50%;
+    position: relative; 
+}
+
+.totes-navbar-label {
+    font-size: 20px;
+}
+
+.totes-navbar-select {
+    width: 60px;
+    padding: 3px 5px;
+    background-color: rgb(20, 22, 23);
+    color: rgb(215, 215, 215);
+}
+
+.totes-navbar-search-container {
+    position: absolute;
+    right: 0;
+}
+
+.totes-navbar-search-container > label {
+    padding-right: 5px;
+}
+
+.totes-navbar-search-container > input {
+    border: 1px solid #ced4da;
+    border-radius: 0.25rem;
+    padding: 2px 8px;
+    font-size: 19px;
+}
+
+.tote-table {
+    margin-top: 20px;
+}
+
+/*---Tote Overlay---*/
+
+.tote-overlay-overall-container {
+    width: 100%;
+    height: 100%;
+    z-index: 999;
+    position: absolute;
+    top: 0;
+    left: 0;
+    background-color: rgba(13, 13, 13, 0.80);
+}
+
+.tote-overlay-container {
+    width: 750px;
+    height: 400px;
+    background-color: rgba(20, 22, 23);
+    margin: 9% auto 0 auto;
+    padding: 13px 23px;
+}
+
+.tote-overlay-nav-overall-container {
+    width: 100%;
+    height: auto;
+}
+
+.tote-overlay-nav-container {
+    float: left;
+    width: 50%;
+    height: auto;
+    position: relative;
+}
+
+.tote-overlay-nav-container > p {
+    display: block;
+    font-size: 24px;
+    padding: 0 !important;
+    margin: 0 !important;
+    user-select: none;
+    color: white !important;
+}
+
+.tote-overlay-nav-container > span {
+    font-size: 35px;
+    color: white;
+    line-height: 44px;
+    user-select: none;
+    position: absolute;
+    right: 0;
+}
+
+.tote-overlay-nav-container > span:hover {
+    cursor: pointer;
+}
