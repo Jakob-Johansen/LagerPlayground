@@ -1,0 +1,21 @@
+﻿@model IEnumerable<LagerPlayground.Models.Order_Details>
+
+@{
+    ViewData["Title"] = "All Orders";
+}
+
+<h2>All Orders</h2>
+<hr />
+
+@foreach (var item in Model)
+{
+    <p>@item.Custommer.Name</p>
+    <ul>
+    @foreach (var test in @item.Order_Items)
+    {
+       <li>@test.Product.Name @test.Quantity stk.</li>
+    }
+    </ul>
+
+    <br />
+}
