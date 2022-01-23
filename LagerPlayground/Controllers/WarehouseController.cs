@@ -26,9 +26,10 @@ namespace LagerPlayground.Controllers
 
         // ---Totes---
 
-        public IActionResult Totes()
+        public async Task<IActionResult> Totes()
         {
-            return View();
+            var totes = await _context.Totes.ToListAsync();
+            return View(totes);
         }
     }
 }
