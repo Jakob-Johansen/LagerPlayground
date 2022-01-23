@@ -1,6 +1,4 @@
-﻿@model IEnumerable<LagerPlayground.Models.Order_Details>
-
-@{
+﻿@{
     ViewData["Title"] = "Home Page";
 }
 
@@ -56,16 +54,3 @@ https://plbonneville.com/blog/sending-an-anti-forgery-token-with-asp.net-core-mv
         </div>
     </div>
 </div>
-
-@foreach (var item in Model)
-{
-    <p>@item.Custommer.Name</p>
-    <ul>
-    @foreach (var test in @item.Order_Items)
-    {
-       <li>@test.Product.Name @test.Quantity</li>
-    }
-    </ul>
-
-    <br />
-}

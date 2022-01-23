@@ -17,14 +17,9 @@ namespace LagerPlayground.Controllers
             _context = context;
         }
 
-        public async Task<IActionResult> Index()
+        public IActionResult Index()
         {
-            var orderDetails = await _context.Order_Details
-                .Include(s => s.Order_Items)
-                .ThenInclude(e => e.Product)
-                .Include(s => s.Custommer)
-                .AsNoTracking().ToListAsync();
-            return View(orderDetails);
+            return View();
         }
 
         public IActionResult ScannerFun()
