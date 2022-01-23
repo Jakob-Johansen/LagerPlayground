@@ -1,5 +1,46 @@
-﻿@{
+﻿@model IEnumerable<LagerPlayground.Models.Tote>
+
+@{
     ViewData["Title"] = "Totes";
 }
 
 <h2>Totes</h2>
+<br />
+
+<table class="table">
+    <thead>
+        <tr>
+            <th></th>
+            <th>
+                @Html.DisplayNameFor(model => model.Name)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Barcode)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Created)
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+         <tr>
+             <td>Test</td>
+             <td>@Html.DisplayFor(modelItem => item.Name)</td>
+             <td>@Html.DisplayFor(modelItem => item.Barcode)</td>
+             <td>@Html.DisplayFor(modelItem => item.Created)</td>
+         </tr>   
+        }
+    </tbody>
+</table>
+
+<svg class="barcode1"></svg>
+
+@section Scripts {
+<script>
+    $(".barcode1").JsBarcode("JSoft-BOKS-1", {
+        format: "CODE128",
+    });
+</script>
+}
