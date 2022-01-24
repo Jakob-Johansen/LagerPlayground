@@ -1,0 +1,99 @@
+﻿@model LagerPlayground.Models.Order_Details
+
+@{
+    ViewData["Title"] = "Order Details";
+}
+
+<h2>Order Details - ID: @Model.ID</h2>
+<hr />
+
+<div class="checkout-overall-container">
+    <div class="checkout-container">
+        <div class="col-md-12">
+            <dl class="row">
+                <dt class="col-sm-3">
+                    @Html.DisplayNameFor(model => model.Custommer.ID):
+                </dt>
+                <dd class="col-sm-9">
+                    @Html.DisplayFor(model => model.Custommer.ID)
+                </dd>
+
+                <dt class="col-sm-3">
+                    @Html.DisplayNameFor(model => model.Custommer.Name):
+                </dt>
+                <dd class="col-sm-9">
+                    @Html.DisplayFor(model => model.Custommer.Name)
+                </dd>
+
+                <dt class="col-sm-3">
+                    @Html.DisplayNameFor(model => model.Custommer.Email):
+                </dt>
+                <dd class="col-sm-9">
+                    @Html.DisplayFor(model => model.Custommer.Email)
+                </dd>
+
+                <dt class="col-sm-3">
+                    @Html.DisplayNameFor(model => model.Custommer.PhoneNumber):
+                </dt>
+                <dd class="col-sm-9">
+                    @Html.DisplayFor(model => model.Custommer.PhoneNumber)
+                </dd>
+
+                <dt class="col-sm-3">
+                    @Html.DisplayNameFor(model => model.Custommer.MobileNumber):
+                </dt>
+                <dd class="col-sm-9">
+                    @Html.DisplayFor(model => model.Custommer.MobileNumber)
+                </dd>
+
+                <dt class="col-sm-3">
+                    @Html.DisplayNameFor(model => model.Custommer.Country):
+                </dt>
+                <dd class="col-sm-9">
+                    @Html.DisplayFor(model => model.Custommer.Country)
+                </dd>
+
+                <dt class="col-sm-3">
+                    @Html.DisplayNameFor(model => model.Custommer.Zipcode):
+                </dt>
+                <dd class="col-sm-9">
+                    @Html.DisplayFor(model => model.Custommer.Zipcode)
+                </dd>
+
+                <dt class="col-sm-3">
+                    @Html.DisplayNameFor(model => model.Custommer.City):
+                </dt>
+                <dd class="col-sm-9">
+                    @Html.DisplayFor(model => model.Custommer.City)
+                </dd>
+
+                <dt class="col-sm-3">
+                    @Html.DisplayNameFor(model => model.Custommer.Address):
+                </dt>
+                <dd class="col-sm-9">
+                    @Html.DisplayFor(model => model.Custommer.Address)
+                </dd>
+            </dl>
+        </div>
+    </div>
+    <div class="checkout-container">
+        @foreach (var item in Model.Order_Items)
+        {
+            <div class="checkout-product-container">
+                <div class="checkout-product-image-container">
+                    <img src="~/Images/@(item.Product.Image == null ? "Placeholders/Placeholder.jpg" : "Products/" + @item.Product.Image)" />
+                </div>
+                <div class="checkout-product-info-container">
+                    <div class="checkout-product-info-name-container">
+                        <p>@item.Product.Name</p>
+                    </div>
+                    <div class="checkout-product-info-quantity-container">
+                        <p>@item.Quantity stk.</p>
+                    </div>
+                </div>
+                <div class="clearBoth"></div>
+            </div>
+        }
+    </div>
+    <div class="clearBoth"></div>
+</div>

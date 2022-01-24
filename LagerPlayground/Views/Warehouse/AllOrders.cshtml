@@ -7,15 +7,55 @@
 <h2>All Orders</h2>
 <hr />
 
-@foreach (var item in Model)
+<table class="table tote-table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.ID)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Custommer.Name)
+            </th>
+            <th>Products Ordered</th>
+            <th>
+                @Html.DisplayNameFor(model => model.Created)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>@Html.DisplayFor(modelItem => item.ID)</td>
+                <td>@Html.DisplayFor(modelItem => item.Custommer.Name)</td>
+                <td>
+                    @{
+                        int productQuantity = 0;
+                        foreach (var product in item.Order_Items)
+                        {
+
+                            productQuantity += product.Quantity;
+                        }
+                        @Html.Raw(productQuantity);
+                    }
+                </td>
+                <td>@Html.DisplayFor(modelItem => item.Created)</td>
+                <td><a asp-action="OrderDetails" asp-route-id="@item.ID">View Details</a></td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+@*@foreach (var item in Model)
 {
     <p>@item.Custommer.Name</p>
     <ul>
-    @foreach (var test in @item.Order_Items)
-    {
-       <li>@test.Product.Name @test.Quantity stk.</li>
-    }
+        @foreach (var test in @item.Order_Items)
+        {
+            <li>@test.Product.Name @test.Quantity stk.</li>
+        }
     </ul>
 
     <br />
-}
+}*@
