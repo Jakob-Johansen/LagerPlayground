@@ -52,5 +52,21 @@ namespace LagerPlayground.Controllers
             var totes = await _context.Totes.ToListAsync();
             return View(totes);
         }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public JsonResult CreateTote(string name, int quantity, int startFrom)
+        {
+            int number = 0;
+            string barcode = name.ToUpper().Trim() + "-";
+            List<string> barcodeList = new();
+            for (int i = 0; i < quantity; i++)
+            {
+                number++;
+                barcodeList.Add(barcode + startFrom++);
+            }
+
+            return Json(new { name, barcodeList });
+        }
     }
 }

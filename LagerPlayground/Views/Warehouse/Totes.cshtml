@@ -1,4 +1,13 @@
-﻿@model IEnumerable<LagerPlayground.Models.Tote>
+﻿@inject Microsoft.AspNetCore.Antiforgery.IAntiforgery Xsrf
+
+@model IEnumerable<LagerPlayground.Models.Tote>
+
+@functions {
+    public string GetAntiXsrfRequestToken()
+    {
+        return Xsrf.GetAndStoreTokens(Context).RequestToken;
+    }
+}
 
 @{
     ViewData["Title"] = "Totes";
@@ -144,6 +153,8 @@
     let name;
     let quantity;
     let startFrom;
+    
+    let errorBoolean = false; 
 
     openBtn.click(function () {
         overlayContainer.css("display", "block");
@@ -151,6 +162,9 @@
 
     closeBtn.click(function () {
         overlayContainer.css("display", "none");
+        nameInputError.text("");
+        quantityInputError.text("");
+        startFromInputError.text("");
     });
 
     addBtn.click(function () {
@@ -161,25 +175,57 @@
         name = nameInput.val();
         quantity = quantityInput.val();
         startFrom = startFromInput.val();
+        errorBoolean = false;
 
         if (name == "" || name == " ") {
             nameInputError.text("The field can't be empty!");
-            return;
+            errorBoolean = true
         }
-        nameInputError.text("");
+        else {
+            nameInputError.text("");
+        }
 
         if (quantity == "" || quantity == " " || quantity < 1) {
             quantityInputError.text("The field can't be empty or 0!");
-            return;
+            errorBoolean = true
         }
-        quantityInputError.text("");
+        else {
+            quantityInputError.text("");
+        }
 
         if (startFrom == "" || startFrom == " " || startFrom < 1) {
             startFromInputError.text("The field can't be empty or 0!");
+            errorBoolean = true
+        }
+        else {
+            startFromInputError.text("");
+        }
+
+        if (errorBoolean == true) {
             return;
         }
-        startFromInputError.text("");
 
+        console.log("Yaaay!");
+        ajaxPost(name, quantity, startFrom);
     }
+
+    function ajaxPost(nameI, quantityI, startFromI) {
+    $.ajax({
+        type: "POST",
+        url: "/Warehouse/CreateTote",
+        headers: { "RequestVerificationToken": "@GetAntiXsrfRequestToken()" },
+        data: { name: nameI, quantity: quantityI, startFrom: startFromI },
+        success: function (result) {
+            console.log(result.name);
+            console.log(result.barcodeList);
+            for(var i = 0; i < result.barcodeList.length; i++) {
+                console.log(result.barcodeList[i]);
+            }
+        },
+        error: function (req, status, error) {
+            console.log(status);
+        }
+    });
+}
 </script>
 }
