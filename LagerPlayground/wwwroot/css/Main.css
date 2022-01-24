@@ -750,14 +750,14 @@ li.dropdown {
 }
 
 .tote-overlay-container {
-    width: 750px;
-    height: 400px;
+    width: 620px;
+    height: auto;
     background-color: rgba(20, 22, 23);
     margin: 9% auto 0 auto;
     padding: 13px 23px;
 }
 
-.tote-overlay-nav-overall-container {
+.tote-overlay-nav-overall-container, .tote-overlay-form-overall-container, .tote-overlay-form-container, .tote-overlay-btns-overall-container {
     width: 100%;
     height: auto;
 }
@@ -790,3 +790,87 @@ li.dropdown {
 .tote-overlay-nav-container > span:hover {
     cursor: pointer;
 }
+
+.tote-overlay-form-overall-container {
+    margin-top: 40px;
+}
+
+.tote-overlay-form-container {
+    margin-bottom: 30px;
+}
+
+.tote-overlay-form-small-float, .tote-overlay-form-big-float {
+    float: left;
+    height: auto;
+}
+
+.tote-overlay-form-small-float {
+    width: 18%;
+}
+
+.tote-overlay-form-big-float {
+    width: 82%;
+}
+
+.tote-overlay-form-small-float > p {
+    display: block;
+    padding: 0;
+    margin: 0;
+    font-size: 20px;
+    text-align: right;
+    line-height: 42.5px;
+}
+
+.tote-overlay-form-big-float > input {
+    display: block;
+    width: 95%;
+    font-size: 23px;
+    border: 1px solid #ced4da;
+    padding: 3px 8px;
+    margin-left: auto;
+    margin-right: 0;
+}
+
+.tote-overlay-btns-overall-container {
+    width: 250px;
+    margin-left: auto;
+    margin-right: 0;
+}
+
+.tote-overlay-btns-container-cancel, .tote-overlay-btns-container-add {
+    float: left;
+    width: 50%;
+}
+
+.tote-overlay-btns-container-cancel {
+    padding-right: 4px;
+}
+
+.tote-overlay-btns-container-add {
+    padding-left: 4px;
+}
+
+.tote-overlay-btn-cancel, .tote-overlay-btn-add {
+    width: 100%;
+    display: block;
+    background-color: #f8f9fa;
+    text-align: center;
+    color: black;
+    text-decoration: none;
+    font-size: 18px;
+    padding: 4px 3px;
+}
+
+.tote-overlay-btn-add {
+    background-color: #1962b5;
+    color: #f8f9fa;
+}
+
+.tote-overlay-btn-cancel:hover, .tote-overlay-btn-add:hover {
+    cursor: pointer;
+    color: black;
+}
+
+    .tote-overlay-btn-add:hover {
+        color: #f8f9fa;
+    }
