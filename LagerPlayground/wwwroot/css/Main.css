@@ -876,3 +876,8 @@ li.dropdown {
     .tote-overlay-btn-add:hover {
         color: #f8f9fa;
     }
+
+.tote-overlay-name-input-error, .tote-overlay-name-quantity-error, .tote-overlay-name-startFrom-error {
+    padding-top: 5px;
+    padding-left: 25px;
+}
