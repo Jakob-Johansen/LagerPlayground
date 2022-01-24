@@ -74,17 +74,30 @@
                     <p>Navn*</p>
                 </div>
                 <div class="tote-overlay-form-big-float">
-                    <input class="background-dark" type="text" />
+                    <input class="tote-overlay-name-input background-dark" type="text" />
+                    <span class="tote-overlay-name-input-error text-danger"></span>
                 </div>
                 <div class="clearBoth"></div>
             </div>
 
             <div class="tote-overlay-form-container">
                 <div class="tote-overlay-form-small-float">
-                    <p>Barcode*</p>
+                    <p>Quantity*</p>
                 </div>
                 <div class="tote-overlay-form-big-float">
-                    <input class="background-dark" type="text" />
+                    <input class="tote-overlay-quantity-input background-dark" type="number" />
+                    <span class="tote-overlay-name-quantity-error text-danger"></span>
+                </div>
+                <div class="clearBoth"></div>
+            </div>
+
+            <div class="tote-overlay-form-container">
+                <div class="tote-overlay-form-small-float">
+                    <p>Start From*</p>
+                </div>
+                <div class="tote-overlay-form-big-float">
+                    <input class=" tote-overlay-startFrom-input background-dark" type="number" placeholder="0" />
+                    <span class="tote-overlay-name-startFrom-error text-danger"></span>
                 </div>
                 <div class="clearBoth"></div>
             </div>
@@ -116,8 +129,21 @@
 
     const openBtn = $(".tote-create-btn");
     const closeBtn = $(".tote-overlay-nav-close-btn");
+    const addBtn = $(".tote-overlay-btn-add");
 
     const overlayContainer = $(".tote-overlay-overall-container");
+
+    const nameInput = $(".tote-overlay-name-input");
+    const quantityInput = $(".tote-overlay-quantity-input");
+    const startFromInput = $(".tote-overlay-startFrom-input");
+
+    const nameInputError = $(".tote-overlay-name-input-error");
+    const quantityInputError = $(".tote-overlay-name-quantity-error");
+    const startFromInputError = $(".tote-overlay-name-startFrom-error");
+
+    let name;
+    let quantity;
+    let startFrom;
 
     openBtn.click(function () {
         overlayContainer.css("display", "block");
@@ -126,5 +152,34 @@
     closeBtn.click(function () {
         overlayContainer.css("display", "none");
     });
+
+    addBtn.click(function () {
+        ValidateInputs();
+    });
+
+    function ValidateInputs() {
+        name = nameInput.val();
+        quantity = quantityInput.val();
+        startFrom = startFromInput.val();
+
+        if (name == "" || name == " ") {
+            nameInputError.text("The field can't be empty!");
+            return;
+        }
+        nameInputError.text("");
+
+        if (quantity == "" || quantity == " " || quantity < 1) {
+            quantityInputError.text("The field can't be empty or 0!");
+            return;
+        }
+        quantityInputError.text("");
+
+        if (startFrom == "" || startFrom == " " || startFrom < 1) {
+            startFromInputError.text("The field can't be empty or 0!");
+            return;
+        }
+        startFromInputError.text("");
+
+    }
 </script>
 }

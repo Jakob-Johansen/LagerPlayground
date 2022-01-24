@@ -10,7 +10,6 @@ namespace LagerPlayground.Models
     {
         public int ID { get; set; }
         public string Name { get; set; }
-        public int Number { get; set; }
         public string Barcode { get; set; }
         public string Warehouse { get; set; }
         public DateTime Created { get; set; }
