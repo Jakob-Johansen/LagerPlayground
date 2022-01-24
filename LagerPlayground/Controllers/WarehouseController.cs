@@ -24,6 +24,27 @@ namespace LagerPlayground.Controllers
             return View(orderDetails);
         }
 
+        public async Task<IActionResult> OrderDetails(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var orderDetails = await _context.Order_Details
+                .Include(x => x.Order_Items)
+                .ThenInclude(c => c.Product)
+                .Include(x => x.Custommer)
+                .AsNoTracking().FirstOrDefaultAsync(x => x.ID == id);
+            
+            if (orderDetails == null)
+            {
+                return NotFound();
+            }
+
+            return View(orderDetails);
+        }
+
         // ---Totes---
 
         public async Task<IActionResult> Totes()
