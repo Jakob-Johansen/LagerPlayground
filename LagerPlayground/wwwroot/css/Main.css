@@ -609,8 +609,7 @@ li.dropdown {
 .checkout-container {
     float: left;
     width: 50%;
-    height: 200px;
-    /*background-color: red;*/
+    height: auto;
 }
 
 .checkout-product-container {
@@ -667,8 +666,23 @@ li.dropdown {
     text-align: center;
 }
 
-/*---Totes---*/
+/*---OrderDetails---*/
+.orderDetails-backOrDelete-overall-container {
+    width: 50%;
+    height: auto;
+}
 
+.orderDetails-backOrDelete-container {
+    float: left;
+    width: 50%;
+    height: auto;
+}
+
+.orderDetails-backOrDelete-delete-btn {
+    color: rgb(220,53,69);
+}
+
+/*---Totes---*/
 .tote-create-btn-container {
     width: 100%;
     height: auto;
@@ -878,6 +892,7 @@ li.dropdown {
     }
 
 .tote-overlay-name-input-error, .tote-overlay-name-quantity-error, .tote-overlay-name-startFrom-error {
+    display: block;
     padding-top: 5px;
     padding-left: 25px;
 }

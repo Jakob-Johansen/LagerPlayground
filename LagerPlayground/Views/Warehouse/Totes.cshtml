@@ -205,7 +205,6 @@
             return;
         }
 
-        console.log("Yaaay!");
         ajaxPost(name, quantity, startFrom);
     }
 
@@ -214,12 +213,24 @@
         type: "POST",
         url: "/Warehouse/CreateTote",
         headers: { "RequestVerificationToken": "@GetAntiXsrfRequestToken()" },
-        data: { name: nameI, quantity: quantityI, startFrom: startFromI },
+        data: { toteName: nameI, quantity: quantityI, startFrom: startFromI },
         success: function (result) {
-            console.log(result.name);
-            console.log(result.barcodeList);
-            for(var i = 0; i < result.barcodeList.length; i++) {
-                console.log(result.barcodeList[i]);
+
+            if (result.errorBoolean == false) {
+                for(var i = 0; i < result.barcodeList.length; i++) {
+                    console.log(result.barcodeList[i]);
+                }
+
+                console.log(result.saveVal);
+            }
+            else {
+                if (result.exceptionError == true) {
+                    console.log("Ex");
+                    console.log(result.errorMsg);
+                }
+                else {
+                    console.log(result.errorMsg);
+                }
             }
         },
         error: function (req, status, error) {
