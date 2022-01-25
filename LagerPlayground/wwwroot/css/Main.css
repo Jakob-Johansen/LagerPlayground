@@ -682,6 +682,10 @@ li.dropdown {
     color: rgb(220,53,69);
 }
 
+.orderDetails-backOrDelete-delete-btn:hover {
+    cursor: pointer;
+}
+
 /*---Totes---*/
 .tote-create-btn-container {
     width: 100%;
@@ -895,4 +899,25 @@ li.dropdown {
     display: block;
     padding-top: 5px;
     padding-left: 25px;
+}
+
+.tote-overlay-yesOrNo-overall-container {
+    width: 100%;
+    height: auto;
+}
+
+.tote-overlay-yesOrNo-container {
+    float: left;
+    width: 50%;
+}
+
+.tote-overlay-yesOrNo-container > a {
+    display: block;
+    text-align: center;
+    color: white !important;
+    user-select:none;
+}
+
+.tote-overlay-yesOrNo-container > a:hover {
+    cursor: pointer;
 }

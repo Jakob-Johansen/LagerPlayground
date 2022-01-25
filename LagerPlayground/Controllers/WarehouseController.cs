@@ -87,5 +87,12 @@ namespace LagerPlayground.Controllers
 
             return Json(new { errorBoolean = false, name = toteName, barcodeList, saveVal });
         }
+
+        //[HttpPost]
+        //[ValidateAntiForgeryToken]
+        //public async Task<IActionResult> DeleteOrder(int id)
+        //{
+
+        //}
     }
 }
