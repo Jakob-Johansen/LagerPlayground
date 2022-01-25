@@ -7,12 +7,12 @@
 <h2>Order Details - ID: @Model.ID</h2>
 <hr />
 
-<div class="checkout-overall-container">
+<div style="height: auto !important;" class="checkout-overall-container">
     <div class="checkout-container">
         <div class="col-md-12">
-            <dl class="row">
+            <dl style="height: auto !important;" class="row">
                 <dt class="col-sm-3">
-                    @Html.DisplayNameFor(model => model.Custommer.ID):
+                    Custommer-ID:
                 </dt>
                 <dd class="col-sm-9">
                     @Html.DisplayFor(model => model.Custommer.ID)
@@ -75,6 +75,19 @@
                 </dd>
             </dl>
         </div>
+
+    <br />
+
+    <div class="orderDetails-backOrDelete-overall-container">
+        <div class="orderDetails-backOrDelete-container">
+            <a asp-action="AllOrders">Back to list</a>
+        </div>
+        <div class="orderDetails-backOrDelete-container">
+            <a class="orderDetails-backOrDelete-delete-btn">Delete</a>
+        </div>
+        <div class="clearBoth"></div>
+    </div>
+
     </div>
     <div class="checkout-container">
         @foreach (var item in Model.Order_Items)
@@ -97,3 +110,21 @@
     </div>
     <div class="clearBoth"></div>
 </div>
+
+@section Scripts {
+    <script>
+        const deleteBtn = $(".orderDetails-backOrDelete-delete-btn");
+
+        deleteBtn.click(function () {
+            if (confirm("Are you sure you want to delete this?") == true) {
+                console.log("Ja");
+                //window.location.href = "www.google.com";
+            }
+            else {
+                console.log("no");
+            }
+        });
+
+
+    </script>
+}

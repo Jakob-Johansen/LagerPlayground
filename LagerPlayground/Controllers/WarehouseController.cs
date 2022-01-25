@@ -55,10 +55,17 @@ namespace LagerPlayground.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public JsonResult CreateTote(string name, int quantity, int startFrom)
+        public async Task<JsonResult> CreateTote(string toteName, int quantity, int startFrom)
         {
+            toteName = toteName.Trim();
+
+            if (toteName == "" || quantity < 0 || startFrom < 0)
+            {
+                return Json(new { errorBoolean = true, exceptionError = false, errorMsg = "Check your input fields" });
+            }
+
             int number = 0;
-            string barcode = name.ToUpper().Trim() + "-";
+            string barcode = toteName.ToUpper().Trim() + "-";
             List<string> barcodeList = new();
             for (int i = 0; i < quantity; i++)
             {
@@ -66,7 +73,19 @@ namespace LagerPlayground.Controllers
                 barcodeList.Add(barcode + startFrom++);
             }
 
-            return Json(new { name, barcodeList });
+            string saveVal;
+            try
+            {
+                //await _context.AddRangeAsync(barcodeList);
+                //await _context.SaveChangesAsync();
+                saveVal = "Saved";
+            }
+            catch (DbUpdateException)
+            {
+                return Json(new { errorBoolean = true, exceptionError = true, errorMsg = "An database error has occured, try again" });
+            }
+
+            return Json(new { errorBoolean = false, name = toteName, barcodeList, saveVal });
         }
     }
 }
