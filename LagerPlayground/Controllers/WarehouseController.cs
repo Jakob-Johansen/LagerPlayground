@@ -100,13 +100,26 @@ namespace LagerPlayground.Controllers
             // https://entityframework.net/delete-multiple-entities
 
             var orderDetails = await _context.Order_Details.FindAsync(id);
+            if(orderDetails == null)
+            {
+                return NotFound();
+            }
+
             var orderItems = await _context.Order_Items.Where(x => x.Order_DetailsID == orderDetails.ID).ToListAsync();
             var custommer = await _context.Custommers.FirstOrDefaultAsync(x => x.ID == orderDetails.CustommerID);
 
             try
             {
-                _context.Order_Items.RemoveRange(orderItems);
-                _context.Custommers.Remove(custommer);
+                if(orderItems != null)
+                {
+                    _context.Order_Items.RemoveRange(orderItems);
+                }
+                
+                if(custommer != null)
+                {
+                    _context.Custommers.Remove(custommer);
+                }
+
                 _context.Order_Details.Remove(orderDetails);
                 await _context.SaveChangesAsync();
             }
