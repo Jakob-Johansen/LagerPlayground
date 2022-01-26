@@ -115,7 +115,7 @@
     <div class="tote-overlay-container">
         <div class="tote-overlay-nav-overall-container">
             <div class="tote-overlay-nav-container">
-                <p>Delete</p>
+                <p>Are you sure?</p>
             </div>
             <div class="tote-overlay-nav-container">
                 <span class="material-icons tote-overlay-nav-close-btn">close</span>
@@ -123,12 +123,19 @@
             <div class="clearBoth"></div>
         </div>
 
-        <div class="tote-overlay-yesOrNo-overall-container">
-            <div class="tote-overlay-yesOrNo-container">
-                <a>Yes</a>
+        <div class="tote-overlay-info-container">
+            <p>If you delete this order, the order wil be gone forever. Are you sure you want to proceed?</p>
+        </div>
+
+        <div class="tote-overlay-btns-overall-container">
+            <div class="tote-overlay-btns-container-cancel">
+                <button class="tote-overlay-btn-cancel tote-overlay-nav-close-btn">Cancel</button>
             </div>
-            <div class="tote-overlay-yesOrNo-container">
-                <a>No</a>
+            <div class="tote-overlay-btns-container-add">
+                <form asp-action="DeleteOrder">
+                    <input type="hidden" asp-for="@Model.ID" />
+                    <button class="tote-overlay-btn-add tote-overlay-btn-delete">Delete</button>
+                </form>
             </div>
 
             <div class="clearBoth"></div>

@@ -798,9 +798,9 @@ li.dropdown {
 }
 
 .tote-overlay-nav-container > span {
-    font-size: 35px;
+    font-size: 25px;
     color: white;
-    line-height: 44px;
+/*    line-height: 44px;*/
     user-select: none;
     position: absolute;
     right: 0;
@@ -879,6 +879,7 @@ li.dropdown {
     font-size: 18px;
     padding: 4px 3px;
     user-select: none;
+    border: none;
 }
 
 .tote-overlay-btn-add {
@@ -901,23 +902,16 @@ li.dropdown {
     padding-left: 25px;
 }
 
-.tote-overlay-yesOrNo-overall-container {
+.tote-overlay-info-container {
     width: 100%;
     height: auto;
+    padding: 30px 0;
 }
 
-.tote-overlay-yesOrNo-container {
-    float: left;
-    width: 50%;
+.tote-overlay-info-container > p {
+    font-size: 18px;
 }
 
-.tote-overlay-yesOrNo-container > a {
-    display: block;
-    text-align: center;
-    color: white !important;
-    user-select:none;
-}
-
-.tote-overlay-yesOrNo-container > a:hover {
-    cursor: pointer;
+.tote-overlay-btn-delete {
+    background-color: #dc3545;
 }
