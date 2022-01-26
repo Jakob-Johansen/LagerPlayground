@@ -88,11 +88,34 @@ namespace LagerPlayground.Controllers
             return Json(new { errorBoolean = false, name = toteName, barcodeList, saveVal });
         }
 
-        //[HttpPost]
-        //[ValidateAntiForgeryToken]
-        //public async Task<IActionResult> DeleteOrder(int id)
-        //{
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> DeleteOrder(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
 
-        //}
+            // https://entityframework.net/delete-multiple-entities
+
+            var orderDetails = await _context.Order_Details.FindAsync(id);
+            var orderItems = await _context.Order_Items.Where(x => x.Order_DetailsID == orderDetails.ID).ToListAsync();
+            var custommer = await _context.Custommers.FirstOrDefaultAsync(x => x.ID == orderDetails.CustommerID);
+
+            try
+            {
+                _context.Order_Items.RemoveRange(orderItems);
+                _context.Custommers.Remove(custommer);
+                _context.Order_Details.Remove(orderDetails);
+                await _context.SaveChangesAsync();
+            }
+            catch (DbUpdateException)
+            {
+                return NotFound();
+            }
+
+            return RedirectToAction("AllOrders");
+        }
     }
 }
