@@ -57,7 +57,6 @@ namespace LagerPlayground.Controllers
         [ValidateAntiForgeryToken]
         public async Task<JsonResult> CreateTote(string toteName, int quantity, int startFrom)
         {
-            // https://docs.microsoft.com/en-us/dotnet/api/system.drawing.printing.printdocument.print?view=dotnet-plat-ext-6.0
             toteName = toteName.Trim();
 
             if (toteName == "" || quantity < 0 || startFrom < 0)
@@ -73,6 +72,8 @@ namespace LagerPlayground.Controllers
                 number++;
                 barcodeList.Add(barcode + startFrom++);
             }
+
+            // https://docs.microsoft.com/en-us/dotnet/api/system.drawing.printing.printdocument.print?view=dotnet-plat-ext-6.0
 
             string saveVal;
             try
