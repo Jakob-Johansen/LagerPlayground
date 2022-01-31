@@ -114,10 +114,12 @@
         </div>
 
         <div class="tote-overlay-btns-overall-container">
-            <div class="tote-overlay-btns-container-cancel">
+            <div class="loader tote-overlay-loader"></div>
+            
+            <div class="tote-overlay-btns-container tote-overlay-btns-container-cancel">
                 <a class="tote-overlay-btn-cancel tote-overlay-nav-close-btn">Cancel</a>
             </div>
-            <div class="tote-overlay-btns-container-add">
+            <div class="tote-overlay-btns-container tote-overlay-btns-container-add">
                 <a class="tote-overlay-btn-add">Add</a>
             </div>
 
@@ -127,14 +129,15 @@
     </div>
 </div>
 
-<svg class="barcode1"></svg>
+@*<svg class="barcode1"></svg>*@
 
 @section Scripts {
 <script>
-    $(".barcode1").JsBarcode("JSoft-BOKS-1", {
-        format: "CODE128",
-    });
+    //$(".barcode1").JsBarcode("JSoft-BOKS-1", {
+    //    format: "CODE128",
+    //});
 
+    const btnContainer = $(".tote-overlay-btns-container");
     const openBtn = $(".tote-create-btn");
     const closeBtn = $(".tote-overlay-nav-close-btn");
     const addBtn = $(".tote-overlay-btn-add");
@@ -148,9 +151,14 @@
     const nameInputError = $(".tote-overlay-name-input-error");
     const quantityInputError = $(".tote-overlay-name-quantity-error");
 
+    const loader = $(".loader");
+
+    let loadingIsRunning = false;
+    let ajaxResult = false;
+
     let nameI;
     let quantity;
-    let printInput;
+    let printInput = false;
     
     let errorBoolean = false; 
 
@@ -168,11 +176,22 @@
         ValidateInputs();
     });
 
+    // Timeout/delay functions
+    function loadingTimeout() {
+        setTimeout(function () {
+            if (ajaxResult == false) {
+                loadingIsRunning = true;
+                btnContainer.css("display", "none");
+                loader.css("display", "block");
+            }
+        }, 20);
+    }
+
     function ValidateInputs() {
         nameI = nameInput.val();
         quantity = quantityInput.val();
-        printInput = false;
         errorBoolean = false;
+        ajaxResult = false;
 
         if (nameI == "" || nameI == " ") {
             nameInputError.text("The field can't be empty!");
@@ -193,10 +212,15 @@
         if (printcheckboxInput.is(":checked")) {
             printInput = true;
         }
+        else {
+            printInput = false;
+        }
 
         if (errorBoolean == true) {
             return;
         }
+
+        loadingTimeout();
 
         ajaxPost(nameI, quantity, printInput);
     }
@@ -208,13 +232,15 @@
         headers: { "RequestVerificationToken": "@GetAntiXsrfRequestToken()" },
         data: { toteName: nameI, quantity: quantityI, printBool: printI },
         success: function (result) {
+            loadingIsRunning = false;
+            ajaxResult = true;
+            loader.css("display", "none");
 
             if (result.errorBoolean == false) {
-                for(var i = 0; i < result.toteList.length; i++) {
-                    console.log(result.toteList[i].barcode);
+                if (printInput == true) {
+                    window.open('/Pdf/Barcode.pdf', '_blank');
                 }
-
-                console.log(result.saveVal);
+                location.reload();
             }
             else {
                 if (result.exceptionError == true) {
