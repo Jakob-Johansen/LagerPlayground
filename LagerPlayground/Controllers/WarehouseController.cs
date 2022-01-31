@@ -2,15 +2,18 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using LagerPlayground.Models;
+using LagerPlayground.Helpers;
 
 namespace LagerPlayground.Controllers
 {
     public class WarehouseController : Controller
     {
         public readonly Context _context;
-        public WarehouseController(Context context)
+        private readonly IWebHostEnvironment _env;
+        public WarehouseController(Context context, IWebHostEnvironment env)
         {
             _context = context;
+            _env = env;
         }
 
         // ---Orders---
@@ -61,7 +64,6 @@ namespace LagerPlayground.Controllers
         public async Task<JsonResult> CreateTote(string toteName, int quantity, bool printBool)
         {
             toteName = toteName.Trim();
-            printBool = false;
 
             if (toteName == "" || quantity < 0)
             {
@@ -81,7 +83,7 @@ namespace LagerPlayground.Controllers
             {
                 toteNumber++;
                 toteList.Add(new Tote {
-                    Name = toteName,
+                    Name = toteName + "-" + toteNumber,
                     Barcode = "T-" + toteNumber.ToString("D13"),
                     Number = toteNumber,
                     Created = DateTime.Now
@@ -100,10 +102,12 @@ namespace LagerPlayground.Controllers
                 return Json(new { errorBoolean = true, exceptionError = true, errorMsg = "An database error has occured, try again" });
             }
 
-            //if (printBool == true)
-            //{
-            //    // Create pdf
-            //}
+            if (printBool == true)
+            {
+                PdfHelper pdfHelper = new(_env);
+                pdfHelper.GenerateBarcodesPrint(toteList);
+
+            }
 
             return Json(new { errorBoolean = false, name = toteName, toteList, saveVal });
         }
