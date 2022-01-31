@@ -21,11 +21,14 @@
 
 <div class="totes-navbar-contianer">
     <div class="totes-navbar-float">
+@*            <a class="tote-print-btn">Print</a>*@
         <label class="totes-navbar-label">Vis </label>
         <select class="totes-navbar-select">
             <option>10</option>
         </select>
         <label class="totes-navbar-label"> linjer</label>
+
+        <a class="tote-print-this-btn">Print</a>
     </div>
     <div class="totes-navbar-float">
         <div class="totes-navbar-search-container">
@@ -39,7 +42,8 @@
 <table class="table tote-table">
     <thead>
         <tr>
-            <th></th>
+            <th>#</th>
+            <th >Warehouse</th>
             <th>
                 @Html.DisplayNameFor(model => model.Name)
             </th>
@@ -49,16 +53,19 @@
             <th>
                 @Html.DisplayNameFor(model => model.Created)
             </th>
+            <th>Actions</th>
         </tr>
     </thead>
     <tbody>
         @foreach (var item in Model)
         {
             <tr>
-                <td>(Print-barcode)</td>
+                <td><input type="checkbox" style="transform: scale(1.5);" /></td>
+                <td>Primary</td>
                 <td>@Html.DisplayFor(modelItem => item.Name)</td>
                 <td>@Html.DisplayFor(modelItem => item.Barcode)</td>
                 <td>@item.Created.ToShortDateString()</td>
+                <td><a class="tote-print-this-btn" data-id="@item.ID">Print</a></td>
             </tr>
         }
     </tbody>
@@ -138,6 +145,7 @@
     //});
 
     const btnContainer = $(".tote-overlay-btns-container");
+    const printThisBtn = $(".tote-print-this-btn"); 
     const openBtn = $(".tote-create-btn");
     const closeBtn = $(".tote-overlay-nav-close-btn");
     const addBtn = $(".tote-overlay-btn-add");
@@ -174,6 +182,10 @@
 
     addBtn.click(function () {
         ValidateInputs();
+    });
+
+    printThisBtn.click(function () {
+        ajaxGet($(this).attr("data-id"));
     });
 
     // Timeout/delay functions
@@ -225,7 +237,7 @@
         ajaxPost(nameI, quantity, printInput);
     }
 
-    function ajaxPost(nameI, quantityI, printI) {
+function ajaxPost(nameI, quantityI, printI) {
     $.ajax({
         type: "POST",
         url: "/Warehouse/CreateTote",
@@ -250,6 +262,26 @@
                 else {
                     console.log(result.errorMsg);
                 }
+            }
+        },
+        error: function (req, status, error) {
+            console.log(status);
+        }
+    });
+}
+
+function ajaxGet(id) {
+    $.ajax({
+        type: "GET",
+        url: "/Warehouse/PrintOneBarcode",
+        data: { ID: id },
+        success: function (result) {
+
+            if (result.errorBoolean == false) {
+                window.open('/Pdf/Barcode.pdf', '_blank');
+            }
+            else {
+                console.log(result.errorMsg);
             }
         },
         error: function (req, status, error) {

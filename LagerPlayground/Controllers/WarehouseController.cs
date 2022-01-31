@@ -49,6 +49,49 @@ namespace LagerPlayground.Controllers
             return View(orderDetails);
         }
 
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> DeleteOrder(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            // https://entityframework.net/delete-multiple-entities
+
+            var orderDetails = await _context.Order_Details.FindAsync(id);
+            if (orderDetails == null)
+            {
+                return NotFound();
+            }
+
+            var orderItems = await _context.Order_Items.Where(x => x.Order_DetailsID == orderDetails.ID).ToListAsync();
+            var custommer = await _context.Custommers.FirstOrDefaultAsync(x => x.ID == orderDetails.CustommerID);
+
+            try
+            {
+                if (orderItems != null)
+                {
+                    _context.Order_Items.RemoveRange(orderItems);
+                }
+
+                if (custommer != null)
+                {
+                    _context.Custommers.Remove(custommer);
+                }
+
+                _context.Order_Details.Remove(orderDetails);
+                await _context.SaveChangesAsync();
+            }
+            catch (DbUpdateException)
+            {
+                return NotFound();
+            }
+
+            return RedirectToAction("AllOrders");
+        }
+
         // ---Totes---
 
         public async Task<IActionResult> Totes()
@@ -90,12 +133,10 @@ namespace LagerPlayground.Controllers
                 });
             }
 
-            string saveVal;
             try
             {
                 await _context.AddRangeAsync(toteList);
                 await _context.SaveChangesAsync();
-                saveVal = "Saved";
             }
             catch (DbUpdateException)
             {
@@ -109,50 +150,27 @@ namespace LagerPlayground.Controllers
 
             }
 
-            return Json(new { errorBoolean = false, name = toteName, toteList, saveVal });
+            return Json(new { errorBoolean = false, name = toteName, toteList });
         }
 
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteOrder(int? id)
+        public async Task<JsonResult> PrintOneBarcode(int? ID)
         {
-            if (id == null)
+            if (ID == null)
             {
-                return NotFound();
+                return Json(new { errorBoolean = true, errorMsg = "Cant find a tote with this ID" });
             }
 
-            // https://entityframework.net/delete-multiple-entities
+            var tote = await _context.Totes.FirstOrDefaultAsync(x => x.ID == ID);
 
-            var orderDetails = await _context.Order_Details.FindAsync(id);
-            if(orderDetails == null)
+            if (tote == null)
             {
-                return NotFound();
+                return Json(new { errorBoolean = true, errorMsg = "Cant find this Tote" });
             }
 
-            var orderItems = await _context.Order_Items.Where(x => x.Order_DetailsID == orderDetails.ID).ToListAsync();
-            var custommer = await _context.Custommers.FirstOrDefaultAsync(x => x.ID == orderDetails.CustommerID);
+            PdfHelper pdfHelper = new(_env);
+            pdfHelper.GererateBarcode(tote);
 
-            try
-            {
-                if(orderItems != null)
-                {
-                    _context.Order_Items.RemoveRange(orderItems);
-                }
-                
-                if(custommer != null)
-                {
-                    _context.Custommers.Remove(custommer);
-                }
-
-                _context.Order_Details.Remove(orderDetails);
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateException)
-            {
-                return NotFound();
-            }
-
-            return RedirectToAction("AllOrders");
+            return Json(new { errorBoolean = false });
         }
     }
 }
