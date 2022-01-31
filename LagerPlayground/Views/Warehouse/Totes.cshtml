@@ -55,10 +55,10 @@
         @foreach (var item in Model)
         {
             <tr>
-                <td>Test</td>
+                <td>(Print-barcode)</td>
                 <td>@Html.DisplayFor(modelItem => item.Name)</td>
                 <td>@Html.DisplayFor(modelItem => item.Barcode)</td>
-                <td>@Html.DisplayFor(modelItem => item.Created)</td>
+                <td>@item.Created.ToShortDateString()</td>
             </tr>
         }
     </tbody>
@@ -102,11 +102,10 @@
 
             <div class="tote-overlay-form-container">
                 <div class="tote-overlay-form-small-float">
-                    <p>Start From*</p>
+                    <p>Print*</p>
                 </div>
                 <div class="tote-overlay-form-big-float">
-                    <input class=" tote-overlay-startFrom-input background-dark" type="number" placeholder="0" />
-                    <span class="tote-overlay-name-startFrom-error text-danger"></span>
+                    <input class="tote-overlay-print-input background-dark" type="checkbox" />
                 </div>
                 <div class="clearBoth"></div>
             </div>
@@ -144,15 +143,14 @@
 
     const nameInput = $(".tote-overlay-name-input");
     const quantityInput = $(".tote-overlay-quantity-input");
-    const startFromInput = $(".tote-overlay-startFrom-input");
+    const printcheckboxInput = $(".tote-overlay-print-input");
 
     const nameInputError = $(".tote-overlay-name-input-error");
     const quantityInputError = $(".tote-overlay-name-quantity-error");
-    const startFromInputError = $(".tote-overlay-name-startFrom-error");
 
     let nameI;
     let quantity;
-    let startFrom;
+    let printInput;
     
     let errorBoolean = false; 
 
@@ -164,7 +162,6 @@
         overlayContainer.css("display", "none");
         nameInputError.text("");
         quantityInputError.text("");
-        startFromInputError.text("");
     });
 
     addBtn.click(function () {
@@ -174,7 +171,7 @@
     function ValidateInputs() {
         nameI = nameInput.val();
         quantity = quantityInput.val();
-        startFrom = startFromInput.val();
+        printInput = false;
         errorBoolean = false;
 
         if (nameI == "" || nameI == " ") {
@@ -193,32 +190,28 @@
             quantityInputError.text("");
         }
 
-        if (startFrom == "" || startFrom == " " || startFrom < 1) {
-            startFromInputError.text("The field can't be empty or 0!");
-            errorBoolean = true
-        }
-        else {
-            startFromInputError.text("");
+        if (printcheckboxInput.is(":checked")) {
+            printInput = true;
         }
 
         if (errorBoolean == true) {
             return;
         }
 
-        ajaxPost(nameI, quantity, startFrom);
+        ajaxPost(nameI, quantity, printInput);
     }
 
-    function ajaxPost(nameI, quantityI, startFromI) {
+    function ajaxPost(nameI, quantityI, printI) {
     $.ajax({
         type: "POST",
         url: "/Warehouse/CreateTote",
         headers: { "RequestVerificationToken": "@GetAntiXsrfRequestToken()" },
-        data: { toteName: nameI, quantity: quantityI, startFrom: startFromI },
+        data: { toteName: nameI, quantity: quantityI, printBool: printI },
         success: function (result) {
 
             if (result.errorBoolean == false) {
-                for(var i = 0; i < result.barcodeList.length; i++) {
-                    console.log(result.barcodeList[i]);
+                for(var i = 0; i < result.toteList.length; i++) {
+                    console.log(result.toteList[i].barcode);
                 }
 
                 console.log(result.saveVal);
