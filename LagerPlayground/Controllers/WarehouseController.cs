@@ -1,6 +1,7 @@
 ﻿using LagerPlayground.Data;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using LagerPlayground.Models;
 
 namespace LagerPlayground.Controllers
 {
@@ -53,34 +54,45 @@ namespace LagerPlayground.Controllers
             return View(totes);
         }
 
+        // https://docs.microsoft.com/en-us/dotnet/api/system.drawing.printing.printdocument.print?view=dotnet-plat-ext-6.0
+
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<JsonResult> CreateTote(string toteName, int quantity, int startFrom)
+        public async Task<JsonResult> CreateTote(string toteName, int quantity, bool printBool)
         {
             toteName = toteName.Trim();
+            printBool = false;
 
-            if (toteName == "" || quantity < 0 || startFrom < 0)
+            if (toteName == "" || quantity < 0)
             {
                 return Json(new { errorBoolean = true, exceptionError = false, errorMsg = "Check your input fields" });
             }
 
-            int number = 0;
-            string barcode = toteName.ToUpper().Trim() + "-";
-            List<string> barcodeList = new();
+            var newestTote = await _context.Totes.OrderByDescending(x => x.Number).FirstOrDefaultAsync();
+            int toteNumber;
+
+            if (newestTote == null)
+                toteNumber = 0;
+            else
+                toteNumber = newestTote.Number;
+
+            List<Tote> toteList = new();
             for (int i = 0; i < quantity; i++)
             {
-                number++;
-                barcodeList.Add(barcode + startFrom++);
+                toteNumber++;
+                toteList.Add(new Tote {
+                    Name = toteName,
+                    Barcode = "T-" + toteNumber.ToString("D13"),
+                    Number = toteNumber,
+                    Created = DateTime.Now
+                });
             }
-
-            // https://docs.microsoft.com/en-us/dotnet/api/system.drawing.printing.printdocument.print?view=dotnet-plat-ext-6.0
-            //
 
             string saveVal;
             try
             {
-                //await _context.AddRangeAsync(barcodeList);
-                //await _context.SaveChangesAsync();
+                await _context.AddRangeAsync(toteList);
+                await _context.SaveChangesAsync();
                 saveVal = "Saved";
             }
             catch (DbUpdateException)
@@ -88,7 +100,12 @@ namespace LagerPlayground.Controllers
                 return Json(new { errorBoolean = true, exceptionError = true, errorMsg = "An database error has occured, try again" });
             }
 
-            return Json(new { errorBoolean = false, name = toteName, barcodeList, saveVal });
+            //if (printBool == true)
+            //{
+            //    // Create pdf
+            //}
+
+            return Json(new { errorBoolean = false, name = toteName, toteList, saveVal });
         }
 
         [HttpPost]
