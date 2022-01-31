@@ -22,6 +22,28 @@ namespace LagerPlayground.Helpers
             _env = env;
         }
 
+        public void GererateBarcode(Tote tote)
+        {
+            using PdfWriter writer = new(Path.Combine(_env.WebRootPath + "/Pdf/Barcode.pdf"));
+            PdfDocument pdf = new(writer);
+            Document document = new(pdf);
+
+            document.SetMargins(2f, 2f, 2f, 2f);
+
+            pdf.AddNewPage();
+
+            Table table = new(UnitValue.CreatePercentArray(1));
+            table.SetWidth(100f);
+            table.SetHorizontalAlignment(HorizontalAlignment.CENTER);
+            table.SetTextAlignment(TextAlignment.CENTER);
+            table.SetMarginTop(10f);
+
+            table.AddCell(CreateBarcode(tote.Name, tote.Barcode, pdf));
+
+            document.Add(table);
+            document.Close();
+        }
+
         public void GenerateBarcodesPrint(List<Tote> barcodeList)
         {
             using PdfWriter writer = new(Path.Combine(_env.WebRootPath + "/Pdf/Barcode.pdf"));
