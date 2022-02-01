@@ -28,7 +28,15 @@
         </select>
         <label class="totes-navbar-label"> linjer</label>
 
-        <a class="tote-print-checkbox-btn">Print</a>
+        <div class="tote-table-btn-overall-container" style="margin-top: 13px;">
+            <div class="tote-table-btn-container">
+                <a class="tote-print-this-btn">Print</a>
+            </div>
+            <div class="tote-table-btn-container">
+                <a class="tote-delete-this-btn">Delete</a>
+            </div>
+        </div>
+        <div class="clearBoth"></div>   
     </div>
     <div class="totes-navbar-float">
         <div class="totes-navbar-search-container">
@@ -65,11 +73,54 @@
                 <td>@Html.DisplayFor(modelItem => item.Name)</td>
                 <td>@Html.DisplayFor(modelItem => item.Barcode)</td>
                 <td>@item.Created.ToShortDateString()</td>
-                <td><a class="tote-print-this-btn" data-id="@item.ID">Print</a></td>
+                <td>
+                    <div class="tote-table-btn-overall-container">
+                        <div class="tote-table-btn-container">
+                            <a class="tote-print-this-btn" data-id="@item.ID">Print</a>
+                        </div>
+                        <div class="tote-table-btn-container">
+                            <a class="tote-delete-this-btn" data-id="@item.ID">Delete</a>
+                        </div>
+                    </div>
+                    <div class="clearBoth"></div>    
+                </td>
             </tr>
         }
     </tbody>
 </table>
+
+<div class="tote-delete-overlay-overall-container">
+    <div class="tote-overlay-container">
+        <div class="tote-overlay-nav-overall-container">
+            <div class="tote-overlay-nav-container">
+                <p>Are you sure?</p>
+            </div>
+            <div class="tote-overlay-nav-container">
+                <span class="material-icons tote-overlay-nav-close-btn">close</span>
+            </div>
+            <div class="clearBoth"></div>
+        </div>
+
+        <div class="tote-overlay-info-container">
+            <p>If you delete this order, the order wil be gone forever. Are you sure you want to proceed?</p>
+        </div>
+
+        <div class="tote-overlay-btns-overall-container">
+            <div class="tote-overlay-btns-container-cancel">
+                <button class="tote-overlay-btn-cancel tote-overlay-nav-close-btn">Cancel</button>
+            </div>
+            <div class="tote-overlay-btns-container-add">
+                <form asp-action="DeleteOrder">
+                    <input type="hidden" @*asp-for="@Model.ID"*@ />
+                    <button class="tote-overlay-btn-add tote-overlay-btn-delete">Delete</button>
+                </form>
+            </div>
+
+            <div class="clearBoth"></div>
+        </div>
+
+    </div>
+</div>
 
 <div class="tote-overlay-overall-container">
     <div class="tote-overlay-container">
@@ -170,6 +221,21 @@
     let printInput = false;
     
     let errorBoolean = false; 
+
+    //--- Delete Modal
+
+    const openDeleteBtn = $(".tote-delete-this-btn");
+    const overlayDeleteContainer = $(".tote-delete-overlay-overall-container");
+
+    openDeleteBtn.click(function () {
+        overlayDeleteContainer.css("display", "block");
+    });
+
+    closeBtn.click(function () {
+        overlayDeleteContainer.css("display", "none");
+    });
+
+    //---
 
     openBtn.click(function () {
         overlayContainer.css("display", "block");
