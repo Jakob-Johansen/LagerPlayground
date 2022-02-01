@@ -190,11 +190,8 @@
     });
 
     checkboxInputBtn.click(function () {
-        var myTest = GetAllChecked();
-
-        for (var i = 0; i < myTest.length; i++) {
-            console.log(myTest[i]);
-        }
+        let selectedIds = GetAllChecked();
+        ajaxGetSelected(selectedIds);
     });
 
     function GetAllChecked() {
@@ -289,9 +286,29 @@ function ajaxPost(nameI, quantityI, printI) {
 
 function ajaxGet(id) {
     $.ajax({
-        type: "GET",
+        type: "POST",
         url: "/Warehouse/PrintOneBarcode",
         data: { ID: id },
+        success: function (result) {
+
+            if (result.errorBoolean == false) {
+                window.open('/Pdf/Barcode.pdf', '_blank');
+            }
+            else {
+                console.log(result.errorMsg);
+            }
+        },
+        error: function (req, status, error) {
+            console.log(status);
+        }
+    });
+}
+
+function ajaxGetSelected(selectedIds) {
+    $.ajax({
+        type: "POST",
+        url: "/Warehouse/PrintSelectedBarcodes",
+        data: { IDs: selectedIds },
         success: function (result) {
 
             if (result.errorBoolean == false) {

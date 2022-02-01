@@ -127,7 +127,7 @@ namespace LagerPlayground.Controllers
                 toteNumber++;
                 toteList.Add(new Tote {
                     Name = toteName + "-" + toteNumber,
-                    Barcode = "T-" + toteNumber.ToString("D13"),
+                    Barcode = toteNumber.ToString("D15"),
                     Number = toteNumber,
                     Created = DateTime.Now
                 });
@@ -153,6 +153,7 @@ namespace LagerPlayground.Controllers
             return Json(new { errorBoolean = false, name = toteName, toteList });
         }
 
+        [HttpPost]
         public async Task<JsonResult> PrintOneBarcode(int? ID)
         {
             if (ID == null)
@@ -169,6 +170,31 @@ namespace LagerPlayground.Controllers
 
             PdfHelper pdfHelper = new(_env);
             pdfHelper.GererateBarcode(tote);
+
+            return Json(new { errorBoolean = false });
+        }
+
+        [HttpPost]
+        public async Task<JsonResult> PrintSelectedBarcodes(List<int?> IDs)
+        {
+            if (IDs == null)
+            {
+                return Json(new { errorBoolean = true, errorMsg = "Cant find the totes with these IDs" });
+            }
+
+            List<Tote> selectedTotes = new();
+
+            foreach (var ID in IDs)
+            {
+                var tote = await _context.Totes.FirstOrDefaultAsync(x => x.ID == ID);
+                if (tote != null)
+                {
+                    selectedTotes.Add(tote);
+                }
+            }
+
+            PdfHelper pdfHelper = new(_env);
+            pdfHelper.GenerateBarcodesPrint(selectedTotes);
 
             return Json(new { errorBoolean = false });
         }
