@@ -693,7 +693,7 @@ li.dropdown {
     padding-bottom: 6px;
 }
 
-.tote-create-btn, .tote-print-this-btn {
+.tote-create-btn, .tote-print-this-btn, .tote-print-checkbox-btn {
     display: block;
     width: 120px;
     background-color: #1962b5;
@@ -706,7 +706,7 @@ li.dropdown {
     margin-right: 0;
 }
 
-.tote-print-this-btn {
+.tote-print-this-btn, .tote-print-checkbox-btn {
     width: 80px;
     margin: 0 !important;
     background-color: lightgray;
@@ -714,7 +714,12 @@ li.dropdown {
     color: black;
 }
 
-    .tote-create-btn:hover, .tote-print-this-btn:hover {
+.tote-print-checkbox-btn {
+    margin-top: 13px !important;
+    padding: 5px 12px !important;
+}
+
+    .tote-create-btn:hover, .tote-print-this-btn:hover, .tote-print-checkbox-btn:hover {
         color: black;
         cursor: pointer;
     }
@@ -761,6 +766,10 @@ li.dropdown {
 
 .tote-table {
     margin-top: 20px;
+}
+
+.tote-table-checkbox-input {
+    transform: scale(1.5);
 }
 
 /*---Tote Overlay---*/
