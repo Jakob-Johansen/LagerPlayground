@@ -28,7 +28,7 @@
         </select>
         <label class="totes-navbar-label"> linjer</label>
 
-        <a class="tote-print-this-btn">Print</a>
+        <a class="tote-print-checkbox-btn">Print</a>
     </div>
     <div class="totes-navbar-float">
         <div class="totes-navbar-search-container">
@@ -60,7 +60,7 @@
         @foreach (var item in Model)
         {
             <tr>
-                <td><input type="checkbox" style="transform: scale(1.5);" /></td>
+                <td><input class="tote-table-checkbox-input" type="checkbox" data-checkbox-id="@item.ID" /></td>
                 <td>Primary</td>
                 <td>@Html.DisplayFor(modelItem => item.Name)</td>
                 <td>@Html.DisplayFor(modelItem => item.Barcode)</td>
@@ -149,6 +149,7 @@
     const openBtn = $(".tote-create-btn");
     const closeBtn = $(".tote-overlay-nav-close-btn");
     const addBtn = $(".tote-overlay-btn-add");
+    const checkboxInputBtn = $(".tote-print-checkbox-btn");
 
     const overlayContainer = $(".tote-overlay-overall-container");
 
@@ -187,6 +188,22 @@
     printThisBtn.click(function () {
         ajaxGet($(this).attr("data-id"));
     });
+
+    checkboxInputBtn.click(function () {
+        var myTest = GetAllChecked();
+
+        for (var i = 0; i < myTest.length; i++) {
+            console.log(myTest[i]);
+        }
+    });
+
+    function GetAllChecked() {
+        let selectedIds = $(".tote-table-checkbox-input:checkbox:checked").map(function(){
+        return $(this).attr("data-checkbox-id");
+        }).get();
+        
+        return selectedIds;
+    }
 
     // Timeout/delay functions
     function loadingTimeout() {
