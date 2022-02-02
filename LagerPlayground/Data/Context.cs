@@ -19,5 +19,6 @@ namespace LagerPlayground.Data
         public DbSet<Order_Items> Order_Items { get; set; }
         public DbSet<Custommer> Custommers { get; set; }
         public DbSet<Tote> Totes { get; set; }
+        public DbSet<ReceivingBox> ReceivingBoxes { get; set; }
     }
 }
