@@ -179,7 +179,7 @@ namespace LagerPlayground.Controllers
         {
             if (IDs == null)
             {
-                return Json(new { errorBoolean = true, errorMsg = "Cant find the totes with these IDs" });
+                return Json(new { errorBoolean = true, errorMsg = "Cant find the IDs" });
             }
 
             List<Tote> selectedTotes = new();
@@ -195,6 +195,67 @@ namespace LagerPlayground.Controllers
 
             PdfHelper pdfHelper = new(_env);
             pdfHelper.GenerateBarcodesPrint(selectedTotes);
+
+            return Json(new { errorBoolean = false });
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<JsonResult> DeleteOneTote(int? ID)
+        {
+            if (ID == null)
+            {
+                return Json(new { errorBoolean = true, errorMsg = "Cant find the ID" });
+            }
+
+            var tote = await _context.Totes.FindAsync(ID);
+
+            if (tote == null)
+            {
+                return Json(new { errorBoolean = true, errorMsg = "Cant find a tote with this ID" });
+            }
+
+            try
+            {
+                _context.Totes.Remove(tote);
+                await _context.SaveChangesAsync();
+            }
+            catch (DbUpdateException)
+            {
+                return Json(new { errorBoolean = true, errorMsg = "An error with the database has occured" });
+            }
+
+            return Json(new { errorBoolean = false });
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<JsonResult> DeleteSelectedTotes(List<int?> IDs)
+        {
+            if (IDs == null)
+            {
+                return Json(new { errorBoolean = true, errorMsg = "No totes was selected" });
+            }
+
+            List<Tote> totesToDeleteList = new();
+            foreach (int? ID in IDs)
+            {
+                var tote = await _context.Totes.FindAsync(ID);
+                if (tote != null)
+                {
+                    totesToDeleteList.Add(tote);
+                }
+            }
+
+            try
+            {
+                _context.Totes.RemoveRange(totesToDeleteList);
+                await _context.SaveChangesAsync();
+            }
+            catch (DbUpdateException)
+            {
+                return Json(new { errorBoolean = true, errorMsg = "An error with the database has occured" });
+            }
 
             return Json(new { errorBoolean = false });
         }

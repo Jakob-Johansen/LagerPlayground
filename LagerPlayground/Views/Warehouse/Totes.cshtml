@@ -21,19 +21,18 @@
 
 <div class="totes-navbar-contianer">
     <div class="totes-navbar-float">
-@*            <a class="tote-print-btn">Print</a>*@
-        <label class="totes-navbar-label">Vis </label>
+@*        <label class="totes-navbar-label">Vis </label>
         <select class="totes-navbar-select">
             <option>10</option>
         </select>
-        <label class="totes-navbar-label"> linjer</label>
+        <label class="totes-navbar-label"> linjer</label>*@
 
-        <div class="tote-table-btn-overall-container" style="margin-top: 13px;">
+        <div class="tote-table-btn-overall-container"">
             <div class="tote-table-btn-container">
-                <a class="tote-print-this-btn">Print</a>
+                <a class="tote-print-checkbox-btn">Print</a>
             </div>
             <div class="tote-table-btn-container">
-                <a class="tote-delete-this-btn">Delete</a>
+                <a class="tote-delete-btn tote-delete-checkbox-btn">Delete</a>
             </div>
         </div>
         <div class="clearBoth"></div>   
@@ -50,7 +49,7 @@
 <table class="table tote-table">
     <thead>
         <tr>
-            <th>#</th>
+            <th><a class="tote-table-all-btn">All</a></th>
             <th >Warehouse</th>
             <th>
                 @Html.DisplayNameFor(model => model.Name)
@@ -79,7 +78,7 @@
                             <a class="tote-print-this-btn" data-id="@item.ID">Print</a>
                         </div>
                         <div class="tote-table-btn-container">
-                            <a class="tote-delete-this-btn" data-id="@item.ID">Delete</a>
+                            <a class="tote-delete-btn tote-delete-this-btn" data-id="@item.ID">Delete</a>
                         </div>
                     </div>
                     <div class="clearBoth"></div>    
@@ -102,7 +101,7 @@
         </div>
 
         <div class="tote-overlay-info-container">
-            <p>If you delete this order, the order wil be gone forever. Are you sure you want to proceed?</p>
+            <p>You are deleting a tote. Are you sure you want to proceed?</p>
         </div>
 
         <div class="tote-overlay-btns-overall-container">
@@ -110,10 +109,11 @@
                 <button class="tote-overlay-btn-cancel tote-overlay-nav-close-btn">Cancel</button>
             </div>
             <div class="tote-overlay-btns-container-add">
-                <form asp-action="DeleteOrder">
-                    <input type="hidden" @*asp-for="@Model.ID"*@ />
+@*                <form asp-action="DeleteOrder">
+                    <input type="hidden" asp-for="@Model.ID" />
                     <button class="tote-overlay-btn-add tote-overlay-btn-delete">Delete</button>
-                </form>
+                </form>*@
+                <button class="tote-overlay-btn-add tote-overlay-btn-delete">Delete</button>
             </div>
 
             <div class="clearBoth"></div>
@@ -196,11 +196,11 @@
     //});
 
     const btnContainer = $(".tote-overlay-btns-container");
-    const printThisBtn = $(".tote-print-this-btn"); 
+    const printThisBtn = $(".tote-print-this-btn");
+    const printBtn = $(".tote-print-checkbox-btn");
     const openBtn = $(".tote-create-btn");
     const closeBtn = $(".tote-overlay-nav-close-btn");
     const addBtn = $(".tote-overlay-btn-add");
-    const checkboxInputBtn = $(".tote-print-checkbox-btn");
 
     const overlayContainer = $(".tote-overlay-overall-container");
 
@@ -213,6 +213,12 @@
 
     const loader = $(".loader");
 
+    const selectAllBtn = $(".tote-table-all-btn");
+
+    const deleteThisBtn = $(".tote-delete-this-btn")
+    const deleteCheckBoxBtn = $(".tote-delete-checkbox-btn");
+    const overlayDeleteContainer = $(".tote-delete-overlay-overall-container");
+
     let loadingIsRunning = false;
     let ajaxResult = false;
 
@@ -222,17 +228,38 @@
     
     let errorBoolean = false; 
 
-    //--- Delete Modal
-
-    const openDeleteBtn = $(".tote-delete-this-btn");
-    const overlayDeleteContainer = $(".tote-delete-overlay-overall-container");
-
-    openDeleteBtn.click(function () {
-        overlayDeleteContainer.css("display", "block");
-    });
+    //--- Delete
 
     closeBtn.click(function () {
         overlayDeleteContainer.css("display", "none");
+    });
+
+    deleteCheckBoxBtn.click(function () {
+        let selectedIds = GetAllChecked();
+        if (selectedIds.length != 0) {
+            overlayDeleteContainer.css("display", "block");
+            $(".tote-overlay-info-container").find("p").text("You are deleting " + selectedIds.length + " totes. Are you sure you want to proceed?");
+            $(".tote-overlay-btn-delete").click(function () {
+                ajaxDeleteSelected(selectedIds);
+            });
+        }
+    });
+
+    deleteThisBtn.click(function () {
+        overlayDeleteContainer.css("display", "block");
+        $(".tote-overlay-info-container").find("p").text("You are deleting a tote. Are you sure you want to proceed?");
+
+        let dataID = $(this).attr("data-id");
+
+        $(".tote-overlay-btn-delete").click(function () {
+            ajaxDeleteOne(dataID);
+        });
+    });
+
+    //--- Select All
+
+    selectAllBtn.click(function () {
+        $(".tote-table-checkbox-input").prop("checked", true);
     });
 
     //---
@@ -255,9 +282,11 @@
         ajaxGet($(this).attr("data-id"));
     });
 
-    checkboxInputBtn.click(function () {
+    printBtn.click(function () {
         let selectedIds = GetAllChecked();
-        ajaxGetSelected(selectedIds);
+        if(selectedIds.length != 0) {
+            ajaxPrintSelected(selectedIds);
+        }
     });
 
     function GetAllChecked() {
@@ -370,7 +399,7 @@ function ajaxGet(id) {
     });
 }
 
-function ajaxGetSelected(selectedIds) {
+function ajaxPrintSelected(selectedIds) {
     $.ajax({
         type: "POST",
         url: "/Warehouse/PrintSelectedBarcodes",
@@ -389,5 +418,48 @@ function ajaxGetSelected(selectedIds) {
         }
     });
 }
+
+function ajaxDeleteOne(Id) {
+    $.ajax({
+        type: "POST",
+        url: "/Warehouse/DeleteOneTote",
+        headers: { "RequestVerificationToken": "@GetAntiXsrfRequestToken()" },
+        data: { ID: Id },
+        success: function (result) {
+
+            if (result.errorBoolean == false) {
+                location.reload();
+            }
+            else {
+                console.log(result.errorMsg);
+            }
+        },
+        error: function (req, status, error) {
+            console.log(status);
+        }
+    });
+}
+
+function ajaxDeleteSelected(Ids) {
+    $.ajax({
+        type: "POST",
+        url: "/Warehouse/DeleteSelectedTotes",
+        headers: { "RequestVerificationToken": "@GetAntiXsrfRequestToken()" },
+        data: { IDs: Ids },
+        success: function (result) {
+
+            if (result.errorBoolean == false) {
+                location.reload();
+            }
+            else {
+                console.log(result.errorMsg);
+            }
+        },
+        error: function (req, status, error) {
+            console.log(status);
+        }
+    });
+}
+
 </script>
 }
