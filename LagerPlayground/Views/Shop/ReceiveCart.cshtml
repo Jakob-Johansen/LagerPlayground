@@ -1,0 +1,41 @@
+﻿
+@{
+        ViewData["Title"] = "Receive Cart";
+}
+
+<h2>Receive Cart</h2>
+
+@if(ViewBag.receiveCart != null)
+{
+    if (ViewBag.receiveCart.Count != 0)
+    {
+      <table class="shop-table">
+        <tbody>
+            @foreach (var item in ViewBag.receiveCart)
+            {
+             <tr class="shop-table-tr">
+                <td class="shop-table-image-td"><img class="shop-table-image" src="~/Images/@(item.Product.Image == null ? "Placeholders/Placeholder.jpg" : "Products/" + @item.Product.Image)" /></td>
+                <td class="shop-table-text-td">@item.Product.Name</td>
+                <td class="shop-table-text-td">@item.Product.Description</td>
+                <td class="cart-table-btn-td"><input class="cart-input background-dark" type="number" value="@item.Quantity" data-id="@item.Product.ID" /> stk. <br /></td>
+                <td><a class="cart-remove-btn" data-id="@item.Product.ID">Remove</a></td>
+             </tr>   
+            }
+        </tbody>
+        </table>
+
+        <hr />
+        <a class="cart-buy-btn" asp-controller="Shop" asp-action="ReceiveCheckOut">Gå til kassen</a>
+    }
+    else
+    {
+        <p>Der er ikke nogen produkter i din kurv.</p>
+    }
+}
+else {
+    <p>Der er ikke nogen produkter i din kurv.</p>
+}
+
+@section Scripts {
+    <script src="~/js/ReciveCartAddOrSubtract.js"></script>
+}

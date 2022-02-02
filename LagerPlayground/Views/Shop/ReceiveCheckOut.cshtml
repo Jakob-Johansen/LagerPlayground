@@ -1,0 +1,68 @@
+﻿@model LagerPlayground.Models.ReceiveCustommer
+
+@{
+    ViewData["Title"] = "Receive CheckOut";
+}
+
+<h1>Receive Checkout</h1>
+<hr />
+
+<div class="checkout-overall-container">
+    <div class="checkout-container">
+        <div class="col-md-8">
+            <form asp-action="ReceiveCheckOut">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                <div class="form-group">
+                    <label asp-for="CompanyName" class="control-label"></label>
+                    <input asp-for="CompanyName" class="form-control background-dark" />
+                    <span asp-validation-for="CompanyName" class="text-danger"></span>
+                    <br />
+                </div>
+                <div class="form-group">
+                    <label asp-for="ReceivingOrder_Details.ArrivalDate" class="control-label"></label>
+                    <input asp-for="ReceivingOrder_Details.ArrivalDate" type="date" class="form-control background-dark" />
+                    <span asp-validation-for="ReceivingOrder_Details.ArrivalDate" class="text-danger"></span>
+                    <br />
+                </div>
+                <div class="form-group">
+                    <input type="submit" value="Create Receive Order" class="btn-primary" />
+                </div>
+            </form>
+        </div>
+    </div>
+    <div class="checkout-container">
+        @if (ViewBag.receiveCart != null)
+        {
+            if (ViewBag.receiveCart.Count != 0)
+            {
+                @foreach (var item in ViewBag.receiveCart)
+                {
+                    <div class="checkout-product-container">
+                        <div class="checkout-product-image-container">
+                            <img src="~/Images/@(item.Product.Image == null ? "Placeholders/Placeholder.jpg" : "Products/" + @item.Product.Image)" />
+                        </div>
+                        <div class="checkout-product-info-container">
+                            <div class="checkout-product-info-name-container">
+                                <p>@item.Product.Name</p>
+                            </div>
+                            <div class="checkout-product-info-quantity-container">
+                                <p>@item.Quantity stk.</p>
+                            </div>
+                        </div>
+                        <div class="clearBoth"></div>
+                    </div>
+                }
+            }
+            else
+            {
+                <p>Der er ikke nogen produkter</p>
+            }
+        }
+        else
+        {
+            <p>Der er ikke nogen produkter</p>
+        }
+
+    </div>
+    <div class="clearBoth"></div>
+</div>
