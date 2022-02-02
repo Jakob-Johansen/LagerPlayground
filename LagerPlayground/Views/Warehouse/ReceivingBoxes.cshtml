@@ -1,6 +1,6 @@
 ﻿@inject Microsoft.AspNetCore.Antiforgery.IAntiforgery Xsrf
 
-@model IEnumerable<LagerPlayground.Models.Tote>
+@model IEnumerable<LagerPlayground.Models.ReceivingBox>
 
 @functions {
     public string GetAntiXsrfRequestToken()
@@ -10,13 +10,13 @@
 }
 
 @{
-    ViewData["Title"] = "Totes";
+    ViewData["Title"] = "Receiving Boxes";
 }
 
-<h2>Totes</h2>
+<h2>Receiving Boxes</h2>
 
 <div class="tote-create-btn-container">
-    <a class="tote-create-btn">Create Tote</a>
+    <a class="tote-create-btn" style="width: 180px;">Create Receiving Box</a>
 </div>
 
 <div class="totes-navbar-contianer">
@@ -101,7 +101,7 @@
         </div>
 
         <div class="tote-overlay-info-container">
-            <p>You are deleting a tote. Are you sure you want to proceed?</p>
+            <p></p>
         </div>
 
         <div class="tote-overlay-btns-overall-container">
@@ -109,10 +109,6 @@
                 <button class="tote-overlay-btn-cancel tote-overlay-nav-close-btn">Cancel</button>
             </div>
             <div class="tote-overlay-btns-container-add">
-@*                <form asp-action="DeleteOrder">
-                    <input type="hidden" asp-for="@Model.ID" />
-                    <button class="tote-overlay-btn-add tote-overlay-btn-delete">Delete</button>
-                </form>*@
                 <button class="tote-overlay-btn-add tote-overlay-btn-delete">Delete</button>
             </div>
 
@@ -126,7 +122,7 @@
     <div class="tote-overlay-container">
         <div class="tote-overlay-nav-overall-container">
             <div class="tote-overlay-nav-container">
-                <p>Add Tote</p>
+                <p>Add Box</p>
             </div>
             <div class="tote-overlay-nav-container">
                 <span class="material-icons tote-overlay-nav-close-btn">close</span>
@@ -141,7 +137,7 @@
                     <p>Navn*</p>
                 </div>
                 <div class="tote-overlay-form-big-float">
-                    <input class="tote-overlay-name-input background-dark" type="text" />
+                    <input class="tote-overlay-name-input background-dark" type="text" readonly value="Receiving-Box" />
                     <span class="tote-overlay-name-input-error text-danger"></span>
                 </div>
                 <div class="clearBoth"></div>
@@ -187,14 +183,8 @@
     </div>
 </div>
 
-@*<svg class="barcode1"></svg>*@
-
 @section Scripts {
 <script>
-    //$(".barcode1").JsBarcode("JSoft-BOKS-1", {
-    //    format: "CODE128",
-    //});
-
     const btnContainer = $(".tote-overlay-btns-container");
     const printThisBtn = $(".tote-print-this-btn");
     const printBtn = $(".tote-print-checkbox-btn");
@@ -238,7 +228,7 @@
         let selectedIds = GetAllChecked();
         if (selectedIds.length != 0) {
             overlayDeleteContainer.css("display", "block");
-            $(".tote-overlay-info-container").find("p").text("You are deleting " + selectedIds.length + " totes. Are you sure you want to proceed?");
+            $(".tote-overlay-info-container").find("p").text("You are deleting " + selectedIds.length + " Receiving Boxes. Are you sure you want to proceed?");
             $(".tote-overlay-btn-delete").click(function () {
                 ajaxDeleteSelected(selectedIds);
             });
@@ -247,7 +237,7 @@
 
     deleteThisBtn.click(function () {
         overlayDeleteContainer.css("display", "block");
-        $(".tote-overlay-info-container").find("p").text("You are deleting a tote. Are you sure you want to proceed?");
+        $(".tote-overlay-info-container").find("p").text("You are deleting a Receiving Box. Are you sure you want to proceed?");
 
         let dataID = $(this).attr("data-id");
 
@@ -349,9 +339,9 @@
 function ajaxPost(nameI, quantityI, printI) {
     $.ajax({
         type: "POST",
-        url: "/Warehouse/ToteCreate",
+        url: "/Warehouse/ReceivingBoxCreate",
         headers: { "RequestVerificationToken": "@GetAntiXsrfRequestToken()" },
-        data: { toteName: nameI, quantity: quantityI, printBool: printI },
+        data: { boxName: nameI, quantity: quantityI, printBool: printI },
         success: function (result) {
             loadingIsRunning = false;
             ajaxResult = true;
@@ -376,7 +366,7 @@ function ajaxPost(nameI, quantityI, printI) {
 function ajaxGet(id) {
     $.ajax({
         type: "POST",
-        url: "/Warehouse/TotePrintOneBarcode",
+        url: "/Warehouse/ReceivingBoxPrintOneBarcode",
         data: { ID: id },
         success: function (result) {
 
@@ -396,7 +386,7 @@ function ajaxGet(id) {
 function ajaxPrintSelected(selectedIds) {
     $.ajax({
         type: "POST",
-        url: "/Warehouse/TotePrintSelectedBarcodes",
+        url: "/Warehouse/ReceivingBoxPrintSelectedBarcodes",
         data: { IDs: selectedIds },
         success: function (result) {
 
@@ -416,7 +406,7 @@ function ajaxPrintSelected(selectedIds) {
 function ajaxDeleteOne(Id) {
     $.ajax({
         type: "POST",
-        url: "/Warehouse/ToteDeleteOne",
+        url: "/Warehouse/ReceivingBoxDeleteOne",
         headers: { "RequestVerificationToken": "@GetAntiXsrfRequestToken()" },
         data: { ID: Id },
         success: function (result) {
@@ -437,7 +427,7 @@ function ajaxDeleteOne(Id) {
 function ajaxDeleteSelected(Ids) {
     $.ajax({
         type: "POST",
-        url: "/Warehouse/ToteDeleteSelected",
+        url: "/Warehouse/ReceivingBoxDeleteSelected",
         headers: { "RequestVerificationToken": "@GetAntiXsrfRequestToken()" },
         data: { IDs: Ids },
         success: function (result) {

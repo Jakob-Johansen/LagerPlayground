@@ -6,6 +6,7 @@ using iText.Layout.Borders;
 using iText.Layout.Element;
 using iText.Layout.Properties;
 using LagerPlayground.Models;
+using LagerPlayground.Models.VM;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -22,7 +23,7 @@ namespace LagerPlayground.Helpers
             _env = env;
         }
 
-        public void GererateBarcode(Tote tote)
+        public void GererateBarcode(string name, string barcode)
         {
             using PdfWriter writer = new(Path.Combine(_env.WebRootPath + "/Pdf/Barcode.pdf"));
             PdfDocument pdf = new(writer);
@@ -38,13 +39,13 @@ namespace LagerPlayground.Helpers
             table.SetTextAlignment(TextAlignment.CENTER);
             table.SetMarginTop(10f);
 
-            table.AddCell(CreateBarcode(tote.Name, tote.Barcode, pdf));
+            table.AddCell(CreateBarcode(name, barcode, pdf));
 
             document.Add(table);
             document.Close();
         }
 
-        public void GenerateBarcodesPrint(List<Tote> barcodeList)
+        public void GenerateBarcodesPrint(List<PdfModel> barcodeList)
         {
             using PdfWriter writer = new(Path.Combine(_env.WebRootPath + "/Pdf/Barcode.pdf"));
             PdfDocument pdf = new(writer);
