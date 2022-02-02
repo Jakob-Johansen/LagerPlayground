@@ -4,6 +4,7 @@ using LagerPlayground.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace LagerPlayground.Migrations
 {
     [DbContext(typeof(Context))]
-    partial class ContextModelSnapshot : ModelSnapshot
+    [Migration("20220202185337_ReceivingOrderCreate")]
+    partial class ReceivingOrderCreate
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -159,33 +161,6 @@ namespace LagerPlayground.Migrations
                     b.ToTable("Products");
                 });
 
-            modelBuilder.Entity("LagerPlayground.Models.ReceiveCustommer", b =>
-                {
-                    b.Property<int>("ID")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ID"), 1L, 1);
-
-                    b.Property<string>("CompanyName")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime>("Created")
-                        .HasColumnType("datetime2");
-
-                    b.Property<DateTime>("Modified")
-                        .HasColumnType("datetime2");
-
-                    b.Property<int?>("ReceivingOrder_DetailsID")
-                        .HasColumnType("int");
-
-                    b.HasKey("ID");
-
-                    b.HasIndex("ReceivingOrder_DetailsID");
-
-                    b.ToTable("ReceiveCustommers");
-                });
-
             modelBuilder.Entity("LagerPlayground.Models.ReceivingBox", b =>
                 {
                     b.Property<int>("ID")
@@ -225,17 +200,11 @@ namespace LagerPlayground.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ID"), 1L, 1);
 
-                    b.Property<DateTime>("ArrivalDate")
-                        .HasColumnType("datetime2");
-
                     b.Property<DateTime>("Created")
                         .HasColumnType("datetime2");
 
                     b.Property<DateTime>("Modified")
                         .HasColumnType("datetime2");
-
-                    b.Property<int>("ReceiveCustommer")
-                        .HasColumnType("int");
 
                     b.HasKey("ID");
 
@@ -333,15 +302,6 @@ namespace LagerPlayground.Migrations
                     b.Navigation("Order_Details");
 
                     b.Navigation("Product");
-                });
-
-            modelBuilder.Entity("LagerPlayground.Models.ReceiveCustommer", b =>
-                {
-                    b.HasOne("LagerPlayground.Models.ReceivingOrder_Details", "ReceivingOrder_Details")
-                        .WithMany()
-                        .HasForeignKey("ReceivingOrder_DetailsID");
-
-                    b.Navigation("ReceivingOrder_Details");
                 });
 
             modelBuilder.Entity("LagerPlayground.Models.ReceivingOrder_Items", b =>

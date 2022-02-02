@@ -29,7 +29,7 @@ cartSubmitBtn.click(function () {
 function AjaxUpdateOnlyID(ID) {
     $.ajax({
         type: "GET",
-        url: "/Shop/ShopBuy",
+        url: "/Shop/ReceiveBuy",
         data: { id: ID },
         success: function () {
             let count = parseInt(cartProductCount.closest("span").text());
@@ -44,8 +44,8 @@ function AjaxUpdateOnlyID(ID) {
 function AjaxUpdate(ID, Quantity) {
     $.ajax({
         type: "GET",
-        url: "/Shop/ShopBuy",
-        data: { id: ID, quantity: Quantity},
+        url: "/Shop/ReceiveBuy",
+        data: { id: ID, quantity: Quantity },
         error: function (req, status, error) {
             console.log(status);
         }
@@ -55,8 +55,8 @@ function AjaxUpdate(ID, Quantity) {
 function AjaxRemove(ID, test) {
     $.ajax({
         type: "GET",
-        url: "/Shop/ShopRemove",
-        data: { id: ID},
+        url: "/Shop/ReceiveRemove",
+        data: { id: ID },
         success: function () {
             test.closest("tr").remove();
         },

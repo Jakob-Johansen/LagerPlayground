@@ -1,0 +1,30 @@
+﻿@model IEnumerable<Product>
+
+@{
+    ViewData["Title"] = "Create Receive Order";
+}
+<div class="shop-overall-container">
+    <ul class="shop-ul">
+        <li><h2 style="padding: 0; margin: 0;">Create Receive Order</h2></li>
+        <li><a class="shop-cart" asp-controller="Shop" asp-action="ReceiveCart"><span class="material-icons" style="padding-right: 5px;">shopping_cart</span>Kurv <span class="cart-product-count">@(ViewBag.SessionCount == null ? "0" : ViewBag.SessionCount)</span></a></li>
+    </ul>
+
+    <table class="shop-table">
+
+        <tbody>
+            @foreach (var item in Model)
+            {
+             <tr class="shop-table-tr">
+                <td class="shop-table-image-td"><img class="shop-table-image" src="~/Images/@(item.Image == null ? "Placeholders/Placeholder.jpg" : "Products/" + @item.Image)" /></td>
+                <td class="shop-table-text-td">@item.Name</td>
+                <td class="shop-table-text-td">@item.BarcodeID</td>
+                <td class="shop-table-btn-td"><a class="shop-addToCart-btn" data-id="@item.ID">Tilføj til kurv</a></td>
+             </tr>   
+            }
+        </tbody>
+    </table>
+</div>
+
+@section Scripts {
+    <script src="~/js/ReciveCartAddOrSubtract.js"></script>
+}
