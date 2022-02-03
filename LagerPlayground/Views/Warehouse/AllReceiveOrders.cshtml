@@ -7,18 +7,19 @@
 <h2>All Receiving Orders</h2>
 <hr />
 
-@*<table class="table tote-table">
+<table class="table tote-table">
     <thead>
         <tr>
             <th>
                 @Html.DisplayNameFor(model => model.ID)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.ReceiveCustommer.CompanyName)
+                @*@Html.DisplayNameFor(model => model.ReceiveCustommer.CompanyName)*@
+                Company Name
             </th>
             <th>Products Ordered</th>
             <th>
-                @Html.DisplayNameFor(model => model.Created)
+                Arrival Date
             </th>
             <th></th>
         </tr>
@@ -28,11 +29,11 @@
         {
             <tr>
                 <td>@Html.DisplayFor(modelItem => item.ID)</td>
-                <td>@Html.DisplayFor(modelItem => item.Custommer.Name)</td>
+                <td>@Html.DisplayFor(modelItem => item.ReceiveCustommer.CompanyName)</td>
                 <td>
                     @{
                         int productQuantity = 0;
-                        foreach (var product in item.Order_Items)
+                        foreach (var product in item.receivingOrder_Items)
                         {
 
                             productQuantity += product.Quantity;
@@ -40,9 +41,9 @@
                         @Html.Raw(productQuantity);
                     }
                 </td>
-                <td>@Html.DisplayFor(modelItem => item.Created)</td>
+                <td>@item.ArrivalDate.ToShortDateString()</td>
                 <td><a asp-action="OrderDetails" asp-route-id="@item.ID">View Details</a></td>
             </tr>
         }
     </tbody>
-</table>*@
+</table>

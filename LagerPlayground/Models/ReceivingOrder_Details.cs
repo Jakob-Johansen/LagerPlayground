@@ -15,5 +15,6 @@ namespace LagerPlayground.Models
         public DateTime Modified { get; set; }
 
         public ReceiveCustommer ReceiveCustommer { get; set; }
+        public ICollection<ReceivingOrder_Items> receivingOrder_Items { get; set; }
     }
 }
