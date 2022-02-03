@@ -208,7 +208,7 @@ namespace LagerPlayground.Controllers
                     // Får id fra den custommer som lige er blevet gemt.
                     //ViewBag.id = custommer.ID;
 
-                    receivingOrder_Details.ReceiveCustommer = receiveCustommer.ID;
+                    receivingOrder_Details.ReceiveCustommerID = receiveCustommer.ID;
                     receivingOrder_Details.Created = DateTime.Now;
                     _context.ReceivingOrder_Details.Add(receivingOrder_Details);
                     await _context.SaveChangesAsync();

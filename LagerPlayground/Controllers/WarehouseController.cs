@@ -127,7 +127,7 @@ namespace LagerPlayground.Controllers
                 toteNumber++;
                 toteList.Add(new Tote {
                     Name = toteName + "-" + toteNumber,
-                    Barcode = toteNumber.ToString("D15"),
+                    Barcode = "T-" + toteNumber.ToString("D15"),
                     Number = toteNumber,
                     Created = DateTime.Now
                 });
@@ -135,7 +135,7 @@ namespace LagerPlayground.Controllers
                 pdfModelList.Add(new PdfModel
                 {
                     Name = toteName + "-" + toteNumber,
-                    Barcode = toteNumber.ToString("D15")
+                    Barcode = "T-" + toteNumber.ToString("D15")
                 });
             }
 
@@ -304,7 +304,7 @@ namespace LagerPlayground.Controllers
                 boxList.Add(new ReceivingBox
                 {
                     Name = boxName + "-" + boxNumber,
-                    Barcode = boxNumber.ToString("D15"),
+                    Barcode = "R-" + boxNumber.ToString("D15"),
                     Number = boxNumber,
                     Created = DateTime.Now
                 });
@@ -312,7 +312,7 @@ namespace LagerPlayground.Controllers
                 pdfModelList.Add(new PdfModel
                 {
                     Name = boxName + "-" + boxNumber,
-                    Barcode = boxNumber.ToString("D15")
+                    Barcode = "R-" + boxNumber.ToString("D15")
                 });
             }
 
@@ -444,6 +444,15 @@ namespace LagerPlayground.Controllers
             }
 
             return Json(new { errorBoolean = false });
+        }
+
+        //---Receive Order---
+
+        public async Task<IActionResult> AllReceiveOrders()
+        {
+            var receiveOrders = await _context.ReceivingOrder_Details
+                    .Include(x => x.ReceiveCustommer).AsNoTracking().ToListAsync();
+            return View(receiveOrders);
         }
     }
 }
