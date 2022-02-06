@@ -10,17 +10,12 @@
 <table class="table tote-table">
     <thead>
         <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.ID)
-            </th>
-            <th>
-                @*@Html.DisplayNameFor(model => model.ReceiveCustommer.CompanyName)*@
-                Company Name
-            </th>
-            <th>Products Ordered</th>
-            <th>
-                Arrival Date
-            </th>
+            <th>Order</th>
+            <th>Vendor</th>
+            <th>Status</th>
+            <th>Created</th>
+            <th>Closed</th>
+            <th>Expected</th>
             <th></th>
         </tr>
     </thead>
@@ -29,19 +24,13 @@
         {
             <tr>
                 <td>@Html.DisplayFor(modelItem => item.ID)</td>
-                <td>@Html.DisplayFor(modelItem => item.ReceiveCustommer.CompanyName)</td>
+                <td>@Html.DisplayFor(modelItem => item.ReceiveCustommer.Vendor)</td>
                 <td>
-                    @{
-                        int productQuantity = 0;
-                        foreach (var product in item.receivingOrder_Items)
-                        {
-
-                            productQuantity += product.Quantity;
-                        }
-                        @Html.Raw(productQuantity);
-                    }
+                    @Html.DisplayFor(modelItem => item.OrderStatus)
                 </td>
-                <td>@item.ArrivalDate.ToShortDateString()</td>
+                <td>@item.Created.ToShortDateString()</td>
+                <td>@(item.Closed != null ? item.Closed?.ToShortDateString() : "-")</td>
+                <td>@item.Expected.ToShortDateString()</td>
                 <td><a asp-action="OrderDetails" asp-route-id="@item.ID">View Details</a></td>
             </tr>
         }

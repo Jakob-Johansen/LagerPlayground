@@ -9,7 +9,7 @@ namespace LagerPlayground.Models
     public class ReceiveCustommer
     {
         public int ID { get; set; }
-        public string CompanyName { get; set; }
+        public string Vendor { get; set; }
         public DateTime Created { get; set; }
         public DateTime Modified { get; set; }
 

@@ -13,15 +13,15 @@
             <form asp-action="ReceiveCheckOut">
                 <div asp-validation-summary="ModelOnly" class="text-danger"></div>
                 <div class="form-group">
-                    <label asp-for="CompanyName" class="control-label"></label>
-                    <input asp-for="CompanyName" class="form-control background-dark" />
-                    <span asp-validation-for="CompanyName" class="text-danger"></span>
+                    <label asp-for="Vendor" class="control-label"></label>
+                    <input asp-for="Vendor" class="form-control background-dark" />
+                    <span asp-validation-for="Vendor" class="text-danger"></span>
                     <br />
                 </div>
                 <div class="form-group">
-                    <label asp-for="ReceivingOrder_Details.ArrivalDate" class="control-label"></label>
-                    <input asp-for="ReceivingOrder_Details.ArrivalDate" type="date" class="form-control background-dark" />
-                    <span asp-validation-for="ReceivingOrder_Details.ArrivalDate" class="text-danger"></span>
+                    <label asp-for="ReceivingOrder_Details.Expected" class="control-label"></label>
+                    <input asp-for="ReceivingOrder_Details.Expected" type="date" class="form-control background-dark" />
+                    <span asp-validation-for="ReceivingOrder_Details.Expected" class="text-danger"></span>
                     <br />
                 </div>
                 <div class="form-group">

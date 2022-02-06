@@ -10,11 +10,13 @@ namespace LagerPlayground.Models
     {
         public int ID { get; set; }
         public int ReceiveCustommerID { get; set; }
-        public DateTime ArrivalDate { get; set; }
+        public string OrderStatus { get; set; }
+        public DateTime Expected { get; set; }
         public DateTime Created { get; set; }
-        public DateTime Modified { get; set; }
+        public DateTime? Closed { get; set; }
+        public DateTime? Modified { get; set; }
 
         public ReceiveCustommer ReceiveCustommer { get; set; }
-        public ICollection<ReceivingOrder_Items> receivingOrder_Items { get; set; }
+        public ICollection<ReceivingOrder_Items> ReceivingOrder_Items { get; set; }
     }
 }
