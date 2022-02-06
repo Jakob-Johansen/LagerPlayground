@@ -69,6 +69,7 @@ namespace LagerPlayground.Controllers
 
                     Order_Details order_Details = new();
                     order_Details.CustommerID = custommer.ID;
+                    order_Details.OrderStatus = "Pending";
                     order_Details.Created = DateTime.Now;
                     _context.Add(order_Details);
                     await _context.SaveChangesAsync();
@@ -194,7 +195,7 @@ namespace LagerPlayground.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> ReceiveCheckOut([Bind("CompanyName")] ReceiveCustommer receiveCustommer, [Bind("ArrivalDate")] ReceivingOrder_Details receivingOrder_Details)
+        public async Task<IActionResult> ReceiveCheckOut([Bind("Vendor")] ReceiveCustommer receiveCustommer, [Bind("Expected")] ReceivingOrder_Details receivingOrder_Details)
         {
             try
             {
@@ -209,7 +210,10 @@ namespace LagerPlayground.Controllers
                     //ViewBag.id = custommer.ID;
 
                     receivingOrder_Details.ReceiveCustommerID = receiveCustommer.ID;
+                    receivingOrder_Details.OrderStatus = "Pending";
                     receivingOrder_Details.Created = DateTime.Now;
+                    receivingOrder_Details.Closed = null;
+                    receivingOrder_Details.Modified = null;
                     _context.ReceivingOrder_Details.Add(receivingOrder_Details);
                     await _context.SaveChangesAsync();
 

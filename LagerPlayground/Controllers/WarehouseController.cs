@@ -451,7 +451,7 @@ namespace LagerPlayground.Controllers
         public async Task<IActionResult> AllReceiveOrders()
         {
             var receiveOrders = await _context.ReceivingOrder_Details
-                .Include(x => x.receivingOrder_Items)
+                .Include(x => x.ReceivingOrder_Items)
                 .ThenInclude(s => s.Product)
                 .Include(x => x.ReceiveCustommer).AsNoTracking().ToListAsync();
             return View(receiveOrders);
