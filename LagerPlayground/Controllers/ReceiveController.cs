@@ -22,8 +22,6 @@ namespace LagerPlayground.Controllers
             var receiveOrderDetails = await _context.ReceivingOrder_Details
                 .Include(x => x.ReceivingOrder_Items)
                     .ThenInclude(t => t.Product)
-                .Include(x => x.ReceivingOrder_Items)
-                    .ThenInclude(t => t.ReceiveStatus)
                 .FirstOrDefaultAsync();
 
             if (receiveOrderDetails == null)

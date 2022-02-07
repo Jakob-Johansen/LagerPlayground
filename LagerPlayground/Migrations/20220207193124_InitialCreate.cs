@@ -185,6 +185,8 @@ namespace LagerPlayground.Migrations
                     ReceivingOrder_DetailsID = table.Column<int>(type: "int", nullable: false),
                     ProductID = table.Column<int>(type: "int", nullable: false),
                     Quantity = table.Column<int>(type: "int", nullable: false),
+                    Rejected = table.Column<int>(type: "int", nullable: false),
+                    Accepted = table.Column<int>(type: "int", nullable: false),
                     Created = table.Column<DateTime>(type: "datetime2", nullable: false),
                     Modified = table.Column<DateTime>(type: "datetime2", nullable: true)
                 },
