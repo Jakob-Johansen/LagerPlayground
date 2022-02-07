@@ -217,19 +217,27 @@ namespace LagerPlayground.Controllers
                     _context.ReceivingOrder_Details.Add(receivingOrder_Details);
                     await _context.SaveChangesAsync();
 
+                    //List<ReceiveStatus> receiveStatusList = new();
                     List<ReceivingOrder_Items> receivingOrder_ItemsList = new();
 
                     foreach (var item in SessionHelper.GetObjectFromJson<List<Item>>(HttpContext.Session, "ReceiveCart"))
                     {
+                        //ReceiveStatus receiveStatus = new();
                         ReceivingOrder_Items receivingOrder_Items = new();
                         receivingOrder_Items.ReceivingOrder_DetailsID = receivingOrder_Details.ID;
                         receivingOrder_Items.ProductID = item.Product.ID;
                         receivingOrder_Items.Quantity = item.Quantity;
                         receivingOrder_Items.Created = DateTime.Now;
                         receivingOrder_ItemsList.Add(receivingOrder_Items);
+
+                        //receiveStatus.ReceivingOrder_ItemsID = receivingOrder_Items.ID;
+                        //receiveStatus.ReceivingOrder_DetailsID = receivingOrder_Details.ID;
+                        //receiveStatus.Unreceived = item.Quantity;
+                        //receiveStatusList.Add(receiveStatus);
                     }
 
                     await _context.AddRangeAsync(receivingOrder_ItemsList);
+                    //await _context.AddRangeAsync(receiveStatusList);
                     await _context.SaveChangesAsync();
 
                     HttpContext.Session.Remove("ReceiveCart");
@@ -237,11 +245,11 @@ namespace LagerPlayground.Controllers
                     return RedirectToAction("Index");
                 }
             }
-            catch (DbUpdateException)
+            catch (DbUpdateException ex)
             {
                 ModelState.AddModelError("", "Unable to save changes. " +
                 "Try again, and if the problem persists " +
-                "see your system administrator.");
+                "see your system administrator." + ex.Message);
             }
 
             return View(receiveCustommer);

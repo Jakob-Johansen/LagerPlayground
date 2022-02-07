@@ -1,0 +1,141 @@
+﻿@model LagerPlayground.Models.ReceivingOrder_Details
+
+@{
+    ViewData["Title"] = "Receive Order Details";
+}
+
+<h2>Receive Order Details - ID: @Model.ID <a asp-controller="Receive" asp-action="Receive" asp-route-id="@Model.ID">Receive</a></h2>
+<hr />
+
+<div style="height: auto !important;" class="checkout-overall-container">
+    <div class="checkout-container">
+        <div class="col-md-12">
+            <dl style="height: auto !important;" class="row">
+                <dt class="col-sm-3">
+                    Custommer-ID:
+                </dt>
+                <dd class="col-sm-9">
+                    @Html.DisplayFor(model => model.ReceiveCustommer.ID)
+                </dd>
+
+                <dt class="col-sm-3">
+                    @Html.DisplayNameFor(model => model.ReceiveCustommer.Vendor):
+                </dt>
+                <dd class="col-sm-9">
+                    @Html.DisplayFor(model => model.ReceiveCustommer.Vendor)
+                </dd>
+
+                <dt class="col-sm-3">
+                    @Html.DisplayNameFor(model => model.OrderStatus):
+                </dt>
+                <dd class="col-sm-9">
+                    @Html.DisplayFor(model => model.OrderStatus)
+                </dd>
+
+                <dt class="col-sm-3">
+                    @Html.DisplayNameFor(model => model.Created):
+                </dt>
+                <dd class="col-sm-9">
+                    @Model.Created.ToShortDateString()
+                </dd>
+
+                <dt class="col-sm-3">
+                    @Html.DisplayNameFor(model => model.Closed):
+                </dt>
+                <dd class="col-sm-9">
+                    @(Model.Closed != null ? Model.Closed?.ToShortDateString() : "-")
+                </dd>
+
+                <dt class="col-sm-3">
+                    @Html.DisplayNameFor(model => model.Expected):
+                </dt>
+                <dd class="col-sm-9">
+                    @Model.Expected.ToShortDateString()
+                </dd>
+
+            </dl>
+        </div>
+
+        <br />
+
+        <div class="orderDetails-backOrDelete-overall-container">
+            <div class="orderDetails-backOrDelete-container">
+                <a asp-action="AllReceiveOrders">Back to list</a>
+            </div>
+            <div class="orderDetails-backOrDelete-container">
+                <a class="orderDetails-backOrDelete-delete-btn">Delete</a>
+            </div>
+            <div class="clearBoth"></div>
+        </div>
+
+    </div>
+    <div class="checkout-container">
+        @foreach (var item in Model.ReceivingOrder_Items)
+        {
+            <div class="checkout-product-container">
+                <div class="checkout-product-image-container">
+                    <img src="~/Images/@(item.Product.Image == null ? "Placeholders/Placeholder.jpg" : "Products/" + @item.Product.Image)" />
+                </div>
+                <div class="checkout-product-info-container">
+                    <div class="checkout-product-info-name-container">
+                        <p>@item.Product.Name</p>
+                    </div>
+                    <div class="checkout-product-info-quantity-container">
+                        <p>@item.Quantity stk.</p>
+                    </div>
+                </div>
+                <div class="clearBoth"></div>
+            </div>
+        }
+    </div>
+    <div class="clearBoth"></div>
+</div>
+
+<div class="tote-overlay-overall-container">
+    <div class="tote-overlay-container">
+        <div class="tote-overlay-nav-overall-container">
+            <div class="tote-overlay-nav-container">
+                <p>Are you sure?</p>
+            </div>
+            <div class="tote-overlay-nav-container">
+                <span class="material-icons tote-overlay-nav-close-btn">close</span>
+            </div>
+            <div class="clearBoth"></div>
+        </div>
+
+        <div class="tote-overlay-info-container">
+            <p>If you delete this order, the order wil be gone forever. Are you sure you want to proceed?</p>
+        </div>
+
+        <div class="tote-overlay-btns-overall-container">
+            <div class="tote-overlay-btns-container-cancel">
+                <button class="tote-overlay-btn-cancel tote-overlay-nav-close-btn">Cancel</button>
+            </div>
+            <div class="tote-overlay-btns-container-add">
+                <form asp-action="ReceiveOrderDelete">
+                    <input type="hidden" asp-for="@Model.ID" />
+                    <button class="tote-overlay-btn-add tote-overlay-btn-delete">Delete</button>
+                </form>
+            </div>
+
+            <div class="clearBoth"></div>
+        </div>
+
+    </div>
+</div>
+
+@section Scripts {
+<script>
+        const openBtn = $(".orderDetails-backOrDelete-delete-btn");
+        const closeBtn = $(".tote-overlay-nav-close-btn");
+        const overlayContainer = $(".tote-overlay-overall-container");
+
+        openBtn.click(function () {
+            overlayContainer.css("display", "block");
+        });
+
+        closeBtn.click(function () {
+            overlayContainer.css("display", "none");
+        });
+</script>
+}

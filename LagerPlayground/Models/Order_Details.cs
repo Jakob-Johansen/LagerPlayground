@@ -12,7 +12,7 @@ namespace LagerPlayground.Models
         public int CustommerID { get; set; }
         public string OrderStatus { get; set; }
         public DateTime Created { get; set; }
-        public DateTime Modified { get; set; }
+        public DateTime? Modified { get; set; }
 
         public Custommer Custommer { get; set; }
         public ICollection<Order_Items> Order_Items { get; set; }

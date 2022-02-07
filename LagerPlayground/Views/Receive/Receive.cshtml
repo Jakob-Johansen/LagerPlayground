@@ -1,0 +1,16 @@
+﻿@model LagerPlayground.Models.ReceivingOrder_Details
+
+@{
+    ViewData["Title"] = "Receive";
+}
+
+<h2>Receive</h2>
+
+@foreach (var item in Model.ReceivingOrder_Items)
+{
+    <p>Name: @item.Product.Name</p>
+    <p>Rejected: @item.ReceiveStatus.Rejected</p>
+    <p>Accepted: @item.ReceiveStatus.Accepted</p>
+    <p>Unreceived: @item.ReceiveStatus.Unreceived</p>
+    <br />
+}
