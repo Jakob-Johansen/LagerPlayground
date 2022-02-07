@@ -6,17 +6,16 @@ using System.Threading.Tasks;
 
 namespace LagerPlayground.Models
 {
-    public class ReceivingOrder_Items
+    public class ReceiveStatus
     {
         public int ID { get; set; }
         public int ReceivingOrder_DetailsID { get; set; }
-        public int ProductID { get; set; }
-        public int Quantity { get; set; }
-        public DateTime Created { get; set; }
-        public DateTime? Modified { get; set; }
+        public int ReceivingOrder_ItemsID { get; set; }
+        public int Rejected { get; set; }
+        public int Accepted { get; set; }
+        public int Unreceived { get; set; }
 
+        public ReceivingOrder_Items ReceivingOrder_Items { get; set; }
         public ReceivingOrder_Details ReceivingOrder_Details { get; set; }
-        public ReceiveStatus ReceiveStatus { get; set; }
-        public Product Product { get; set; }
     }
 }

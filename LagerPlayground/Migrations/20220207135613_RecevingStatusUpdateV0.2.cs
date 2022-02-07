@@ -4,13 +4,13 @@
 
 namespace LagerPlayground.Migrations
 {
-    public partial class ReceiveOrderDetailsUpdate : Migration
+    public partial class RecevingStatusUpdateV02 : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.AddColumn<int>(
-                name: "ReceiveCustommer",
-                table: "ReceivingOrder_Details",
+                name: "ReceivingOrder_DetailsID",
+                table: "ReceiveStatus",
                 type: "int",
                 nullable: false,
                 defaultValue: 0);
@@ -19,8 +19,8 @@ namespace LagerPlayground.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropColumn(
-                name: "ReceiveCustommer",
-                table: "ReceivingOrder_Details");
+                name: "ReceivingOrder_DetailsID",
+                table: "ReceiveStatus");
         }
     }
 }

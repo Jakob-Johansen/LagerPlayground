@@ -452,9 +452,82 @@ namespace LagerPlayground.Controllers
         {
             var receiveOrders = await _context.ReceivingOrder_Details
                 .Include(x => x.ReceivingOrder_Items)
-                .ThenInclude(s => s.Product)
+                    .ThenInclude(t => t.ReceiveStatus)
+                .Include(x => x.ReceivingOrder_Items)
+                    .ThenInclude(t => t.ReceiveStatus)
                 .Include(x => x.ReceiveCustommer).AsNoTracking().ToListAsync();
             return View(receiveOrders);
+        }
+
+        public async Task<IActionResult> ReceiveOrderDetails(int? ID)
+        {
+            if (ID == null)
+            {
+                return NotFound();
+            }
+
+            var receiveOrder = await _context.ReceivingOrder_Details
+                .Include(x => x.ReceivingOrder_Items)
+                    .ThenInclude(t => t.Product)
+                .Include(x => x.ReceivingOrder_Items)
+                    .ThenInclude(t => t.ReceiveStatus)
+                .Include(x => x.ReceiveCustommer)
+                .AsNoTracking().FirstOrDefaultAsync(x => x.ID == ID);
+
+            if (receiveOrder == null)
+            {
+                return NotFound();
+            }
+
+            return View(receiveOrder);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> ReceiveOrderDelete(int? ID)
+        {
+            if (ID == null)
+            {
+                return NotFound();
+            }
+
+            var receiveOrderDetail = await _context.ReceivingOrder_Details.FindAsync(ID);
+
+            if (receiveOrderDetail == null)
+            {
+                return NotFound();
+            }
+
+            var receiveOrderItems = await _context.ReceivingOrder_Items.Where(x => x.ReceivingOrder_DetailsID == receiveOrderDetail.ID).ToListAsync();
+            var receiveStatus = await _context.ReceiveStatus.Where(x => x.ReceivingOrder_DetailsID == receiveOrderDetail.ID).ToListAsync();
+            var receiveCustommer = await _context.ReceiveCustommers.FindAsync(receiveOrderDetail.ReceiveCustommerID);
+
+            try
+            {
+                if (receiveOrderItems != null)
+                {
+                    _context.RemoveRange(receiveOrderItems);
+                }
+
+                if (receiveStatus != null)
+                {
+                    _context.RemoveRange(receiveStatus);
+                }
+
+                if (receiveCustommer != null)
+                {
+                    _context.Remove(receiveCustommer);
+                }
+
+                _context.Remove(receiveOrderDetail);
+                await _context.SaveChangesAsync();
+            }
+            catch (DbUpdateException)
+            {
+                return NotFound();
+            }
+
+            return RedirectToAction("AllReceiveOrders");
         }
     }
 }

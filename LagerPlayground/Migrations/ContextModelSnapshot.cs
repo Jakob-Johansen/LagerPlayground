@@ -48,7 +48,7 @@ namespace LagerPlayground.Migrations
                     b.Property<string>("MobileNumber")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<DateTime>("Modified")
+                    b.Property<DateTime?>("Modified")
                         .HasColumnType("datetime2");
 
                     b.Property<string>("Name")
@@ -79,7 +79,7 @@ namespace LagerPlayground.Migrations
                     b.Property<int>("CustommerID")
                         .HasColumnType("int");
 
-                    b.Property<DateTime>("Modified")
+                    b.Property<DateTime?>("Modified")
                         .HasColumnType("datetime2");
 
                     b.Property<string>("OrderStatus")
@@ -104,7 +104,7 @@ namespace LagerPlayground.Migrations
                     b.Property<DateTime>("Created")
                         .HasColumnType("datetime2");
 
-                    b.Property<DateTime>("Modified")
+                    b.Property<DateTime?>("Modified")
                         .HasColumnType("datetime2");
 
                     b.Property<int>("Order_DetailsID")
@@ -173,7 +173,7 @@ namespace LagerPlayground.Migrations
                     b.Property<DateTime>("Created")
                         .HasColumnType("datetime2");
 
-                    b.Property<DateTime>("Modified")
+                    b.Property<DateTime?>("Modified")
                         .HasColumnType("datetime2");
 
                     b.Property<string>("Vendor")
@@ -182,6 +182,34 @@ namespace LagerPlayground.Migrations
                     b.HasKey("ID");
 
                     b.ToTable("ReceiveCustommers");
+                });
+
+            modelBuilder.Entity("LagerPlayground.Models.ReceiveStatus", b =>
+                {
+                    b.Property<int>("ID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ID"), 1L, 1);
+
+                    b.Property<int>("Accepted")
+                        .HasColumnType("int");
+
+                    b.Property<int>("ReceivingOrder_DetailsID")
+                        .HasColumnType("int");
+
+                    b.Property<int>("ReceivingOrder_ItemsID")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Rejected")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Unreceived")
+                        .HasColumnType("int");
+
+                    b.HasKey("ID");
+
+                    b.ToTable("ReceiveStatus");
                 });
 
             modelBuilder.Entity("LagerPlayground.Models.ReceivingBox", b =>
@@ -198,7 +226,7 @@ namespace LagerPlayground.Migrations
                     b.Property<DateTime>("Created")
                         .HasColumnType("datetime2");
 
-                    b.Property<DateTime>("Modified")
+                    b.Property<DateTime?>("Modified")
                         .HasColumnType("datetime2");
 
                     b.Property<string>("Name")
@@ -223,7 +251,7 @@ namespace LagerPlayground.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ID"), 1L, 1);
 
-                    b.Property<DateTime>("Closed")
+                    b.Property<DateTime?>("Closed")
                         .HasColumnType("datetime2");
 
                     b.Property<DateTime>("Created")
@@ -232,7 +260,7 @@ namespace LagerPlayground.Migrations
                     b.Property<DateTime>("Expected")
                         .HasColumnType("datetime2");
 
-                    b.Property<DateTime>("Modified")
+                    b.Property<DateTime?>("Modified")
                         .HasColumnType("datetime2");
 
                     b.Property<string>("OrderStatus")
@@ -260,7 +288,7 @@ namespace LagerPlayground.Migrations
                     b.Property<DateTime>("Created")
                         .HasColumnType("datetime2");
 
-                    b.Property<DateTime>("Modified")
+                    b.Property<DateTime?>("Modified")
                         .HasColumnType("datetime2");
 
                     b.Property<int>("ProductID")
@@ -295,7 +323,7 @@ namespace LagerPlayground.Migrations
                     b.Property<DateTime>("Created")
                         .HasColumnType("datetime2");
 
-                    b.Property<DateTime>("Modified")
+                    b.Property<DateTime?>("Modified")
                         .HasColumnType("datetime2");
 
                     b.Property<string>("Name")
