@@ -184,34 +184,6 @@ namespace LagerPlayground.Migrations
                     b.ToTable("ReceiveCustommers");
                 });
 
-            modelBuilder.Entity("LagerPlayground.Models.ReceiveStatus", b =>
-                {
-                    b.Property<int>("ID")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ID"), 1L, 1);
-
-                    b.Property<int>("Accepted")
-                        .HasColumnType("int");
-
-                    b.Property<int>("ReceivingOrder_DetailsID")
-                        .HasColumnType("int");
-
-                    b.Property<int>("ReceivingOrder_ItemsID")
-                        .HasColumnType("int");
-
-                    b.Property<int>("Rejected")
-                        .HasColumnType("int");
-
-                    b.Property<int>("Unreceived")
-                        .HasColumnType("int");
-
-                    b.HasKey("ID");
-
-                    b.ToTable("ReceiveStatus");
-                });
-
             modelBuilder.Entity("LagerPlayground.Models.ReceivingBox", b =>
                 {
                     b.Property<int>("ID")
@@ -285,6 +257,9 @@ namespace LagerPlayground.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ID"), 1L, 1);
 
+                    b.Property<int>("Accepted")
+                        .HasColumnType("int");
+
                     b.Property<DateTime>("Created")
                         .HasColumnType("datetime2");
 
@@ -298,6 +273,9 @@ namespace LagerPlayground.Migrations
                         .HasColumnType("int");
 
                     b.Property<int>("ReceivingOrder_DetailsID")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Rejected")
                         .HasColumnType("int");
 
                     b.HasKey("ID");

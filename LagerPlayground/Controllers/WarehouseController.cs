@@ -452,9 +452,7 @@ namespace LagerPlayground.Controllers
         {
             var receiveOrders = await _context.ReceivingOrder_Details
                 .Include(x => x.ReceivingOrder_Items)
-                    .ThenInclude(t => t.ReceiveStatus)
-                .Include(x => x.ReceivingOrder_Items)
-                    .ThenInclude(t => t.ReceiveStatus)
+                    .ThenInclude(t => t.Product)
                 .Include(x => x.ReceiveCustommer).AsNoTracking().ToListAsync();
             return View(receiveOrders);
         }
@@ -469,8 +467,6 @@ namespace LagerPlayground.Controllers
             var receiveOrder = await _context.ReceivingOrder_Details
                 .Include(x => x.ReceivingOrder_Items)
                     .ThenInclude(t => t.Product)
-                .Include(x => x.ReceivingOrder_Items)
-                    .ThenInclude(t => t.ReceiveStatus)
                 .Include(x => x.ReceiveCustommer)
                 .AsNoTracking().FirstOrDefaultAsync(x => x.ID == ID);
 
@@ -499,7 +495,6 @@ namespace LagerPlayground.Controllers
             }
 
             var receiveOrderItems = await _context.ReceivingOrder_Items.Where(x => x.ReceivingOrder_DetailsID == receiveOrderDetail.ID).ToListAsync();
-            var receiveStatus = await _context.ReceiveStatus.Where(x => x.ReceivingOrder_DetailsID == receiveOrderDetail.ID).ToListAsync();
             var receiveCustommer = await _context.ReceiveCustommers.FindAsync(receiveOrderDetail.ReceiveCustommerID);
 
             try
@@ -507,11 +502,6 @@ namespace LagerPlayground.Controllers
                 if (receiveOrderItems != null)
                 {
                     _context.RemoveRange(receiveOrderItems);
-                }
-
-                if (receiveStatus != null)
-                {
-                    _context.RemoveRange(receiveStatus);
                 }
 
                 if (receiveCustommer != null)

@@ -12,11 +12,12 @@ namespace LagerPlayground.Models
         public int ReceivingOrder_DetailsID { get; set; }
         public int ProductID { get; set; }
         public int Quantity { get; set; }
+        public int Rejected { get; set; }
+        public int Accepted { get; set; }
         public DateTime Created { get; set; }
         public DateTime? Modified { get; set; }
 
         public ReceivingOrder_Details ReceivingOrder_Details { get; set; }
-        public ReceiveStatus ReceiveStatus { get; set; }
         public Product Product { get; set; }
     }
 }

@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace LagerPlayground.Migrations
 {
     [DbContext(typeof(Context))]
-    [Migration("20220207084457_InitialCreate")]
+    [Migration("20220207193124_InitialCreate")]
     partial class InitialCreate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -259,6 +259,9 @@ namespace LagerPlayground.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ID"), 1L, 1);
 
+                    b.Property<int>("Accepted")
+                        .HasColumnType("int");
+
                     b.Property<DateTime>("Created")
                         .HasColumnType("datetime2");
 
@@ -272,6 +275,9 @@ namespace LagerPlayground.Migrations
                         .HasColumnType("int");
 
                     b.Property<int>("ReceivingOrder_DetailsID")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Rejected")
                         .HasColumnType("int");
 
                     b.HasKey("ID");
@@ -297,7 +303,7 @@ namespace LagerPlayground.Migrations
                     b.Property<DateTime>("Created")
                         .HasColumnType("datetime2");
 
-                    b.Property<DateTime>("Modified")
+                    b.Property<DateTime?>("Modified")
                         .HasColumnType("datetime2");
 
                     b.Property<string>("Name")
