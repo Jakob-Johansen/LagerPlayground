@@ -14,3 +14,44 @@
     <p>Unreceived: @item.Quantity</p>
     <br />
 }
+
+<table class="table receive-table w-auto">
+    <thead>
+        <tr>
+            <th class="receive-first">Product</th>
+            <th>Location</th>
+            <th>Ordered</th>
+            <th>Rejected</th>
+            <th>Accepted</th>
+            <th class="receive-last">Activity</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model.ReceivingOrder_Items)
+        {
+            <tr>
+                <td class="receive-first">
+                    <div class="receive-table-product-overall-container">
+                        <div class="receive-table-product-image-container">
+                            <img src="~/Images/@(item.Product.Image == null ? "Placeholders/Placeholder.jpg" : "Products/" + item.Product.Image)" />
+                        </div>
+                        <div class="receive-table-product-info-container">
+                            <p class="trim">@item.Product.Name</p>
+                            <span>SKU </span> @item.Product.BarcodeID
+                        </div>
+                    </div>
+                </td>
+                <td>
+                    <p class="trim">Overstock bin</p>
+                    <a>N1-003-002</a>
+                    <p class="trim">Inventory bin</p>
+                    <a>A1-001-003</a>
+                </td>
+                <td>@item.Quantity</td>
+                <td>@item.Rejected</td>
+                <td>@item.Accepted</td>
+                <td class="receive-last">t</td>
+            </tr>
+        }
+    </tbody>
+</table>
