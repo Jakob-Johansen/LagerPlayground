@@ -978,7 +978,8 @@ li.dropdown {
 /*https://css-tricks.com/snippets/css/a-guide-to-flexbox/*/
 
 .receive-table {
-    width: 100%;
+    width: unset !important;
+    margin: 0 auto;
 }
 
 .receive-table > thead > tr > th {
@@ -988,16 +989,19 @@ li.dropdown {
 
 .receive-table > thead > tr > th, .receive-table > tbody > tr > td {
     padding-left: 0px;
-    padding-right: 20px;
-/*    padding-top: 0;
-    padding-bottom: 0;*/
+    padding-right: 30px;
     margin: 0 !important;
     vertical-align: middle !important;
 }
 
+.receive-table > tbody > tr {
+    padding: 0 !important;
+    margin: 0 !important;
+}
+
 .receive-table > tbody > tr > td {
-    padding-top: 5px;
-    padding-bottom: 5px;
+    padding-top: 0px;
+    padding-bottom: 0px;
 }
 
 /*.receive-product {
@@ -1009,7 +1013,7 @@ li.dropdown {
 }
 
 .receive-table-product-overall-container {
-    display: inline-flex;
+    display: flex;
     width: 300px;
     height: auto;
     background-color: red;
@@ -1018,17 +1022,16 @@ li.dropdown {
 .receive-table-product-image-container {
     width: 35%;
     height: auto;
-    background-color: blueviolet
+    background-color: blueviolet;
 }
 
 .receive-table-product-image-container > img {
     display: block;
-    width: 100% !important;
+    width: 100%;
     background-color: white;
 }
 
 .receive-table-product-info-container {
     width: 65%;
-    height: inherit;
-    background-color: aliceblue;
+    height: auto;
 }
