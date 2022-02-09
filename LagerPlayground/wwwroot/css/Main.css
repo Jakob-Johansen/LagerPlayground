@@ -994,18 +994,27 @@ li.dropdown {
     vertical-align: middle !important;
 }
 
-.receive-table > tbody > tr {
+/*.receive-table > tbody > tr, .receive-table > thead > tr {
+    display: block;
+    margin-bottom: 15px;
+}*/
+
+.receive-first {
+    padding-left: 13px !important;
+}
+
+.receive-last {
+    padding-right: 13px !important;
+}
+
+/*.receive-table > tbody > tr {
     padding: 0 !important;
     margin: 0 !important;
-}
+}*/
 
 .receive-table > tbody > tr > td {
     padding-top: 5px;
     padding-bottom: 5px;
-}
-
-.receive-last {
-    padding-right: 0px !important;
 }
 
 .receive-table-product-overall-container {
@@ -1063,7 +1072,6 @@ li.dropdown {
         Gul: #ffc107
         Rød: #dc3545
     */
-
     background: linear-gradient(to left, #1a9c23 0%, #1a9c23 33.333%, #ffc107 33.333%, #ffc107 67.333%, #dc3545 67.333%, #dc3545 100%);
 }
 
