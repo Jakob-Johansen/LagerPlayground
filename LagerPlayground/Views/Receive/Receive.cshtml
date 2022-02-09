@@ -6,14 +6,14 @@
 
 <h2>Receive</h2>
 
-@foreach (var item in Model.ReceivingOrder_Items)
+@*@foreach (var item in Model.ReceivingOrder_Items)
 {
     <p>Name: @item.Product.Name</p>
     <p>Rejected: @item.Rejected</p>
     <p>Accepted: @item.Accepted</p>
     <p>Unreceived: @item.Quantity</p>
     <br />
-}
+}*@
 
 <table class="table receive-table w-auto">
     <thead>
@@ -37,20 +37,35 @@
                         </div>
                         <div class="receive-table-product-info-container">
                             <p class="trim">@item.Product.Name</p>
-                            <span>SKU </span> @item.Product.BarcodeID
+                            <p class="trim"><span class="receive-table-product-info-sku">SKU: </span>@item.Product.BarcodeID</p>
                         </div>
                     </div>
                 </td>
                 <td>
                     <p class="trim">Overstock bin</p>
-                    <a>N1-003-002</a>
+                    <a style="color: cornflowerblue;">N1-003-002</a>
                     <p class="trim">Inventory bin</p>
-                    <a>A1-001-003</a>
+                    <a style="color: cornflowerblue;">A1-001-003</a>
                 </td>
                 <td>@item.Quantity</td>
                 <td>@item.Rejected</td>
-                <td>@item.Accepted</td>
-                <td class="receive-last">t</td>
+                <td><input type="number" value="0" class="form-control background-dark" style="width: 120px !important;" /></td>
+                <td class="receive-last">
+                    <div class="receive-table-activity-overall-container">
+                        <div class="receive-table-activity-info-container">
+                            <p class="trim">Rejected</p>
+                            <p class="receive-table-activity-info-quantity trim">@item.Rejected</p>
+                        </div>
+                        <div class="receive-table-activity-info-container receive-table-activity-info-container-padding">
+                            <p class="trim">Accepted</p>
+                            <p class="receive-table-activity-info-quantity trim">@item.Accepted</p>
+                        </div>
+                        <div class="receive-table-activity-info-container">
+                            <p class="trim">Unreceived</p>
+                            <p class="receive-table-activity-info-quantity trim">@item.Quantity</p>
+                        </div>
+                    </div>
+                </td>
             </tr>
         }
     </tbody>
