@@ -1064,5 +1064,11 @@ li.dropdown {
         Rød: #dc3545
     */
 
-    background: linear-gradient(to left, #1a9c23 0%, #1a9c23 20%, #ffc107 20%, #ffc107 70%, #dc3545 70%, #dc3545 100%);
+    background: linear-gradient(to left, #1a9c23 0%, #1a9c23 33.333%, #ffc107 33.333%, #ffc107 67.333%, #dc3545 67.333%, #dc3545 100%);
+}
+
+.receive-table-activity-info-ordered-text {
+    font-size: 14px;
+    text-align: right;
+    padding-top: 4px;
 }

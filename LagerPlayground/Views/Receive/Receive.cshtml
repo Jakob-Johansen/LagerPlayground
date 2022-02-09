@@ -19,7 +19,7 @@
     <thead>
         <tr>
             <th class="receive-first">Product</th>
-            <th>Location</th>
+@*            <th>Location</th>*@
             <th>Ordered</th>
             <th>Rejected</th>
             <th>Accepted</th>
@@ -41,12 +41,12 @@
                         </div>
                     </div>
                 </td>
-                <td>
+@*                <td>
                     <p class="trim">Overstock bin</p>
                     <a style="color: cornflowerblue;">N1-003-002</a>
                     <p class="trim">Inventory bin</p>
                     <a style="color: cornflowerblue;">A1-001-003</a>
-                </td>
+                </td>*@
                 <td>@item.Quantity</td>
                 <td>@item.Rejected</td>
                 <td><input type="number" value="0" class="form-control background-dark" style="width: 120px !important;" /></td>
@@ -66,6 +66,7 @@
                         </div>
                     </div>
                     <div class="receive-table-activity-info-progress"></div>
+                    <p class="receive-table-activity-info-ordered-text trim">Ordered: @item.Quantity</p>
                 </td>
             </tr>
         }
