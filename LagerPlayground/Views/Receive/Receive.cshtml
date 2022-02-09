@@ -1,4 +1,12 @@
 ﻿@model LagerPlayground.Models.ReceivingOrder_Details
+@inject Microsoft.AspNetCore.Antiforgery.IAntiforgery Xsrf
+
+@functions {
+    public string GetAntiXsrfRequestToken()
+    {
+        return Xsrf.GetAndStoreTokens(Context).RequestToken;
+    }
+}
 
 @{
     ViewData["Title"] = "Receive";
@@ -10,8 +18,7 @@
     <thead>
         <tr>
             <th class="receive-first" style="width: 350px;">Product</th>
-@*            <th>Location</th>*@
-            <th>Ordered</th>
+            <th>Unreceived</th>
             <th>Rejected</th>
             <th>Accepted</th>
             <th class="receive-last">Activity</th>
@@ -32,15 +39,9 @@
                         </div>
                     </div>
                 </td>
-@*                <td>
-                    <p class="trim">Overstock bin</p>
-                    <a style="color: cornflowerblue;">N1-003-002</a>
-                    <p class="trim">Inventory bin</p>
-                    <a style="color: cornflowerblue;">A1-001-003</a>
-                </td>*@
                 <td>@item.Quantity</td>
                 <td>@item.Rejected</td>
-                <td><input type="number" value="0" class="form-control background-dark" style="width: 120px !important;" /></td>
+                <td><input type="number" value="@item.Accepted" class="form-control background-dark receive-accepted-input" style="width: 120px !important;" /></td>
                 <td class="receive-last">
                     <div class="receive-table-activity-overall-container">
                         <div class="receive-table-activity-info-container">
@@ -53,7 +54,7 @@
                         </div>
                         <div class="receive-table-activity-info-container">
                             <p class="trim">Unreceived</p>
-                            <p class="receive-table-activity-info-quantity trim">@item.Quantity</p>
+                            <p class="receive-table-activity-info-quantity trim">@(item.Quantity - item.Accepted)</p>
                         </div>
                     </div>
                     <div class="receive-table-activity-info-progress"></div>
@@ -63,3 +64,70 @@
         }
     </tbody>
 </table>
+
+@section Scripts {
+<script>
+    let acceptedInput = $(".receive-accepted-input");
+
+    // Loading variabler
+    let loader = $(".loader");
+    let loadingIsRunning = false;
+
+    // Scanner variabler
+    let barcode = '';
+    let interval;
+
+    acceptedInput.on("input", function () {
+        if(acceptedInput.val() < 0 || acceptedInput.val().startsWith("0")) {
+            acceptedInput.val("0");
+            console.log("Test");
+        }
+    });
+
+    // Timeout/delay functions
+    function loadingTimeout() {
+        setTimeout(function () {
+                loadingIsRunning = true;
+                //loader.css("display", "block");
+        }, 20);
+    }
+
+    // Scanner event and functions
+    document.addEventListener("keydown", function (evt) {
+        if (interval) {
+            clearInterval(interval);
+        }
+
+        if (evt.code.includes("Enter")) {
+            if (barcode) {
+                handleBarcode(barcode);
+                //if (loadingIsRunning == false)  {
+                //    handleBarcode(barcode);
+                //}
+                barcode = '';
+
+                return;
+            }
+        }
+        if (!evt.code.includes("Shift") && !evt.code.includes("CapsLock")) {
+            barcode += evt.key;
+        }
+        interval = setInterval(() => barcode = '', 20);
+    });
+
+    function handleBarcode(scanned_barcode) {
+        scanned_barcode = scanned_barcode.trim();
+
+        if (scanned_barcode.length >= 1) {
+            console.log(scanned_barcode);
+            //if (scanned_barcode != currentBarcode) {
+            //    //ajaxResult = false;
+            //    //loadingTimeout();
+
+            //    //currentBarcode = scanned_barcode;
+            //    //lastScannedBarcode = scanned_barcode;
+            //}
+        }
+    }
+</script>
+}
