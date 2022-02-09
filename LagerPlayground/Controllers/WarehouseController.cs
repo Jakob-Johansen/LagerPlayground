@@ -38,7 +38,7 @@ namespace LagerPlayground.Controllers
 
             var orderDetails = await _context.Order_Details
                 .Include(x => x.Order_Items)
-                .ThenInclude(c => c.Product)
+                    .ThenInclude(c => c.Product)
                 .Include(x => x.Custommer)
                 .AsNoTracking().FirstOrDefaultAsync(x => x.ID == id);
             

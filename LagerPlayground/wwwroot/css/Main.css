@@ -1052,4 +1052,17 @@ li.dropdown {
 
 .receive-table-activity-info-quantity {
     padding-top: 8px;
+    padding-bottom: 8px;
+}
+
+.receive-table-activity-info-progress {
+    width: 100%;
+    height: 8px;
+    /*
+        Grøn: #1a9c23
+        Gul: #ffc107
+        Rød: #dc3545
+    */
+
+    background: linear-gradient(to left, #1a9c23 0%, #1a9c23 20%, #ffc107 20%, #ffc107 70%, #dc3545 70%, #dc3545 100%);
 }
