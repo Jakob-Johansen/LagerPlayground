@@ -6,19 +6,10 @@
 
 <h2>Receive</h2>
 
-@*@foreach (var item in Model.ReceivingOrder_Items)
-{
-    <p>Name: @item.Product.Name</p>
-    <p>Rejected: @item.Rejected</p>
-    <p>Accepted: @item.Accepted</p>
-    <p>Unreceived: @item.Quantity</p>
-    <br />
-}*@
-
 <table class="table receive-table w-auto">
     <thead>
         <tr>
-            <th class="receive-first">Product</th>
+            <th class="receive-first" style="width: 350px;">Product</th>
 @*            <th>Location</th>*@
             <th>Ordered</th>
             <th>Rejected</th>
@@ -29,7 +20,7 @@
     <tbody>
         @foreach (var item in Model.ReceivingOrder_Items)
         {
-            <tr class="background-dark">
+            <tr class="receive-table-tbody-tr background-dark">
                 <td class="receive-first">
                     <div class="receive-table-product-overall-container">
                         <div class="receive-table-product-image-container">

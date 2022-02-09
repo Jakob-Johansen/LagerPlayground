@@ -990,14 +990,8 @@ li.dropdown {
 .receive-table > thead > tr > th, .receive-table > tbody > tr > td {
     padding-left: 0px;
     padding-right: 45px;
-    margin: 0 !important;
     vertical-align: middle !important;
 }
-
-/*.receive-table > tbody > tr, .receive-table > thead > tr {
-    display: block;
-    margin-bottom: 15px;
-}*/
 
 .receive-first {
     padding-left: 13px !important;
@@ -1006,11 +1000,6 @@ li.dropdown {
 .receive-last {
     padding-right: 13px !important;
 }
-
-/*.receive-table > tbody > tr {
-    padding: 0 !important;
-    margin: 0 !important;
-}*/
 
 .receive-table > tbody > tr > td {
     padding-top: 5px;
@@ -1047,7 +1036,7 @@ li.dropdown {
 
 .receive-table-product-image-container > img {
     display: block;
-    width: 100%;
+    width: 100px;
 }
 
 .receive-table-activity-overall-container {
@@ -1080,3 +1069,16 @@ li.dropdown {
     text-align: right;
     padding-top: 4px;
 }
+
+/*.receive-table {*/
+/*    border-collapse: separate !important;*/
+/*    border-spacing: 0 15px !important;*/
+/*}*/
+
+.receive-table > tbody > tr > td {
+    border-bottom: 13px solid rgb(20, 22, 23);
+}
+
+/*tbody, td, tfoot, th, thead, tr {
+    border-width: 1px;
+}*/
