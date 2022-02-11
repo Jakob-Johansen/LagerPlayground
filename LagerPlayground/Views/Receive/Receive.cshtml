@@ -27,7 +27,7 @@
     <tbody>
         @foreach (var item in Model.ReceivingOrder_Items)
         {
-            <tr class="receive-table-tbody-tr background-dark" data-barcode="@item.Product.BarcodeID">
+            <tr class="receive-table-tbody-tr" data-barcode="@item.Product.BarcodeID">
                 <td class="receive-first">
                     <div class="receive-table-product-overall-container">
                         <div class="receive-table-product-image-container">
@@ -70,6 +70,7 @@
     let acceptedInput = $(".receive-accepted-input");
     let tbodyTr = $(".receive-table-tbody-tr");
 
+    let acceptedInputValue = 0;
 
     // Loading variabler
     let loader = $(".loader");
@@ -134,18 +135,18 @@
         }
     }
 
-
-
     function myTest(scanned_barcode) {
-        //let thisTbodyTr = $(".receive-table-tbody-tr[data-barcode='" + scanned_barcode + "']");
-        let thisElement = document.querySelector("[data-barcode]");
-        if(thisElement.getAttribute("data-barcode") === scanned_barcode) {
-            console.log(thisElement);
-            thisElement.style.setProperty("background-color", "white", "important");
-        }
-        else {
-            tbodyTr.css("background-color", "rgb(20, 22, 23)");
-        }
+        tbodyTr.each(function(index) {
+            if($(this).data("barcode") == scanned_barcode) {
+                tbodyTr.removeClass("receive-table-tbody-tr-active");
+                $(this).addClass("receive-table-tbody-tr-active");
+
+                acceptedInputValue = $(this).find(".receive-accepted-input").val(); 
+                $(this).find(".receive-accepted-input").val(acceptedInputValue++ + 1);
+
+                return;
+            }
+        });
     }
 </script>
 }
