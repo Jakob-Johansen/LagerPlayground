@@ -1073,3 +1073,20 @@ li.dropdown {
 .receive-table > tbody > tr > td {
     border-bottom: 13px solid rgb(20, 22, 23);
 }
+
+.receive-table-tbody-tr {
+    background-color: rgb(20,22,23);
+}
+
+.receive-table-tbody-tr-active {
+    background-color: white !important;
+}
+
+.receive-table-tbody-tr-active * {
+    color: black !important;
+/*    rgb(20, 22, 23)*/
+}
+
+.receive-table-tbody-tr-active > td > input {
+    color: rgb(215, 215, 215) !important;
+}
