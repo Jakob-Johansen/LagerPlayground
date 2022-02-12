@@ -39,9 +39,9 @@
                         </div>
                     </div>
                 </td>
-                <td><p class="receive-table-unreceived trim">@item.Quantity</p></td>
-                <td><p class="receive-table-rejected trim"></p>@item.Rejected</td>
-                <td><input type="number" value="@item.Accepted" class="form-control background-dark receive-accepted-input receive-table-accepted" style="width: 120px !important;" /></td>
+                <td><p class="receive-table-unreceived trim">@(item.Quantity - item.Accepted)</p></td>
+                <td><p class="receive-table-rejected trim">@item.Rejected</p></td>
+                <td><input type="number" value="@item.Accepted" class="form-control background-dark receive-accepted-input" style="width: 120px !important;" /></td>
                 <td class="receive-last">
                     <div class="receive-table-activity-overall-container">
                         <div class="receive-table-activity-info-container">
@@ -58,7 +58,7 @@
                         </div>
                     </div>
                     <div class="receive-table-activity-info-progress"></div>
-                    <p class="receive-table-activity-info-ordered-text trim">Ordered: @item.Quantity</p>
+                    <p class="receive-table-activity-info-ordered-text receive-table-ordered trim" data-ordered="@item.Quantity">Ordered: @item.Quantity</p>
                 </td>
             </tr>
         }
@@ -67,14 +67,19 @@
 
 @section Scripts {
 <script>
+    // https://procentregner.dk/
+
     let acceptedInput = $(".receive-accepted-input");
     let tbodyTr = $(".receive-table-tbody-tr");
+
+    let receiveProgressBar = $(".receive-table-activity-info-progress");
 
     let acceptedInputValue = 0;
 
     let unreceivedPTag = $(".receive-table-unreceived");
     let rejectedPTag = $(".receive-table-rejected");
     let acceptedPTag = $(".receive-table-accepted");
+    let orderedPTag = $(".receive-table-ordered");
 
     // Loading variabler
     let loader = $(".loader");
@@ -82,7 +87,44 @@
 
     // Scanner variabler
     let barcode = '';
-    let interval;
+    let interval;       
+
+    $(document).ready(function () {
+        tbodyTr.each(function(index) {
+            $(this).find(unreceivedPTag).html($(this).find(unreceivedPTag).html() - $(this).find(rejectedPTag).html());
+            ReceiveProgressBarFunction($(this));
+        });
+    });
+
+    function ReceiveProgressBarFunction(thisElement) {
+        //Grøn: #1a9c23
+        //Gul: #ffc107
+        //Rød: #dc3545
+        //background: linear-gradient(to left, #1a9c23 0%, #1a9c23 33.333%, #ffc107 33.333%, #ffc107 67.333%, #dc3545 67.333%, #dc3545 100%);
+
+        let getUnreceivedNumber = thisElement.find(unreceivedPTag).html();
+        let getAcceptedNumber = thisElement.find(acceptedPTag).html();
+        let getRejectedNumber = thisElement.find(rejectedPTag).html(); 
+
+        if (getAcceptedNumber == 0 && getRejectedNumber == 0) {
+            thisElement.find(receiveProgressBar).css( { background : "linear-gradient(to left, #ffc107 0%, #ffc107 100%)" } );
+        }
+        else if(getRejectedNumber != 0) {
+            let percentageUnreceived = getUnreceivedNumber / thisElement.find(orderedPTag).data("ordered") * 100;
+            let percentageRejected = getRejectedNumber / thisElement.find(orderedPTag).data("ordered") * 100;
+            let percentage = percentageUnreceived + percentageRejected;
+            thisElement.find(receiveProgressBar).css( { background : "linear-gradient(to right, #dc3545 0%, #dc3545 " + percentageRejected + "%, #ffc107 " + percentageRejected + "%, #ffc107 " + percentage + "%, #1a9c23 " + percentage + "%, #1a9c23 100%)" });
+        }
+        else {
+            let percentageAccepted = getAcceptedNumber / thisElement.find(orderedPTag).data("ordered") * 100;
+            if(percentageAccepted == 100) {
+                thisElement.find(receiveProgressBar).css( { background : "linear-gradient(to left, #1a9c23 0%, #1a9c23 100%)" } );
+            }
+            else {
+                thisElement.find(receiveProgressBar).css( { background : "linear-gradient(to left, #1a9c23 0%, #1a9c23 " + percentageAccepted + "%, #ffc107 " + percentageAccepted + "%, #ffc107 100%)" } );
+            }
+        }
+    }
 
     acceptedInput.on("input", function () {
         if(acceptedInput.val() < 0 || acceptedInput.val().startsWith("0")) {
@@ -151,15 +193,20 @@
                 $(this).find(unreceivedPTag).text(function(i,v) {
                     let getNumber = parseInt(v);
                     if(getNumber > 0) {
-                        return getNumber - 1;
+                        let result = getNumber - 1;
+                        return result;
                     }
                     return;
-                }); 
+                });
 
                 $(this).find(acceptedPTag).text(function(i,v) {
                     let getNumber = parseInt(v);
-                    return getNumber + 1;
+                    let result = getNumber + 1;
+
+                    return result;
                 });
+
+                ReceiveProgressBarFunction($(this));
 
                 return;
             }
