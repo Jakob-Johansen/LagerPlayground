@@ -39,22 +39,22 @@
                         </div>
                     </div>
                 </td>
-                <td>@item.Quantity</td>
-                <td>@item.Rejected</td>
-                <td><input type="number" value="@item.Accepted" class="form-control background-dark receive-accepted-input" style="width: 120px !important;" /></td>
+                <td><p class="receive-table-unreceived trim">@item.Quantity</p></td>
+                <td><p class="receive-table-rejected trim"></p>@item.Rejected</td>
+                <td><input type="number" value="@item.Accepted" class="form-control background-dark receive-accepted-input receive-table-accepted" style="width: 120px !important;" /></td>
                 <td class="receive-last">
                     <div class="receive-table-activity-overall-container">
                         <div class="receive-table-activity-info-container">
                             <p class="trim">Rejected</p>
-                            <p class="receive-table-activity-info-quantity trim">@item.Rejected</p>
+                            <p class="receive-table-activity-info-quantity receive-table-rejected trim">@item.Rejected</p>
                         </div>
                         <div class="receive-table-activity-info-container receive-table-activity-info-container-padding">
                             <p class="trim">Accepted</p>
-                            <p class="receive-table-activity-info-quantity trim">@item.Accepted</p>
+                            <p class="receive-table-activity-info-quantity receive-table-accepted trim">@item.Accepted</p>
                         </div>
                         <div class="receive-table-activity-info-container">
                             <p class="trim">Unreceived</p>
-                            <p class="receive-table-activity-info-quantity trim">@(item.Quantity - item.Accepted)</p>
+                            <p class="receive-table-activity-info-quantity receive-table-unreceived trim">@(item.Quantity - item.Accepted)</p>
                         </div>
                     </div>
                     <div class="receive-table-activity-info-progress"></div>
@@ -71,6 +71,10 @@
     let tbodyTr = $(".receive-table-tbody-tr");
 
     let acceptedInputValue = 0;
+
+    let unreceivedPTag = $(".receive-table-unreceived");
+    let rejectedPTag = $(".receive-table-rejected");
+    let acceptedPTag = $(".receive-table-accepted");
 
     // Loading variabler
     let loader = $(".loader");
@@ -123,7 +127,7 @@
 
         if (scanned_barcode.length >= 1) {
 
-            myTest(scanned_barcode);
+            AddProduct(scanned_barcode);
 
             //if (scanned_barcode != currentBarcode) {
             //    //ajaxResult = false;
@@ -135,7 +139,7 @@
         }
     }
 
-    function myTest(scanned_barcode) {
+    function AddProduct(scanned_barcode) {
         tbodyTr.each(function(index) {
             if($(this).data("barcode") == scanned_barcode) {
                 tbodyTr.removeClass("receive-table-tbody-tr-active");
@@ -143,6 +147,19 @@
 
                 acceptedInputValue = $(this).find(".receive-accepted-input").val(); 
                 $(this).find(".receive-accepted-input").val(acceptedInputValue++ + 1);
+
+                $(this).find(unreceivedPTag).text(function(i,v) {
+                    let getNumber = parseInt(v);
+                    if(getNumber > 0) {
+                        return getNumber - 1;
+                    }
+                    return;
+                }); 
+
+                $(this).find(acceptedPTag).text(function(i,v) {
+                    let getNumber = parseInt(v);
+                    return getNumber + 1;
+                });
 
                 return;
             }
