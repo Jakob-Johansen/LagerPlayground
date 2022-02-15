@@ -35,29 +35,35 @@ namespace LagerPlayground.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<JsonResult> AddProduct(string barcode, int receivingOrderDetailsID)
+        public async Task<JsonResult> AddProduct(string barcode, int receivingItemID)
         {
             if (barcode == null)
             {
                 return Json(new {boolean = false, msg = "No barcode found"});
             }
 
+            var receiveOrderItemToUpdate = await _context.ReceivingOrder_Items.FirstOrDefaultAsync(x => x.ID == receivingItemID);
             var productToUpdate = await _context.Products.FirstOrDefaultAsync(x => x.BarcodeID == barcode);
 
-            if (productToUpdate == null)
+            if (receiveOrderItemToUpdate == null || productToUpdate == null)
             {
                 return Json(new {boolean = false, msg = "No product with this barcode was found"});
             }
 
-            int updatedQuantity = productToUpdate.Quantity + 1;
+            var tryUpdateOrderItem = await TryUpdateModelAsync<ReceivingOrder_Items>(
+            receiveOrderItemToUpdate, "", x => x.Accepted);
 
-            if (await TryUpdateModelAsync<Product>(
-                productToUpdate,
-                "",
-                p => p.Quantity))
+            var tryUpdateProduct = await TryUpdateModelAsync<Product>(
+                productToUpdate, "", x => x.Quantity);
+
+            int updatedQuantity = productToUpdate.Quantity + 1;
+            int updateAccepted = receiveOrderItemToUpdate.Accepted + 1;
+
+            if (tryUpdateOrderItem == true && tryUpdateProduct == true)
             {
                 try
                 {
+                    receiveOrderItemToUpdate.Accepted = updateAccepted;
                     productToUpdate.Quantity = updatedQuantity;
                     await _context.SaveChangesAsync();
                 }
@@ -66,6 +72,7 @@ namespace LagerPlayground.Controllers
                     return Json(new { boolean = false, msg = "An database error has occured" });
                 }
             }
+
             return Json(new {boolean = true});
         }
     }

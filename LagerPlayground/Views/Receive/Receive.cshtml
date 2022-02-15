@@ -169,7 +169,7 @@
 
         if (scanned_barcode.length >= 1) {
 
-            AddProduct(scanned_barcode);
+            FindProduct(scanned_barcode);
 
             //if (scanned_barcode != currentBarcode) {
             //    //ajaxResult = false;
@@ -181,54 +181,58 @@
         }
     }
 
-    function AddProduct(scanned_barcode) {
+    function FindProduct(scanned_barcode) {
         tbodyTr.each(function(index) {
             if($(this).data("barcode") == scanned_barcode) {
-                if (AddProductDatabase(scanned_barcode, $(this).data("receivingorderitemid")) == true) {
-                    tbodyTr.removeClass("receive-table-tbody-tr-active");
-                    $(this).addClass("receive-table-tbody-tr-active");
-
-                    acceptedInputValue = $(this).find(".receive-accepted-input").val(); 
-                    $(this).find(".receive-accepted-input").val(acceptedInputValue++ + 1);
-
-                    $(this).find(unreceivedPTag).text(function(i,v) {
-                        let getNumber = parseInt(v);
-                        if(getNumber > 0) {
-                            let result = getNumber - 1;
-                            return result;
-                        }
-                        return;
-                    });
-
-                    $(this).find(acceptedPTag).text(function(i,v) {
-                        let getNumber = parseInt(v);
-                        let result = getNumber + 1;
-
-                        return result;
-                    });
-
-                    ReceiveProgressBarFunction($(this));
-
-                    return;
-                }
+                tbodyTr.removeClass("receive-table-tbody-tr-active");
+                AddProductDatabase(scanned_barcode, $(this).data("receivingorderitemid"), $(this));
             }
         });
     }
 
-    function AddProductDatabase(scanned_barcode, receivingItemID) {
+    function AddProduct(thisElement) {
+        thisElement.addClass("receive-table-tbody-tr-active");
+
+        acceptedInputValue = thisElement.find(".receive-accepted-input").val(); 
+        thisElement.find(".receive-accepted-input").val(acceptedInputValue++ + 1);
+
+        thisElement.find(unreceivedPTag).text(function(i,v) {
+            let getNumber = parseInt(v);
+            if(getNumber > 0) {
+                let result = getNumber - 1;
+                return result;
+            }
+            return;
+        });
+
+        thisElement.find(acceptedPTag).text(function(i,v) {
+            let getNumber = parseInt(v);
+            let result = getNumber + 1;
+        
+            return result;
+        });
+
+        ReceiveProgressBarFunction(thisElement);
+
+        return;
+    }
+
+
+    function AddProductDatabase(scanned_barcode, receivingItemId, thisElement) {
+        
+        let ajaxResult;
+
         $.ajax({
             type: "POST",
             url: "/Receive/AddProduct",
             headers: {"RequestVerificationToken": "@GetAntiXsrfRequestToken()"},
-            data: { barcode: scanned_barcode, receivingOrderItemID: receivingItemID },
+            data: { barcode: scanned_barcode, receivingItemID: receivingItemId },
             success: function (result) {
                 if(result.boolean == true) {
-                    console.log("Db True");
-                    return true;
+                    AddProduct(thisElement);
                 }
                 else {
                     console.log(result.msg);
-                    return false;
                 }
             },
             error: function (req, status, error) {
