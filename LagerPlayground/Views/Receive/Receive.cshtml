@@ -27,7 +27,7 @@
     <tbody>
         @foreach (var item in Model.ReceivingOrder_Items)
         {
-            <tr class="receive-table-tbody-tr" data-barcode="@item.Product.BarcodeID">
+            <tr class="receive-table-tbody-tr" data-barcode="@item.Product.BarcodeID" data-receivingorderitemid="@item.ID">
                 <td class="receive-first">
                     <div class="receive-table-product-overall-container">
                         <div class="receive-table-product-image-container">
@@ -184,31 +184,55 @@
     function AddProduct(scanned_barcode) {
         tbodyTr.each(function(index) {
             if($(this).data("barcode") == scanned_barcode) {
-                tbodyTr.removeClass("receive-table-tbody-tr-active");
-                $(this).addClass("receive-table-tbody-tr-active");
+                if (AddProductDatabase(scanned_barcode, $(this).data("receivingorderitemid")) == true) {
+                    tbodyTr.removeClass("receive-table-tbody-tr-active");
+                    $(this).addClass("receive-table-tbody-tr-active");
 
-                acceptedInputValue = $(this).find(".receive-accepted-input").val(); 
-                $(this).find(".receive-accepted-input").val(acceptedInputValue++ + 1);
+                    acceptedInputValue = $(this).find(".receive-accepted-input").val(); 
+                    $(this).find(".receive-accepted-input").val(acceptedInputValue++ + 1);
 
-                $(this).find(unreceivedPTag).text(function(i,v) {
-                    let getNumber = parseInt(v);
-                    if(getNumber > 0) {
-                        let result = getNumber - 1;
+                    $(this).find(unreceivedPTag).text(function(i,v) {
+                        let getNumber = parseInt(v);
+                        if(getNumber > 0) {
+                            let result = getNumber - 1;
+                            return result;
+                        }
+                        return;
+                    });
+
+                    $(this).find(acceptedPTag).text(function(i,v) {
+                        let getNumber = parseInt(v);
+                        let result = getNumber + 1;
+
                         return result;
-                    }
+                    });
+
+                    ReceiveProgressBarFunction($(this));
+
                     return;
-                });
+                }
+            }
+        });
+    }
 
-                $(this).find(acceptedPTag).text(function(i,v) {
-                    let getNumber = parseInt(v);
-                    let result = getNumber + 1;
-
-                    return result;
-                });
-
-                ReceiveProgressBarFunction($(this));
-
-                return;
+    function AddProductDatabase(scanned_barcode, receivingItemID) {
+        $.ajax({
+            type: "POST",
+            url: "/Receive/AddProduct",
+            headers: {"RequestVerificationToken": "@GetAntiXsrfRequestToken()"},
+            data: { barcode: scanned_barcode, receivingOrderItemID: receivingItemID },
+            success: function (result) {
+                if(result.boolean == true) {
+                    console.log("Db True");
+                    return true;
+                }
+                else {
+                    console.log(result.msg);
+                    return false;
+                }
+            },
+            error: function (req, status, error) {
+                console.log(status);
             }
         });
     }
