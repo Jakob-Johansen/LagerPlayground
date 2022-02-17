@@ -975,7 +975,72 @@ li.dropdown {
 }
 
 /*---Receive---*/
-/*https://css-tricks.com/snippets/css/a-guide-to-flexbox/*/
+/* https://css-tricks.com/snippets/css/a-guide-to-flexbox */
+
+.receive-top-overall-container {
+    display: flex;
+    padding: 0 10px;
+    width: 1075.96px;
+    height: auto;
+    margin: 0 auto 18px auto;
+/*    background-color: black;*/
+}
+
+.receive-top-container {
+    width: 50%;
+    height: auto;
+}
+
+.receive-top-container-text {
+    font-size: 17px;
+}
+
+.receive-top-progressbar-container {
+    display: inline-flex;
+    font-size: 16px;
+    align-items: center;
+}
+
+.receive-top-numbers {
+    padding-left: 5px;
+}
+
+.receive-top-progressbar {
+    width: 255px;
+    height: 8px;
+    background-color: #ffc107;
+}
+
+.receive-top-btns-overall-container {
+    width: auto;
+    height: auto;
+}
+
+.receive-top-btns-container {
+    float: right;
+}
+
+.receive-top-btns-save, .receive-top-btns-back {
+    display: block;
+    font-size: 18px;
+    padding: 6px 30px;
+    text-decoration: none;
+    color: white;
+}
+
+.receive-top-btns-save:hover, .receive-top-btns-back:hover {
+    color: white;
+}
+
+.receive-top-btns-back {
+    margin-right: 10px;
+    background-color: #1962b5;
+}
+
+.receive-top-btns-save {
+    margin-left: 10px;
+    background-color: #1a9c23;
+}
 
 .receive-table {
     width: unset !important;
