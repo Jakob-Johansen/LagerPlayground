@@ -61,7 +61,12 @@
                     </div>
                 </td>
                 <td><p class="receive-table-unreceived trim">@(item.Quantity - item.Accepted)</p></td>
-                <td><p class="receive-table-rejected trim">@item.Rejected</p></td>
+                <td class="receive-table-rejected-info-td">
+                    <a class="receive-table-rejected-info-container">
+                        <p class="receive-table-rejected trim">@item.Rejected</p>
+                        <span class="receive-table-rejected-span">Edit</span>
+                    </a>
+                </td>
                 <td><input type="number" value="@item.Accepted" class="form-control background-dark receive-accepted-input" style="width: 120px !important;" /></td>
                 <td class="receive-last">
                     <div class="receive-table-activity-overall-container">
@@ -101,6 +106,9 @@
     let rejectedPTag = $(".receive-table-rejected");
     let acceptedPTag = $(".receive-table-accepted");
     let orderedPTag = $(".receive-table-ordered");
+
+    // Reject variables
+    let openRejectModalBtn = $(".receive-table-rejected-span");
 
     // Loading variabler
     let loader = $(".loader");
@@ -190,15 +198,8 @@
 
         if (scanned_barcode.length >= 1) {
 
+            //loadingTimeout();
             FindProduct(scanned_barcode);
-
-            //if (scanned_barcode != currentBarcode) {
-            //    //ajaxResult = false;
-            //    //loadingTimeout();
-
-            //    //currentBarcode = scanned_barcode;
-            //    //lastScannedBarcode = scanned_barcode;
-            //}
         }
     }
 
@@ -238,7 +239,6 @@
         return;
     }
 
-
     function AddProductDatabase(scanned_barcode, receivingItemId, thisElement) {
 
         let ajaxResult;
@@ -261,5 +261,11 @@
             }
         });
     }
+
+    // Reject
+
+    openRejectModalBtn.click(function () {
+        console.log("Open Modal");
+    });
 </script>
 }

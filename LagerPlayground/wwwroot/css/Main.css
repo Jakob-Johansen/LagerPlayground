@@ -1022,8 +1022,8 @@ li.dropdown {
 
 .receive-top-btns-save, .receive-top-btns-back {
     display: block;
-    font-size: 18px;
-    padding: 6px 30px;
+    font-size: 16px;
+    padding: 4px 15px;
     text-decoration: none;
     color: white;
 }
@@ -1041,6 +1041,33 @@ li.dropdown {
     margin-left: 10px;
     background-color: #1a9c23;
 }
+
+.receive-table-rejected-info-container {
+    display: inline-flex;
+}
+
+.receive-table-rejected-info-td:hover {
+    cursor: pointer;
+}
+
+.receive-table-rejected-info-td:hover .receive-table-rejected-span {
+    display: block;
+}
+
+.receive-table-rejected-span {
+    display: none;
+    padding-left: 10px;
+    text-decoration: underline;
+}
+
+.receive-table-rejected-info-container {
+    text-decoration: none;
+    user-select: none;
+}
+
+/*.receive-table-rejected-info-container:hover {
+    color: #0d6efd;
+}*/
 
 .receive-table {
     width: unset !important;
