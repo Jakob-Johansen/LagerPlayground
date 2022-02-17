@@ -14,6 +14,27 @@
 
 <h2>Receive</h2>
 
+<div class="receive-top-overall-container">
+    <div class="receive-top-container">
+        <p class="trim receive-top-container-text">Unreceived</p>
+        <div class="receive-top-progressbar-container">
+            <div class="receive-top-progressbar"></div>
+            <p class="trim receive-top-numbers">0/80</p>
+        </div>
+    </div>
+    <div class="receive-top-container">
+        <div class="receive-top-btns-overall-container">
+            <div class="receive-top-btns-container">
+                <a class="receive-top-btns-save" asp-action="">Save</a>
+            </div>
+            <div class="receive-top-btns-container">
+                <a class="receive-top-btns-back" asp-controller="Warehouse" asp-action="ReceiveOrderDetails" asp-route-id="@Model.ID">Back to Receive Order</a>
+            </div>
+            <div class="clearBoth"></div>
+        </div>
+    </div>
+</div>
+
 <table class="table receive-table w-auto">
     <thead>
         <tr>
@@ -87,7 +108,7 @@
 
     // Scanner variabler
     let barcode = '';
-    let interval;       
+    let interval;
 
     $(document).ready(function () {
         tbodyTr.each(function(index) {
@@ -104,7 +125,7 @@
 
         let getUnreceivedNumber = thisElement.find(unreceivedPTag).html();
         let getAcceptedNumber = thisElement.find(acceptedPTag).html();
-        let getRejectedNumber = thisElement.find(rejectedPTag).html(); 
+        let getRejectedNumber = thisElement.find(rejectedPTag).html();
 
         if (getAcceptedNumber == 0 && getRejectedNumber == 0) {
             thisElement.find(receiveProgressBar).css( { background : "linear-gradient(to left, #ffc107 0%, #ffc107 100%)" } );
@@ -193,7 +214,7 @@
     function AddProduct(thisElement) {
         thisElement.addClass("receive-table-tbody-tr-active");
 
-        acceptedInputValue = thisElement.find(".receive-accepted-input").val(); 
+        acceptedInputValue = thisElement.find(".receive-accepted-input").val();
         thisElement.find(".receive-accepted-input").val(acceptedInputValue++ + 1);
 
         thisElement.find(unreceivedPTag).text(function(i,v) {
@@ -208,7 +229,7 @@
         thisElement.find(acceptedPTag).text(function(i,v) {
             let getNumber = parseInt(v);
             let result = getNumber + 1;
-        
+
             return result;
         });
 
@@ -219,7 +240,7 @@
 
 
     function AddProductDatabase(scanned_barcode, receivingItemId, thisElement) {
-        
+
         let ajaxResult;
 
         $.ajax({
