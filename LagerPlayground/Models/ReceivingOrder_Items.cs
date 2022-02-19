@@ -17,6 +17,19 @@ namespace LagerPlayground.Models
         public DateTime Created { get; set; }
         public DateTime? Modified { get; set; }
 
+        public int Unreceived { 
+            get
+            {
+
+                int unreceived = Quantity - Accepted;
+
+                if (unreceived < 0)
+                    unreceived = 0;
+
+                return unreceived;
+            }
+        }
+
         public ReceivingOrder_Details ReceivingOrder_Details { get; set; }
         public Product Product { get; set; }
     }

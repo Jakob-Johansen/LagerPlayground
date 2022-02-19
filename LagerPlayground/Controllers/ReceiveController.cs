@@ -30,6 +30,18 @@ namespace LagerPlayground.Controllers
                 return NotFound();
             }
 
+            int allOrderedProducts = 0;
+            int allAcceptedProducts = 0;
+
+            foreach (var item in receiveOrderDetails.ReceivingOrder_Items)
+            {
+                allOrderedProducts += item.Quantity;
+                allAcceptedProducts += item.Accepted;
+            }
+
+            ViewData["AllOrderedProducts"] = allOrderedProducts;
+            ViewData["allAcceptedProducts"] = allAcceptedProducts;
+
             return View(receiveOrderDetails);
         }
 
