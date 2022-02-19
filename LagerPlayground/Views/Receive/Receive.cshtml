@@ -156,12 +156,6 @@
         else {
             let percentageAccepted = getAcceptedNumber / thisElement.find(orderedPTag).data("ordered") * 100;
             thisElement.find(receiveProgressBar).css( { background : "linear-gradient(to left, #1a9c23 0%, #1a9c23 " + percentageAccepted + "%, #ffc107 " + percentageAccepted + "%, #ffc107 100%)" } );
-            //if(percentageAccepted == 100) {
-            //    thisElement.find(receiveProgressBar).css( { background : "linear-gradient(to left, #1a9c23 0%, #1a9c23 100%)" } );
-            //}
-            //else {
-            //    thisElement.find(receiveProgressBar).css( { background : "linear-gradient(to left, #1a9c23 0%, #1a9c23 " + percentageAccepted + "%, #ffc107 " + percentageAccepted + "%, #ffc107 100%)" } );
-            //}
         }
     }
 
@@ -212,7 +206,6 @@
             currentScannedBarcode = scanned_barcode;
 
             //currentBarcodeArray.push(scanned_barcode);
-            //console.log("T");
             //loadingTimeout();
             FindProduct(scanned_barcode);
         }
@@ -303,7 +296,7 @@
         });
     }
 
-    // Reject
+    // Reject Modal
 
     openRejectModalBtn.click(function () {
         console.log("Open Modal");
