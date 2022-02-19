@@ -208,18 +208,11 @@
 
         if (scanned_barcode.length >= 1) {
 
-            if (scanned_barcode != currentScannedBarcode) {
-                lastScannedBarcode = currentScannedBarcode;
-                currentScannedBarcode = scanned_barcode;
-                for (var i = 0; i < currentBarcodeArray.length; i++) {
-                    console.log(currentBarcodeArray[i]);
-                }
-            }
+            lastScannedBarcode = currentScannedBarcode;
+            currentScannedBarcode = scanned_barcode;
 
-            currentBarcodeArray.push(scanned_barcode);
-            console.log("T");
-
-            console.log("Y");
+            //currentBarcodeArray.push(scanned_barcode);
+            //console.log("T");
             //loadingTimeout();
             FindProduct(scanned_barcode);
         }
@@ -229,9 +222,8 @@
         tbodyTr.each(function(index) {
             if($(this).data("barcode") == scanned_barcode) {
 
-                if(scanned_barcode != lastScannedBarcode) {
+                if(scanned_barcode != lastScannedBarcode)
                     tbodyTr.removeClass("receive-table-tbody-tr-active");
-                }
 
                 AddProductDatabase(scanned_barcode, $(this).data("receivingorderitemid"), $(this));
             }
