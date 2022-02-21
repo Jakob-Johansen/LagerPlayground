@@ -1288,3 +1288,11 @@ li.dropdown {
 .receive-rejectmodal-product-info-detail-container > p {
     padding-left: 8px;
 }
+
+.receive-rejectmodal-table > thead > tr > td, .receive-rejectmodal-table > tbody > tr > td {
+    width: 19% !important;
+}
+
+.receive-rejectmodal-table-container {
+    padding-top: 25px;
+}
