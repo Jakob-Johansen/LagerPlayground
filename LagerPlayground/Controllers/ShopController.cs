@@ -227,7 +227,7 @@ namespace LagerPlayground.Controllers
                         receivingOrder_Items.Quantity = item.Quantity;
                         receivingOrder_Items.Created = DateTime.Now;
                         receivingOrder_Items.Accepted = 0;
-                        receivingOrder_Items.Rejected = 0;
+                        //receivingOrder_Items.Rejected = 0;
                         receivingOrder_ItemsList.Add(receivingOrder_Items);
                     }
 

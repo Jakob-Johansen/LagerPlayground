@@ -11,8 +11,8 @@ namespace LagerPlayground.Models
         public int ID { get; set; }
         public int ReceiveCustommerID { get; set; }
         public string OrderStatus { get; set; }
-        public DateTime Expected { get; set; }
-        public DateTime Created { get; set; }
+        public DateTime? Expected { get; set; }
+        public DateTime? Created { get; set; }
         public DateTime? Closed { get; set; }
         public DateTime? Modified { get; set; }
 

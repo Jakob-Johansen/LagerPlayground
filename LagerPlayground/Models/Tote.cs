@@ -13,7 +13,7 @@ namespace LagerPlayground.Models
         public string Barcode { get; set; }
         public int Number { get; set; }
         public string Warehouse { get; set; }
-        public DateTime Created { get; set; }
+        public DateTime? Created { get; set; }
         public DateTime? Modified { get; set; }
     }
 }

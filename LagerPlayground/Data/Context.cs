@@ -24,5 +24,7 @@ namespace LagerPlayground.Data
         public DbSet<ReceivingOrder_Items> ReceivingOrder_Items { get; set; }
         public DbSet<ReceiveCustommer> ReceiveCustommers { get; set; }
         public DbSet<ReceiveBox_Items> ReceiveBox_Items { get; set; }
+        public DbSet<ReceiveRejected> ReceiveRejecteds { get; set; }
+        public DbSet<ReceiveRejectedReasons> ReceiveRejectedReasons { get; set; }
     }
 }

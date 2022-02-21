@@ -36,7 +36,7 @@
                     @Html.DisplayNameFor(model => model.Created):
                 </dt>
                 <dd class="col-sm-9">
-                    @Model.Created.ToShortDateString()
+                    @Model.Created?.ToShortDateString()
                 </dd>
 
                 <dt class="col-sm-3">
@@ -50,7 +50,7 @@
                     @Html.DisplayNameFor(model => model.Expected):
                 </dt>
                 <dd class="col-sm-9">
-                    @Model.Expected.ToShortDateString()
+                    @Model.Expected?.ToShortDateString()
                 </dd>
 
             </dl>

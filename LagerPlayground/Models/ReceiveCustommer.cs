@@ -10,7 +10,7 @@ namespace LagerPlayground.Models
     {
         public int ID { get; set; }
         public string Vendor { get; set; }
-        public DateTime Created { get; set; }
+        public DateTime? Created { get; set; }
         public DateTime? Modified { get; set; }
 
         public ReceivingOrder_Details ReceivingOrder_Details { get; set; }

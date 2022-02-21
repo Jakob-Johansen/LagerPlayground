@@ -28,9 +28,9 @@
                 <td>
                     @Html.DisplayFor(modelItem => item.OrderStatus)
                 </td>
-                <td>@item.Created.ToShortDateString()</td>
+                <td>@item.Created?.ToShortDateString()</td>
                 <td>@(item.Closed != null ? item.Closed?.ToShortDateString() : "-")</td>
-                <td>@item.Expected.ToShortDateString()</td>
+                <td>@item.Expected?.ToShortDateString()</td>
                 <td><a asp-action="ReceiveOrderDetails" asp-route-id="@item.ID">View Details</a></td>
             </tr>
         }
