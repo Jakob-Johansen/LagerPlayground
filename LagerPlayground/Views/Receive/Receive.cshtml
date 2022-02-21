@@ -103,9 +103,22 @@
                 <span class="material-icons receive-rejectmodal-close">close</span>
             </div>
             <div class="clearBoth"></div>
-        </div>
-        <div class="receive-rejectmodal-product-info-container">
-
+            <div class="receive-rejectmodal-product-info-overall-container">
+                <div class="receive-rejectmodal-product-info-container">
+                    <div class="receive-rejectmodal-product-info-image-container">
+                        <img class="receive-rejectmodal-product-info-image" src="~/Images/Placeholders/Placeholder.jpg" />
+                    </div>
+                    <div class="receive-rejectmodal-product-info-detail-container">
+                        <p class="trim receive-rejectmodal-product-info-name">NULL</p>
+                        <p class="trim"><span class="receive-table-product-info-sku">SKU: </span><span class="receive-rejectmodal-product-info-sku">NULL</span></p>
+                    </div>
+                </div>
+                <div class="receive-rejectmodal-rejected-info-container">
+                    <p class="trim">Total Rejected</p>
+                    <p class="trim receive-rejectmodal-rejected-number">0</p>
+                </div>
+                <div class="clearBoth"></div>
+            </div>
         </div>
     </div>
 </div>
@@ -132,6 +145,13 @@
 
     // Reject variables
     let openRejectModalBtn = $(".receive-table-rejected-span");
+    let closeRejectModalBtn = $(".receive-rejectmodal-close");
+    let overlayRejectModal = $(".receive-rejectmodal-overlay-container");
+
+    let imageRejectedModal = $(".receive-rejectmodal-product-info-image");
+    let nameRejectedModal = $(".receive-rejectmodal-product-info-name");
+    let skuRejectedModal = $(".receive-rejectmodal-product-info-sku");
+    let numberRejectedModal = $(".receive-rejectmodal-rejected-number");
 
     // Loading variabler
     let loader = $(".loader");
@@ -318,7 +338,59 @@
     // Reject Modal
 
     openRejectModalBtn.click(function () {
-        console.log("Open Modal");
+        overlayRejectModal.css("display", "block");
+
+        let thisElement = $(this).closest(tbodyTr);
+
+        if (thisElement.data("barcode") != "" || thisElement.data("barcode") != null) {
+            GetOneReceiveOrder(thisElement.data("barcode"));
+        } 
+
     });
+
+    closeRejectModalBtn.click(function () {
+        overlayRejectModal.css("display", "none");
+        nameRejectedModal.text("NULL");
+        skuRejectedModal.text("NULL");
+        imageRejectedModal.attr("src", '/Images/Placeholders/Placeholder.jpg');
+    });
+
+
+    function GetOneReceiveOrder(barcode) {
+        $.ajax({
+            type: "GET",
+            url: "/Receive/GetOneReceiveOrder",
+            data: { barcode: barcode},
+            success: function (result) {
+                if(result.boolean == true) {
+                    console.log("Success");
+                    AddNewData(result.receiveorder);
+                }
+                else {
+                    console.log(result.msg);
+                }
+            },
+            error: function (req, status, error) {
+                console.log(status);
+            }
+        });
+    }
+
+    function AddNewData(receiveorder) {
+        //let imageRejectedModal = $(".receive-rejectmodal-product-info-image");
+        //let nameRejectedModal = $(".receive-rejectmodal-product-info-name");
+        //let skuRejectedModal = $(".receive-rejectmodal-product-info-sku");
+        //let numberRejectedModal = $(".receive-rejectmodal-rejected-number");
+
+        let product = receiveorder.product;
+        nameRejectedModal.text(product.name);
+        skuRejectedModal.text(product.barcodeID);
+
+        if (product.image != null) {
+            imageRejectedModal.attr("src", '/Images/Products/' + product.image);
+            console.log("Not NULL");
+        }
+    }
+
 </script>
 }
