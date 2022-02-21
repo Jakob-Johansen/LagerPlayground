@@ -1197,10 +1197,11 @@ li.dropdown {
 }
 
 .receive-rejectmodal-overall-container {
-    width: 1000px;
+    width: 1050px;
     height: 500px;
-    padding: 15px 0;
-    background-color: #dbdbdb;
+    padding: 25px 0;
+    background-color: rgb(20, 22, 23);
+/*    background-color: #dbdbdb;*/
     margin: 0 auto;
     border-radius: 8px;
     position: relative;
@@ -1210,7 +1211,7 @@ li.dropdown {
 .receive-rejectmodal-header-overall-container {
     width: 100%;
     height: auto;
-    padding: 0 20px;
+    padding: 0 30px;
     position: relative;
 }
 
@@ -1225,12 +1226,13 @@ li.dropdown {
     font-size: 25px;
     vertical-align: middle;
     line-height: 40px;
-    color: black !important;
+/*    color: white !important;*/
 }
 
 .receive-rejectmodal-close {
     font-size: 30px;
     user-select: none;
+    color: white;
     position: absolute;
     right: 0;
     top: 50%;
@@ -1276,7 +1278,7 @@ li.dropdown {
 .receive-rejectmodal-rejected-info-container > p, .receive-rejectmodal-product-info-detail-container > p {
     width: 100%;
     display: block;
-    color: black !important;
+/*    color: black !important;*/
 }
 
 .receive-rejectmodal-rejected-info-container > p {
