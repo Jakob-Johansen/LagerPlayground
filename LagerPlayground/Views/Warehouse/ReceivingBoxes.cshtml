@@ -71,7 +71,7 @@
                 <td>Primary</td>
                 <td>@Html.DisplayFor(modelItem => item.Name)</td>
                 <td>@Html.DisplayFor(modelItem => item.Barcode)</td>
-                <td>@item.Created.ToShortDateString()</td>
+                <td>@item.Created?.ToShortDateString()</td>
                 <td>
                     <div class="tote-table-btn-overall-container">
                         <div class="tote-table-btn-container">

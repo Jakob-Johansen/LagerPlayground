@@ -377,14 +377,10 @@
     }
 
     function AddNewData(receiveorder) {
-        //let imageRejectedModal = $(".receive-rejectmodal-product-info-image");
-        //let nameRejectedModal = $(".receive-rejectmodal-product-info-name");
-        //let skuRejectedModal = $(".receive-rejectmodal-product-info-sku");
-        //let numberRejectedModal = $(".receive-rejectmodal-rejected-number");
-
         let product = receiveorder.product;
         nameRejectedModal.text(product.name);
         skuRejectedModal.text(product.barcodeID);
+        numberRejectedModal.text(receiveorder.rejected);
 
         if (product.image != null) {
             imageRejectedModal.attr("src", '/Images/Products/' + product.image);

@@ -23,7 +23,7 @@ namespace LagerPlayground.Migrations
                     City = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Zipcode = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Address = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Created = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    Created = table.Column<DateTime>(type: "datetime2", nullable: true),
                     Modified = table.Column<DateTime>(type: "datetime2", nullable: true)
                 },
                 constraints: table =>
@@ -57,12 +57,27 @@ namespace LagerPlayground.Migrations
                     ID = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Vendor = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Created = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    Created = table.Column<DateTime>(type: "datetime2", nullable: true),
                     Modified = table.Column<DateTime>(type: "datetime2", nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_ReceiveCustommers", x => x.ID);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "ReceiveRejectedReasons",
+                columns: table => new
+                {
+                    ID = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Reason = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Created = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    Modified = table.Column<DateTime>(type: "datetime2", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_ReceiveRejectedReasons", x => x.ID);
                 });
 
             migrationBuilder.CreateTable(
@@ -75,7 +90,7 @@ namespace LagerPlayground.Migrations
                     Barcode = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Number = table.Column<int>(type: "int", nullable: false),
                     Warehouse = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Created = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    Created = table.Column<DateTime>(type: "datetime2", nullable: true),
                     Modified = table.Column<DateTime>(type: "datetime2", nullable: true)
                 },
                 constraints: table =>
@@ -93,7 +108,7 @@ namespace LagerPlayground.Migrations
                     Barcode = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Number = table.Column<int>(type: "int", nullable: false),
                     Warehouse = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Created = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    Created = table.Column<DateTime>(type: "datetime2", nullable: true),
                     Modified = table.Column<DateTime>(type: "datetime2", nullable: true)
                 },
                 constraints: table =>
@@ -109,7 +124,7 @@ namespace LagerPlayground.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     CustommerID = table.Column<int>(type: "int", nullable: false),
                     OrderStatus = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Created = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    Created = table.Column<DateTime>(type: "datetime2", nullable: true),
                     Modified = table.Column<DateTime>(type: "datetime2", nullable: true)
                 },
                 constraints: table =>
@@ -131,8 +146,8 @@ namespace LagerPlayground.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     ReceiveCustommerID = table.Column<int>(type: "int", nullable: false),
                     OrderStatus = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Expected = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    Created = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    Expected = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    Created = table.Column<DateTime>(type: "datetime2", nullable: true),
                     Closed = table.Column<DateTime>(type: "datetime2", nullable: true),
                     Modified = table.Column<DateTime>(type: "datetime2", nullable: true)
                 },
@@ -148,6 +163,34 @@ namespace LagerPlayground.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "ReceiveBox_Items",
+                columns: table => new
+                {
+                    ID = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    ReceiveBoxID = table.Column<int>(type: "int", nullable: false),
+                    ProductID = table.Column<int>(type: "int", nullable: false),
+                    Created = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    Modified = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    ReceivingBoxID = table.Column<int>(type: "int", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_ReceiveBox_Items", x => x.ID);
+                    table.ForeignKey(
+                        name: "FK_ReceiveBox_Items_Products_ProductID",
+                        column: x => x.ProductID,
+                        principalTable: "Products",
+                        principalColumn: "ID",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_ReceiveBox_Items_ReceivingBoxes_ReceivingBoxID",
+                        column: x => x.ReceivingBoxID,
+                        principalTable: "ReceivingBoxes",
+                        principalColumn: "ID");
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Order_Items",
                 columns: table => new
                 {
@@ -156,7 +199,7 @@ namespace LagerPlayground.Migrations
                     Order_DetailsID = table.Column<int>(type: "int", nullable: false),
                     ProductID = table.Column<int>(type: "int", nullable: false),
                     Quantity = table.Column<int>(type: "int", nullable: false),
-                    Created = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    Created = table.Column<DateTime>(type: "datetime2", nullable: true),
                     Modified = table.Column<DateTime>(type: "datetime2", nullable: true)
                 },
                 constraints: table =>
@@ -185,9 +228,8 @@ namespace LagerPlayground.Migrations
                     ReceivingOrder_DetailsID = table.Column<int>(type: "int", nullable: false),
                     ProductID = table.Column<int>(type: "int", nullable: false),
                     Quantity = table.Column<int>(type: "int", nullable: false),
-                    Rejected = table.Column<int>(type: "int", nullable: false),
                     Accepted = table.Column<int>(type: "int", nullable: false),
-                    Created = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    Created = table.Column<DateTime>(type: "datetime2", nullable: true),
                     Modified = table.Column<DateTime>(type: "datetime2", nullable: true)
                 },
                 constraints: table =>
@@ -207,6 +249,30 @@ namespace LagerPlayground.Migrations
                         onDelete: ReferentialAction.Cascade);
                 });
 
+            migrationBuilder.CreateTable(
+                name: "ReceiveRejecteds",
+                columns: table => new
+                {
+                    ID = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    ReceivingOrder_ItemsID = table.Column<int>(type: "int", nullable: false),
+                    Quantity = table.Column<int>(type: "int", nullable: false),
+                    ReceiveRejectedReasonID = table.Column<int>(type: "int", nullable: false),
+                    Note = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Created = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    Modified = table.Column<DateTime>(type: "datetime2", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_ReceiveRejecteds", x => x.ID);
+                    table.ForeignKey(
+                        name: "FK_ReceiveRejecteds_ReceivingOrder_Items_ReceivingOrder_ItemsID",
+                        column: x => x.ReceivingOrder_ItemsID,
+                        principalTable: "ReceivingOrder_Items",
+                        principalColumn: "ID",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
             migrationBuilder.CreateIndex(
                 name: "IX_Order_Details_CustommerID",
                 table: "Order_Details",
@@ -222,6 +288,21 @@ namespace LagerPlayground.Migrations
                 name: "IX_Order_Items_ProductID",
                 table: "Order_Items",
                 column: "ProductID");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_ReceiveBox_Items_ProductID",
+                table: "ReceiveBox_Items",
+                column: "ProductID");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_ReceiveBox_Items_ReceivingBoxID",
+                table: "ReceiveBox_Items",
+                column: "ReceivingBoxID");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_ReceiveRejecteds_ReceivingOrder_ItemsID",
+                table: "ReceiveRejecteds",
+                column: "ReceivingOrder_ItemsID");
 
             migrationBuilder.CreateIndex(
                 name: "IX_ReceivingOrder_Details_ReceiveCustommerID",
@@ -246,10 +327,13 @@ namespace LagerPlayground.Migrations
                 name: "Order_Items");
 
             migrationBuilder.DropTable(
-                name: "ReceivingBoxes");
+                name: "ReceiveBox_Items");
 
             migrationBuilder.DropTable(
-                name: "ReceivingOrder_Items");
+                name: "ReceiveRejectedReasons");
+
+            migrationBuilder.DropTable(
+                name: "ReceiveRejecteds");
 
             migrationBuilder.DropTable(
                 name: "Totes");
@@ -258,13 +342,19 @@ namespace LagerPlayground.Migrations
                 name: "Order_Details");
 
             migrationBuilder.DropTable(
+                name: "ReceivingBoxes");
+
+            migrationBuilder.DropTable(
+                name: "ReceivingOrder_Items");
+
+            migrationBuilder.DropTable(
+                name: "Custommers");
+
+            migrationBuilder.DropTable(
                 name: "Products");
 
             migrationBuilder.DropTable(
                 name: "ReceivingOrder_Details");
-
-            migrationBuilder.DropTable(
-                name: "Custommers");
 
             migrationBuilder.DropTable(
                 name: "ReceiveCustommers");

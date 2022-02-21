@@ -6,15 +6,11 @@ using System.Threading.Tasks;
 
 namespace LagerPlayground.Models
 {
-    public class Order_Details
+    public class ReceiveRejectedReasons
     {
         public int ID { get; set; }
-        public int CustommerID { get; set; }
-        public string OrderStatus { get; set; }
+        public string Reason { get; set; }
         public DateTime? Created { get; set; }
         public DateTime? Modified { get; set; }
-
-        public Custommer Custommer { get; set; }
-        public ICollection<Order_Items> Order_Items { get; set; }
     }
 }

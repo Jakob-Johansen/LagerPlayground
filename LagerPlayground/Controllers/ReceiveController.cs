@@ -23,6 +23,8 @@ namespace LagerPlayground.Controllers
             var receiveOrderDetails = await _context.ReceivingOrder_Details
                 .Include(x => x.ReceivingOrder_Items)
                     .ThenInclude(t => t.Product)
+                .Include(x => x.ReceivingOrder_Items)
+                    .ThenInclude(t => t.ReceiveRejecteds)
                 .FirstOrDefaultAsync(x => x.ID == ID);
 
             if (receiveOrderDetails == null)
@@ -98,6 +100,7 @@ namespace LagerPlayground.Controllers
 
             var receiveOrder = await _context.ReceivingOrder_Items
                 .Include(x => x.Product)
+                .Include(x => x.ReceiveRejecteds)
                 .AsNoTracking()
                 .FirstOrDefaultAsync(x => x.Product.BarcodeID == barcode);
 
