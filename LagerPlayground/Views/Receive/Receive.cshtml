@@ -120,6 +120,31 @@
                 <div class="clearBoth"></div>
             </div>
         </div>
+        <div class="receive-rejectmodal-table-container">
+        <table class="table receive-rejectmodal-table">
+            <thead>
+                <tr>
+                    <td>Qty</td>
+                    <td>Reason</td>
+                    <td>Note</td>
+                    <td></td>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><input type="text" /></td>
+                    <td>
+                        <select>
+                            <option>Test 1</option>
+                            <option>Test 2</option>
+                        </select>
+                    </td>
+                    <td><input type="text" /></td>
+                    <td>T</td>
+                </tr>
+            </tbody>
+        </table>
+        </div>
     </div>
 </div>
 
@@ -363,7 +388,6 @@
             data: { barcode: barcode},
             success: function (result) {
                 if(result.boolean == true) {
-                    console.log("Success");
                     AddNewData(result.receiveorder);
                 }
                 else {
@@ -384,7 +408,6 @@
 
         if (product.image != null) {
             imageRejectedModal.attr("src", '/Images/Products/' + product.image);
-            console.log("Not NULL");
         }
     }
 
