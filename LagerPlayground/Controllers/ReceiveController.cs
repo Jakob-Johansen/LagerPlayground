@@ -87,5 +87,26 @@ namespace LagerPlayground.Controllers
 
             return Json(new {boolean = true});
         }
+
+        [HttpGet]
+        public async Task<JsonResult> GetOneReceiveOrder(string barcode)
+        {
+            if (barcode == null)
+            {
+                return Json(new { boolean = false, msg = "No barcode was found" });
+            }
+
+            var receiveOrder = await _context.ReceivingOrder_Items
+                .Include(x => x.Product)
+                .AsNoTracking()
+                .FirstOrDefaultAsync(x => x.Product.BarcodeID == barcode);
+
+            if (receiveOrder == null)
+            {
+                return Json(new { boolean = false, msg = "No product with this barcode was found" });
+            }
+
+            return Json(new { boolean = true, receiveorder = receiveOrder});
+        }
     }
 }
