@@ -1,0 +1,94 @@
+﻿@model IEnumerable<LagerPlayground.Models.ReceiveRejectedReasons>
+
+@{
+    ViewData["Title"] = "All Reject Reasons";
+}
+
+<h2>All Reject Reasons</h2>
+
+<p>
+    <a asp-action="CreateRejectReason">Create New</a>
+</p>
+<hr />
+
+<table class="table tote-table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.ID)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Reason)
+            </th>
+            <th>
+                Created
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>@Html.DisplayFor(modelItem => item.ID)</td>
+                <td>@Html.DisplayFor(modelItem => item.Reason)</td>
+                <td>@item.Created?.ToShortDateString()</td>
+                <td><a class="orderDetails-backOrDelete-delete-btn" data-id="@item.ID">Delete</a></td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<div class="tote-overlay-overall-container">
+    <div class="tote-overlay-container">
+        <div class="tote-overlay-nav-overall-container">
+            <div class="tote-overlay-nav-container">
+                <p>Are you sure?</p>
+            </div>
+            <div class="tote-overlay-nav-container">
+                <span class="material-icons tote-overlay-nav-close-btn">close</span>
+            </div>
+            <div class="clearBoth"></div>
+        </div>
+
+        <div class="tote-overlay-info-container">
+            <p>If you delete this reason, the reason wil be gone forever. Are you sure you want to proceed?</p>
+        </div>
+
+        <div class="tote-overlay-btns-overall-container">
+            <div class="tote-overlay-btns-container-cancel">
+                <button class="tote-overlay-btn-cancel tote-overlay-nav-close-btn">Cancel</button>
+            </div>
+            <div class="tote-overlay-btns-container-add">
+                <form asp-controller="Receive" asp-action="DeleteRejectReason">
+                    <input class="deleteModalFormInputHidden" type="hidden" name="ID" />
+                    <button class="tote-overlay-btn-add tote-overlay-btn-delete">Delete</button>
+                </form>
+            </div>
+
+            <div class="clearBoth"></div>
+        </div>
+
+    </div>
+</div>
+
+@section Scripts {
+<script>
+        const openBtn = $(".orderDetails-backOrDelete-delete-btn");
+        const closeBtn = $(".tote-overlay-nav-close-btn");
+        const overlayContainer = $(".tote-overlay-overall-container");
+
+        let deleteModalFormInputHidden = $(".deleteModalFormInputHidden");
+
+        openBtn.click(function () {
+            overlayContainer.css("display", "block");
+            let getID = $(this).data("id");
+            deleteModalFormInputHidden.val(getID);
+            console.log(getID);
+        });
+
+        closeBtn.click(function () {
+            overlayContainer.css("display", "none");
+        });
+</script>
+}

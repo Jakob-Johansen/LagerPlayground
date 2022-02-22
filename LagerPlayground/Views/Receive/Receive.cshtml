@@ -1,4 +1,5 @@
-﻿@model LagerPlayground.Models.ReceivingOrder_Details
+﻿@*@model LagerPlayground.Models.ReceivingOrder_Details*@
+@model LagerPlayground.Models.VM.ReceiveSite
 @inject Microsoft.AspNetCore.Antiforgery.IAntiforgery Xsrf
 
 @functions {
@@ -28,7 +29,7 @@
                 <a class="receive-top-btns-save" asp-action="">Save</a>
             </div>
             <div class="receive-top-btns-container">
-                <a class="receive-top-btns-back" asp-controller="Warehouse" asp-action="ReceiveOrderDetails" asp-route-id="@Model.ID">Back to Receive Order</a>
+                <a class="receive-top-btns-back" asp-controller="Warehouse" asp-action="ReceiveOrderDetails" asp-route-id="@Model.ReceivingOrder_Details.ID">Back to Receive Order</a>
             </div>
             <div class="clearBoth"></div>
         </div>
@@ -46,7 +47,7 @@
         </tr>
     </thead>
     <tbody>
-        @foreach (var item in Model.ReceivingOrder_Items)
+        @foreach (var item in Model.ReceivingOrder_Details.ReceivingOrder_Items)
         {
             <tr class="receive-table-tbody-tr" data-barcode="@item.Product.BarcodeID" data-receivingorderitemid="@item.ID">
                 <td class="receive-first">
@@ -135,8 +136,11 @@
                     <td><input type="number" style="color: black !important;" /></td>
                     <td>
                         <select style="width: 90%; padding: 3px;">
-                            <option>Test 1</option>
-                            <option>Test 2</option>
+                            <option disabled selected>Select One</option>
+                            @foreach (var item in Model.ReceiveRejectedReasons)
+                            {
+                             <option name="id">@item.Reason</option>   
+                            }
                         </select>
                     </td>
                     <td><input type="text"  style="width: 100%; color: black !important;"/></td>
