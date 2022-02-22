@@ -1,5 +1,6 @@
 ﻿using LagerPlayground.Data;
 using LagerPlayground.Models;
+using LagerPlayground.Models.VM;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -20,14 +21,17 @@ namespace LagerPlayground.Controllers
                 return NotFound();
             }
 
-            var receiveOrderDetails = await _context.ReceivingOrder_Details
+            ReceiveSite receiveSite = new();
+            receiveSite.ReceivingOrder_Details = await _context.ReceivingOrder_Details
                 .Include(x => x.ReceivingOrder_Items)
                     .ThenInclude(t => t.Product)
                 .Include(x => x.ReceivingOrder_Items)
                     .ThenInclude(t => t.ReceiveRejecteds)
                 .FirstOrDefaultAsync(x => x.ID == ID);
 
-            if (receiveOrderDetails == null)
+            receiveSite.ReceiveRejectedReasons = await _context.ReceiveRejectedReasons.ToListAsync();
+
+            if (receiveSite.ReceivingOrder_Details == null)
             {
                 return NotFound();
             }
@@ -35,7 +39,7 @@ namespace LagerPlayground.Controllers
             int allOrderedProducts = 0;
             int allAcceptedProducts = 0;
 
-            foreach (var item in receiveOrderDetails.ReceivingOrder_Items)
+            foreach (var item in receiveSite.ReceivingOrder_Details.ReceivingOrder_Items)
             {
                 allOrderedProducts += item.Quantity;
                 allAcceptedProducts += item.Accepted;
@@ -44,7 +48,7 @@ namespace LagerPlayground.Controllers
             ViewData["AllOrderedProducts"] = allOrderedProducts;
             ViewData["allAcceptedProducts"] = allAcceptedProducts;
 
-            return View(receiveOrderDetails);
+            return View(receiveSite);
         }
 
         [HttpPost]
@@ -110,6 +114,72 @@ namespace LagerPlayground.Controllers
             }
 
             return Json(new { boolean = true, receiveorder = receiveOrder});
+        }
+
+        //---Reject Reasons---
+
+        public async Task<IActionResult> RejectReasons()
+        {
+            var rejectReasons = await _context.ReceiveRejectedReasons.ToListAsync();
+
+            return View(rejectReasons);
+        }
+
+        public IActionResult CreateRejectReason()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> CreateRejectReason([Bind("Reason")] ReceiveRejectedReasons receiveRejectedReasons)
+        {
+            try
+            {
+                if (ModelState.IsValid)
+                {
+                    receiveRejectedReasons.Created = DateTime.Now;
+                    _context.ReceiveRejectedReasons.Add(receiveRejectedReasons);
+                    await _context.SaveChangesAsync();
+                    return RedirectToAction("RejectReasons");
+                }
+            }
+            catch (DbUpdateException)
+            {
+                ModelState.AddModelError("", "Unable to save changes. " +
+                    "Try again, and if the problem persists " +
+                    "see your system administrator.");
+            }
+
+            return View(receiveRejectedReasons);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> DeleteRejectReason(int? ID)
+        {
+            if (ID == null)
+            {
+                return RedirectToAction("RejectReasons");
+            }
+
+            var rejectReason = await _context.ReceiveRejectedReasons.FindAsync(ID);
+
+            if (rejectReason == null)
+            {
+                return RedirectToAction("RejectReasons");
+            }
+
+            try
+            {
+                _context.ReceiveRejectedReasons.Remove(rejectReason);
+                await _context.SaveChangesAsync();
+                return RedirectToAction("RejectReasons");
+            }
+            catch (DbUpdateException)
+            {
+                return RedirectToAction("RejectReasons");
+            }
         }
     }
 }
