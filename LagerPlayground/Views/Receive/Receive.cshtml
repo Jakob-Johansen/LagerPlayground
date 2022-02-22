@@ -133,9 +133,9 @@
             </thead>
             <tbody>
                 <tr>
-                    <td><input type="number" style="color: black !important;" /></td>
+                    <td><input class="receive-rejectmodal-table-numberInput" type="number" style="color: black !important;" /></td>
                     <td>
-                        <select style="width: 90%; padding: 3px;">
+                        <select class="receive-rejectmodal-table-select" style="width: 90%; padding: 3px;">
                             <option disabled selected>Select One</option>
                             @foreach (var item in Model.ReceiveRejectedReasons)
                             {
@@ -143,11 +143,20 @@
                             }
                         </select>
                     </td>
-                    <td><input type="text"  style="width: 100%; color: black !important;"/></td>
+                    <td><input class="receive-rejectmodal-table-note" type="text" style="width: 100%; color: black !important;"/></td>
                     <td><button style="display: block;margin: 0 auto;">Delete</button></td>
                 </tr>
             </tbody>
         </table>
+        </div>
+        <div class="receive-rejectmodal-addnewreason-container">
+            <a>Add new Reason</a>
+        </div>
+        <div class="receive-rejectmodal-allreasons-container">
+
+        </div>
+        <div class="receive-rejectmodal-savebtn-container">
+            <a>Save</a>
         </div>
     </div>
 </div>

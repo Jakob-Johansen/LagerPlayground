@@ -1198,7 +1198,7 @@ li.dropdown {
 
 .receive-rejectmodal-overall-container {
     width: 1050px;
-    height: 500px;
+    height: auto;
     padding: 25px 0;
     background-color: rgb(20, 22, 23);
 /*    background-color: #dbdbdb;*/
@@ -1289,10 +1289,60 @@ li.dropdown {
     padding-left: 8px;
 }
 
+.receive-rejectmodal-table {
+    margin-bottom: 0px !important;
+}
+
 .receive-rejectmodal-table > thead > tr > td, .receive-rejectmodal-table > tbody > tr > td {
     width: 19% !important;
 }
 
 .receive-rejectmodal-table-container {
     padding-top: 25px;
+}
+
+.receive-rejectmodal-addnewreason-container {
+    border-bottom: 1px solid white;
+    padding: 12px 10px !important;
+}
+
+.receive-rejectmodal-addnewreason-container > a {
+    color: white !important;
+}
+
+.receive-rejectmodal-addnewreason-container > a:hover {
+    cursor: pointer;
+}
+
+.receive-rejectmodal-allreasons-container {
+    width: 100%;
+    height: 200px;
+    overflow-y: scroll;
+    padding: 5px 0;
+}
+
+.receive-rejectmodal-savebtn-container {
+    width: 100%;
+    height: auto;
+    border-top: 1px solid white;
+    padding: 25px 0 0 0;
+/*    margin-top: 20px;*/
+    position: relative;
+}
+
+.receive-rejectmodal-savebtn-container > a {
+    display: block;
+    width: 113px;
+    text-align: center;
+    background-color: rgb(25, 98, 181);
+    color: white !important;
+    padding: 3px 0;
+    border-radius: 6px;
+    font-size: 18px;
+    margin-left: auto;
+    margin-right: 30px;
+}
+
+.receive-rejectmodal-savebtn-container > a:hover {
+    cursor: pointer;
 }
