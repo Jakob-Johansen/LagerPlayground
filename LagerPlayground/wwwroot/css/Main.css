@@ -1229,7 +1229,7 @@ li.dropdown {
 /*    color: white !important;*/
 }
 
-.receive-rejectmodal-close {
+.receive-rejectmodal-close-btn {
     font-size: 30px;
     user-select: none;
     color: white;
@@ -1239,7 +1239,7 @@ li.dropdown {
     transform: translateY(-50%);
 }
 
-.receive-rejectmodal-close:hover {
+.receive-rejectmodal-close-btn:hover {
     cursor: pointer;
 }
 
@@ -1308,6 +1308,7 @@ li.dropdown {
 
 .receive-rejectmodal-table-container {
     padding-top: 25px;
+    border-bottom: 1px solid #454545;
 }
 
 .receive-rejectmodal-table-numberInput, .receive-rejectmodal-table-select, .receive-rejectmodal-table-note {
@@ -1330,7 +1331,7 @@ li.dropdown {
     width: 100%;
 }
 
-.receive-rejectmodal-table-delete-btn, .receive-rejectmodal-table-delete-output-btn {
+.receive-rejectmodal-table-add-btn, .receive-rejectmodal-table-delete-btn {
     width: 80px;
     display: block;
     background-color: #dc3545;
@@ -1340,7 +1341,11 @@ li.dropdown {
     padding: 4px 0;
 }
 
-.receive-rejectmodal-table-delete-output-btn {
+.receive-rejectmodal-table-add-btn {
+    background-color: #1a9c23;
+}
+
+.receive-rejectmodal-table-delete-btn {
     position: absolute;
     right: 0;
     left: 0;
@@ -1364,20 +1369,6 @@ li.dropdown {
     outline: none !important;
 }
 
-.receive-rejectmodal-addnewreason-container {
-    border-top: 1px solid #454545;
-    border-bottom: 1px solid #454545;
-    padding: 12px 10px !important;
-}
-
-.receive-rejectmodal-addnewreason-container > a {
-    color: white !important;
-}
-
-.receive-rejectmodal-addnewreason-container > a:hover {
-    cursor: pointer;
-}
-
 .receive-rejectmodal-allreasons-container {
     width: 100%;
     height: 230px;
@@ -1385,7 +1376,7 @@ li.dropdown {
     padding: 5px 0;
 }
 
-.receive-rejectmodal-savebtn-container {
+.receive-rejectmodal-closebtn-container {
     width: 100%;
     height: auto;
     border-top: 1px solid #454545;
@@ -1394,7 +1385,7 @@ li.dropdown {
     position: relative;
 }
 
-.receive-rejectmodal-savebtn-container > a {
+.receive-rejectmodal-closebtn-container > a {
     display: block;
     width: 113px;
     text-align: center;
@@ -1408,6 +1399,6 @@ li.dropdown {
     user-select: none;
 }
 
-.receive-rejectmodal-savebtn-container > a:hover {
+.receive-rejectmodal-closebtn-container > a:hover {
     cursor: pointer;
 }
