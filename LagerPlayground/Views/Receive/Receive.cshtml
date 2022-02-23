@@ -151,7 +151,7 @@
                     <td><input class="receive-rejectmodal-table-numberInput background-dark" type="number" /></td>
                     <td>
                         <select class="receive-rejectmodal-table-select background-dark">
-                            <option disabled selected>Select One</option>
+                            @*<option disabled selected>Select One</option>*@
                             @foreach (var item in Model.ReceiveRejectedReasons)
                             {
                              <option name="id">@item.Reason</option>   
@@ -505,6 +505,15 @@
                     let getNumber = parseInt(v);
                     let result = getNumber + quantity;
                     return result;
+                });
+
+                $(".receive-rejectmodal-rejected-number").text(function(i,v) {
+                    let getNumber = parseInt(v);
+                    if(getNumber > 0) {
+                        let result = getNumber - quantity;
+                        return result;
+                    }
+                    return;
                 });
 
                 ReceiveProgressBarFunction($(this));
