@@ -462,19 +462,19 @@
     }
 
     $(document).on("click", ".receive-rejectmodal-table-delete-output-btn", function() {
-        DeleteOneRejected($(this).data("rejectid"));
+        DeleteOneRejected($(this));
     });
 
-    function DeleteOneRejected(rejectID) {
+    function DeleteOneRejected(thisElement) {
         $.ajax({
             type: "POST",
             url: "/Receive/DeleteOneRejected",
             headers: {"RequestVerificationToken": "@GetAntiXsrfRequestToken()"},
-            data: { rejectID: rejectID },
+            data: { rejectID: thisElement.data("rejectid") },
             success: function (result) {
                 if(result.boolean == true) {
                     console.log("Success");
-                    RemoveRejectHtml(result.quantity);
+                    RemoveRejectHtml(thisElement, result.quantity);
                 }
                 else {
                     console.log(result.msg);
@@ -486,8 +486,30 @@
         });
     }
 
-    function RemoveRejectHtml(quantity) {
-        console.log(quantity);
+    function RemoveRejectHtml(thisElement, quantity) {
+        thisElement.closest("tr").remove();
+
+        tbodyTr.each(function(index) {
+            if($(this).data("barcode") == currentBarcode) {
+
+                $(this).find(rejectedPTag).text(function(i,v) {
+                    let getNumber = parseInt(v);
+                    if(getNumber > 0) {
+                        let result = getNumber - quantity;
+                        return result;
+                    }
+                    return;
+                });
+
+                $(this).find(unreceivedPTag).text(function(i,v) {
+                    let getNumber = parseInt(v);
+                    let result = getNumber + quantity;
+                    return result;
+                });
+
+                ReceiveProgressBarFunction($(this));
+            }
+        });
     }
 
 </script>
