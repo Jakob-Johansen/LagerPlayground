@@ -92,21 +92,6 @@
     </tbody>
 </table>
 
-@*@foreach (var item in Model.ReceivingOrder_Details.ReceivingOrder_Items)
-{
-    <p>Name: @item.Product.Name</p>
-
-    @foreach (var rejected in item.ReceiveRejecteds)
-    {
-        <p>ItemID: @rejected.ReceivingOrder_ItemsID</p>
-        <p>Quantity: @rejected.Quantity</p>
-        <p>ReasonID: @rejected.ReceiveRejectedReasonsID</p>
-        <p>Reasons: @rejected.ReceiveRejectedReasons.Reason</p>
-        <p>Note: @rejected.Note</p>
-    }
-    <hr />
-}*@
-
 @*---Reject Modal---*@
 
 <div class="receive-rejectmodal-overlay-container">
@@ -116,7 +101,7 @@
                 <p class="trim">Rejected</p>
             </div>
             <div class="receive-rejectmodal-header-container">
-                <span class="material-icons receive-rejectmodal-close">close</span>
+                <span class="material-icons receive-rejectmodal-close-btn receive-rejectmodal-close">close</span>
             </div>
             <div class="clearBoth"></div>
             <div class="receive-rejectmodal-product-info-overall-container">
@@ -159,13 +144,10 @@
                         </select>
                     </td>
                     <td><input class="receive-rejectmodal-table-note background-dark" type="text" /></td>
-                    <td><button class="receive-rejectmodal-table-delete-btn">Delete</button></td>
+                    <td><button class="receive-rejectmodal-table-add-btn">Add</button></td>
                 </tr>
             </tbody>
         </table>
-        </div>
-        <div class="receive-rejectmodal-addnewreason-container">
-            <a style="color: #0d6efd !important;">+ Add new Reason</a>
         </div>
         <div class="receive-rejectmodal-allreasons-container">
         <table class="table receive-rejectmodal-table" style="border: none !important;">
@@ -174,8 +156,8 @@
             </tbody>
         </table>
         </div>
-        <div class="receive-rejectmodal-savebtn-container">
-            <a>Save</a>
+        <div class="receive-rejectmodal-closebtn-container">
+            <a class="receive-rejectmodal-close">Close</a>
         </div>
     </div>
 </div>
@@ -209,6 +191,11 @@
     let nameRejectedModal = $(".receive-rejectmodal-product-info-name");
     let skuRejectedModal = $(".receive-rejectmodal-product-info-sku");
     let numberRejectedModal = $(".receive-rejectmodal-rejected-number");
+
+    let quantityRejectModalInput = $(".receive-rejectmodal-table-numberInput");
+    let selectRejectModalInput =  $(".receive-rejectmodal-table-select");
+    let noteRejectModalInput = $(".receive-rejectmodal-table-note");
+    let addRejectModalBtn = $(".receive-rejectmodal-table-add-btn");
 
     let currentBarcode;
 
@@ -454,14 +441,14 @@
                         '<td><input readonly class="receive-rejectmodal-table-numberInput receive-rejectmodal-table-noborder background-dark" type="number" value="' + result.rejectedItems[i].quantity + '" /></td>' +
                         '<td><input readonly class="receive-rejectmodal-table-select receive-rejectmodal-table-noborder background-dark" type="text" value="' + result.rejectedItems[i].receiveRejectedReasons.reason + '" /></td>' +
                         '<td><input readonly class="receive-rejectmodal-table-note receive-rejectmodal-table-noborder background-dark" type="text" value="' + result.rejectedItems[i].note + '" /></td>' +
-                        '<td style="position:relative !important;"><button class="receive-rejectmodal-table-delete-output-btn" data-rejectid="' + result.rejectedItems[i].id + '">Delete</button></td>'
+                        '<td style="position:relative !important;"><button class="receive-rejectmodal-table-delete-btn" data-rejectid="' + result.rejectedItems[i].id + '">Delete</button></td>'
                     + '</tr>'
                 );
             }
         }
     }
 
-    $(document).on("click", ".receive-rejectmodal-table-delete-output-btn", function() {
+    $(document).on("click", ".receive-rejectmodal-table-delete-btn", function() {
         DeleteOneRejected($(this));
     });
 
