@@ -108,12 +108,25 @@ namespace LagerPlayground.Controllers
                 .AsNoTracking()
                 .FirstOrDefaultAsync(x => x.Product.BarcodeID == barcode);
 
+            var allRejectsInItem = await _context.ReceiveRejecteds
+                .Include(x => x.ReceiveRejectedReasons)
+                .AsNoTracking()
+                .Where(x => x.ReceivingOrder_ItemsID == receiveOrder.ID).ToListAsync();
+
             if (receiveOrder == null)
             {
                 return Json(new { boolean = false, msg = "No product with this barcode was found" });
             }
 
-            return Json(new { boolean = true, receiveorder = receiveOrder});
+            return Json(new 
+            { 
+                boolean = true,
+                name = receiveOrder.Product.Name,
+                barcode = receiveOrder.Product.BarcodeID,
+                image = receiveOrder.Product.Image,
+                rejected = receiveOrder.Rejected,
+                rejectedItems = allRejectsInItem
+            });
         }
 
         //---Reject Reasons---

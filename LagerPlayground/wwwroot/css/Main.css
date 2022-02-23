@@ -1291,6 +1291,12 @@ li.dropdown {
 
 .receive-rejectmodal-table {
     margin-bottom: 0px !important;
+    border: none !important;
+}
+
+.receive-rejectmodal-table > thead > tr, .receive-rejectmodal-table > tbody > tr {
+    border-color: #454545;
+    border: none !important;
 }
 
 .receive-rejectmodal-table > thead > tr > td, .receive-rejectmodal-table > tbody > tr > td {
@@ -1302,7 +1308,7 @@ li.dropdown {
 }
 
 .receive-rejectmodal-addnewreason-container {
-    border-bottom: 1px solid white;
+    border-bottom: 1px solid #454545;
     padding: 12px 10px !important;
 }
 
@@ -1324,9 +1330,9 @@ li.dropdown {
 .receive-rejectmodal-savebtn-container {
     width: 100%;
     height: auto;
-    border-top: 1px solid white;
+    border-top: 1px solid #454545;
     padding: 25px 0 0 0;
-/*    margin-top: 20px;*/
+    /*    margin-top: 20px;*/
     position: relative;
 }
 
