@@ -1205,7 +1205,7 @@ li.dropdown {
     margin: 0 auto;
     border-radius: 8px;
     position: relative;
-    top: 15%;
+    top: 10%;
 }
 
 .receive-rejectmodal-header-overall-container {
@@ -1301,13 +1301,71 @@ li.dropdown {
 
 .receive-rejectmodal-table > thead > tr > td, .receive-rejectmodal-table > tbody > tr > td {
     width: 19% !important;
+    padding-top: 15px !important;
+    padding-bottom: 15px !important;
+    border: none !important;
 }
 
 .receive-rejectmodal-table-container {
     padding-top: 25px;
 }
 
+.receive-rejectmodal-table-numberInput, .receive-rejectmodal-table-select, .receive-rejectmodal-table-note {
+    color: #dbdbdb !important;
+    border: 1px solid #454545;
+    padding: 3px 6px;
+}
+
+.receive-rejectmodal-table-numberInput:focus, .receive-rejectmodal-table-numberInput:active, .receive-rejectmodal-table-select:focus, .receive-rejectmodal-table-select:active, .receive-rejectmodal-table-note:focus, .receive-rejectmodal-table-note:active {
+    border-color: #454545 !important;
+    outline-color: #454545 !important;
+}
+
+.receive-rejectmodal-table-select {
+    width: 90%;
+    padding: 4px 6px !important;
+}
+
+.receive-rejectmodal-table-note {
+    width: 100%;
+}
+
+.receive-rejectmodal-table-delete-btn, .receive-rejectmodal-table-delete-output-btn {
+    width: 80px;
+    display: block;
+    background-color: #dc3545;
+    color: white !important;
+    margin: 0 auto !important;
+    border: none;
+    padding: 4px 0;
+}
+
+.receive-rejectmodal-table-delete-output-btn {
+    position: absolute;
+    right: 0;
+    left: 0;
+    top: 50%;
+    -ms-transform: translateY(-50%);
+    transform: translateY(-50%);
+}
+
+.receive-rejectmodal-table-noborder {
+    border: 0 !important;
+    color: #dbdbdb !important;
+    padding: 7px 10px !important;
+}
+
+.receive-rejectmodal-table-noborder:hover {
+    cursor: default;
+}
+
+.receive-rejectmodal-table-noborder:focus {
+    border: none !important;
+    outline: none !important;
+}
+
 .receive-rejectmodal-addnewreason-container {
+    border-top: 1px solid #454545;
     border-bottom: 1px solid #454545;
     padding: 12px 10px !important;
 }
@@ -1322,7 +1380,7 @@ li.dropdown {
 
 .receive-rejectmodal-allreasons-container {
     width: 100%;
-    height: 200px;
+    height: 230px;
     overflow-y: scroll;
     padding: 5px 0;
 }

@@ -139,7 +139,7 @@
         <div class="receive-rejectmodal-table-container">
         <table class="table receive-rejectmodal-table">
             <thead>
-                <tr>
+                <tr style="border-bottom: 1px solid #454545 !important;">
                     <td>Qty</td>
                     <td>Reason</td>
                     <td>Note</td>
@@ -148,9 +148,9 @@
             </thead>
             <tbody>
                 <tr>
-                    <td><input class="receive-rejectmodal-table-numberInput" type="number" style="color: black !important;" /></td>
+                    <td><input class="receive-rejectmodal-table-numberInput background-dark" type="number" /></td>
                     <td>
-                        <select class="receive-rejectmodal-table-select" style="width: 90%; padding: 3px;">
+                        <select class="receive-rejectmodal-table-select background-dark">
                             <option disabled selected>Select One</option>
                             @foreach (var item in Model.ReceiveRejectedReasons)
                             {
@@ -158,8 +158,8 @@
                             }
                         </select>
                     </td>
-                    <td><input class="receive-rejectmodal-table-note" type="text" style="width: 100%; color: black !important;"/></td>
-                    <td><button style="display: block;margin: 0 auto;">Delete</button></td>
+                    <td><input class="receive-rejectmodal-table-note background-dark" type="text" /></td>
+                    <td><button class="receive-rejectmodal-table-delete-btn">Delete</button></td>
                 </tr>
             </tbody>
         </table>
@@ -168,7 +168,16 @@
             <a style="color: #0d6efd !important;">+ Add new Reason</a>
         </div>
         <div class="receive-rejectmodal-allreasons-container">
-
+        <table class="table receive-rejectmodal-table" style="border: none !important;">
+            <tbody class="receive-rejectmodal-table-tbody-output" style="border: none !important;">
+@*                <tr>
+                    <td style="border: none !important;"><input readonly class="receive-rejectmodal-table-numberInput background-dark" type="number" style="color: white !important; border: none !important; padding: 5px 6px;" value="1" /></td>
+                    <td style="border: none !important;"><input readonly class="receive-rejectmodal-table-numberInput background-dark" type="text" style="width: 90%; color: white !important; border: none !important; padding: 5px 6px;" value="Damaged" /></td>
+                    <td style="border: none !important;"><input readonly class="receive-rejectmodal-table-numberInput background-dark" type="text" style="width: 100%; color: white !important; border: none !important; padding: 5px 6px;" value="Ødelagt" /></td>
+                    <td style="border: none !important;"><button style="display: block; margin: 0 auto; border: 1px solid white; padding: 3px">Delete</button></td>
+                </tr>*@
+            </tbody>
+        </table>
         </div>
         <div class="receive-rejectmodal-savebtn-container">
             <a>Save</a>
@@ -407,7 +416,7 @@
         skuRejectedModal.text("NULL");
         imageRejectedModal.attr("src", '/Images/Placeholders/Placeholder.jpg');
 
-        $(".receive-rejectmodal-allreasons-container").find("ul").remove();
+        $(".receive-rejectmodal-allreasons-container").find("tr").remove();
     });
 
 
@@ -441,17 +450,17 @@
             imageRejectedModal.attr("src", '/Images/Products/' + result.image);
         }
 
-        for (var i = 0; i < result.rejectedItems.length; i++) {
-            $(".receive-rejectmodal-allreasons-container").append(
-                '<ul>' + 
-                    '<li>' + result.rejectedItems[i].quantity + '</li>' +
-                    '<li>' + result.rejectedItems[i].receiveRejectedReasons.reason + '</li>' +
-                    '<li>' + result.rejectedItems[i].note + '</li>'
-                + '</ul>'
-            );
-            //$(".receive-rejectmodal-allreasons-container").append('<p>' + result.rejectedItems[i].receiveRejectedReasons.reason + '</p>');
-            //$(".receive-rejectmodal-allreasons-container").append('<p>' + result.rejectedItems[i].note + '</p>');
-            //console.log(result.rejectedItems[i]);
+        if (result.rejectedItems.length != 0) {
+            for (var i = 0; i < result.rejectedItems.length; i++) {
+                $(".receive-rejectmodal-table-tbody-output").append(
+                    '<tr>' + 
+                        '<td><input readonly class="receive-rejectmodal-table-numberInput receive-rejectmodal-table-noborder background-dark" type="number" value="' + result.rejectedItems[i].quantity + '" /></td>' +
+                        '<td><input readonly class="receive-rejectmodal-table-select receive-rejectmodal-table-noborder background-dark" type="text" value="' + result.rejectedItems[i].receiveRejectedReasons.reason + '" /></td>' +
+                        '<td><input readonly class="receive-rejectmodal-table-note receive-rejectmodal-table-noborder background-dark" type="text" value="' + result.rejectedItems[i].note + '" /></td>' +
+                        '<td style="position:relative !important;"><button class="receive-rejectmodal-table-delete-output-btn">Delete</button></td>'
+                    + '</tr>'
+                );
+            }
         }
     }
 
