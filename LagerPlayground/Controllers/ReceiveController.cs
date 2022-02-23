@@ -149,8 +149,8 @@ namespace LagerPlayground.Controllers
 
             try
             {
-                //_context.ReceiveRejecteds.Remove(reject);
-                //await _context.SaveChangesAsync();
+                _context.ReceiveRejecteds.Remove(reject);
+                await _context.SaveChangesAsync();
                 return Json(new { boolean = true, quantity });
             }
             catch (DbUpdateException)
