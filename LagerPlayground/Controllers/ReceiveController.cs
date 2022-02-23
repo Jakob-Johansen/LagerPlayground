@@ -129,6 +129,36 @@ namespace LagerPlayground.Controllers
             });
         }
 
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<JsonResult> DeleteOneRejected(int? rejectID)
+        {
+            if (rejectID == null)
+            {
+                return Json(new { boolean = false, msg = "No ID was found" });
+            }
+
+            var reject = await _context.ReceiveRejecteds.FindAsync(rejectID);
+
+            if (reject == null)
+            {
+                return Json(new { boolean = false, msg = "No rejected item was found" });
+            }
+
+            int quantity = reject.Quantity;
+
+            try
+            {
+                //_context.ReceiveRejecteds.Remove(reject);
+                //await _context.SaveChangesAsync();
+                return Json(new { boolean = true, quantity });
+            }
+            catch (DbUpdateException)
+            {
+                return Json(new { boolean = false, msg = "An database error has occured" });
+            }
+        }
+
         //---Reject Reasons---
 
         public async Task<IActionResult> RejectReasons()
