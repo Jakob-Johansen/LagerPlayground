@@ -92,6 +92,21 @@
     </tbody>
 </table>
 
+@*@foreach (var item in Model.ReceivingOrder_Details.ReceivingOrder_Items)
+{
+    <p>Name: @item.Product.Name</p>
+
+    @foreach (var rejected in item.ReceiveRejecteds)
+    {
+        <p>ItemID: @rejected.ReceivingOrder_ItemsID</p>
+        <p>Quantity: @rejected.Quantity</p>
+        <p>ReasonID: @rejected.ReceiveRejectedReasonsID</p>
+        <p>Reasons: @rejected.ReceiveRejectedReasons.Reason</p>
+        <p>Note: @rejected.Note</p>
+    }
+    <hr />
+}*@
+
 @*---Reject Modal---*@
 
 <div class="receive-rejectmodal-overlay-container">
@@ -150,7 +165,7 @@
         </table>
         </div>
         <div class="receive-rejectmodal-addnewreason-container">
-            <a>Add new Reason</a>
+            <a style="color: #0d6efd !important;">+ Add new Reason</a>
         </div>
         <div class="receive-rejectmodal-allreasons-container">
 
@@ -206,7 +221,7 @@
     $(document).ready(function () {
         ReceiveTopProgressBarFunction();
         tbodyTr.each(function(index) {
-            $(this).find(unreceivedPTag).html($(this).find(unreceivedPTag).html() - $(this).find(rejectedPTag).html());
+            //$(this).find(unreceivedPTag).html($(this).find(unreceivedPTag).html() - $(this).find(rejectedPTag).html());
             ReceiveProgressBarFunction($(this));
         });
     });
@@ -391,6 +406,8 @@
         nameRejectedModal.text("NULL");
         skuRejectedModal.text("NULL");
         imageRejectedModal.attr("src", '/Images/Placeholders/Placeholder.jpg');
+
+        $(".receive-rejectmodal-allreasons-container").find("ul").remove();
     });
 
 
@@ -401,7 +418,7 @@
             data: { barcode: barcode},
             success: function (result) {
                 if(result.boolean == true) {
-                    AddNewData(result.receiveorder);
+                    AddNewData(result);
                 }
                 else {
                     console.log(result.msg);
@@ -409,18 +426,32 @@
             },
             error: function (req, status, error) {
                 console.log(status);
+                console.log(req);
+                console.log(error);
             }
         });
     }
 
-    function AddNewData(receiveorder) {
-        let product = receiveorder.product;
-        nameRejectedModal.text(product.name);
-        skuRejectedModal.text(product.barcodeID);
-        numberRejectedModal.text(receiveorder.rejected);
+    function AddNewData(result) {
+        nameRejectedModal.text(result.name);
+        skuRejectedModal.text(result.barcode);
+        numberRejectedModal.text(result.rejected);
 
-        if (product.image != null) {
-            imageRejectedModal.attr("src", '/Images/Products/' + product.image);
+        if (result.image != null) {
+            imageRejectedModal.attr("src", '/Images/Products/' + result.image);
+        }
+
+        for (var i = 0; i < result.rejectedItems.length; i++) {
+            $(".receive-rejectmodal-allreasons-container").append(
+                '<ul>' + 
+                    '<li>' + result.rejectedItems[i].quantity + '</li>' +
+                    '<li>' + result.rejectedItems[i].receiveRejectedReasons.reason + '</li>' +
+                    '<li>' + result.rejectedItems[i].note + '</li>'
+                + '</ul>'
+            );
+            //$(".receive-rejectmodal-allreasons-container").append('<p>' + result.rejectedItems[i].receiveRejectedReasons.reason + '</p>');
+            //$(".receive-rejectmodal-allreasons-container").append('<p>' + result.rejectedItems[i].note + '</p>');
+            //console.log(result.rejectedItems[i]);
         }
     }
 

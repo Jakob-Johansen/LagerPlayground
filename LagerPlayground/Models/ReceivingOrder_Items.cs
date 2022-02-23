@@ -17,7 +17,7 @@ namespace LagerPlayground.Models
         public DateTime? Created { get; set; }
         public DateTime? Modified { get; set; }
 
-        [NotMapped]
+        //[NotMapped]
         public int Rejected {
             get
             {
@@ -37,12 +37,11 @@ namespace LagerPlayground.Models
             }
         }
 
-        [NotMapped]
+        //[NotMapped]
         public int Unreceived { 
             get
             {
-
-                int unreceived = Quantity - Accepted;
+                int unreceived = (Quantity- Rejected) - Accepted;
 
                 if (unreceived < 0)
                     unreceived = 0;
