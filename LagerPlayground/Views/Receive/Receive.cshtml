@@ -170,12 +170,7 @@
         <div class="receive-rejectmodal-allreasons-container">
         <table class="table receive-rejectmodal-table" style="border: none !important;">
             <tbody class="receive-rejectmodal-table-tbody-output" style="border: none !important;">
-@*                <tr>
-                    <td style="border: none !important;"><input readonly class="receive-rejectmodal-table-numberInput background-dark" type="number" style="color: white !important; border: none !important; padding: 5px 6px;" value="1" /></td>
-                    <td style="border: none !important;"><input readonly class="receive-rejectmodal-table-numberInput background-dark" type="text" style="width: 90%; color: white !important; border: none !important; padding: 5px 6px;" value="Damaged" /></td>
-                    <td style="border: none !important;"><input readonly class="receive-rejectmodal-table-numberInput background-dark" type="text" style="width: 100%; color: white !important; border: none !important; padding: 5px 6px;" value="Ødelagt" /></td>
-                    <td style="border: none !important;"><button style="display: block; margin: 0 auto; border: 1px solid white; padding: 3px">Delete</button></td>
-                </tr>*@
+
             </tbody>
         </table>
         </div>
@@ -215,6 +210,8 @@
     let skuRejectedModal = $(".receive-rejectmodal-product-info-sku");
     let numberRejectedModal = $(".receive-rejectmodal-rejected-number");
 
+    let currentBarcode;
+
     // Loading variabler
     let loader = $(".loader");
     let loadingIsRunning = false;
@@ -230,7 +227,6 @@
     $(document).ready(function () {
         ReceiveTopProgressBarFunction();
         tbodyTr.each(function(index) {
-            //$(this).find(unreceivedPTag).html($(this).find(unreceivedPTag).html() - $(this).find(rejectedPTag).html());
             ReceiveProgressBarFunction($(this));
         });
     });
@@ -405,12 +401,14 @@
         let thisElement = $(this).closest(tbodyTr);
 
         if (thisElement.data("barcode") != "" || thisElement.data("barcode") != null) {
+            currentBarcode = thisElement.data("barcode");
             GetOneReceiveOrder(thisElement.data("barcode"));
         } 
 
     });
 
     closeRejectModalBtn.click(function () {
+        currentBarcode = "";
         overlayRejectModal.css("display", "none");
         nameRejectedModal.text("NULL");
         skuRejectedModal.text("NULL");
@@ -418,7 +416,6 @@
 
         $(".receive-rejectmodal-allreasons-container").find("tr").remove();
     });
-
 
     function GetOneReceiveOrder(barcode) {
         $.ajax({
@@ -457,11 +454,40 @@
                         '<td><input readonly class="receive-rejectmodal-table-numberInput receive-rejectmodal-table-noborder background-dark" type="number" value="' + result.rejectedItems[i].quantity + '" /></td>' +
                         '<td><input readonly class="receive-rejectmodal-table-select receive-rejectmodal-table-noborder background-dark" type="text" value="' + result.rejectedItems[i].receiveRejectedReasons.reason + '" /></td>' +
                         '<td><input readonly class="receive-rejectmodal-table-note receive-rejectmodal-table-noborder background-dark" type="text" value="' + result.rejectedItems[i].note + '" /></td>' +
-                        '<td style="position:relative !important;"><button class="receive-rejectmodal-table-delete-output-btn">Delete</button></td>'
+                        '<td style="position:relative !important;"><button class="receive-rejectmodal-table-delete-output-btn" data-rejectid="' + result.rejectedItems[i].id + '">Delete</button></td>'
                     + '</tr>'
                 );
             }
         }
+    }
+
+    $(document).on("click", ".receive-rejectmodal-table-delete-output-btn", function() {
+        DeleteOneRejected($(this).data("rejectid"));
+    });
+
+    function DeleteOneRejected(rejectID) {
+        $.ajax({
+            type: "POST",
+            url: "/Receive/DeleteOneRejected",
+            headers: {"RequestVerificationToken": "@GetAntiXsrfRequestToken()"},
+            data: { rejectID: rejectID },
+            success: function (result) {
+                if(result.boolean == true) {
+                    console.log("Success");
+                    RemoveRejectHtml(result.quantity);
+                }
+                else {
+                    console.log(result.msg);
+                }
+            },
+            error: function (req, status, error) {
+                console.log(status);
+            }
+        });
+    }
+
+    function RemoveRejectHtml(quantity) {
+        console.log(quantity);
     }
 
 </script>
