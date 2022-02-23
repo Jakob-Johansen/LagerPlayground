@@ -133,17 +133,21 @@
             </thead>
             <tbody>
                 <tr>
-                    <td><input class="receive-rejectmodal-table-numberInput background-dark" type="number" /></td>
+                    <td>
+                        <input class="receive-rejectmodal-table-numberInput background-dark" type="number" />
+                        <p class="receive-rejectmodal-table-numberInput-error trim" style="padding-top: 2px !important; color: #dc3545 !important;"></p>
+                    </td>
                     <td>
                         <select class="receive-rejectmodal-table-select background-dark">
-                            @*<option disabled selected>Select One</option>*@
+                            <option disabled selected data-reasonid="none">Select One</option>
                             @foreach (var item in Model.ReceiveRejectedReasons)
                             {
-                             <option name="id">@item.Reason</option>   
+                             <option data-reasonid="@item.ID">@item.Reason</option>   
                             }
                         </select>
+                        <p class="receive-rejectmodal-table-select-error trim" style="padding-top: 2px !important; color: #dc3545 !important;"></p>
                     </td>
-                    <td><input class="receive-rejectmodal-table-note background-dark" type="text" /></td>
+                    <td><input class="receive-rejectmodal-table-create-note background-dark" type="text" /></td>
                     <td><button class="receive-rejectmodal-table-add-btn">Add</button></td>
                 </tr>
             </tbody>
@@ -194,10 +198,14 @@
 
     let quantityRejectModalInput = $(".receive-rejectmodal-table-numberInput");
     let selectRejectModalInput =  $(".receive-rejectmodal-table-select");
-    let noteRejectModalInput = $(".receive-rejectmodal-table-note");
+    let noteRejectModalInput = $(".receive-rejectmodal-table-create-note");
     let addRejectModalBtn = $(".receive-rejectmodal-table-add-btn");
 
+    let quantityErrorRejectModalText = $(".receive-rejectmodal-table-numberInput-error");
+    let selectedErrorRejectModalText = $(".receive-rejectmodal-table-select-error");
+
     let currentBarcode;
+    let currentreceiveOrderItemID;
 
     // Loading variabler
     let loader = $(".loader");
@@ -396,10 +404,15 @@
 
     closeRejectModalBtn.click(function () {
         currentBarcode = "";
+        currentreceiveOrderItemID = "";
         overlayRejectModal.css("display", "none");
         nameRejectedModal.text("NULL");
         skuRejectedModal.text("NULL");
         imageRejectedModal.attr("src", '/Images/Placeholders/Placeholder.jpg');
+        quantityErrorRejectModalText.text("");
+        selectedErrorRejectModalText.text("");
+        quantityRejectModalInput.val("");
+        noteRejectModalInput.val("");
 
         $(".receive-rejectmodal-allreasons-container").find("tr").remove();
     });
@@ -411,6 +424,8 @@
             data: { barcode: barcode},
             success: function (result) {
                 if(result.boolean == true) {
+                    currentreceiveOrderItemID = result.itemID;
+                    console.log(result.itemID);
                     AddNewData(result);
                 }
                 else {
@@ -474,7 +489,17 @@
     }
 
     function RemoveRejectHtml(thisElement, quantity) {
+        let getQuantity = parseInt(quantity);
         thisElement.closest("tr").remove();
+
+        $(".receive-rejectmodal-rejected-number").text(function(i,v) {
+            let getNumber = parseInt(v);
+            if(getNumber > 0) {
+                let result = getNumber - getQuantity;
+                return result;
+            }
+            return;
+        });
 
         tbodyTr.each(function(index) {
             if($(this).data("barcode") == currentBarcode) {
@@ -482,7 +507,7 @@
                 $(this).find(rejectedPTag).text(function(i,v) {
                     let getNumber = parseInt(v);
                     if(getNumber > 0) {
-                        let result = getNumber - quantity;
+                        let result = getNumber - getQuantity;
                         return result;
                     }
                     return;
@@ -490,17 +515,8 @@
 
                 $(this).find(unreceivedPTag).text(function(i,v) {
                     let getNumber = parseInt(v);
-                    let result = getNumber + quantity;
+                    let result = getNumber + getQuantity;
                     return result;
-                });
-
-                $(".receive-rejectmodal-rejected-number").text(function(i,v) {
-                    let getNumber = parseInt(v);
-                    if(getNumber > 0) {
-                        let result = getNumber - quantity;
-                        return result;
-                    }
-                    return;
                 });
 
                 ReceiveProgressBarFunction($(this));
@@ -508,16 +524,115 @@
         });
     }
 
-    //let quantityRejectModalInput = $(".receive-rejectmodal-table-numberInput");
-    //let selectRejectModalInput =  $(".receive-rejectmodal-table-select");
-    //let noteRejectModalInput = $(".receive-rejectmodal-table-note");
-    //let addRejectModalBtn = $(".receive-rejectmodal-table-add-btn");
+    function AddRejectHtml(quantity) {
+        let getQuantity = parseInt(quantity);
+
+        $(".receive-rejectmodal-rejected-number").text(function(i,v) {
+            let getNumber = parseInt(v);
+            if(getNumber > 0) {
+                let result = getNumber + getQuantity;
+                return result;
+            }
+            return;
+        });
+
+        tbodyTr.each(function(index) {
+            if($(this).data("barcode") == currentBarcode) {
+
+                $(this).find(rejectedPTag).text(function(i,v) {
+                    let getNumber = parseInt(v);
+                    if(getNumber > 0) {
+                        let result = getNumber + getQuantity;
+                        return result;
+                    }
+                    return;
+                });
+
+                $(this).find(unreceivedPTag).text(function(i,v) {
+                    let getNumber = parseInt(v);
+                    let result = getNumber - getQuantity;
+                    return result;
+                });
+
+                ReceiveProgressBarFunction($(this));
+            }
+        });
+    }
 
     quantityRejectModalInput.on("input", function () {
         if(quantityRejectModalInput.val() > 1 && quantityRejectModalInput.val().startsWith("0") || quantityRejectModalInput.val().startsWith("0") || quantityRejectModalInput.val().startsWith("-")) {
             quantityRejectModalInput.val("0");
+            quantityErrorRejectModalText.text("Kan ikke være 0 eller mindre");
+        }
+        else {
+            if (quantityErrorRejectModalText.text() != "")
+                quantityErrorRejectModalText.text("");
         }
     });
+
+    addRejectModalBtn.click(function () {
+        let getQuantity = quantityRejectModalInput.val();
+        let getSelectedReasonID = selectRejectModalInput.find(":selected").data("reasonid");
+        let getSelectedReason = selectRejectModalInput.find(":selected").text();
+        let getNote = noteRejectModalInput.val();
+
+        if(quantityRejectModalInput.val() > 1 && quantityRejectModalInput.val().startsWith("0") || quantityRejectModalInput.val().startsWith("0") || quantityRejectModalInput.val().startsWith("-") || quantityRejectModalInput.val() == "") {
+            quantityRejectModalInput.val("0");
+            quantityErrorRejectModalText.text("Kan ikke være 0 eller mindre");
+            return
+        }
+
+        if (quantityErrorRejectModalText.text() != "")
+            quantityErrorRejectModalText.text("");
+        
+        if (getSelectedReasonID == "none") {
+            selectedErrorRejectModalText.text("You need to select an option");
+            return;
+        }
+
+        if (selectedErrorRejectModalText.text("") != "")
+            selectedErrorRejectModalText.text("");
+
+        CreateOneReject(getQuantity, getSelectedReasonID, getSelectedReason, getNote);
+    });
+
+    function CreateNewReject(quantity, selectedReason, note, rejectID) {
+        $(".receive-rejectmodal-table-tbody-output").append(
+            '<tr>' + 
+                '<td><input readonly class="receive-rejectmodal-table-numberInput receive-rejectmodal-table-noborder background-dark" type="number" value="' + quantity + '" /></td>' +
+                '<td><input readonly class="receive-rejectmodal-table-select receive-rejectmodal-table-noborder background-dark" type="text" value="' + selectedReason + '" /></td>' +
+                '<td><input readonly class="receive-rejectmodal-table-note receive-rejectmodal-table-noborder background-dark" type="text" value="' + note + '" /></td>' +
+                '<td style="position:relative !important;"><button class="receive-rejectmodal-table-delete-btn" data-rejectid="' + rejectID + '">Delete</button></td>'
+            + '</tr>'
+        );
+
+        AddRejectHtml(quantity);
+    }
+
+    function CreateOneReject(quantity, selectedReasonID, selectedReason, note) {
+        $.ajax({
+            type: "POST",
+            url: "/Receive/CreateOneReject",
+            headers: {"RequestVerificationToken": "@GetAntiXsrfRequestToken()"},
+            data: { quantity: quantity, selectedReasonID: selectedReasonID, note: note, itemID: currentreceiveOrderItemID },
+            success: function (result) {
+                if(result.boolean == true) {
+                    console.log("Success");
+                            quantityErrorRejectModalText.text("");
+                    selectedErrorRejectModalText.text("");
+                    quantityRejectModalInput.val("");
+                    noteRejectModalInput.val("");
+                    CreateNewReject(quantity, selectedReason, note, result.rejectID);
+                }
+                else {
+                    console.log(result.msg);
+                }
+            },
+            error: function (req, status, error) {
+                console.log(status);
+            }
+        });
+    }
 
 </script>
 }

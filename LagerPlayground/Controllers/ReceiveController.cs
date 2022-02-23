@@ -125,7 +125,8 @@ namespace LagerPlayground.Controllers
                 barcode = receiveOrder.Product.BarcodeID,
                 image = receiveOrder.Product.Image,
                 rejected = receiveOrder.Rejected,
-                rejectedItems = allRejectsInItem
+                rejectedItems = allRejectsInItem,
+                itemID = receiveOrder.ID
             });
         }
 
@@ -157,6 +158,45 @@ namespace LagerPlayground.Controllers
             {
                 return Json(new { boolean = false, msg = "An database error has occured" });
             }
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<JsonResult> CreateOneReject(int? quantity, int? selectedReasonID, string note, int? itemID)
+        {
+            if (quantity == null)
+            {
+                return Json(new { boolean = false, msg = "Quantity is NULL" });
+            }
+
+            if (selectedReasonID == null)
+            {
+                return Json(new { boolean = false, msg = "ReasonID is NULL" });
+            }
+
+            if (itemID == null)
+            {
+                return Json(new { boolean = false, msg = "ItemID is NULL" });
+            }
+
+            try
+            {
+                ReceiveRejected receiveRejected = new();
+                receiveRejected.Created = DateTime.Now;
+                receiveRejected.Quantity = (int)quantity;
+                receiveRejected.ReceiveRejectedReasonsID = (int)selectedReasonID;
+                receiveRejected.Note = note;
+                receiveRejected.ReceivingOrder_ItemsID = (int)itemID;
+
+                _context.ReceiveRejecteds.Add(receiveRejected);
+                await _context.SaveChangesAsync();
+                return Json(new { boolean = true, rejectID = receiveRejected.ID });
+            }
+            catch (DbUpdateException)
+            {
+                return Json(new { boolean = false, msg = "An database error has occured" });
+            }
+
         }
 
         //---Reject Reasons---

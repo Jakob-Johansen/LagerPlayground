@@ -1311,23 +1311,23 @@ li.dropdown {
     border-bottom: 1px solid #454545;
 }
 
-.receive-rejectmodal-table-numberInput, .receive-rejectmodal-table-select, .receive-rejectmodal-table-note {
+.receive-rejectmodal-table-numberInput, .receive-rejectmodal-table-select, .receive-rejectmodal-table-note, .receive-rejectmodal-table-create-note {
     color: #dbdbdb !important;
     border: 1px solid #454545;
     padding: 3px 6px;
 }
 
-.receive-rejectmodal-table-numberInput:focus, .receive-rejectmodal-table-numberInput:active, .receive-rejectmodal-table-select:focus, .receive-rejectmodal-table-select:active, .receive-rejectmodal-table-note:focus, .receive-rejectmodal-table-note:active {
-    border-color: #454545 !important;
-    outline-color: #454545 !important;
-}
+    .receive-rejectmodal-table-numberInput:focus, .receive-rejectmodal-table-numberInput:active, .receive-rejectmodal-table-select:focus, .receive-rejectmodal-table-select:active, .receive-rejectmodal-table-note:focus, .receive-rejectmodal-table-note:active, .receive-rejectmodal-table-create-note:focus, .receive-rejectmodal-table-create-note:active {
+        border-color: #454545 !important;
+        outline-color: #454545 !important;
+    }
 
 .receive-rejectmodal-table-select {
     width: 90%;
     padding: 4px 6px !important;
 }
 
-.receive-rejectmodal-table-note {
+.receive-rejectmodal-table-note, .receive-rejectmodal-table-create-note {
     width: 100%;
 }
 
@@ -1396,6 +1396,7 @@ li.dropdown {
     font-size: 18px;
     margin-left: auto;
     margin-right: 30px;
+    text-decoration: none;
     user-select: none;
 }
 
