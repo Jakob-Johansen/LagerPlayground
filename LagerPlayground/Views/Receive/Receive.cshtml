@@ -508,5 +508,16 @@
         });
     }
 
+    //let quantityRejectModalInput = $(".receive-rejectmodal-table-numberInput");
+    //let selectRejectModalInput =  $(".receive-rejectmodal-table-select");
+    //let noteRejectModalInput = $(".receive-rejectmodal-table-note");
+    //let addRejectModalBtn = $(".receive-rejectmodal-table-add-btn");
+
+    quantityRejectModalInput.on("input", function () {
+        if(quantityRejectModalInput.val() > 1 && quantityRejectModalInput.val().startsWith("0") || quantityRejectModalInput.val().startsWith("0") || quantityRejectModalInput.val().startsWith("-")) {
+            quantityRejectModalInput.val("0");
+        }
+    });
+
 </script>
 }
