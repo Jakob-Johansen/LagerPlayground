@@ -226,46 +226,6 @@
         });
     });
 
-    function ReceiveProgressBarFunction(thisElement) {
-        //Grøn: #1a9c23
-        //Gul: #ffc107
-        //Rød: #dc3545
-        //background: linear-gradient(to left, #1a9c23 0%, #1a9c23 33.333%, #ffc107 33.333%, #ffc107 67.333%, #dc3545 67.333%, #dc3545 100%);
-
-        let getUnreceivedNumber = thisElement.find(unreceivedPTag).html();
-        let getAcceptedNumber = thisElement.find(acceptedPTag).html();
-        let getRejectedNumber = thisElement.find(rejectedPTag).html();
-
-        if (getAcceptedNumber == 0 && getRejectedNumber == 0) {
-            thisElement.find(receiveProgressBar).css( { background : "linear-gradient(to left, #ffc107 0%, #ffc107 100%)" } );
-        }
-        else if(getRejectedNumber != 0) {
-            let percentageUnreceived = getUnreceivedNumber / thisElement.find(orderedPTag).data("ordered") * 100;
-            let percentageRejected = getRejectedNumber / thisElement.find(orderedPTag).data("ordered") * 100;
-            let percentage = percentageUnreceived + percentageRejected;
-            thisElement.find(receiveProgressBar).css( { background : "linear-gradient(to right, #dc3545 0%, #dc3545 " + percentageRejected + "%, #ffc107 " + percentageRejected + "%, #ffc107 " + percentage + "%, #1a9c23 " + percentage + "%, #1a9c23 100%)" });
-        }
-        else {
-            let percentageAccepted = getAcceptedNumber / thisElement.find(orderedPTag).data("ordered") * 100;
-            thisElement.find(receiveProgressBar).css( { background : "linear-gradient(to left, #1a9c23 0%, #1a9c23 " + percentageAccepted + "%, #ffc107 " + percentageAccepted + "%, #ffc107 100%)" } );
-        }
-    }
-
-    acceptedInput.on("input", function () {
-        if(acceptedInput.val() < 0 || acceptedInput.val().startsWith("0")) {
-            acceptedInput.val("0");
-            console.log("Test");
-        }
-    });
-
-    // Timeout/delay functions
-    function loadingTimeout() {
-        setTimeout(function () {
-                loadingIsRunning = true;
-                //loader.css("display", "block");
-        }, 20);
-    }
-
     // Scanner event and functions
     document.addEventListener("keydown", function (evt) {
         if (interval) {
@@ -303,6 +263,21 @@
         }
     }
 
+    acceptedInput.on("input", function () {
+        if(acceptedInput.val() < 0 || acceptedInput.val().startsWith("0")) {
+            acceptedInput.val("0");
+            console.log("Test");
+        }
+    });
+
+    // Timeout/delay functions
+    function loadingTimeout() {
+        setTimeout(function () {
+                loadingIsRunning = true;
+                //loader.css("display", "block");
+        }, 20);
+    }
+
     function FindProduct(scanned_barcode) {
         tbodyTr.each(function(index) {
             if($(this).data("barcode") == scanned_barcode) {
@@ -324,7 +299,7 @@
 
         thisElement.find(unreceivedPTag).text(function(i,v) {
             let getNumber = parseInt(v);
-            if(getNumber > 0) {
+            if(getNumber >= 0) {
                 let result = getNumber - 1;
                 return result;
             }
@@ -352,6 +327,31 @@
         return;
     }
 
+    function ReceiveProgressBarFunction(thisElement) {
+        //Grøn: #1a9c23
+        //Gul: #ffc107
+        //Rød: #dc3545
+        //background: linear-gradient(to left, #1a9c23 0%, #1a9c23 33.333%, #ffc107 33.333%, #ffc107 67.333%, #dc3545 67.333%, #dc3545 100%);
+
+        let getUnreceivedNumber = thisElement.find(unreceivedPTag).html();
+        let getAcceptedNumber = thisElement.find(acceptedPTag).html();
+        let getRejectedNumber = thisElement.find(rejectedPTag).html();
+
+        if (getAcceptedNumber == 0 && getRejectedNumber == 0) {
+            thisElement.find(receiveProgressBar).css( { background : "linear-gradient(to left, #ffc107 0%, #ffc107 100%)" } );
+        }
+        else if(getRejectedNumber != 0) {
+            let percentageUnreceived = getUnreceivedNumber / thisElement.find(orderedPTag).data("ordered") * 100;
+            let percentageRejected = getRejectedNumber / thisElement.find(orderedPTag).data("ordered") * 100;
+            let percentage = percentageUnreceived + percentageRejected;
+            thisElement.find(receiveProgressBar).css( { background : "linear-gradient(to right, #dc3545 0%, #dc3545 " + percentageRejected + "%, #ffc107 " + percentageRejected + "%, #ffc107 " + percentage + "%, #1a9c23 " + percentage + "%, #1a9c23 100%)" });
+        }
+        else {
+            let percentageAccepted = getAcceptedNumber / thisElement.find(orderedPTag).data("ordered") * 100;
+            thisElement.find(receiveProgressBar).css( { background : "linear-gradient(to left, #1a9c23 0%, #1a9c23 " + percentageAccepted + "%, #ffc107 " + percentageAccepted + "%, #ffc107 100%)" } );
+        }
+    }
+
     function ReceiveTopProgressBarFunction() {
         let getUnreceivedTopNumbers = unreceivedTopNumbers.html();
         let getReceivedTopNumbers = receivedTopNumbers.html();
@@ -363,29 +363,6 @@
             let percentageAccepted = getReceivedTopNumbers / getUnreceivedTopNumbers * 100;
             receiveTopProgressBar.css( { background : "linear-gradient(to left, #1a9c23 0%, #1a9c23 " + percentageAccepted + "%, #ffc107 " + percentageAccepted + "%, #ffc107 100%)" } );
         }
-    }
-
-    function AddProductDatabase(scanned_barcode, receivingItemId, thisElement) {
-
-        let ajaxResult;
-
-        $.ajax({
-            type: "POST",
-            url: "/Receive/AddProduct",
-            headers: {"RequestVerificationToken": "@GetAntiXsrfRequestToken()"},
-            data: { barcode: scanned_barcode, receivingItemID: receivingItemId },
-            success: function (result) {
-                if(result.boolean == true) {
-                    AddProduct(thisElement);
-                }
-                else {
-                    console.log(result.msg);
-                }
-            },
-            error: function (req, status, error) {
-                console.log(status);
-            }
-        });
     }
 
     // Reject Modal
@@ -413,32 +390,10 @@
         selectedErrorRejectModalText.text("");
         quantityRejectModalInput.val("");
         noteRejectModalInput.val("");
+        selectRejectModalInput.val("Select One").change();
 
         $(".receive-rejectmodal-allreasons-container").find("tr").remove();
     });
-
-    function GetOneReceiveOrder(barcode) {
-        $.ajax({
-            type: "GET",
-            url: "/Receive/GetOneReceiveOrder",
-            data: { barcode: barcode},
-            success: function (result) {
-                if(result.boolean == true) {
-                    currentreceiveOrderItemID = result.itemID;
-                    console.log(result.itemID);
-                    AddNewData(result);
-                }
-                else {
-                    console.log(result.msg);
-                }
-            },
-            error: function (req, status, error) {
-                console.log(status);
-                console.log(req);
-                console.log(error);
-            }
-        });
-    }
 
     function AddNewData(result) {
         nameRejectedModal.text(result.name);
@@ -466,27 +421,6 @@
     $(document).on("click", ".receive-rejectmodal-table-delete-btn", function() {
         DeleteOneRejected($(this));
     });
-
-    function DeleteOneRejected(thisElement) {
-        $.ajax({
-            type: "POST",
-            url: "/Receive/DeleteOneRejected",
-            headers: {"RequestVerificationToken": "@GetAntiXsrfRequestToken()"},
-            data: { rejectID: thisElement.data("rejectid") },
-            success: function (result) {
-                if(result.boolean == true) {
-                    console.log("Success");
-                    RemoveRejectHtml(thisElement, result.quantity);
-                }
-                else {
-                    console.log(result.msg);
-                }
-            },
-            error: function (req, status, error) {
-                console.log(status);
-            }
-        });
-    }
 
     function RemoveRejectHtml(thisElement, quantity) {
         let getQuantity = parseInt(quantity);
@@ -529,7 +463,7 @@
 
         $(".receive-rejectmodal-rejected-number").text(function(i,v) {
             let getNumber = parseInt(v);
-            if(getNumber > 0) {
+            if(getNumber >= 0) {
                 let result = getNumber + getQuantity;
                 return result;
             }
@@ -541,7 +475,7 @@
 
                 $(this).find(rejectedPTag).text(function(i,v) {
                     let getNumber = parseInt(v);
-                    if(getNumber > 0) {
+                    if(getNumber >= 0) {
                         let result = getNumber + getQuantity;
                         return result;
                     }
@@ -609,6 +543,70 @@
         AddRejectHtml(quantity);
     }
 
+    function AddProductDatabase(scanned_barcode, receivingItemId, thisElement) {
+        let ajaxResult;
+
+        $.ajax({
+            type: "POST",
+            url: "/Receive/AddProduct",
+            headers: {"RequestVerificationToken": "@GetAntiXsrfRequestToken()"},
+            data: { barcode: scanned_barcode, receivingItemID: receivingItemId },
+            success: function (result) {
+                if(result.boolean == true) {
+                    AddProduct(thisElement);
+                }
+                else {
+                    console.log(result.msg);
+                }
+            },
+            error: function (req, status, error) {
+                console.log(status);
+            }
+        });
+    }
+
+    function GetOneReceiveOrder(barcode) {
+        $.ajax({
+            type: "GET",
+            url: "/Receive/GetOneReceiveOrder",
+            data: { barcode: barcode},
+            success: function (result) {
+                if(result.boolean == true) {
+                    currentreceiveOrderItemID = result.itemID;
+                    AddNewData(result);
+                }
+                else {
+                    console.log(result.msg);
+                }
+            },
+            error: function (req, status, error) {
+                console.log(status);
+                console.log(req);
+                console.log(error);
+            }
+        });
+    }
+
+    function DeleteOneRejected(thisElement) {
+        $.ajax({
+            type: "POST",
+            url: "/Receive/DeleteOneRejected",
+            headers: {"RequestVerificationToken": "@GetAntiXsrfRequestToken()"},
+            data: { rejectID: thisElement.data("rejectid") },
+            success: function (result) {
+                if(result.boolean == true) {
+                    RemoveRejectHtml(thisElement, result.quantity);
+                }
+                else {
+                    console.log(result.msg);
+                }
+            },
+            error: function (req, status, error) {
+                console.log(status);
+            }
+        });
+    }
+
     function CreateOneReject(quantity, selectedReasonID, selectedReason, note) {
         $.ajax({
             type: "POST",
@@ -617,11 +615,11 @@
             data: { quantity: quantity, selectedReasonID: selectedReasonID, note: note, itemID: currentreceiveOrderItemID },
             success: function (result) {
                 if(result.boolean == true) {
-                    console.log("Success");
-                            quantityErrorRejectModalText.text("");
+                    quantityErrorRejectModalText.text("");
                     selectedErrorRejectModalText.text("");
                     quantityRejectModalInput.val("");
                     noteRejectModalInput.val("");
+                    selectRejectModalInput.val("Select One").change();
                     CreateNewReject(quantity, selectedReason, note, result.rejectID);
                 }
                 else {
