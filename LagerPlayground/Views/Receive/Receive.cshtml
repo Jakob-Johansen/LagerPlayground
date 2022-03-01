@@ -156,13 +156,19 @@
         <div class="receive-rejectmodal-allreasons-container">
         <table class="table receive-rejectmodal-table" style="border: none !important;">
             <tbody class="receive-rejectmodal-table-tbody-output" style="border: none !important;">
-
             </tbody>
         </table>
         </div>
         <div class="receive-rejectmodal-closebtn-container">
             <a class="receive-rejectmodal-close">Close</a>
         </div>
+    </div>
+</div>
+
+<div class="fullscreenloading-overall-overlay-container">
+    <div class="fullscreenloading-overlay-container">
+        <div class="fullscreenloading-overlay-loading"></div>
+        <p class="trim">Loading...</p>
     </div>
 </div>
 
@@ -208,8 +214,9 @@
     let currentreceiveOrderItemID;
 
     // Loading variabler
-    let loader = $(".loader");
+    let barcodescannerLoadingOverlay = $(".fullscreenloading-overall-overlay-container");
     let loadingIsRunning = false;
+    let loadingTimeoutBarcodeScanner;
 
     let currentScannedBarcode;
     let lastScannedBarcode;
@@ -234,10 +241,9 @@
 
         if (evt.code.includes("Enter")) {
             if (barcode) {
-                handleBarcode(barcode);
-                //if (loadingIsRunning == false)  {
-                //    handleBarcode(barcode);
-                //}
+                if (loadingIsRunning == false)  {
+                    handleBarcode(barcode);
+                }
                 barcode = '';
 
                 return;
@@ -254,11 +260,22 @@
 
         if (scanned_barcode.length >= 1) {
 
+            loadingTimeoutBarcodeScanner = setTimeout(function () {
+                loadingIsRunning = true;
+                barcodescannerLoadingOverlay.css("display", "block");
+            }, 20);
+
+            //if (scanned_barcode == currentScannedBarcode || currentScannedBarcode == null) {
+            //    console.log("Test");
+            //    currentBarcodeArray.push(scanned_barcode);
+            //}
+            //else {
+            //    console.log(currentBarcodeArray);
+            //}
+
             lastScannedBarcode = currentScannedBarcode;
             currentScannedBarcode = scanned_barcode;
 
-            //currentBarcodeArray.push(scanned_barcode);
-            //loadingTimeout();
             FindProduct(scanned_barcode);
         }
     }
@@ -270,24 +287,26 @@
         }
     });
 
-    // Timeout/delay functions
-    function loadingTimeout() {
-        setTimeout(function () {
-                loadingIsRunning = true;
-                //loader.css("display", "block");
-        }, 20);
-    }
-
     function FindProduct(scanned_barcode) {
+        let productFound = false;
         tbodyTr.each(function(index) {
             if($(this).data("barcode") == scanned_barcode) {
 
                 if(scanned_barcode != lastScannedBarcode)
                     tbodyTr.removeClass("receive-table-tbody-tr-active");
 
+                    productFound = true;
                 AddProductDatabase(scanned_barcode, $(this).data("receivingorderitemid"), $(this));
+                return;
             }
         });
+        
+        if (productFound == false) {
+            clearTimeout(loadingTimeoutBarcodeScanner);
+            loadingIsRunning = false;
+            barcodescannerLoadingOverlay.css("display", "none");
+            console.log("productNotFound");
+        } 
     }
 
     function AddProduct(thisElement) {
@@ -299,7 +318,7 @@
 
         thisElement.find(unreceivedPTag).text(function(i,v) {
             let getNumber = parseInt(v);
-            if(getNumber >= 0) {
+            if(getNumber > 0) {
                 let result = getNumber - 1;
                 return result;
             }
@@ -544,14 +563,16 @@
     }
 
     function AddProductDatabase(scanned_barcode, receivingItemId, thisElement) {
-        let ajaxResult;
-
         $.ajax({
             type: "POST",
             url: "/Receive/AddProduct",
             headers: {"RequestVerificationToken": "@GetAntiXsrfRequestToken()"},
             data: { barcode: scanned_barcode, receivingItemID: receivingItemId },
             success: function (result) {
+                clearTimeout(loadingTimeoutBarcodeScanner);
+                loadingIsRunning = false;
+                barcodescannerLoadingOverlay.css("display", "none");
+
                 if(result.boolean == true) {
                     AddProduct(thisElement);
                 }
