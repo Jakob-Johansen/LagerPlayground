@@ -1208,6 +1208,10 @@ li.dropdown {
     top: 10%;
 }
 
+.receive-rejectmodal-overall-content-container {
+    display: none;
+}
+
 .receive-rejectmodal-header-overall-container {
     width: 100%;
     height: auto;
@@ -1402,6 +1406,27 @@ li.dropdown {
 
 .receive-rejectmodal-closebtn-container > a:hover {
     cursor: pointer;
+}
+
+/*---Reject Modal Loading---*/
+
+.receive-rejectmodalloading-container {
+    display: block;
+    width: 100%;
+    height: auto;
+    padding: 220px 0;
+}
+
+.receive-rejectmodalloading-loading {
+    display: block;
+    margin: 0 auto;
+    border: 9px solid #f3f3f3;
+    border-radius: 50%;
+    border-top: 9px solid #3498db;
+    width: 70px;
+    height: 70px;
+    -webkit-animation: spin 1s linear infinite; /* Safari */
+    animation: spin 1s linear infinite;
 }
 
 /*---Barcodescanner Loading---*/

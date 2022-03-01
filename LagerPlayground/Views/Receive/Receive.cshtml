@@ -104,63 +104,73 @@
                 <span class="material-icons receive-rejectmodal-close-btn receive-rejectmodal-close">close</span>
             </div>
             <div class="clearBoth"></div>
-            <div class="receive-rejectmodal-product-info-overall-container">
-                <div class="receive-rejectmodal-product-info-container">
-                    <div class="receive-rejectmodal-product-info-image-container">
-                        <img class="receive-rejectmodal-product-info-image" src="~/Images/Placeholders/Placeholder.jpg" />
-                    </div>
-                    <div class="receive-rejectmodal-product-info-detail-container">
-                        <p class="trim receive-rejectmodal-product-info-name">NULL</p>
-                        <p class="trim"><span class="receive-table-product-info-sku">SKU: </span><span class="receive-rejectmodal-product-info-sku">NULL</span></p>
-                    </div>
-                </div>
-                <div class="receive-rejectmodal-rejected-info-container">
-                    <p class="trim">Total Rejected</p>
-                    <p class="trim receive-rejectmodal-rejected-number">0</p>
-                </div>
-                <div class="clearBoth"></div>
+
+            <div class="receive-rejectmodalloading-container">
+                <div class="receive-rejectmodalloading-loading"></div>
             </div>
         </div>
-        <div class="receive-rejectmodal-table-container">
-        <table class="table receive-rejectmodal-table">
-            <thead>
-                <tr style="border-bottom: 1px solid #454545 !important;">
-                    <td>Qty</td>
-                    <td>Reason</td>
-                    <td>Note</td>
-                    <td></td>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <td>
-                        <input class="receive-rejectmodal-table-numberInput background-dark" type="number" />
-                        <p class="receive-rejectmodal-table-numberInput-error trim" style="padding-top: 2px !important; color: #dc3545 !important;"></p>
-                    </td>
-                    <td>
-                        <select class="receive-rejectmodal-table-select background-dark">
-                            <option disabled selected data-reasonid="none">Select One</option>
-                            @foreach (var item in Model.ReceiveRejectedReasons)
-                            {
-                             <option data-reasonid="@item.ID">@item.Reason</option>   
-                            }
-                        </select>
-                        <p class="receive-rejectmodal-table-select-error trim" style="padding-top: 2px !important; color: #dc3545 !important;"></p>
-                    </td>
-                    <td><input class="receive-rejectmodal-table-create-note background-dark" type="text" /></td>
-                    <td><button class="receive-rejectmodal-table-add-btn">Add</button></td>
-                </tr>
-            </tbody>
-        </table>
-        </div>
-        <div class="receive-rejectmodal-allreasons-container">
-        <table class="table receive-rejectmodal-table" style="border: none !important;">
-            <tbody class="receive-rejectmodal-table-tbody-output" style="border: none !important;">
-            </tbody>
-        </table>
-        </div>
-        <div class="receive-rejectmodal-closebtn-container">
-            <a class="receive-rejectmodal-close">Close</a>
+
+        <div class="receive-rejectmodal-overall-content-container">
+            <div class="receive-rejectmodal-header-overall-container">
+
+                <div class="receive-rejectmodal-product-info-overall-container">
+                    <div class="receive-rejectmodal-product-info-container">
+                        <div class="receive-rejectmodal-product-info-image-container">
+                            <img class="receive-rejectmodal-product-info-image" src="~/Images/Placeholders/Placeholder.jpg" />
+                        </div>
+                        <div class="receive-rejectmodal-product-info-detail-container">
+                            <p class="trim receive-rejectmodal-product-info-name">NULL</p>
+                            <p class="trim"><span class="receive-table-product-info-sku">SKU: </span><span class="receive-rejectmodal-product-info-sku">NULL</span></p>
+                        </div>
+                    </div>
+                    <div class="receive-rejectmodal-rejected-info-container">
+                        <p class="trim">Total Rejected</p>
+                        <p class="trim receive-rejectmodal-rejected-number">0</p>
+                    </div>
+                    <div class="clearBoth"></div>
+                </div>
+            </div>
+            <div class="receive-rejectmodal-table-container">
+                <table class="table receive-rejectmodal-table">
+                    <thead>
+                        <tr style="border-bottom: 1px solid #454545 !important;">
+                            <td>Qty</td>
+                            <td>Reason</td>
+                            <td>Note</td>
+                            <td></td>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>
+                                <input class="receive-rejectmodal-table-numberInput background-dark" type="number" />
+                                <p class="receive-rejectmodal-table-numberInput-error trim" style="padding-top: 2px !important; color: #dc3545 !important;"></p>
+                            </td>
+                            <td>
+                                <select class="receive-rejectmodal-table-select background-dark">
+                                    <option disabled selected data-reasonid="none">Select One</option>
+                                    @foreach (var item in Model.ReceiveRejectedReasons)
+                                    {
+                                        <option data-reasonid="@item.ID">@item.Reason</option>
+                                    }
+                                </select>
+                                <p class="receive-rejectmodal-table-select-error trim" style="padding-top: 2px !important; color: #dc3545 !important;"></p>
+                            </td>
+                            <td><input class="receive-rejectmodal-table-create-note background-dark" type="text" /></td>
+                            <td><button class="receive-rejectmodal-table-add-btn">Add</button></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="receive-rejectmodal-allreasons-container">
+                <table class="table receive-rejectmodal-table" style="border: none !important;">
+                    <tbody class="receive-rejectmodal-table-tbody-output" style="border: none !important;">
+                    </tbody>
+                </table>
+            </div>
+            <div class="receive-rejectmodal-closebtn-container">
+                <a class="receive-rejectmodal-close">Close</a>
+            </div>
         </div>
     </div>
 </div>
@@ -217,6 +227,11 @@
     let barcodescannerLoadingOverlay = $(".fullscreenloading-overall-overlay-container");
     let loadingIsRunning = false;
     let loadingTimeoutBarcodeScanner;
+
+    // Loading Reject Modal
+    let loadingTimeoutRejectModal;
+    let rejectModalLoadingContainer = $(".receive-rejectmodalloading-container");
+    let rejectModalMainContent = $(".receive-rejectmodal-overall-content-container");
 
     let currentScannedBarcode;
     let lastScannedBarcode;
@@ -300,13 +315,13 @@
                 return;
             }
         });
-        
+
         if (productFound == false) {
             clearTimeout(loadingTimeoutBarcodeScanner);
             loadingIsRunning = false;
             barcodescannerLoadingOverlay.css("display", "none");
             console.log("productNotFound");
-        } 
+        }
     }
 
     function AddProduct(thisElement) {
@@ -388,13 +403,24 @@
 
     openRejectModalBtn.click(function () {
         overlayRejectModal.css("display", "block");
+        loadingTimeoutRejectModal = setTimeout(function () {
+                loadingIsRunning = true;
+                rejectModalMainContent.css("display", "none");
+                rejectModalLoadingContainer.css("display", "block");
+            }, 20);
 
         let thisElement = $(this).closest(tbodyTr);
 
         if (thisElement.data("barcode") != "" || thisElement.data("barcode") != null) {
             currentBarcode = thisElement.data("barcode");
             GetOneReceiveOrder(thisElement.data("barcode"));
-        } 
+        }
+        else {
+            clearTimeout(loadingTimeoutRejectModal);
+            loadingIsRunning = false;
+            rejectModalLoadingContainer.css("display", "none");
+            rejectModalMainContent.css("display", "block");
+        }
 
     });
 
@@ -411,6 +437,11 @@
         noteRejectModalInput.val("");
         selectRejectModalInput.val("Select One").change();
 
+        clearTimeout(loadingTimeoutRejectModal);
+        loadingIsRunning = false;
+        rejectModalLoadingContainer.css("display", "none");
+        rejectModalMainContent.css("display", "block");
+
         $(".receive-rejectmodal-allreasons-container").find("tr").remove();
     });
 
@@ -426,7 +457,7 @@
         if (result.rejectedItems.length != 0) {
             for (var i = 0; i < result.rejectedItems.length; i++) {
                 $(".receive-rejectmodal-table-tbody-output").append(
-                    '<tr>' + 
+                    '<tr>' +
                         '<td><input readonly class="receive-rejectmodal-table-numberInput receive-rejectmodal-table-noborder background-dark" type="number" value="' + result.rejectedItems[i].quantity + '" /></td>' +
                         '<td><input readonly class="receive-rejectmodal-table-select receive-rejectmodal-table-noborder background-dark" type="text" value="' + result.rejectedItems[i].receiveRejectedReasons.reason + '" /></td>' +
                         '<td><input readonly class="receive-rejectmodal-table-note receive-rejectmodal-table-noborder background-dark" type="text" value="' + result.rejectedItems[i].note + '" /></td>' +
@@ -537,7 +568,7 @@
 
         if (quantityErrorRejectModalText.text() != "")
             quantityErrorRejectModalText.text("");
-        
+
         if (getSelectedReasonID == "none") {
             selectedErrorRejectModalText.text("You need to select an option");
             return;
@@ -551,7 +582,7 @@
 
     function CreateNewReject(quantity, selectedReason, note, rejectID) {
         $(".receive-rejectmodal-table-tbody-output").append(
-            '<tr>' + 
+            '<tr>' +
                 '<td><input readonly class="receive-rejectmodal-table-numberInput receive-rejectmodal-table-noborder background-dark" type="number" value="' + quantity + '" /></td>' +
                 '<td><input readonly class="receive-rejectmodal-table-select receive-rejectmodal-table-noborder background-dark" type="text" value="' + selectedReason + '" /></td>' +
                 '<td><input readonly class="receive-rejectmodal-table-note receive-rejectmodal-table-noborder background-dark" type="text" value="' + note + '" /></td>' +
@@ -592,6 +623,11 @@
             url: "/Receive/GetOneReceiveOrder",
             data: { barcode: barcode},
             success: function (result) {
+                clearTimeout(loadingTimeoutRejectModal);
+                loadingIsRunning = false;
+                rejectModalLoadingContainer.css("display", "none");
+                rejectModalMainContent.css("display", "block");
+
                 if(result.boolean == true) {
                     currentreceiveOrderItemID = result.itemID;
                     AddNewData(result);
