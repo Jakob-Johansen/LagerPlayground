@@ -43,8 +43,8 @@
         </div>
         <div class="alertpopup-small-info-overall-container">
             <div class="alertpopup-small-info-container">
-                <p class="trim alertpopup-small-info-header">Product not found!</p>
-                <p class="trim alertpopup-small-info"></p>
+                <p class="trim alertpopup-small-info-header">NULL</p>
+                <p class="trim alertpopup-small-info">NULL</p>
             </div>
             <div class="alertpopup-small-info-countdown-overall-container">
                 <div class="alertpopup-small-info-countdown-container">
@@ -246,7 +246,10 @@
 
     // Popup Alert
     let popupAlertSmall = $(".alertpopup-small-overall-container");
+    let popupAlertSmallIcon = $(".alertpopup-small-icon");
+    let popupAlertSmallBarcodeHeadline = $(".alertpopup-small-info-header");
     let popupAlertSmallBarcodeText = $(".alertpopup-small-info");
+    let popupAlertSmallNumberCountdown = $(".alertpopup-small-info-countdown-text");
     let popupAlertSmallTimeout;
     let popupAlertSmallCountdownInterval;
 
@@ -304,11 +307,7 @@
         scanned_barcode = scanned_barcode.trim();
 
         if (scanned_barcode.length >= 1) {
-            clearTimeout(popupAlertSmallTimeout);
-            clearInterval(popupAlertSmallCountdownInterval);
-            popupAlertSmall.css("display", "none");
-            popupAlertSmallBarcodeText.text("");
-
+            ClearLoadingTimeoutAndInterval();
 
             loadingTimeoutBarcodeScanner = setTimeout(function () {
                 loadingIsRunning = true;
@@ -353,31 +352,45 @@
 
         if (productFound == false) {
             tbodyTr.removeClass("receive-table-tbody-tr-active");
-            clearTimeout(loadingTimeoutBarcodeScanner);
-            loadingIsRunning = false;
-            barcodescannerLoadingOverlay.css("display", "none");
+            ClearLoadingTimeout();
 
-            CountdownAlertPopup("There was no product that matched barcode " + scanned_barcode);
+            CountdownAlertPopup("Product not found!" ,"There was no product that matched barcode " + scanned_barcode);
         }
     }
 
-    function CountdownAlertPopup(msg) {
+    function CountdownAlertPopup(headline , msg, databaseError = false) {
         let countdown = 10;
-        let alertCountdownNumberText = $(".alertpopup-small-info-countdown-text");
-
+        popupAlertSmallBarcodeHeadline.text(headline);
         popupAlertSmallBarcodeText.text(msg);
+
+        if (databaseError == true) {
+            popupAlertSmall.css("backgroundColor", "#ffcc00");
+            popupAlertSmallIcon.attr("style", "color: black !important");
+            popupAlertSmallBarcodeHeadline.attr("style", "color: black !important");
+            popupAlertSmallBarcodeText.attr("style", "color: black !important");
+            popupAlertSmallNumberCountdown.attr("style", "color: black !important");
+        }
+        else {
+            popupAlertSmall.css("backgroundColor", "#D0342C");
+            popupAlertSmallIcon.attr("style", "color: white !important");
+            popupAlertSmallBarcodeHeadline.attr("style", "color: white !important");
+            popupAlertSmallBarcodeText.attr("style", "color: white !important");
+            popupAlertSmallNumberCountdown.attr("style", "color: white !important");
+        }
+
         popupAlertSmall.css("display", "block");
 
-        alertCountdownNumberText.text(countdown);
+        popupAlertSmallNumberCountdown.text(countdown);
 
         popupAlertSmallCountdownInterval = setInterval(function() {
             countdown = --countdown;
-            alertCountdownNumberText.text(countdown);
+            popupAlertSmallNumberCountdown.text(countdown);
         }, 1000);
 
         popupAlertSmallTimeout = setTimeout(function () {
             popupAlertSmall.css("display", "none");
             popupAlertSmallBarcodeText.text("");
+            popupAlertSmallBarcodeHeadline.text("");
         }, 10000);
     }
 
@@ -473,10 +486,7 @@
             GetOneReceiveOrder(thisElement.data("barcode"));
         }
         else {
-            clearTimeout(loadingTimeoutRejectModal);
-            loadingIsRunning = false;
-            rejectModalLoadingContainer.css("display", "none");
-            rejectModalMainContent.css("display", "block");
+            ClearLoadingTimeoutRejectModal();
         }
 
     });
@@ -494,10 +504,7 @@
         noteRejectModalInput.val("");
         selectRejectModalInput.val("Select One").change();
 
-        clearTimeout(loadingTimeoutRejectModal);
-        loadingIsRunning = false;
-        rejectModalLoadingContainer.css("display", "none");
-        rejectModalMainContent.css("display", "block");
+        ClearLoadingTimeoutRejectModal();
 
         $(".receive-rejectmodal-allreasons-container").find("tr").remove();
     });
@@ -650,6 +657,27 @@
         AddRejectHtml(quantity);
     }
 
+    function ClearLoadingTimeoutAndInterval() {
+        clearTimeout(popupAlertSmallTimeout);
+        clearInterval(popupAlertSmallCountdownInterval);
+        popupAlertSmall.css("display", "none");
+        popupAlertSmallBarcodeText.text("");
+        popupAlertSmallBarcodeHeadline.text("");
+    }
+
+    function ClearLoadingTimeout() {
+        clearTimeout(loadingTimeoutBarcodeScanner);
+        loadingIsRunning = false;
+        barcodescannerLoadingOverlay.css("display", "none");
+    }
+
+    function ClearLoadingTimeoutRejectModal() {
+        clearTimeout(loadingTimeoutRejectModal);
+        loadingIsRunning = false;
+        rejectModalLoadingContainer.css("display", "none");
+        rejectModalMainContent.css("display", "block");
+    }
+
     function AddProductDatabase(scanned_barcode, receivingItemId, thisElement) {
         $.ajax({
             type: "POST",
@@ -657,18 +685,23 @@
             headers: {"RequestVerificationToken": "@GetAntiXsrfRequestToken()"},
             data: { barcode: scanned_barcode, receivingItemID: receivingItemId },
             success: function (result) {
-                clearTimeout(loadingTimeoutBarcodeScanner);
-                loadingIsRunning = false;
-                barcodescannerLoadingOverlay.css("display", "none");
+                ClearLoadingTimeout();
+                ClearLoadingTimeoutAndInterval();
 
                 if(result.boolean == true) {
                     AddProduct(thisElement);
                 }
+                else if(result.databaseError == true) {
+                    CountdownAlertPopup("Database Error!", result.msg, true)
+                }
                 else {
-                    CountdownAlertPopup(result.msg);
+                    CountdownAlertPopup("Product not found!", result.msg, false);
                 }
             },
             error: function (req, status, error) {
+                ClearLoadingTimeout();
+
+                CountdownAlertPopup("Error!","An error has occured, try again or contact an administrator", false);
                 console.log(status);
             }
         });
@@ -680,10 +713,7 @@
             url: "/Receive/GetOneReceiveOrder",
             data: { barcode: barcode},
             success: function (result) {
-                clearTimeout(loadingTimeoutRejectModal);
-                loadingIsRunning = false;
-                rejectModalLoadingContainer.css("display", "none");
-                rejectModalMainContent.css("display", "block");
+            ClearLoadingTimeoutRejectModal();
 
                 if(result.boolean == true) {
                     currentreceiveOrderItemID = result.itemID;
@@ -745,8 +775,5 @@
             }
         });
     }
-
-
-
 </script>
 }

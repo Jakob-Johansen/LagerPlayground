@@ -57,7 +57,7 @@ namespace LagerPlayground.Controllers
         {
             if (barcode == null)
             {
-                return Json(new {boolean = false, msg = "No barcode was scanned"});
+                return Json(new {boolean = false, msg = "No barcode was scanned, try again"});
             }
 
             var receiveOrderItemToUpdate = await _context.ReceivingOrder_Items.FirstOrDefaultAsync(x => x.ID == receivingItemID);
@@ -87,7 +87,7 @@ namespace LagerPlayground.Controllers
                 }
                 catch (DbUpdateException)
                 {
-                    return Json(new { boolean = false, msg = "An database error has occured" });
+                    return Json(new { boolean = false, databaseError = true, msg = "An database error has occured, try again or contact an administrator" });
                 }
             }
 
