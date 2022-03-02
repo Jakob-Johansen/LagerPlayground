@@ -57,7 +57,7 @@ namespace LagerPlayground.Controllers
         {
             if (barcode == null)
             {
-                return Json(new {boolean = false, msg = "No barcode found"});
+                return Json(new {boolean = false, msg = "No barcode was scanned"});
             }
 
             var receiveOrderItemToUpdate = await _context.ReceivingOrder_Items.FirstOrDefaultAsync(x => x.ID == receivingItemID);
@@ -65,7 +65,7 @@ namespace LagerPlayground.Controllers
 
             if (receiveOrderItemToUpdate == null || productToUpdate == null)
             {
-                return Json(new {boolean = false, msg = "No product with this barcode was found"});
+                return Json(new {boolean = false, msg = "There was no product that matched barcode " + barcode });
             }
 
             var tryUpdateOrderItem = await TryUpdateModelAsync<ReceivingOrder_Items>(
