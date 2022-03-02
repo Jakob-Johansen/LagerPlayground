@@ -978,12 +978,21 @@ li.dropdown {
 /* https://css-tricks.com/snippets/css/a-guide-to-flexbox */
 
 .receive-top-overall-container {
-    display: flex;
     padding: 0 10px;
     width: 1075.96px;
     height: auto;
-    margin: 0 auto 18px auto;
-/*    background-color: black;*/
+    margin: 0 auto;
+}
+
+.receive-top-overall-flex-container {
+    display: flex;
+    margin-bottom: 18px;
+    /*    background-color: black;*/
+}
+
+.receive-top-overall-container > h2 {
+    text-decoration: underline;
+    margin-bottom: 20px;
 }
 
 .receive-top-container {
@@ -1459,4 +1468,67 @@ li.dropdown {
     -webkit-animation: spin 1.2s linear infinite; /* Safari */
     animation: spin 1.2s linear infinite;
     margin: 0 auto;
+}
+
+/*---Alert Top---*/
+
+.alertpopup-small-overall-container {
+    display: none;
+    width: 100%;
+    /*    width: 650px;*/
+    height: auto;
+    background-color: #D0342C;
+    padding: 6px 0;
+    margin-bottom: 8px;
+}
+
+.alertpopup-small-icon-container, .alertpopup-small-info-overall-container, .alertpopup-small-info-container, .alertpopup-small-info-countdown-overall-container {
+    float: left;
+}
+
+.alertpopup-small-icon-container, .alertpopup-small-info-countdown-overall-container {
+    width: 6%;
+}
+
+.alertpopup-small-info-overall-container, .alertpopup-small-info-container {
+    width: 94%;
+}
+
+.alertpopup-small-info-countdown-overall-container {
+    position: relative;
+}
+
+.alertpopup-small-info-countdown-container {
+    height: 45px;
+}
+
+.alertpopup-small-info-countdown-text {
+    display: block;
+    text-align: center;
+    font-size: 20px;
+    margin: 0 auto;
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 50%;
+    transform: translateY(-50%);
+}
+
+.alertpopup-small-icon {
+    display: block;
+    text-align: center;
+    font-size: 45px;
+    color: white;
+    user-select: none;
+    margin: 0 auto;
+}
+
+.alertpopup-small-info-header {
+    font-size: 22px;
+    line-height: 1.18;
+}
+
+.alertpopup-small-info {
+    font-size: 16px;
+    line-height: 0.8;
 }
