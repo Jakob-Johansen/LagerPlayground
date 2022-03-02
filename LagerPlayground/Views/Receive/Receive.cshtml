@@ -13,27 +13,49 @@
     ViewData["Title"] = "Receive";
 }
 
-<h2>Receive</h2>
-
 <div class="receive-top-overall-container">
-    <div class="receive-top-container">
-        <p class="trim receive-top-container-text">Unreceived</p>
-        <div class="receive-top-progressbar-container">
-            <div class="receive-top-progressbar"></div>
-            <p class="trim receive-top-numbers"><span class="receive-top-numbers-received">@ViewData["allAcceptedProducts"]</span>/<span class="receive-top-numbers-unreceived">@ViewData["AllOrderedProducts"]</span></p>
+    <h2>Receive</h2>
+    <div class="receive-top-overall-flex-container">
+        <div class="receive-top-container">
+            <p class="trim receive-top-container-text">Unreceived</p>
+            <div class="receive-top-progressbar-container">
+                <div class="receive-top-progressbar"></div>
+                <p class="trim receive-top-numbers"><span class="receive-top-numbers-received">@ViewData["allAcceptedProducts"]</span>/<span class="receive-top-numbers-unreceived">@ViewData["AllOrderedProducts"]</span></p>
+            </div>
+        </div>
+        <div class="receive-top-container">
+            <div class="receive-top-btns-overall-container">
+                <div class="receive-top-btns-container">
+                    <a class="receive-top-btns-save" asp-action="">Save</a>
+                </div>
+                <div class="receive-top-btns-container">
+                    <a class="receive-top-btns-back" asp-controller="Warehouse" asp-action="ReceiveOrderDetails" asp-route-id="@Model.ReceivingOrder_Details.ID">Back to Receive Order</a>
+                </div>
+                <div class="clearBoth"></div>
+            </div>
         </div>
     </div>
-    <div class="receive-top-container">
-        <div class="receive-top-btns-overall-container">
-            <div class="receive-top-btns-container">
-                <a class="receive-top-btns-save" asp-action="">Save</a>
+
+    @*---Alert---*@
+    <div class="alertpopup-small-overall-container">
+        <div class="alertpopup-small-icon-container">
+            <span class="material-icons alertpopup-small-icon">error_outline</span>
+        </div>
+        <div class="alertpopup-small-info-overall-container">
+            <div class="alertpopup-small-info-container">
+                <p class="trim alertpopup-small-info-header">Product not found!</p>
+                <p class="trim alertpopup-small-info">There was no product that matched barcode <span class="alertpopup-small-info-barcode"></span></p>
             </div>
-            <div class="receive-top-btns-container">
-                <a class="receive-top-btns-back" asp-controller="Warehouse" asp-action="ReceiveOrderDetails" asp-route-id="@Model.ReceivingOrder_Details.ID">Back to Receive Order</a>
+            <div class="alertpopup-small-info-countdown-overall-container">
+                <div class="alertpopup-small-info-countdown-container">
+                    <p class="trim alertpopup-small-info-countdown-text">NULL</p>
+                </div>
             </div>
             <div class="clearBoth"></div>
         </div>
+        <div class="clearBoth"></div>
     </div>
+
 </div>
 
 <table class="table receive-table w-auto">
@@ -91,6 +113,8 @@
         }
     </tbody>
 </table>
+
+
 
 @*---Reject Modal---*@
 
@@ -220,8 +244,11 @@
     let quantityErrorRejectModalText = $(".receive-rejectmodal-table-numberInput-error");
     let selectedErrorRejectModalText = $(".receive-rejectmodal-table-select-error");
 
-    let currentBarcode;
-    let currentreceiveOrderItemID;
+    // Popup Alert
+    let popupAlertSmall = $(".alertpopup-small-overall-container");
+    let popupAlertSmallBarcodeText = $(".alertpopup-small-info-barcode");
+    let popupAlertSmallTimeout;
+    let popupAlertSmallCountdownInterval;
 
     // Loading variabler
     let barcodescannerLoadingOverlay = $(".fullscreenloading-overall-overlay-container");
@@ -232,6 +259,9 @@
     let loadingTimeoutRejectModal;
     let rejectModalLoadingContainer = $(".receive-rejectmodalloading-container");
     let rejectModalMainContent = $(".receive-rejectmodal-overall-content-container");
+
+    let currentBarcode;
+    let currentreceiveOrderItemID;
 
     let currentScannedBarcode;
     let lastScannedBarcode;
@@ -274,6 +304,11 @@
         scanned_barcode = scanned_barcode.trim();
 
         if (scanned_barcode.length >= 1) {
+            clearTimeout(popupAlertSmallTimeout);
+            clearInterval(popupAlertSmallCountdownInterval);
+            popupAlertSmall.css("display", "none");
+            popupAlertSmallBarcodeText.text("");
+
 
             loadingTimeoutBarcodeScanner = setTimeout(function () {
                 loadingIsRunning = true;
@@ -310,18 +345,40 @@
                 if(scanned_barcode != lastScannedBarcode)
                     tbodyTr.removeClass("receive-table-tbody-tr-active");
 
-                    productFound = true;
+                productFound = true;
                 AddProductDatabase(scanned_barcode, $(this).data("receivingorderitemid"), $(this));
                 return;
             }
         });
 
         if (productFound == false) {
+            tbodyTr.removeClass("receive-table-tbody-tr-active");
             clearTimeout(loadingTimeoutBarcodeScanner);
             loadingIsRunning = false;
             barcodescannerLoadingOverlay.css("display", "none");
             console.log("productNotFound");
+
+            popupAlertSmallBarcodeText.text(scanned_barcode);
+            popupAlertSmall.css("display", "block");
+            CountdownAlertPopup();
+
         }
+    }
+
+    function CountdownAlertPopup() {
+        let countdown = 10;
+        $(".alertpopup-small-info-countdown-text").text(countdown);
+
+        popupAlertSmallCountdownInterval = setInterval(function() {
+            countdown = --countdown;
+
+            $(".alertpopup-small-info-countdown-text").text(countdown);
+        }, 1000);
+
+        popupAlertSmallTimeout = setTimeout(function () {
+            popupAlertSmall.css("display", "none");
+            popupAlertSmallBarcodeText.text("");
+        }, 10000);
     }
 
     function AddProduct(thisElement) {
@@ -688,6 +745,8 @@
             }
         });
     }
+
+
 
 </script>
 }
