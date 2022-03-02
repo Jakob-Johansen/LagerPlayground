@@ -1478,6 +1478,7 @@ li.dropdown {
     /*    width: 650px;*/
     height: auto;
     background-color: #D0342C;
+/*    background-color: #ffcc00;*/
     padding: 6px 0;
     margin-bottom: 8px;
 }
@@ -1526,9 +1527,11 @@ li.dropdown {
 .alertpopup-small-info-header {
     font-size: 22px;
     line-height: 1.18;
+    color: white;
 }
 
 .alertpopup-small-info {
     font-size: 16px;
     line-height: 0.8;
+    color: white;
 }
