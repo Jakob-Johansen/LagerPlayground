@@ -44,7 +44,7 @@
         <div class="alertpopup-small-info-overall-container">
             <div class="alertpopup-small-info-container">
                 <p class="trim alertpopup-small-info-header">Product not found!</p>
-                <p class="trim alertpopup-small-info">There was no product that matched barcode <span class="alertpopup-small-info-barcode"></span></p>
+                <p class="trim alertpopup-small-info"></p>
             </div>
             <div class="alertpopup-small-info-countdown-overall-container">
                 <div class="alertpopup-small-info-countdown-container">
@@ -246,7 +246,7 @@
 
     // Popup Alert
     let popupAlertSmall = $(".alertpopup-small-overall-container");
-    let popupAlertSmallBarcodeText = $(".alertpopup-small-info-barcode");
+    let popupAlertSmallBarcodeText = $(".alertpopup-small-info");
     let popupAlertSmallTimeout;
     let popupAlertSmallCountdownInterval;
 
@@ -357,21 +357,22 @@
             loadingIsRunning = false;
             barcodescannerLoadingOverlay.css("display", "none");
 
-            popupAlertSmallBarcodeText.text(scanned_barcode);
-            popupAlertSmall.css("display", "block");
-            CountdownAlertPopup();
-
+            CountdownAlertPopup("There was no product that matched barcode " + scanned_barcode);
         }
     }
 
-    function CountdownAlertPopup() {
+    function CountdownAlertPopup(msg) {
         let countdown = 10;
-        $(".alertpopup-small-info-countdown-text").text(countdown);
+        let alertCountdownNumberText = $(".alertpopup-small-info-countdown-text");
+
+        popupAlertSmallBarcodeText.text(msg);
+        popupAlertSmall.css("display", "block");
+
+        alertCountdownNumberText.text(countdown);
 
         popupAlertSmallCountdownInterval = setInterval(function() {
             countdown = --countdown;
-
-            $(".alertpopup-small-info-countdown-text").text(countdown);
+            alertCountdownNumberText.text(countdown);
         }, 1000);
 
         popupAlertSmallTimeout = setTimeout(function () {
@@ -664,7 +665,7 @@
                     AddProduct(thisElement);
                 }
                 else {
-                    console.log(result.msg);
+                    CountdownAlertPopup(result.msg);
                 }
             },
             error: function (req, status, error) {
