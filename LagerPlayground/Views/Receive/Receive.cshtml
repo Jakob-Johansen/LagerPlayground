@@ -37,7 +37,7 @@
     </div>
 
     @*---Alert---*@
-    <div class="alertpopup-small-overall-container">
+@*    <div class="alertpopup-small-overall-container">
         <div class="alertpopup-small-icon-container">
             <span class="material-icons alertpopup-small-icon">error_outline</span>
         </div>
@@ -54,7 +54,7 @@
             <div class="clearBoth"></div>
         </div>
         <div class="clearBoth"></div>
-    </div>
+    </div>*@
 
 </div>
 
@@ -136,7 +136,6 @@
 
         <div class="receive-rejectmodal-overall-content-container">
             <div class="receive-rejectmodal-header-overall-container">
-
                 <div class="receive-rejectmodal-product-info-overall-container">
                     <div class="receive-rejectmodal-product-info-container">
                         <div class="receive-rejectmodal-product-info-image-container">
@@ -153,6 +152,9 @@
                     </div>
                     <div class="clearBoth"></div>
                 </div>
+            </div>
+            <div class="receive-rejectmodal-alert-container">
+
             </div>
             <div class="receive-rejectmodal-table-container">
                 <table class="table receive-rejectmodal-table">
@@ -249,9 +251,9 @@
     let popupAlertSmallIcon = $(".alertpopup-small-icon");
     let popupAlertSmallBarcodeHeadline = $(".alertpopup-small-info-header");
     let popupAlertSmallBarcodeText = $(".alertpopup-small-info");
-    let popupAlertSmallNumberCountdown = $(".alertpopup-small-info-countdown-text");
-    let popupAlertSmallTimeout;
-    let popupAlertSmallCountdownInterval;
+    //let popupAlertSmallNumberCountdown = $(".alertpopup-small-info-countdown-text");
+    //let popupAlertSmallTimeout;
+    //let popupAlertSmallCountdownInterval;
 
     // Loading variabler
     let barcodescannerLoadingOverlay = $(".fullscreenloading-overall-overlay-container");
@@ -306,6 +308,11 @@
     function handleBarcode(scanned_barcode) {
         scanned_barcode = scanned_barcode.trim();
 
+        if (overlayRejectModal.css("display") == "block") {
+            console.log("Test")
+            return;
+        }
+
         if (scanned_barcode.length >= 1) {
             ClearLoadingTimeoutAndInterval();
 
@@ -359,7 +366,7 @@
     }
 
     function CountdownAlertPopup(headline , msg, databaseError = false) {
-        let countdown = 10;
+        //let countdown = 10;
         popupAlertSmallBarcodeHeadline.text(headline);
         popupAlertSmallBarcodeText.text(msg);
 
@@ -368,30 +375,57 @@
             popupAlertSmallIcon.attr("style", "color: black !important");
             popupAlertSmallBarcodeHeadline.attr("style", "color: black !important");
             popupAlertSmallBarcodeText.attr("style", "color: black !important");
-            popupAlertSmallNumberCountdown.attr("style", "color: black !important");
+            //popupAlertSmallNumberCountdown.attr("style", "color: black !important");
         }
         else {
             popupAlertSmall.css("backgroundColor", "#D0342C");
             popupAlertSmallIcon.attr("style", "color: white !important");
             popupAlertSmallBarcodeHeadline.attr("style", "color: white !important");
             popupAlertSmallBarcodeText.attr("style", "color: white !important");
-            popupAlertSmallNumberCountdown.attr("style", "color: white !important");
+            //popupAlertSmallNumberCountdown.attr("style", "color: white !important");
         }
 
         popupAlertSmall.css("display", "block");
+        AddAlertPopupFunction($(".receive-top-overall-container"), headline, msg);
+        //popupAlertSmallNumberCountdown.text(countdown);
 
-        popupAlertSmallNumberCountdown.text(countdown);
+        //popupAlertSmallCountdownInterval = setInterval(function() {
+        //    countdown = --countdown;
+        //    popupAlertSmallNumberCountdown.text(countdown);
+        //}, 1000);
 
-        popupAlertSmallCountdownInterval = setInterval(function() {
-            countdown = --countdown;
-            popupAlertSmallNumberCountdown.text(countdown);
-        }, 1000);
+        //popupAlertSmallTimeout = setTimeout(function () {
+        //    popupAlertSmall.css("display", "none");
+        //    popupAlertSmallBarcodeText.text("");
+        //    popupAlertSmallBarcodeHeadline.text("");
+        //}, 10000);
+    }
 
-        popupAlertSmallTimeout = setTimeout(function () {
-            popupAlertSmall.css("display", "none");
-            popupAlertSmallBarcodeText.text("");
-            popupAlertSmallBarcodeHeadline.text("");
-        }, 10000);
+    function AddAlertPopupFunction(htmlClass, headline, msg) {
+        htmlClass.append(
+            `
+            <div class="alertpopup-small-overall-container">
+                <div class="alertpopup-small-icon-container">
+                    <span class="material-icons alertpopup-small-icon">error_outline</span>
+                </div>
+                <div class="alertpopup-small-info-overall-container">
+                    <div class="alertpopup-small-info-container">
+                        <p class="trim alertpopup-small-info-header">${headline}</p>
+                        <p class="trim alertpopup-small-info">${msg}</p>
+                    </div>
+                    <div class="alertpopup-small-info-countdown-overall-container">
+                    </div>
+                    <div class="clearBoth"></div>
+                </div>
+                <div class="clearBoth"></div>
+            </div>
+            `
+        );
+    }
+
+    function RemoveAlertPopupFunction() {
+        $(".alertpopup-small-overall-container").remove();
+        console.log("T");
     }
 
     function AddProduct(thisElement) {
@@ -427,7 +461,6 @@
         });
 
         ReceiveTopProgressBarFunction();
-
         return;
     }
 
@@ -488,7 +521,6 @@
         else {
             ClearLoadingTimeoutRejectModal();
         }
-
     });
 
     closeRejectModalBtn.click(function () {
@@ -658,11 +690,13 @@
     }
 
     function ClearLoadingTimeoutAndInterval() {
-        clearTimeout(popupAlertSmallTimeout);
-        clearInterval(popupAlertSmallCountdownInterval);
-        popupAlertSmall.css("display", "none");
-        popupAlertSmallBarcodeText.text("");
-        popupAlertSmallBarcodeHeadline.text("");
+        //clearTimeout(popupAlertSmallTimeout);
+        //clearInterval(popupAlertSmallCountdownInterval);
+        //popupAlertSmall.css("display", "none");
+        //popupAlertSmallBarcodeText.text("");
+        //popupAlertSmallBarcodeHeadline.text("");
+        RemoveAlertPopupFunction();
+
     }
 
     function ClearLoadingTimeout() {

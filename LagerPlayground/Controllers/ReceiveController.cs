@@ -55,6 +55,9 @@ namespace LagerPlayground.Controllers
         [ValidateAntiForgeryToken]
         public async Task<JsonResult> AddProduct(string barcode, int receivingItemID)
         {
+            // For Testing
+            //Thread.Sleep(1000);
+
             if (barcode == null)
             {
                 return Json(new {boolean = false, msg = "No barcode was scanned, try again"});
@@ -81,6 +84,9 @@ namespace LagerPlayground.Controllers
             {
                 try
                 {
+                    // For Testing
+                    //throw new DbUpdateException();
+
                     receiveOrderItemToUpdate.Accepted = updateAccepted;
                     productToUpdate.Quantity = updatedQuantity;
                     await _context.SaveChangesAsync();
@@ -97,6 +103,9 @@ namespace LagerPlayground.Controllers
         [HttpGet]
         public async Task<JsonResult> GetOneReceiveOrder(string barcode)
         {
+            // For Testing
+            //Thread.Sleep(1000);
+
             if (barcode == null)
             {
                 return Json(new { boolean = false, msg = "No barcode was found" });
