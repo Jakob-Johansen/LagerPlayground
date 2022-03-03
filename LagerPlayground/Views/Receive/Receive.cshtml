@@ -134,6 +134,8 @@
             </div>
         </div>
 
+        <div class="receive-rejectmodal-alert-container" style="margin-top: 8px;"></div>
+
         <div class="receive-rejectmodal-overall-content-container">
             <div class="receive-rejectmodal-header-overall-container">
                 <div class="receive-rejectmodal-product-info-overall-container">
@@ -153,9 +155,7 @@
                     <div class="clearBoth"></div>
                 </div>
             </div>
-            <div class="receive-rejectmodal-alert-container">
 
-            </div>
             <div class="receive-rejectmodal-table-container">
                 <table class="table receive-rejectmodal-table">
                     <thead>
@@ -314,7 +314,7 @@
         }
 
         if (scanned_barcode.length >= 1) {
-            ClearLoadingTimeoutAndInterval();
+            RemoveAlertPopupFunction();
 
             loadingTimeoutBarcodeScanner = setTimeout(function () {
                 loadingIsRunning = true;
@@ -361,12 +361,11 @@
             tbodyTr.removeClass("receive-table-tbody-tr-active");
             ClearLoadingTimeout();
 
-            CountdownAlertPopup("Product not found!" ,"There was no product that matched barcode " + scanned_barcode);
+            CountdownAlertPopup($(".receive-top-overall-container"), "Product not found!" ,"There was no product that matched barcode " + scanned_barcode);
         }
     }
 
-    function CountdownAlertPopup(headline , msg, databaseError = false) {
-        //let countdown = 10;
+    function CountdownAlertPopup(htmlClass, headline , msg, databaseError = false) {
         popupAlertSmallBarcodeHeadline.text(headline);
         popupAlertSmallBarcodeText.text(msg);
 
@@ -375,30 +374,16 @@
             popupAlertSmallIcon.attr("style", "color: black !important");
             popupAlertSmallBarcodeHeadline.attr("style", "color: black !important");
             popupAlertSmallBarcodeText.attr("style", "color: black !important");
-            //popupAlertSmallNumberCountdown.attr("style", "color: black !important");
         }
         else {
             popupAlertSmall.css("backgroundColor", "#D0342C");
             popupAlertSmallIcon.attr("style", "color: white !important");
             popupAlertSmallBarcodeHeadline.attr("style", "color: white !important");
             popupAlertSmallBarcodeText.attr("style", "color: white !important");
-            //popupAlertSmallNumberCountdown.attr("style", "color: white !important");
         }
 
         popupAlertSmall.css("display", "block");
-        AddAlertPopupFunction($(".receive-top-overall-container"), headline, msg);
-        //popupAlertSmallNumberCountdown.text(countdown);
-
-        //popupAlertSmallCountdownInterval = setInterval(function() {
-        //    countdown = --countdown;
-        //    popupAlertSmallNumberCountdown.text(countdown);
-        //}, 1000);
-
-        //popupAlertSmallTimeout = setTimeout(function () {
-        //    popupAlertSmall.css("display", "none");
-        //    popupAlertSmallBarcodeText.text("");
-        //    popupAlertSmallBarcodeHeadline.text("");
-        //}, 10000);
+        AddAlertPopupFunction(htmlClass, headline, msg);
     }
 
     function AddAlertPopupFunction(htmlClass, headline, msg) {
@@ -425,7 +410,6 @@
 
     function RemoveAlertPopupFunction() {
         $(".alertpopup-small-overall-container").remove();
-        console.log("T");
     }
 
     function AddProduct(thisElement) {
@@ -535,6 +519,11 @@
         quantityRejectModalInput.val("");
         noteRejectModalInput.val("");
         selectRejectModalInput.val("Select One").change();
+        
+        $(".receive-rejectmodal-table-container").css("display", "block");
+        $(".receive-rejectmodal-overall-content-container").css("display", "block");
+
+        RemoveAlertPopupFunction();
 
         ClearLoadingTimeoutRejectModal();
 
@@ -689,16 +678,6 @@
         AddRejectHtml(quantity);
     }
 
-    function ClearLoadingTimeoutAndInterval() {
-        //clearTimeout(popupAlertSmallTimeout);
-        //clearInterval(popupAlertSmallCountdownInterval);
-        //popupAlertSmall.css("display", "none");
-        //popupAlertSmallBarcodeText.text("");
-        //popupAlertSmallBarcodeHeadline.text("");
-        RemoveAlertPopupFunction();
-
-    }
-
     function ClearLoadingTimeout() {
         clearTimeout(loadingTimeoutBarcodeScanner);
         loadingIsRunning = false;
@@ -720,22 +699,21 @@
             data: { barcode: scanned_barcode, receivingItemID: receivingItemId },
             success: function (result) {
                 ClearLoadingTimeout();
-                ClearLoadingTimeoutAndInterval();
+                RemoveAlertPopupFunction();
 
                 if(result.boolean == true) {
                     AddProduct(thisElement);
                 }
                 else if(result.databaseError == true) {
-                    CountdownAlertPopup("Database Error!", result.msg, true)
+                    CountdownAlertPopup($(".receive-top-overall-container"), "Database Error!", result.msg, true)
                 }
                 else {
-                    CountdownAlertPopup("Product not found!", result.msg, false);
+                    CountdownAlertPopup($(".receive-top-overall-container"), "Product not found!", result.msg, false);
                 }
             },
             error: function (req, status, error) {
                 ClearLoadingTimeout();
-
-                CountdownAlertPopup("Error!","An error has occured, try again or contact an administrator", false);
+                CountdownAlertPopup($(".receive-top-overall-container"), "Error!","An error has occured, try again or contact an administrator", false);
                 console.log(status);
             }
         });
@@ -745,8 +723,9 @@
         $.ajax({
             type: "GET",
             url: "/Receive/GetOneReceiveOrder",
-            data: { barcode: barcode},
+            data: { barcode: barcode },
             success: function (result) {
+            RemoveAlertPopupFunction();
             ClearLoadingTimeoutRejectModal();
 
                 if(result.boolean == true) {
@@ -754,13 +733,19 @@
                     AddNewData(result);
                 }
                 else {
+                    $(".receive-rejectmodal-table-container").css("display", "none");
+                    $(".receive-rejectmodal-overall-content-container").css("display", "none");
+                    CountdownAlertPopup($(".receive-rejectmodal-alert-container"), "Rejected items not found!", result.msg, false);
                     console.log(result.msg);
                 }
             },
             error: function (req, status, error) {
+                RemoveAlertPopupFunction();
+                ClearLoadingTimeoutRejectModal();
+                $(".receive-rejectmodal-table-container").css("display", "none");
+                $(".receive-rejectmodal-overall-content-container").css("display", "none");
+                CountdownAlertPopup($(".receive-rejectmodal-alert-container"), "Error!","An error has occured, try again or contact an administrator", false);
                 console.log(status);
-                console.log(req);
-                console.log(error);
             }
         });
     }
