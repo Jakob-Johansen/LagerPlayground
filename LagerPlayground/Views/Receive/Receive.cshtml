@@ -736,7 +736,7 @@
                     $(".receive-rejectmodal-table-container").css("display", "none");
                     $(".receive-rejectmodal-overall-content-container").css("display", "none");
                     CountdownAlertPopup($(".receive-rejectmodal-alert-container"), "Rejected items not found!", result.msg, false);
-                    console.log(result.msg);
+                    //console.log(result.msg);
                 }
             },
             error: function (req, status, error) {
@@ -745,7 +745,7 @@
                 $(".receive-rejectmodal-table-container").css("display", "none");
                 $(".receive-rejectmodal-overall-content-container").css("display", "none");
                 CountdownAlertPopup($(".receive-rejectmodal-alert-container"), "Error!","An error has occured, try again or contact an administrator", false);
-                console.log(status);
+                //console.log(status);
             }
         });
     }
