@@ -562,6 +562,7 @@
     }
 
     $(document).on("click", ".receive-rejectmodal-table-delete-btn", function() {
+        RejectAddAndDeleteTimeoutFunction();
         DeleteOneRejected($(this));
     });
 
@@ -670,11 +671,7 @@
         if (selectedErrorRejectModalText.text("") != "")
             selectedErrorRejectModalText.text("");
 
-        loadingTimeoutRejectAddModal = setTimeout(function () {
-            loadingIsRunning = true;
-            addRejectModalBtn.css("display", "none");
-            rejectModalAddLoadingContainer.css("display", "block");
-        }, 20);
+        RejectAddAndDeleteTimeoutFunction();
 
         CreateOneReject(getQuantity, getSelectedReasonID, getSelectedReason, getNote);
     });
@@ -690,6 +687,15 @@
         );
 
         AddRejectHtml(quantity);
+    }
+
+    function RejectAddAndDeleteTimeoutFunction() {
+        loadingTimeoutRejectAddModal = setTimeout(function () {
+            loadingIsRunning = true;
+            addRejectModalBtn.css("display", "none");
+            closeRejectModalBtn.css("display", "none");
+            rejectModalAddLoadingContainer.css("display", "block");
+        }, 20);
     }
 
     function ClearLoadingTimeout() {
@@ -708,6 +714,7 @@
     function ClearLoadingTimeoutRejectAddModal() {
         clearTimeout(loadingTimeoutRejectAddModal);
         loadingIsRunning = false;
+        closeRejectModalBtn.css("display", "block");
         rejectModalAddLoadingContainer.css("display", "none");
         addRejectModalBtn.css("display", "block");
     }
@@ -778,6 +785,8 @@
             headers: {"RequestVerificationToken": "@GetAntiXsrfRequestToken()"},
             data: { rejectID: thisElement.data("rejectid") },
             success: function (result) {
+                ClearLoadingTimeoutRejectAddModal();
+
                 if(result.boolean == true) {
                     RemoveRejectHtml(thisElement, result.quantity);
                 }
@@ -786,6 +795,7 @@
                 }
             },
             error: function (req, status, error) {
+                ClearLoadingTimeoutRejectAddModal();
                 console.log(status);
             }
         });
