@@ -244,6 +244,8 @@ namespace LagerPlayground.Migrations
 
                     b.HasKey("ID");
 
+                    b.HasIndex("ReceiveRejectedReasonsID");
+
                     b.HasIndex("ReceivingOrder_ItemsID");
 
                     b.ToTable("ReceiveRejecteds");
@@ -451,11 +453,21 @@ namespace LagerPlayground.Migrations
 
             modelBuilder.Entity("LagerPlayground.Models.ReceiveRejected", b =>
                 {
-                    b.HasOne("LagerPlayground.Models.ReceivingOrder_Items", null)
+                    b.HasOne("LagerPlayground.Models.ReceiveRejectedReasons", "ReceiveRejectedReasons")
+                        .WithMany()
+                        .HasForeignKey("ReceiveRejectedReasonsID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("LagerPlayground.Models.ReceivingOrder_Items", "ReceivingOrder_Items")
                         .WithMany("ReceiveRejecteds")
                         .HasForeignKey("ReceivingOrder_ItemsID")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("ReceiveRejectedReasons");
+
+                    b.Navigation("ReceivingOrder_Items");
                 });
 
             modelBuilder.Entity("LagerPlayground.Models.ReceivingOrder_Details", b =>

@@ -257,7 +257,7 @@ namespace LagerPlayground.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     ReceivingOrder_ItemsID = table.Column<int>(type: "int", nullable: false),
                     Quantity = table.Column<int>(type: "int", nullable: false),
-                    ReceiveRejectedReasonID = table.Column<int>(type: "int", nullable: false),
+                    ReceiveRejectedReasonsID = table.Column<int>(type: "int", nullable: false),
                     Note = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Created = table.Column<DateTime>(type: "datetime2", nullable: true),
                     Modified = table.Column<DateTime>(type: "datetime2", nullable: true)
@@ -265,6 +265,12 @@ namespace LagerPlayground.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_ReceiveRejecteds", x => x.ID);
+                    table.ForeignKey(
+                        name: "FK_ReceiveRejecteds_ReceiveRejectedReasons_ReceiveRejectedReasonsID",
+                        column: x => x.ReceiveRejectedReasonsID,
+                        principalTable: "ReceiveRejectedReasons",
+                        principalColumn: "ID",
+                        onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_ReceiveRejecteds_ReceivingOrder_Items_ReceivingOrder_ItemsID",
                         column: x => x.ReceivingOrder_ItemsID,
@@ -300,6 +306,11 @@ namespace LagerPlayground.Migrations
                 column: "ReceivingBoxID");
 
             migrationBuilder.CreateIndex(
+                name: "IX_ReceiveRejecteds_ReceiveRejectedReasonsID",
+                table: "ReceiveRejecteds",
+                column: "ReceiveRejectedReasonsID");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_ReceiveRejecteds_ReceivingOrder_ItemsID",
                 table: "ReceiveRejecteds",
                 column: "ReceivingOrder_ItemsID");
@@ -330,9 +341,6 @@ namespace LagerPlayground.Migrations
                 name: "ReceiveBox_Items");
 
             migrationBuilder.DropTable(
-                name: "ReceiveRejectedReasons");
-
-            migrationBuilder.DropTable(
                 name: "ReceiveRejecteds");
 
             migrationBuilder.DropTable(
@@ -343,6 +351,9 @@ namespace LagerPlayground.Migrations
 
             migrationBuilder.DropTable(
                 name: "ReceivingBoxes");
+
+            migrationBuilder.DropTable(
+                name: "ReceiveRejectedReasons");
 
             migrationBuilder.DropTable(
                 name: "ReceivingOrder_Items");
