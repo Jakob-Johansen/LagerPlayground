@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace LagerPlayground.Migrations
 {
     [DbContext(typeof(Context))]
-    [Migration("20220221160557_InitialCreate")]
+    [Migration("20220306131823_InitialCreate")]
     partial class InitialCreate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -238,13 +238,15 @@ namespace LagerPlayground.Migrations
                     b.Property<int>("Quantity")
                         .HasColumnType("int");
 
-                    b.Property<int>("ReceiveRejectedReasonID")
+                    b.Property<int>("ReceiveRejectedReasonsID")
                         .HasColumnType("int");
 
                     b.Property<int>("ReceivingOrder_ItemsID")
                         .HasColumnType("int");
 
                     b.HasKey("ID");
+
+                    b.HasIndex("ReceiveRejectedReasonsID");
 
                     b.HasIndex("ReceivingOrder_ItemsID");
 
@@ -453,11 +455,21 @@ namespace LagerPlayground.Migrations
 
             modelBuilder.Entity("LagerPlayground.Models.ReceiveRejected", b =>
                 {
-                    b.HasOne("LagerPlayground.Models.ReceivingOrder_Items", null)
+                    b.HasOne("LagerPlayground.Models.ReceiveRejectedReasons", "ReceiveRejectedReasons")
+                        .WithMany()
+                        .HasForeignKey("ReceiveRejectedReasonsID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("LagerPlayground.Models.ReceivingOrder_Items", "ReceivingOrder_Items")
                         .WithMany("ReceiveRejecteds")
                         .HasForeignKey("ReceivingOrder_ItemsID")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("ReceiveRejectedReasons");
+
+                    b.Navigation("ReceivingOrder_Items");
                 });
 
             modelBuilder.Entity("LagerPlayground.Models.ReceivingOrder_Details", b =>
