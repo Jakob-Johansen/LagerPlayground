@@ -978,9 +978,9 @@ li.dropdown {
 /* https://css-tricks.com/snippets/css/a-guide-to-flexbox */
 
 .receive-top-overall-container {
-    padding: 0 10px;
-    width: 1075.96px;
+/*    width: 1075.96px;*/
     height: auto;
+    padding: 0 10px;
     margin: 0 auto;
 }
 
