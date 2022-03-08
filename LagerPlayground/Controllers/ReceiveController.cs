@@ -165,7 +165,7 @@ namespace LagerPlayground.Controllers
             }
             catch (DbUpdateException)
             {
-                return Json(new { boolean = false, msg = "An database error has occured" });
+                return Json(new { boolean = false, databaseError = true, msg = "An database error has occured" });
             }
         }
 
@@ -203,7 +203,7 @@ namespace LagerPlayground.Controllers
             }
             catch (DbUpdateException)
             {
-                return Json(new { boolean = false, msg = "An database error has occured" });
+                return Json(new { boolean = false, databaseError = true, msg = "An database error has occured" });
             }
 
         }

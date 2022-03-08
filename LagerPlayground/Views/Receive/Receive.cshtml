@@ -316,7 +316,6 @@
         scanned_barcode = scanned_barcode.trim();
 
         if (overlayRejectModal.css("display") == "block") {
-            console.log("Test")
             return;
         }
 
@@ -733,7 +732,7 @@
                     AddProduct(thisElement);
                 }
                 else if(result.databaseError == true) {
-                    AlertPopup($(".receive-top-overall-container"), "Database Error!", result.msg, true)
+                    AlertPopup($(".receive-top-overall-container"), "Database Error!", result.msg, true);
                 }
                 else {
                     AlertPopup($(".receive-top-overall-container"), "Product not found!", result.msg, false);
@@ -753,8 +752,8 @@
             url: "/Receive/GetOneReceiveOrder",
             data: { barcode: barcode },
             success: function (result) {
-            RemoveAlertPopupFunction();
-            ClearLoadingTimeoutRejectModal();
+                ClearLoadingTimeoutRejectModal();
+                RemoveAlertPopupFunction();
 
                 if(result.boolean == true) {
                     currentreceiveOrderItemID = result.itemID;
@@ -764,16 +763,15 @@
                     $(".receive-rejectmodal-table-container").css("display", "none");
                     $(".receive-rejectmodal-overall-content-container").css("display", "none");
                     AlertPopup($(".receive-rejectmodal-alert-container"), "Rejected items not found!", result.msg, false);
-                    //console.log(result.msg);
                 }
             },
             error: function (req, status, error) {
-                RemoveAlertPopupFunction();
                 ClearLoadingTimeoutRejectModal();
+                RemoveAlertPopupFunction();
+
                 $(".receive-rejectmodal-table-container").css("display", "none");
                 $(".receive-rejectmodal-overall-content-container").css("display", "none");
                 AlertPopup($(".receive-rejectmodal-alert-container"), "Error!","An error has occured, try again or contact an administrator", false);
-                //console.log(status);
             }
         });
     }
@@ -786,17 +784,21 @@
             data: { rejectID: thisElement.data("rejectid") },
             success: function (result) {
                 ClearLoadingTimeoutRejectAddModal();
+                RemoveAlertPopupFunction();
 
                 if(result.boolean == true) {
                     RemoveRejectHtml(thisElement, result.quantity);
                 }
+                else if (result.databaseError == true) {
+                    AlertPopup($(".receive-rejectmodal-alert-container"), "Database Error!", result.msg, true);
+                }
                 else {
-                    console.log(result.msg);
+                    AlertPopup($(".receive-rejectmodal-alert-container"), "Rejected items not found!", result.msg, false);
                 }
             },
             error: function (req, status, error) {
                 ClearLoadingTimeoutRejectAddModal();
-                console.log(status);
+                AlertPopup($(".receive-rejectmodal-alert-container"), "Error!","An error has occured, try again or contact an administrator", false);
             }
         });
     }
@@ -808,8 +810,8 @@
             headers: {"RequestVerificationToken": "@GetAntiXsrfRequestToken()"},
             data: { quantity: quantity, selectedReasonID: selectedReasonID, note: note, itemID: currentreceiveOrderItemID },
             success: function (result) {
-                
                 ClearLoadingTimeoutRejectAddModal();
+                RemoveAlertPopupFunction();
 
                 if(result.boolean == true) {
                     quantityErrorRejectModalText.text("");
@@ -819,13 +821,16 @@
                     selectRejectModalInput.val("Select One").change();
                     CreateNewReject(quantity, selectedReason, note, result.rejectID);
                 }
+                else if (result.databaseError == true) {
+                    AlertPopup($(".receive-rejectmodal-alert-container"), "Database Error!", result.msg, true);
+                }
                 else {
-                    console.log(result.msg);
+                    AlertPopup($(".receive-rejectmodal-alert-container"), "Error!", result.msg, false);
                 }
             },
             error: function (req, status, error) {
                 ClearLoadingTimeoutRejectAddModal();
-                console.log(status);
+                AlertPopup($(".receive-rejectmodal-alert-container"), "Error!","An error has occured, try again or contact an administrator", false);
             }
         });
     }
