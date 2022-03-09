@@ -1,8 +1,8 @@
 # LagerPlayground
 
-Lav baggrunden hvid.
+-Ting jeg har lært, og skal huske.-
 
-Ting jeg har lært, og skal huske.
+Lav baggrunden hvid.
 
 Lav backend som api.
 
