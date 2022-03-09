@@ -1,0 +1,266 @@
+﻿@inject Microsoft.AspNetCore.Antiforgery.IAntiforgery Xsrf
+
+@model IEnumerable<LagerPlayground.Models.Locations>
+
+@functions {
+    public string GetAntiXsrfRequestToken()
+    {
+        return Xsrf.GetAndStoreTokens(Context).RequestToken;
+    }
+}
+
+@{
+    ViewData["Title"] = "Locations";
+}
+
+<h2>Locations</h2>
+
+<div class="tote-create-btn-container">
+    <a class="tote-create-btn" style="width: 180px;" asp-action="CreateLocation">Create Location</a>
+</div>
+
+<div class="totes-navbar-contianer">
+    <div class="totes-navbar-float">
+
+        <div class="tote-table-btn-overall-container"">
+            <div class="tote-table-btn-container">
+                <a class="tote-print-checkbox-btn">Print</a>
+            </div>
+            <div class="tote-table-btn-container">
+                <a class="tote-delete-btn tote-delete-checkbox-btn">Delete</a>
+            </div>
+        </div>
+        <div class="clearBoth"></div>   
+    </div>
+    <div class="totes-navbar-float">
+        <div class="totes-navbar-search-container">
+            <label class="totes-navbar-label">Søg: </label>
+            <input class="background-dark" type="text" />
+        </div>
+    </div>
+    <div class="clearBoth"></div>
+</div>
+
+<table class="table tote-table">
+    <thead>
+        <tr>
+            <th><a class="tote-table-all-btn">All</a></th>
+            <th>Warehouse</th>
+            <th>Section</th>
+            <th>Row</th>
+            <th>Rack</th>
+            <th>Shelf</th>
+            <th>Bin</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td><input class="tote-table-checkbox-input" type="checkbox" data-checkbox-id="@item.ID" /></td>
+                <td>Primary</td>
+                <td>@Html.DisplayFor(modelItem => item.Section)</td>
+                <td>@Html.DisplayFor(modelItem => item.Row)</td>
+                <td>@Html.DisplayFor(modelItem => item.Rack)</td>
+                <td>@Html.DisplayFor(modelItem => item.Shelf)</td>
+                <td>@Html.DisplayFor(modelItem => item.Bin)</td>
+                <td>
+                    <div class="tote-table-btn-overall-container">
+                        <div class="tote-table-btn-container">
+                            <a class="tote-print-this-btn" data-id="@item.ID">Print</a>
+                        </div>
+                        <div class="tote-table-btn-container">
+                            <a class="tote-delete-btn tote-delete-this-btn" data-id="@item.ID">Delete</a>
+                        </div>
+                    </div>
+                    <div class="clearBoth"></div>    
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<div class="tote-delete-overlay-overall-container">
+    <div class="tote-overlay-container">
+        <div class="tote-overlay-nav-overall-container">
+            <div class="tote-overlay-nav-container">
+                <p>Are you sure?</p>
+            </div>
+            <div class="tote-overlay-nav-container">
+                <span class="material-icons tote-overlay-nav-close-btn">close</span>
+            </div>
+            <div class="clearBoth"></div>
+        </div>
+
+        <div class="tote-overlay-info-container">
+            <p></p>
+        </div>
+
+        <div class="tote-overlay-btns-overall-container">
+            <div class="tote-overlay-btns-container-cancel">
+                <button class="tote-overlay-btn-cancel tote-overlay-nav-close-btn">Cancel</button>
+            </div>
+            <div class="tote-overlay-btns-container-add">
+                <button class="tote-overlay-btn-add tote-overlay-btn-delete">Delete</button>
+            </div>
+
+            <div class="clearBoth"></div>
+        </div>
+
+    </div>
+</div>
+
+@section Scripts {
+<script>
+    const printThisBtn = $(".tote-print-this-btn");
+    const printBtn = $(".tote-print-checkbox-btn");
+    const closeBtn = $(".tote-overlay-nav-close-btn");
+
+    const loader = $(".loader");
+
+    const selectAllBtn = $(".tote-table-all-btn");
+
+    const deleteThisBtn = $(".tote-delete-this-btn")
+    const deleteCheckBoxBtn = $(".tote-delete-checkbox-btn");
+    const overlayDeleteContainer = $(".tote-delete-overlay-overall-container");
+
+    let loadingIsRunning = false;
+    let ajaxResult = false;
+
+    //--- Delete
+
+    closeBtn.click(function () {
+        overlayDeleteContainer.css("display", "none");
+    });
+
+    deleteCheckBoxBtn.click(function () {
+        let selectedIds = GetAllChecked();
+        if (selectedIds.length != 0) {
+            overlayDeleteContainer.css("display", "block");
+            $(".tote-overlay-info-container").find("p").text("You are deleting " + selectedIds.length + " Locations. Are you sure you want to proceed?");
+            $(".tote-overlay-btn-delete").click(function () {
+                ajaxDeleteSelected(selectedIds);
+            });
+        }
+    });
+
+    deleteThisBtn.click(function () {
+        overlayDeleteContainer.css("display", "block");
+        $(".tote-overlay-info-container").find("p").text("You are deleting this Location. Are you sure you want to proceed?");
+
+        let dataID = $(this).attr("data-id");
+
+        $(".tote-overlay-btn-delete").click(function () {
+            ajaxDeleteOne(dataID);
+        });
+    });
+
+    //--- Select All
+
+    selectAllBtn.click(function () {
+        $(".tote-table-checkbox-input").prop("checked", true);
+    });
+
+    //---
+
+    closeBtn.click(function () {
+        overlayContainer.css("display", "none");
+        nameInputError.text("");
+        quantityInputError.text("");
+    });
+
+    //printThisBtn.click(function () {
+    //    ajaxGet($(this).attr("data-id"));
+    //});
+
+    //printBtn.click(function () {
+    //    let selectedIds = GetAllChecked();
+    //    if(selectedIds.length != 0) {
+    //        ajaxPrintSelected(selectedIds);
+    //    }
+    //});
+
+    function GetAllChecked() {
+        let selectedIds = $(".tote-table-checkbox-input:checkbox:checked").map(function(){
+        return $(this).attr("data-checkbox-id");
+        }).get();
+        
+        return selectedIds;
+    }
+
+    // Timeout/delay functions
+    function loadingTimeout() {
+        setTimeout(function () {
+            if (ajaxResult == false) {
+                loadingIsRunning = true;
+                btnContainer.css("display", "none");
+                loader.css("display", "block");
+            }
+        }, 20);
+    }
+
+//function ajaxPrintSelected(selectedIds) {
+//    $.ajax({
+//        type: "POST",
+//        url: "/Warehouse/ReceivingBoxPrintSelectedBarcodes",
+//        data: { IDs: selectedIds },
+//        success: function (result) {
+
+//            if (result.errorBoolean == false) {
+//                window.open('/Pdf/Barcode.pdf', '_blank');
+//            }
+//            else {
+//                console.log(result.errorMsg);
+//            }
+//        },
+//        error: function (req, status, error) {
+//            console.log(status);
+//        }
+//    });
+//}
+
+function ajaxDeleteOne(Id) {
+    $.ajax({
+        type: "POST",
+        url: "/Location/LocationDeleteOne",
+        headers: { "RequestVerificationToken": "@GetAntiXsrfRequestToken()" },
+        data: { ID: Id },
+        success: function (result) {
+
+            if (result.errorBoolean == false) {
+                location.reload();
+            }
+            else {
+                console.log(result.errorMsg);
+            }
+        },
+        error: function (req, status, error) {
+            console.log(status);
+        }
+    });
+}
+
+function ajaxDeleteSelected(Ids) {
+    $.ajax({
+        type: "POST",
+        url: "/Location/LocationDeleteSelected",
+        headers: { "RequestVerificationToken": "@GetAntiXsrfRequestToken()" },
+        data: { IDs: Ids },
+        success: function (result) {
+
+            if (result.errorBoolean == false) {
+                location.reload();
+            }
+            else {
+                console.log(result.errorMsg);
+            }
+        },
+        error: function (req, status, error) {
+            console.log(status);
+        }
+    });
+}
+
+</script>
+}

@@ -4,6 +4,7 @@ using LagerPlayground.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace LagerPlayground.Migrations
 {
     [DbContext(typeof(Context))]
-    partial class ContextModelSnapshot : ModelSnapshot
+    [Migration("20220309205702_Locations")]
+    partial class Locations
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -83,9 +85,6 @@ namespace LagerPlayground.Migrations
                         .HasColumnType("int");
 
                     b.Property<string>("Row")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Section")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("Shelf")

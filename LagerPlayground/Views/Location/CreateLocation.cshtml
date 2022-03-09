@@ -1,0 +1,61 @@
+﻿@model LagerPlayground.Models.Locations
+
+@{
+    ViewData["Title"] = "Create Location";
+}
+
+<h1>Create Location</h1>
+<hr />
+
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="CreateLocation">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="Warehouse" class="control-label"></label>
+                <input asp-for="Warehouse" class="form-control background-dark" />
+                <span asp-validation-for="Warehouse" class="text-danger"></span>
+                <br />
+            </div>
+            <div class="form-group">
+                <label asp-for="Section" class="control-label"></label>
+                <input asp-for="Section" class="form-control background-dark" />
+                <span asp-validation-for="Section" class="text-danger"></span>
+                <br />
+            </div>
+            <div class="form-group">
+                <label asp-for="Row" class="control-label"></label>
+                <input asp-for="Row" class="form-control background-dark" />
+                <span asp-validation-for="Row" class="text-danger"></span>
+                <br />
+            </div>
+            <div class="form-group">
+                <label asp-for="Rack" class="control-label"></label>
+                <input asp-for="Rack" class="form-control background-dark" />
+                <span asp-validation-for="Rack" class="text-danger"></span>
+                <br />
+            </div>
+            <div class="form-group">
+                <label asp-for="Shelf" class="control-label"></label>
+                <input asp-for="Shelf" class="form-control background-dark" />
+                <span asp-validation-for="Shelf" class="text-danger"></span>
+                <br />
+            </div>
+            <div class="form-group">
+                <label asp-for="Bin" class="control-label"></label>
+                <input asp-for="Bin" class="form-control background-dark" />
+                <span asp-validation-for="Bin" class="text-danger"></span>
+                <br />
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Create" class="btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<br />
+
+<div>
+    <a asp-action="Locations">Back to list</a>
+</div>

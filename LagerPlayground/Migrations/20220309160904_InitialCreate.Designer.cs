@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace LagerPlayground.Migrations
 {
     [DbContext(typeof(Context))]
-    [Migration("20220306131823_InitialCreate")]
+    [Migration("20220309160904_InitialCreate")]
     partial class InitialCreate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -164,38 +164,6 @@ namespace LagerPlayground.Migrations
                     b.ToTable("Products");
                 });
 
-            modelBuilder.Entity("LagerPlayground.Models.ReceiveBox_Items", b =>
-                {
-                    b.Property<int>("ID")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ID"), 1L, 1);
-
-                    b.Property<DateTime?>("Created")
-                        .HasColumnType("datetime2");
-
-                    b.Property<DateTime?>("Modified")
-                        .HasColumnType("datetime2");
-
-                    b.Property<int>("ProductID")
-                        .HasColumnType("int");
-
-                    b.Property<int>("ReceiveBoxID")
-                        .HasColumnType("int");
-
-                    b.Property<int?>("ReceivingBoxID")
-                        .HasColumnType("int");
-
-                    b.HasKey("ID");
-
-                    b.HasIndex("ProductID");
-
-                    b.HasIndex("ReceivingBoxID");
-
-                    b.ToTable("ReceiveBox_Items");
-                });
-
             modelBuilder.Entity("LagerPlayground.Models.ReceiveCustommer", b =>
                 {
                     b.Property<int>("ID")
@@ -304,6 +272,38 @@ namespace LagerPlayground.Migrations
                     b.HasKey("ID");
 
                     b.ToTable("ReceivingBoxes");
+                });
+
+            modelBuilder.Entity("LagerPlayground.Models.ReceivingBox_Items", b =>
+                {
+                    b.Property<int>("ID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ID"), 1L, 1);
+
+                    b.Property<DateTime?>("Created")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime?>("Modified")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("ProductID")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Quantity")
+                        .HasColumnType("int");
+
+                    b.Property<int>("ReceivingBoxID")
+                        .HasColumnType("int");
+
+                    b.HasKey("ID");
+
+                    b.HasIndex("ProductID");
+
+                    b.HasIndex("ReceivingBoxID");
+
+                    b.ToTable("ReceiveBox_Items");
                 });
 
             modelBuilder.Entity("LagerPlayground.Models.ReceivingOrder_Details", b =>
@@ -436,23 +436,6 @@ namespace LagerPlayground.Migrations
                     b.Navigation("Product");
                 });
 
-            modelBuilder.Entity("LagerPlayground.Models.ReceiveBox_Items", b =>
-                {
-                    b.HasOne("LagerPlayground.Models.Product", "Product")
-                        .WithMany()
-                        .HasForeignKey("ProductID")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("LagerPlayground.Models.ReceivingBox", "ReceivingBox")
-                        .WithMany()
-                        .HasForeignKey("ReceivingBoxID");
-
-                    b.Navigation("Product");
-
-                    b.Navigation("ReceivingBox");
-                });
-
             modelBuilder.Entity("LagerPlayground.Models.ReceiveRejected", b =>
                 {
                     b.HasOne("LagerPlayground.Models.ReceiveRejectedReasons", "ReceiveRejectedReasons")
@@ -470,6 +453,25 @@ namespace LagerPlayground.Migrations
                     b.Navigation("ReceiveRejectedReasons");
 
                     b.Navigation("ReceivingOrder_Items");
+                });
+
+            modelBuilder.Entity("LagerPlayground.Models.ReceivingBox_Items", b =>
+                {
+                    b.HasOne("LagerPlayground.Models.Product", "Product")
+                        .WithMany()
+                        .HasForeignKey("ProductID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("LagerPlayground.Models.ReceivingBox", "ReceivingBox")
+                        .WithMany()
+                        .HasForeignKey("ReceivingBoxID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Product");
+
+                    b.Navigation("ReceivingBox");
                 });
 
             modelBuilder.Entity("LagerPlayground.Models.ReceivingOrder_Details", b =>

@@ -64,6 +64,7 @@ namespace LagerPlayground.Controllers
             }
 
             var receiveOrderItemToUpdate = await _context.ReceivingOrder_Items.FirstOrDefaultAsync(x => x.ID == receivingItemID);
+
             var productToUpdate = await _context.Products.FirstOrDefaultAsync(x => x.BarcodeID == barcode);
 
             if (receiveOrderItemToUpdate == null || productToUpdate == null)
