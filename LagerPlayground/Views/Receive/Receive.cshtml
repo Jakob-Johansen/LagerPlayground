@@ -63,7 +63,7 @@
         <tr>
             <th class="receive-first" style="width: 350px;">Product</th>
             <th>Location</th>
-            <th>Unreceived</th>
+@*            <th>Unreceived</th>*@
             <th>Rejected</th>
             <th>Accepted</th>
             <th class="receive-last">Activity</th>
@@ -85,7 +85,7 @@
                     </div>
                 </td>
                 <td><p class="trim">Receiving</p></td>
-                <td><p class="receive-table-unreceived trim">@item.Unreceived</p></td>
+@*                <td><p class="receive-table-unreceived trim">@item.Unreceived</p></td>*@
                 <td class="receive-table-rejected-info-td">
                     <a class="receive-table-rejected-info-container">
                         <p class="receive-table-rejected trim">@item.Rejected</p>
@@ -373,6 +373,8 @@
         }
     }
 
+    // Alert Popup
+
     function AlertPopup(htmlClass, headline , msg, databaseError = false) {
         popupAlertSmallBarcodeHeadline.text(headline);
         popupAlertSmallBarcodeText.text(msg);
@@ -420,6 +422,8 @@
         $(".alertpopup-small-overall-container").remove();
     }
 
+
+    // Add Product
     function AddProduct(thisElement) {
 
         thisElement.addClass("receive-table-tbody-tr-active");
@@ -455,6 +459,8 @@
         ReceiveTopProgressBarFunction();
         return;
     }
+
+    // Receive Progressbar
 
     function ReceiveProgressBarFunction(thisElement) {
         //Grøn: #1a9c23
@@ -690,6 +696,8 @@
         AddRejectHtml(quantity);
     }
 
+    // Timeout Clear
+
     function RejectAddAndDeleteTimeoutFunction() {
         loadingTimeoutRejectAddModal = setTimeout(function () {
             loadingIsRunning = true;
@@ -719,6 +727,8 @@
         rejectModalAddLoadingContainer.css("display", "none");
         addRejectModalBtn.css("display", "block");
     }
+
+    // Ajax Calls
 
     function AddProductDatabase(scanned_barcode, receivingItemId, thisElement) {
         $.ajax({

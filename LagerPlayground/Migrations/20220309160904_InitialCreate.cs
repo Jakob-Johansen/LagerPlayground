@@ -168,11 +168,11 @@ namespace LagerPlayground.Migrations
                 {
                     ID = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    ReceiveBoxID = table.Column<int>(type: "int", nullable: false),
+                    ReceivingBoxID = table.Column<int>(type: "int", nullable: false),
                     ProductID = table.Column<int>(type: "int", nullable: false),
+                    Quantity = table.Column<int>(type: "int", nullable: false),
                     Created = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    Modified = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    ReceivingBoxID = table.Column<int>(type: "int", nullable: true)
+                    Modified = table.Column<DateTime>(type: "datetime2", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -187,7 +187,8 @@ namespace LagerPlayground.Migrations
                         name: "FK_ReceiveBox_Items_ReceivingBoxes_ReceivingBoxID",
                         column: x => x.ReceivingBoxID,
                         principalTable: "ReceivingBoxes",
-                        principalColumn: "ID");
+                        principalColumn: "ID",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
