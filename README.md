@@ -1,6 +1,6 @@
 # LagerPlayground
 
--Ting jeg har lært, og skal huske.-
+-Ting jeg har lært, og skal huske-
 
 Lav baggrunden hvid.
 
