@@ -15,17 +15,17 @@
 
 <h2>Locations</h2>
 
-<div class="tote-create-btn-container">
+@*<div class="tote-create-btn-container">
     <a class="tote-create-btn" style="width: 180px;" asp-action="CreateLocation">Create Location</a>
-</div>
+</div>*@
 
 <div class="totes-navbar-contianer">
     <div class="totes-navbar-float">
 
         <div class="tote-table-btn-overall-container"">
-            <div class="tote-table-btn-container">
+@*            <div class="tote-table-btn-container">
                 <a class="tote-print-checkbox-btn">Print</a>
-            </div>
+            </div>*@
             <div class="tote-table-btn-container">
                 <a class="tote-delete-btn tote-delete-checkbox-btn">Delete</a>
             </div>
@@ -33,10 +33,11 @@
         <div class="clearBoth"></div>   
     </div>
     <div class="totes-navbar-float">
-        <div class="totes-navbar-search-container">
+@*        <div class="totes-navbar-search-container">
             <label class="totes-navbar-label">Søg: </label>
             <input class="background-dark" type="text" />
-        </div>
+        </div>*@
+        <a class="tote-create-btn" style="width: 180px;" asp-action="CreateLocation">Create Location</a>
     </div>
     <div class="clearBoth"></div>
 </div>
@@ -48,10 +49,10 @@
             <th>Warehouse</th>
             <th>Section</th>
             <th>Row</th>
-            <th>Rack</th>
+@*            <th>Rack</th>
             <th>Shelf</th>
-            <th>Bin</th>
-            <th>Actions</th>
+            <th>Bin</th>*@
+            <th></th>
         </tr>
     </thead>
     <tbody>
@@ -62,20 +63,10 @@
                 <td>Primary</td>
                 <td>@Html.DisplayFor(modelItem => item.Section)</td>
                 <td>@Html.DisplayFor(modelItem => item.Row)</td>
-                <td>@Html.DisplayFor(modelItem => item.Rack)</td>
-                <td>@Html.DisplayFor(modelItem => item.Shelf)</td>
-                <td>@Html.DisplayFor(modelItem => item.Bin)</td>
-                <td>
-                    <div class="tote-table-btn-overall-container">
-                        <div class="tote-table-btn-container">
-                            <a class="tote-print-this-btn" data-id="@item.ID">Print</a>
-                        </div>
-                        <div class="tote-table-btn-container">
-                            <a class="tote-delete-btn tote-delete-this-btn" data-id="@item.ID">Delete</a>
-                        </div>
-                    </div>
-                    <div class="clearBoth"></div>    
-                </td>
+@*                <td>@Html.DisplayFor(modelItem => item.Rack)</td>*@
+@*                <td>@Html.DisplayFor(modelItem => item.Shelf)</td>
+                <td>@Html.DisplayFor(modelItem => item.Bin)</td>*@
+                <td><a href="/Location/LocationDetails/@item.ID">View Details</a></td>
             </tr>
         }
     </tbody>

@@ -723,10 +723,14 @@ li.dropdown {
     background-color: #dc3545;
 }
 
-    .tote-create-btn:hover, .tote-print-this-btn:hover, .tote-delete-this-btn:hover, .tote-print-checkbox-btn:hover, .tote-delete-checkbox-btn:hover {
-        color: black;
-        cursor: pointer;
-    }
+.tote-create-btn:hover, .tote-print-this-btn:hover, .tote-delete-this-btn:hover, .tote-print-checkbox-btn:hover, .tote-delete-checkbox-btn:hover {
+    color: black;
+    cursor: pointer;
+}
+
+.tote-delete-checkbox-btn {
+    color: white !important;
+}
 
 .totes-navbar-contianer {
     width: 100%;
