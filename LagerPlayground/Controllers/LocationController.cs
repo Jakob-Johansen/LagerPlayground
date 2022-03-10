@@ -30,13 +30,14 @@ namespace LagerPlayground.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> CreateLocation([Bind("Warehouse,Section,Row,Rack,Shelf,Bin")] Locations locations)
+        public async Task<IActionResult> CreateLocation([Bind("Warehouse,Section,Row")] Locations locations)
         {
             try
             {
                 if (ModelState.IsValid)
                 {
                     locations.Dynamic = false;
+                    locations.Rack = 0;
                     _context.Locations.Add(locations);
                     await _context.SaveChangesAsync();
                     return RedirectToAction("Locations");
@@ -51,31 +52,36 @@ namespace LagerPlayground.Controllers
             return View(locations);
         }
 
-        public async Task<JsonResult> LocationDeleteOne(int? ID) 
+        public IActionResult LocationDetails()
         {
-            if (ID == null)
-            {
-                return Json(new { errorBoolean = true, errorMsg = "No ID was found" });
-            }
-
-            var Location = await _context.Locations.FindAsync(ID);
-
-            if (Location == null)
-            {
-                return Json(new { errorBoolean = true, errorMsg = "No location was found" });
-            }
-
-            try
-            {
-                _context.Locations.Remove(Location);
-                await _context.SaveChangesAsync();
-                return Json(new { errorBoolean = false });
-            }
-            catch (DbUpdateException)
-            {
-                return Json(new { errorBoolean = true, errorMsg = "An error with the database has occured" });
-            }
+            return View();
         }
+
+        //public async Task<JsonResult> LocationDeleteOne(int? ID) 
+        //{
+        //    if (ID == null)
+        //    {
+        //        return Json(new { errorBoolean = true, errorMsg = "No ID was found" });
+        //    }
+
+        //    var Location = await _context.Locations.FindAsync(ID);
+
+        //    if (Location == null)
+        //    {
+        //        return Json(new { errorBoolean = true, errorMsg = "No location was found" });
+        //    }
+
+        //    try
+        //    {
+        //        _context.Locations.Remove(Location);
+        //        await _context.SaveChangesAsync();
+        //        return Json(new { errorBoolean = false });
+        //    }
+        //    catch (DbUpdateException)
+        //    {
+        //        return Json(new { errorBoolean = true, errorMsg = "An error with the database has occured" });
+        //    }
+        //}
 
         [HttpPost]
         [ValidateAntiForgeryToken]

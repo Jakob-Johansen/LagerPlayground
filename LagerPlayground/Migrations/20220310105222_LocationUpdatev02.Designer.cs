@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace LagerPlayground.Migrations
 {
     [DbContext(typeof(Context))]
-    [Migration("20220310084641_InitialCreate")]
-    partial class InitialCreate
+    [Migration("20220310105222_LocationUpdatev02")]
+    partial class LocationUpdatev02
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -75,11 +75,14 @@ namespace LagerPlayground.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ID"), 1L, 1);
 
-                    b.Property<int>("Bin")
-                        .HasColumnType("int");
+                    b.Property<DateTime?>("Created")
+                        .HasColumnType("datetime2");
 
                     b.Property<bool>("Dynamic")
                         .HasColumnType("bit");
+
+                    b.Property<DateTime?>("Modified")
+                        .HasColumnType("datetime2");
 
                     b.Property<int>("Rack")
                         .HasColumnType("int");
@@ -90,15 +93,42 @@ namespace LagerPlayground.Migrations
                     b.Property<string>("Section")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("Shelf")
-                        .HasColumnType("int");
-
                     b.Property<string>("Warehouse")
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("ID");
 
                     b.ToTable("Locations");
+                });
+
+            modelBuilder.Entity("LagerPlayground.Models.Locations_details", b =>
+                {
+                    b.Property<int>("ID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ID"), 1L, 1);
+
+                    b.Property<int?>("Bins")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime?>("Created")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("LocationsID")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime?>("Modified")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int?>("Shelfs")
+                        .HasColumnType("int");
+
+                    b.HasKey("ID");
+
+                    b.HasIndex("LocationsID");
+
+                    b.ToTable("Locations_Details");
                 });
 
             modelBuilder.Entity("LagerPlayground.Models.Order_Details", b =>
@@ -440,6 +470,17 @@ namespace LagerPlayground.Migrations
                     b.ToTable("Totes");
                 });
 
+            modelBuilder.Entity("LagerPlayground.Models.Locations_details", b =>
+                {
+                    b.HasOne("LagerPlayground.Models.Locations", "Locations")
+                        .WithMany("Locations_Details")
+                        .HasForeignKey("LocationsID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Locations");
+                });
+
             modelBuilder.Entity("LagerPlayground.Models.Order_Details", b =>
                 {
                     b.HasOne("LagerPlayground.Models.Custommer", "Custommer")
@@ -541,6 +582,11 @@ namespace LagerPlayground.Migrations
             modelBuilder.Entity("LagerPlayground.Models.Custommer", b =>
                 {
                     b.Navigation("OrderDetail");
+                });
+
+            modelBuilder.Entity("LagerPlayground.Models.Locations", b =>
+                {
+                    b.Navigation("Locations_Details");
                 });
 
             modelBuilder.Entity("LagerPlayground.Models.Order_Details", b =>

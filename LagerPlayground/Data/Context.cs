@@ -27,5 +27,6 @@ namespace LagerPlayground.Data
         public DbSet<ReceiveRejected> ReceiveRejecteds { get; set; }
         public DbSet<ReceiveRejectedReasons> ReceiveRejectedReasons { get; set; }
         public DbSet<Locations> Locations { get; set; }
+        public DbSet<Locations_details> Locations_Details { get; set; }
     }
 }

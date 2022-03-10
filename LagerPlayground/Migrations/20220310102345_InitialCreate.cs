@@ -39,11 +39,10 @@ namespace LagerPlayground.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Section = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Row = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Rack = table.Column<int>(type: "int", nullable: false),
-                    Shelf = table.Column<int>(type: "int", nullable: false),
-                    Bin = table.Column<int>(type: "int", nullable: false),
                     Dynamic = table.Column<bool>(type: "bit", nullable: false),
-                    Warehouse = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                    Warehouse = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Created = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    Modified = table.Column<DateTime>(type: "datetime2", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -153,6 +152,30 @@ namespace LagerPlayground.Migrations
                         name: "FK_Order_Details_Custommers_CustommerID",
                         column: x => x.CustommerID,
                         principalTable: "Custommers",
+                        principalColumn: "ID",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Locations_Details",
+                columns: table => new
+                {
+                    ID = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    LocationsID = table.Column<int>(type: "int", nullable: false),
+                    Rack = table.Column<int>(type: "int", nullable: false),
+                    Shelfs = table.Column<int>(type: "int", nullable: true),
+                    Bins = table.Column<int>(type: "int", nullable: true),
+                    Created = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    Modified = table.Column<DateTime>(type: "datetime2", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Locations_Details", x => x.ID);
+                    table.ForeignKey(
+                        name: "FK_Locations_Details_Locations_LocationsID",
+                        column: x => x.LocationsID,
+                        principalTable: "Locations",
                         principalColumn: "ID",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -300,6 +323,11 @@ namespace LagerPlayground.Migrations
                 });
 
             migrationBuilder.CreateIndex(
+                name: "IX_Locations_Details_LocationsID",
+                table: "Locations_Details",
+                column: "LocationsID");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Order_Details_CustommerID",
                 table: "Order_Details",
                 column: "CustommerID",
@@ -355,7 +383,7 @@ namespace LagerPlayground.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "Locations");
+                name: "Locations_Details");
 
             migrationBuilder.DropTable(
                 name: "Order_Items");
@@ -368,6 +396,9 @@ namespace LagerPlayground.Migrations
 
             migrationBuilder.DropTable(
                 name: "Totes");
+
+            migrationBuilder.DropTable(
+                name: "Locations");
 
             migrationBuilder.DropTable(
                 name: "Order_Details");
