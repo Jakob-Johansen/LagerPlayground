@@ -32,6 +32,25 @@ namespace LagerPlayground.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Locations",
+                columns: table => new
+                {
+                    ID = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Section = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Row = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Rack = table.Column<int>(type: "int", nullable: false),
+                    Shelf = table.Column<int>(type: "int", nullable: false),
+                    Bin = table.Column<int>(type: "int", nullable: false),
+                    Dynamic = table.Column<bool>(type: "bit", nullable: false),
+                    Warehouse = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Locations", x => x.ID);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Products",
                 columns: table => new
                 {
@@ -335,6 +354,9 @@ namespace LagerPlayground.Migrations
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
+            migrationBuilder.DropTable(
+                name: "Locations");
+
             migrationBuilder.DropTable(
                 name: "Order_Items");
 

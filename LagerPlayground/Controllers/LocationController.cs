@@ -13,6 +13,10 @@ namespace LagerPlayground.Controllers
             _context = context;
         }
 
+        // Når man creater en location skal man kunne custom tilføje flere racks og shelfs.
+        // Fx. for hver rack skal man kunne customize shelfs og bins.
+        // Gør så man ikke behøver at lave bins hvis man ikke vil det.
+
         public async Task<IActionResult> Locations()
         {
             var allLocations = await _context.Locations.ToListAsync();

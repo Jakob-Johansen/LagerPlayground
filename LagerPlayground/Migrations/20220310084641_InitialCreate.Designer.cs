@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace LagerPlayground.Migrations
 {
     [DbContext(typeof(Context))]
-    [Migration("20220309160904_InitialCreate")]
+    [Migration("20220310084641_InitialCreate")]
     partial class InitialCreate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -65,6 +65,40 @@ namespace LagerPlayground.Migrations
                     b.HasKey("ID");
 
                     b.ToTable("Custommers");
+                });
+
+            modelBuilder.Entity("LagerPlayground.Models.Locations", b =>
+                {
+                    b.Property<int>("ID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ID"), 1L, 1);
+
+                    b.Property<int>("Bin")
+                        .HasColumnType("int");
+
+                    b.Property<bool>("Dynamic")
+                        .HasColumnType("bit");
+
+                    b.Property<int>("Rack")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Row")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Section")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("Shelf")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Warehouse")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("ID");
+
+                    b.ToTable("Locations");
                 });
 
             modelBuilder.Entity("LagerPlayground.Models.Order_Details", b =>
