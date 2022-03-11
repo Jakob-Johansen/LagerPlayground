@@ -63,6 +63,37 @@ namespace LagerPlayground.Controllers
             return View(location);
         }
 
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<JsonResult> LocationDeleteSelected(List<int?> IDs)
+        {
+            if (IDs == null)
+            {
+                return Json(new { errorBoolean = true, errorMsg = "No Location was selected" });
+            }
+
+            List<Locations> locationsToDeleteList = new();
+            foreach (int? ID in IDs)
+            {
+                var location = await _context.Locations.FindAsync(ID);
+                if (location != null)
+                {
+                    locationsToDeleteList.Add(location);
+                }
+            }
+
+            try
+            {
+                _context.Locations.RemoveRange(locationsToDeleteList);
+                await _context.SaveChangesAsync();
+                return Json(new { errorBoolean = false });
+            }
+            catch (DbUpdateException)
+            {
+                return Json(new { errorBoolean = true, errorMsg = "An error with the database has occured" });
+            }
+        }
+
         public async Task<IActionResult> CreateRack(int? ID)
         {
             if (ID == null)
@@ -111,6 +142,33 @@ namespace LagerPlayground.Controllers
             return View(locations_Details);
         }
 
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> DeleteRack(int? ID)
+        {
+            if (ID == null)
+            {
+                return NotFound();
+            }
+
+            var removeThis = await _context.Locations_Details.FindAsync(ID);
+            int locationID = removeThis.LocationsID;
+
+            try
+            {
+                _context.Locations_Details.Remove(removeThis);
+                await _context.SaveChangesAsync();
+                return Redirect("/Location/LocationDetails/" + locationID);
+            }
+            catch (DbUpdateException)
+            {
+                ModelState.AddModelError("", "Unable to save changes. " +
+                "Try again, and if the problem persists " +
+                "see your system administrator.");
+            }
+            return NotFound();
+        }
+
         //public async Task<JsonResult> LocationDeleteOne(int? ID) 
         //{
         //    if (ID == null)
@@ -136,36 +194,5 @@ namespace LagerPlayground.Controllers
         //        return Json(new { errorBoolean = true, errorMsg = "An error with the database has occured" });
         //    }
         //}
-
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<JsonResult> LocationDeleteSelected(List<int?> IDs)
-        {
-            if (IDs == null)
-            {
-                return Json(new { errorBoolean = true, errorMsg = "No Location was selected" });
-            }
-
-            List<Locations> locationsToDeleteList = new();
-            foreach (int? ID in IDs)
-            {
-                var location = await _context.Locations.FindAsync(ID);
-                if (location != null)
-                {
-                    locationsToDeleteList.Add(location);
-                }
-            }
-
-            try
-            {
-                _context.Locations.RemoveRange(locationsToDeleteList);
-                await _context.SaveChangesAsync();
-                return Json(new { errorBoolean = false });
-            }
-            catch (DbUpdateException)
-            {
-                return Json(new { errorBoolean = true, errorMsg = "An error with the database has occured" });
-            }
-        }
     }
 }
