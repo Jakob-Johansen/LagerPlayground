@@ -1,4 +1,13 @@
-﻿@model LagerPlayground.Models.Locations
+﻿@inject Microsoft.AspNetCore.Antiforgery.IAntiforgery Xsrf
+
+@model LagerPlayground.Models.Locations
+
+@functions {
+    public string GetAntiXsrfRequestToken()
+    {
+        return Xsrf.GetAndStoreTokens(Context).RequestToken;
+    }
+}
 
 @{
     ViewData["Title"] = "Location Details";
@@ -18,16 +27,85 @@
             <th>Racks</th>
             <th>Shelfs</th>
             <th>Bins</th>
+            <th></th>
         </tr>
     </thead>
     <tbody>
-        @foreach (var item in Model.Locations_Details)
-        {
-            <tr>
-                <td>@item.Rack</td>
-                <td>@item.Shelfs</td>
-                <td>@item.Bins</td>
-            </tr>
+        @{
+            var lastItem = Model.Locations_Details.Last();
+            foreach (var item in Model.Locations_Details)
+            {
+                <tr>
+                    <td>@item.Rack</td>
+                    <td>@item.Shelfs</td>
+                    <td>@item.Bins</td>
+                    @if (item.Equals(lastItem))
+                    {
+                        <td><a class="deletethis-btn orderDetails-backOrDelete-delete-btn" data-id="@item.ID">Delete</a></td>
+                    }
+                </tr>
+            }
         }
     </tbody>
 </table>
+
+<h1>For hver shelf skal man kunne vælge hvor mange bins der skal være...</h1>
+
+<div class="tote-delete-overlay-overall-container">
+    <div class="tote-overlay-container">
+        <div class="tote-overlay-nav-overall-container">
+            <div class="tote-overlay-nav-container">
+                <p>Are you sure?</p>
+            </div>
+            <div class="tote-overlay-nav-container">
+                <span class="material-icons tote-overlay-nav-close-btn">close</span>
+            </div>
+            <div class="clearBoth"></div>
+        </div>
+
+        <div class="tote-overlay-info-container">
+            <p></p>
+        </div>
+
+        <div class="tote-overlay-btns-overall-container">
+            <div class="tote-overlay-btns-container-cancel">
+                <button class="tote-overlay-btn-cancel tote-overlay-nav-close-btn">Cancel</button>
+            </div>
+            <div class="tote-overlay-btns-container-add">
+                <form asp-action="DeleteRack">
+                    <input class="deleteModalFormInputHidden" type="hidden" readonly name="ID" />
+                    <button class="tote-overlay-btn-add tote-overlay-btn-delete">Delete</button>
+                </form>
+            </div>
+
+            <div class="clearBoth"></div>
+        </div>
+
+    </div>
+</div>
+
+@section Scripts {
+<script>
+    const closeBtn = $(".tote-overlay-nav-close-btn");
+
+    const deleteThisBtn = $(".deletethis-btn")
+    const overlayDeleteContainer = $(".tote-delete-overlay-overall-container");
+    let deleteModalFormInputHidden = $(".deleteModalFormInputHidden");
+
+    //--- Delete
+
+    deleteThisBtn.click(function () {
+        overlayDeleteContainer.css("display", "block");
+        $(".tote-overlay-info-container").find("p").text("You are deleting this Location. Are you sure you want to proceed?");
+
+        let dataID = $(this).attr("data-id");
+        deleteModalFormInputHidden.val(dataID);
+    });
+
+    closeBtn.click(function () {
+        overlayDeleteContainer.css("display", "none");
+        deleteModalFormInputHidden.val("");
+    });
+
+</script>
+}
