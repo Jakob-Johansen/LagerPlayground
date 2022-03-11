@@ -11,7 +11,6 @@ namespace LagerPlayground.Models
         public int ID { get; set; }
         public string Section { get; set; }
         public string Row { get; set; }
-        public int Rack { get; set; }
         public bool Dynamic { get; set; }
         public string Warehouse { get; set; }
         public DateTime? Created { get; set; }

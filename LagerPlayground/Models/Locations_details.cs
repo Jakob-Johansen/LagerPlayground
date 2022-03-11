@@ -10,6 +10,7 @@ namespace LagerPlayground.Models
     {
         public int ID { get; set; }
         public int LocationsID { get; set; }
+        public int Rack { get; set; }
         public int? Shelfs { get; set; }
         public int? Bins { get; set; }
         public DateTime? Created { get; set; }

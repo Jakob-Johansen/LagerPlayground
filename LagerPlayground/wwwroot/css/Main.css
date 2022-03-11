@@ -1570,3 +1570,23 @@ li.dropdown {
     line-height: 0.8;
     color: white;
 }
+
+/*---Rack Test Custom Halløj---*/
+
+.defaulttable > thead > tr {
+    border-bottom: 0.1px solid white;
+}
+
+.defaulttable > thead > tr > th, .defaulttable > tbody > tr > td {
+    padding: 5px 50px !important;
+    text-align: center;
+    font-size: 19px;
+}
+
+.defaulttable > tbody > tr {
+    border-bottom: 0.1px solid white;
+}
+
+.defaulttable > tbody > tr > td {
+    padding: 8px 0;
+}
