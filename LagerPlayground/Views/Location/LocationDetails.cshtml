@@ -1,5 +1,33 @@
-﻿@{
+﻿@model LagerPlayground.Models.Locations
+
+@{
     ViewData["Title"] = "Location Details";
 }
 
 <h2>Location Details</h2>
+
+<p>Warehouse: @Model.Warehouse</p>
+<p>Section: @Model.Section</p>
+<p>Row: @Model.Row</p>
+
+<a href="/Location/CreateRack/@Model.ID">Create Rack</a>
+
+<table class="defaulttable">
+    <thead>
+        <tr>
+            <th>Racks</th>
+            <th>Shelfs</th>
+            <th>Bins</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model.Locations_Details)
+        {
+            <tr>
+                <td>@item.Rack</td>
+                <td>@item.Shelfs</td>
+                <td>@item.Bins</td>
+            </tr>
+        }
+    </tbody>
+</table>

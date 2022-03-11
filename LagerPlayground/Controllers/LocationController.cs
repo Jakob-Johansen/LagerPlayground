@@ -36,8 +36,8 @@ namespace LagerPlayground.Controllers
             {
                 if (ModelState.IsValid)
                 {
+                    locations.Created = DateTime.Now;
                     locations.Dynamic = false;
-                    locations.Rack = 0;
                     _context.Locations.Add(locations);
                     await _context.SaveChangesAsync();
                     return RedirectToAction("Locations");
@@ -52,9 +52,63 @@ namespace LagerPlayground.Controllers
             return View(locations);
         }
 
-        public IActionResult LocationDetails()
+        public async Task<IActionResult> LocationDetails(int? ID)
         {
+            if (ID == null || ID == 0)
+            {
+                return NotFound();
+            }
+
+            var location = await _context.Locations.Include(x => x.Locations_Details).FirstOrDefaultAsync(x => x.ID == ID);
+            return View(location);
+        }
+
+        public async Task<IActionResult> CreateRack(int? ID)
+        {
+            if (ID == null)
+            {
+                return NotFound();
+            }
+
+            var getRack = await _context.Locations_Details.OrderByDescending(x => x.Rack).FirstOrDefaultAsync(x => x.LocationsID == ID);
+
+            int rackNumber = 0;
+
+            if (getRack == null)
+            {
+                rackNumber = 1;
+            }
+            else
+            {
+                rackNumber = getRack.Rack + 1;
+            }
+
+            ViewBag.RackNumber = rackNumber;
+            ViewBag.LocationID = ID;
             return View();
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> CreateRack([Bind("Rack,Shelfs,Bins,LocationsID")] Locations_details locations_Details)
+        {
+            try
+            {
+                if (ModelState.IsValid)
+                {
+                    locations_Details.Created = DateTime.Now;
+                    _context.Locations_Details.Add(locations_Details);
+                    await _context.SaveChangesAsync();
+                    return Redirect("/Location/LocationDetails/" + locations_Details.LocationsID);
+                }
+            }
+            catch (DbUpdateException)
+            {
+                ModelState.AddModelError("", "Unable to save changes. " +
+                "Try again, and if the problem persists " +
+                "see your system administrator.");
+            }
+            return View(locations_Details);
         }
 
         //public async Task<JsonResult> LocationDeleteOne(int? ID) 
