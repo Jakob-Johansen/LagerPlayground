@@ -6,16 +6,15 @@ using System.Threading.Tasks;
 
 namespace LagerPlayground.Models
 {
-    public class Locations
+    public class Locations_Shelfs
     {
         public int ID { get; set; }
-        public string Section { get; set; }
-        public string Row { get; set; }
-        public bool Dynamic { get; set; }
-        public string Warehouse { get; set; }
+        public int Locations_RacksID { get; set; }
+        public int ShelfNumber { get; set; }
         public DateTime? Created { get; set; }
         public DateTime? Modified { get; set; }
 
-        public IEnumerable<Locations_Racks> Locations_Details { get; set; }
+        public Locations_Racks Locations_Rack { get; set; }
+        public IEnumerable<Locations_Positions> Locations_Positions { get; set; }
     }
 }

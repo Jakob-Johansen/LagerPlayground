@@ -101,7 +101,7 @@ namespace LagerPlayground.Controllers
                 return NotFound();
             }
 
-            var getRack = await _context.Locations_Details.OrderByDescending(x => x.Rack).FirstOrDefaultAsync(x => x.LocationsID == ID);
+            var getRack = await _context.Locations_Racks.OrderByDescending(x => x.RackNumber).FirstOrDefaultAsync(x => x.LocationsID == ID);
 
             int rackNumber = 0;
 
@@ -111,7 +111,7 @@ namespace LagerPlayground.Controllers
             }
             else
             {
-                rackNumber = getRack.Rack + 1;
+                rackNumber = getRack.RackNumber + 1;
             }
 
             ViewBag.RackNumber = rackNumber;
@@ -121,16 +121,16 @@ namespace LagerPlayground.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> CreateRack([Bind("Rack,Shelfs,Bins,LocationsID")] Locations_details locations_Details)
+        public async Task<IActionResult> CreateRack([Bind("RackNumber,LocationsID")] Locations_Racks locations_Racks)
         {
             try
             {
                 if (ModelState.IsValid)
                 {
-                    locations_Details.Created = DateTime.Now;
-                    _context.Locations_Details.Add(locations_Details);
+                    locations_Racks.Created = DateTime.Now;
+                    _context.Locations_Racks.Add(locations_Racks);
                     await _context.SaveChangesAsync();
-                    return Redirect("/Location/LocationDetails/" + locations_Details.LocationsID);
+                    return Redirect("/Location/LocationDetails/" + locations_Racks.LocationsID);
                 }
             }
             catch (DbUpdateException)
@@ -139,7 +139,12 @@ namespace LagerPlayground.Controllers
                 "Try again, and if the problem persists " +
                 "see your system administrator.");
             }
-            return View(locations_Details);
+            return View(locations_Racks);
+        }
+
+        public IActionResult CreateTestRack()
+        {
+            return View();
         }
 
         [HttpPost]
@@ -151,12 +156,12 @@ namespace LagerPlayground.Controllers
                 return NotFound();
             }
 
-            var removeThis = await _context.Locations_Details.FindAsync(ID);
+            var removeThis = await _context.Locations_Racks.FindAsync(ID);
             int locationID = removeThis.LocationsID;
 
             try
             {
-                _context.Locations_Details.Remove(removeThis);
+                _context.Locations_Racks.Remove(removeThis);
                 await _context.SaveChangesAsync();
                 return Redirect("/Location/LocationDetails/" + locationID);
             }

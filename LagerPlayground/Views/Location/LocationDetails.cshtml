@@ -20,36 +20,37 @@
 <p>Row: @Model.Row</p>
 
 <a href="/Location/CreateRack/@Model.ID">Create Rack</a>
+<br />
+<a href="/Location/CreateTestRack/@Model.ID">Create Test Rack</a>
 
 <table class="defaulttable">
     <thead>
         <tr>
             <th>Racks</th>
-            <th>Shelfs</th>
-            <th>Bins</th>
             <th></th>
         </tr>
     </thead>
     <tbody>
         @{
-            var lastItem = Model.Locations_Details.Last();
-            foreach (var item in Model.Locations_Details)
+            if (Model.Locations_Details.Count() != 0)
             {
-                <tr>
-                    <td>@item.Rack</td>
-                    <td>@item.Shelfs</td>
-                    <td>@item.Bins</td>
-                    @if (item.Equals(lastItem))
-                    {
-                        <td><a class="deletethis-btn orderDetails-backOrDelete-delete-btn" data-id="@item.ID">Delete</a></td>
-                    }
-                </tr>
+                var lastItem = Model.Locations_Details.Last();
+                foreach (var item in Model.Locations_Details)
+                {
+                    <tr>
+                        <td>@item.RackNumber</td>
+                        @if (item.Equals(lastItem))
+                        {
+                            <td><a class="deletethis-btn orderDetails-backOrDelete-delete-btn" data-id="@item.ID">Delete</a></td>
+                        }
+                    </tr>
+                }
             }
         }
     </tbody>
 </table>
 
-<h1>For hver shelf, skal man kunne vælge hvor mange bins der skal junne være på den shelf...</h1>
+@*<h1>For hver shelf, skal man kunne vælge hvor mange bins der skal junne være på den shelf...</h1>*@
 
 <div class="tote-delete-overlay-overall-container">
     <div class="tote-overlay-container">

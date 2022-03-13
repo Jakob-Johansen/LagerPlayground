@@ -1590,3 +1590,12 @@ li.dropdown {
 .defaulttable > tbody > tr > td {
     padding: 8px 0;
 }
+
+/*---Create Test Rack---*/
+
+.createRack-overall-container {
+    width: 1000px;
+    height: auto;
+    background-color: red;
+    margin: 100px auto 0 auto;
+}
