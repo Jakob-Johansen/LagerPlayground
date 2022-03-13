@@ -40,8 +40,52 @@ namespace LagerPlayground.Models.SeedData
                     BarcodeID = "761878978616",
                     Image = "2804253_5ebbb392ba6f.jpg",
                     Quantity = 0
+                },
+
+                new Product
+                {
+                    Name = "ZINZINO XTEND+",
+                    Description = "Vitaminer",
+                    BrandName = "ZINZINO",
+                    Category = "Fødevare",
+                    BarcodeID = "302205",
+                    Image = "zinzino-xtend-natural-essential-vitamins-minerals2.png",
+                    Quantity = 0
                 }
             );
+
+            context.ReceiveRejectedReasons.AddRange(
+                new ReceiveRejectedReasons
+                {
+                    Reason = "Damaged",
+                    Created = DateTime.Now
+                },
+
+                new ReceiveRejectedReasons
+                {
+                    Reason = "Water Damage",
+                    Created = DateTime.Now
+                },
+
+                new ReceiveRejectedReasons
+                {
+                    Reason = "Wrong Color",
+                    Created = DateTime.Now
+                },
+
+                new ReceiveRejectedReasons
+                {
+                    Reason = "Dirty",
+                    Created = DateTime.Now
+                },
+
+                new ReceiveRejectedReasons
+                {
+                    Reason = "Other",
+                    Created = DateTime.Now
+                }
+            );
+
             context.SaveChanges();
         }
     }
