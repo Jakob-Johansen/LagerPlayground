@@ -6,13 +6,12 @@ using System.Threading.Tasks;
 
 namespace LagerPlayground.Models
 {
-    public class Locations_details
+    public class Locations_Racks
     {
+        // https://blog.barcodefactory.com/blog/warehouse-rack-labeling-best-practices
         public int ID { get; set; }
         public int LocationsID { get; set; }
-        public int Rack { get; set; }
-        public int? Shelfs { get; set; }
-        public int? Bins { get; set; }
+        public int RackNumber { get; set; }
         public DateTime? Created { get; set; }
         public DateTime? Modified { get; set; }
 
