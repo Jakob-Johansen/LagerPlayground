@@ -32,10 +32,10 @@
     </thead>
     <tbody>
         @{
-            if (Model.Locations_Details.Count() != 0)
+            if (Model.locations_Racks.Count() != 0)
             {
-                var lastItem = Model.Locations_Details.Last();
-                foreach (var item in Model.Locations_Details)
+                var lastItem = Model.locations_Racks.Last();
+                foreach (var item in Model.locations_Racks)
                 {
                     <tr>
                         <td>@item.RackNumber</td>

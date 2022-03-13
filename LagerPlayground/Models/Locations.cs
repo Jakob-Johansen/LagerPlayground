@@ -16,6 +16,6 @@ namespace LagerPlayground.Models
         public DateTime? Created { get; set; }
         public DateTime? Modified { get; set; }
 
-        public IEnumerable<Locations_Racks> Locations_Details { get; set; }
+        public IEnumerable<Locations_Racks> locations_Racks { get; set; }
     }
 }

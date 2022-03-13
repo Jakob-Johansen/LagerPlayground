@@ -1,4 +1,5 @@
-﻿
+﻿@model IEnumerable<LagerPlayground.Models.Locations>
+
 @{
     ViewData["Title"] = "Create Test Rack";
 }
@@ -6,11 +7,33 @@
 
 <h2>Create Test Rack</h2>
 
-<div class="createRack-overall-container">
+@*<div class="createRack-overall-container">
     <div class="createRack-info-container">
 
     </div>
     <div class="CreateRack-container">
 
     </div>
-</div>
+</div>*@
+
+@foreach (var Locations in Model)
+{
+    <p>Warehouse: @Locations.Warehouse</p>
+    <p>Section: @Locations.Section</p>
+    <p>Row: @Locations.Row</p>
+    @foreach (var Racks in Locations.locations_Racks)
+    {
+        <p>------ Rack Number @("0" + @Racks.RackNumber) ------</p>
+        @foreach (var Shelfs in Racks.Locations_Shelfs)
+        {
+            <p>--- Shelf: @("0" + @Shelfs.ShelfNumber)</p>
+            @foreach (var Positions in Shelfs.Locations_Positions)
+            {
+                <p>-------- Position: @("0" + @Positions.PositionNumber)</p>
+                <p>-------- Route Barcode: @Positions.FullLocationBarcode</p>
+            }
+            <br />
+        }
+        <br />
+    }
+}
