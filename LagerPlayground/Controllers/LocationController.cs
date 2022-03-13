@@ -59,7 +59,7 @@ namespace LagerPlayground.Controllers
                 return NotFound();
             }
 
-            var location = await _context.Locations.Include(x => x.Locations_Details).FirstOrDefaultAsync(x => x.ID == ID);
+            var location = await _context.Locations.Include(x => x.locations_Racks).FirstOrDefaultAsync(x => x.ID == ID);
             return View(location);
         }
 
@@ -142,9 +142,15 @@ namespace LagerPlayground.Controllers
             return View(locations_Racks);
         }
 
-        public IActionResult CreateTestRack()
+        public async Task<IActionResult> CreateTestRack()
         {
-            return View();
+            var AllLocations = await _context.Locations
+                .Include(x => x.locations_Racks)
+                    .ThenInclude(t => t.Locations_Shelfs)
+                        .ThenInclude(y => y.Locations_Positions)
+                .AsNoTracking().ToListAsync();
+
+            return View(AllLocations);
         }
 
         [HttpPost]
