@@ -17,6 +17,18 @@ namespace LagerPlayground.Controllers
         // Fx. for hver rack skal man kunne customize shelfs og bins.
         // Gør så man ikke behøver at lave bins hvis man ikke vil det.
 
+        // Bare til tests
+        public async Task<IActionResult> AllLocations()
+        {
+            var AllLocations = await _context.Locations
+                .Include(x => x.locations_Racks)
+                    .ThenInclude(t => t.Locations_Shelfs)
+                        .ThenInclude(y => y.Locations_Positions)
+                .AsNoTracking().ToListAsync();
+
+            return View(AllLocations);
+        }
+
         public async Task<IActionResult> Locations()
         {
             var allLocations = await _context.Locations.ToListAsync();
@@ -142,15 +154,9 @@ namespace LagerPlayground.Controllers
             return View(locations_Racks);
         }
 
-        public async Task<IActionResult> CreateTestRack()
+        public IActionResult CreateTestRack()
         {
-            var AllLocations = await _context.Locations
-                .Include(x => x.locations_Racks)
-                    .ThenInclude(t => t.Locations_Shelfs)
-                        .ThenInclude(y => y.Locations_Positions)
-                .AsNoTracking().ToListAsync();
-
-            return View(AllLocations);
+            return View();
         }
 
         [HttpPost]
