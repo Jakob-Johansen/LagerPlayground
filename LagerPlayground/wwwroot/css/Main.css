@@ -1571,26 +1571,6 @@ li.dropdown {
     color: white;
 }
 
-/*---Rack Test Custom Halløj---*/
-
-.defaulttable > thead > tr {
-    border-bottom: 0.1px solid white;
-}
-
-.defaulttable > thead > tr > th, .defaulttable > tbody > tr > td {
-    padding: 5px 50px !important;
-    text-align: center;
-    font-size: 19px;
-}
-
-.defaulttable > tbody > tr {
-    border-bottom: 0.1px solid white;
-}
-
-.defaulttable > tbody > tr > td {
-    padding: 8px 0;
-}
-
 /*---Location_Details---*/
 
 .locationDetails-overall-container {
@@ -1609,9 +1589,6 @@ li.dropdown {
     width: 100%;
     height: auto;
     position: relative;
-    /*    background-color: red;*/
-    /*    border-left: 8px solid white;
-    border-right: 8px solid white;*/
 }
 
 .locationDetails-container:hover > .locationDetails-hover-overlay-container {
@@ -1627,15 +1604,12 @@ li.dropdown {
 .locationDetails-rack-headline-text {
     text-align: center;
     font-size: 15px;
-/*    color: white !important;*/
     text-decoration: underline;
 }
 
 .locationDetails-rack-headline-number {
     text-align: center; 
     font-size: 60px;
-/*    color: white !important;*/
-/*    font-weight: bold;*/
 }
 
 .locationDetails-hover-overlay-container {
@@ -1686,10 +1660,4 @@ li.dropdown {
     cursor: pointer;
 }
 
-/*---Create Test Rack---*/
-.createRack-overall-container {
-    width: 1000px;
-    height: auto;
-    background-color: red;
-    margin: 100px auto 0 auto;
-}
+/*---Rack Details---*/

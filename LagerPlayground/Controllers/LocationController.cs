@@ -17,6 +17,8 @@ namespace LagerPlayground.Controllers
         // Fx. for hver rack skal man kunne customize shelfs og bins.
         // Gør så man ikke behøver at lave bins hvis man ikke vil det.
 
+        // https://docs.linnworks.com/articles/#!documentation/wms-location/a/WMSenablelocation
+
         // Bare til tests
         public async Task<IActionResult> AllLocations()
         {
@@ -150,25 +152,6 @@ namespace LagerPlayground.Controllers
             return NotFound();
         }
 
-        // https://docs.linnworks.com/articles/#!documentation/wms-location/a/WMSenablelocation
-
-        public async Task<IActionResult> CreateTestRack(int? ID)
-        {
-            if (ID == null)
-            {
-                return NotFound();
-            }
-
-            var location = await _context.Locations.FirstOrDefaultAsync(x => x.ID == ID);
-
-            if (location == null)
-            {
-                return NotFound();
-            }
-
-            return View(location);
-        }
-
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteRack(int? ID)
@@ -196,30 +179,25 @@ namespace LagerPlayground.Controllers
             return NotFound();
         }
 
-        //public async Task<JsonResult> LocationDeleteOne(int? ID) 
-        //{
-        //    if (ID == null)
-        //    {
-        //        return Json(new { errorBoolean = true, errorMsg = "No ID was found" });
-        //    }
+        public async Task<IActionResult> RackDetails(int? ID)
+        {
+            if (ID == null)
+            {
+                return NotFound();
+            }
 
-        //    var Location = await _context.Locations.FindAsync(ID);
+            var locationRack = await _context.Locations_Racks
+                    .Include(x => x.Locations)
+                    .Include(x => x.Locations_Shelfs)
+                        .ThenInclude(t => t.Locations_Positions)
+                    .FirstOrDefaultAsync(x => x.ID == ID);
 
-        //    if (Location == null)
-        //    {
-        //        return Json(new { errorBoolean = true, errorMsg = "No location was found" });
-        //    }
+            if (locationRack == null)
+            {
+                return NotFound();
+            }
 
-        //    try
-        //    {
-        //        _context.Locations.Remove(Location);
-        //        await _context.SaveChangesAsync();
-        //        return Json(new { errorBoolean = false });
-        //    }
-        //    catch (DbUpdateException)
-        //    {
-        //        return Json(new { errorBoolean = true, errorMsg = "An error with the database has occured" });
-        //    }
-        //}
+            return View(locationRack);
+        }
     }
 }
