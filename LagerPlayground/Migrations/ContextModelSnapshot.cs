@@ -533,7 +533,7 @@ namespace LagerPlayground.Migrations
             modelBuilder.Entity("LagerPlayground.Models.Locations_Racks", b =>
                 {
                     b.HasOne("LagerPlayground.Models.Locations", "Locations")
-                        .WithMany("Locations_Details")
+                        .WithMany("locations_Racks")
                         .HasForeignKey("LocationsID")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -544,7 +544,7 @@ namespace LagerPlayground.Migrations
             modelBuilder.Entity("LagerPlayground.Models.Locations_Shelfs", b =>
                 {
                     b.HasOne("LagerPlayground.Models.Locations_Racks", "Locations_Rack")
-                        .WithMany()
+                        .WithMany("Locations_Shelfs")
                         .HasForeignKey("Locations_RacksID")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -657,7 +657,12 @@ namespace LagerPlayground.Migrations
 
             modelBuilder.Entity("LagerPlayground.Models.Locations", b =>
                 {
-                    b.Navigation("Locations_Details");
+                    b.Navigation("locations_Racks");
+                });
+
+            modelBuilder.Entity("LagerPlayground.Models.Locations_Racks", b =>
+                {
+                    b.Navigation("Locations_Shelfs");
                 });
 
             modelBuilder.Entity("LagerPlayground.Models.Locations_Shelfs", b =>

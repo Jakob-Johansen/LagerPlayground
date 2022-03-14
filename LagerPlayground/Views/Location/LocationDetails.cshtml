@@ -20,91 +20,96 @@
     <p>Section: @Model.Section</p>
     <p>Row: @Model.Row</p>
 
-    <a href="/Location/CreateRack/@Model.ID">Create Rack</a>
+    <form asp-action="CreateRack" method="post">
+        <input type="hidden" name="ID" value="@Model.ID" />
+        <button>Create Rack</button>
+    </form>
+
+    @*    <a href="/Location/CreateRack/@Model.ID">Create Rack</a>*@
     <br />
     <a href="/Location/CreateTestRack/@Model.ID">Create Test Rack</a>
 </div>
 
 <div class="locationDetails-overall-container">
-    @foreach (var item in Model.locations_Racks)
-    {
-        <div class="locationDetails-overall-float-container">
-            <div class="locationDetails-container">
-                <div class="locationDetails-rack-headline-container">
-                    <p class="trim locationDetails-rack-headline-text">RACK</p>
-                    <p class="trim locationDetails-rack-headline-number">@("0" + item.RackNumber)</p>
+
+    @{
+        if (Model.locations_Racks.Count() != 0)
+        {
+            var getLastRack = Model.locations_Racks.Last();
+
+            foreach (var item in Model.locations_Racks)
+            {
+                <div class="locationDetails-overall-float-container">
+                    <div class="locationDetails-container">
+                        <div class="locationDetails-rack-headline-container">
+                            <p class="trim locationDetails-rack-headline-text">RACK</p>
+                            <p class="trim locationDetails-rack-headline-number">@("0" + item.RackNumber)</p>
+                        </div>
+                        <div class="locationDetails-hover-overlay-container">
+
+                            @if (item == getLastRack)
+                            {
+                                <div class="locationDetails-hover-overall-float-container">
+                                    <div class="locationDetails-hover-float-container">
+                                        <a href="#" class="locationDetails-hover-overlay-details-btn">Details</a>
+                                    </div>
+                                    <div class="locationDetails-hover-float-container">
+                                        <a class="locationDetails-hover-overlay-delete-btn" data-id="@item.ID">Delete</a>
+                                    </div>
+                                </div>
+                                <div class="clearBoth"></div>
+                            }
+                            else
+                            {
+                                <a href="#" class="locationDetails-hover-overlay-details-btn">Details</a>
+                            }
+                        </div>
+                    </div>
                 </div>
-            </div>
-        </div>
+            }
+        }
     }
+
 </div>
 
-
-@*<table class="defaulttable">
-    <thead>
-    <tr>
-    <th>Racks</th>
-    <th></th>
-    </tr>
-    </thead>
-    <tbody>
-    @{
-    if (Model.locations_Racks.Count() != 0)
-    {
-    var lastItem = Model.locations_Racks.Last();
-    foreach (var item in Model.locations_Racks)
-    {
-    <tr>
-    <td>@item.RackNumber</td>
-    @if (item.Equals(lastItem))
-    {
-    <td><a class="deletethis-btn orderDetails-backOrDelete-delete-btn" data-id="@item.ID">Delete</a></td>
-    }
-    </tr>
-    }
-    }
-    }
-    </tbody>
-    </table>*@
-
-@*<div class="tote-delete-overlay-overall-container">
+<div class="tote-delete-overlay-overall-container">
     <div class="tote-overlay-container">
-    <div class="tote-overlay-nav-overall-container">
-    <div class="tote-overlay-nav-container">
-    <p>Are you sure?</p>
-    </div>
-    <div class="tote-overlay-nav-container">
-    <span class="material-icons tote-overlay-nav-close-btn">close</span>
-    </div>
-    <div class="clearBoth"></div>
-    </div>
+        <div class="tote-overlay-nav-overall-container">
+            <div class="tote-overlay-nav-container">
+                <p>Are you sure?</p>
+            </div>
+            <div class="tote-overlay-nav-container">
+                <span class="material-icons tote-overlay-nav-close-btn">close</span>
+            </div>
+            <div class="clearBoth"></div>
+        </div>
 
-    <div class="tote-overlay-info-container">
-    <p></p>
-    </div>
+        <div class="tote-overlay-info-container">
+            <p></p>
+        </div>
 
-    <div class="tote-overlay-btns-overall-container">
-    <div class="tote-overlay-btns-container-cancel">
-    <button class="tote-overlay-btn-cancel tote-overlay-nav-close-btn">Cancel</button>
-    </div>
-    <div class="tote-overlay-btns-container-add">
-    <form asp-action="DeleteRack">
-    <input class="deleteModalFormInputHidden" type="hidden" readonly name="ID" />
-    <button class="tote-overlay-btn-add tote-overlay-btn-delete">Delete</button>
-    </form>
-    </div>
+        <div class="tote-overlay-btns-overall-container">
+            <div class="tote-overlay-btns-container-cancel">
+                <button class="tote-overlay-btn-cancel tote-overlay-nav-close-btn">Cancel</button>
+            </div>
+            <div class="tote-overlay-btns-container-add">
+                <form asp-action="DeleteRack">
+                    <input class="deleteModalFormInputHidden" type="hidden" readonly name="ID" />
+                    <button class="tote-overlay-btn-add tote-overlay-btn-delete">Delete</button>
+                </form>
+            </div>
 
-    <div class="clearBoth"></div>
-    </div>
+            <div class="clearBoth"></div>
+        </div>
 
     </div>
-    </div>*@
+</div>
 
 @section Scripts {
 <script>
     const closeBtn = $(".tote-overlay-nav-close-btn");
 
-    const deleteThisBtn = $(".deletethis-btn")
+    const deleteThisBtn = $(".locationDetails-hover-overlay-delete-btn")
     const overlayDeleteContainer = $(".tote-delete-overlay-overall-container");
     let deleteModalFormInputHidden = $(".deleteModalFormInputHidden");
 
@@ -112,7 +117,7 @@
 
     deleteThisBtn.click(function () {
         overlayDeleteContainer.css("display", "block");
-        $(".tote-overlay-info-container").find("p").text("You are deleting this Location. Are you sure you want to proceed?");
+        $(".tote-overlay-info-container").find("p").text("You are deleting a location Rack. Are you sure you want to proceed?");
 
         let dataID = $(this).attr("data-id");
         deleteModalFormInputHidden.val(dataID);
