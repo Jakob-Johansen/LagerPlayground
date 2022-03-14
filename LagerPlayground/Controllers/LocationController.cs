@@ -199,5 +199,62 @@ namespace LagerPlayground.Controllers
 
             return View(locationRack);
         }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<JsonResult> CreateShelfAndBins(int? quantity, int? rackID, int rackNumber, string row)
+        {
+            if (rackID == null || rackID == 0)
+            {
+                return Json(new { booleanError = false, msg = "No RackID was found" });
+            }
+
+            if (quantity == null || quantity < 1)
+            {
+                return Json(new { booleanError = false, msg = "Quantity need to more than 0" });
+            }
+
+            try
+            {
+                var locationShelf = await _context.Locations_Shelfs.OrderByDescending(x => x.ShelfNumber)
+                    .FirstOrDefaultAsync(x => x.Locations_RacksID == rackID);
+                Locations_Shelfs locations_Shelfs = new();
+                if (locationShelf == null)
+                {
+                    locations_Shelfs.ShelfNumber = 1;
+                }
+                else
+                {
+                    locations_Shelfs.ShelfNumber = locationShelf.ShelfNumber + 1;
+                }
+
+                locations_Shelfs.Locations_RacksID = (int)rackID;
+                locations_Shelfs.Created = DateTime.Now;
+
+                _context.Add(locations_Shelfs);
+                await _context.SaveChangesAsync(); 
+
+                List<Locations_Positions> locations_PositionsList = new();
+
+                for (int i = 1; i < quantity + 1; i++)
+                {
+                    Locations_Positions locations_Positions = new();
+                    locations_Positions.Locations_ShelfsID = locations_Shelfs.ID;
+                    locations_Positions.PositionNumber = i;
+                    locations_Positions.Created = DateTime.Now;
+                    locations_Positions.FullLocationBarcode = row + (rackNumber < 10 ? "-0" + rackNumber : "-" + rackNumber) + (locations_Shelfs.ShelfNumber < 10 ? "-0" + locations_Shelfs.ShelfNumber : "-" + locations_Shelfs.ShelfNumber) + (i < 10 ? "-0" + i : "-" + i);
+                    locations_PositionsList.Add(locations_Positions);
+                }
+
+                _context.AddRange(locations_PositionsList);
+                await _context.SaveChangesAsync();
+
+                return Json(new { booleanError = true });
+            }
+            catch (DbUpdateException)
+            {
+                return Json(new { booleanError = false, msg = "An Database error has occured" });
+            }
+        }
     }
 }

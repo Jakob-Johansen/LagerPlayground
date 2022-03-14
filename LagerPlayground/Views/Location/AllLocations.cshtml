@@ -13,13 +13,13 @@
     <p>Row: @Locations.Row</p>
     @foreach (var Racks in Locations.locations_Racks)
     {
-        <p>------ Rack Number @("0" + @Racks.RackNumber) - (@(Locations.Row + "-0" + Racks.RackNumber)) ------</p>
+        <p>------ Rack Number @(Racks.RackNumber < 10 ? "0" + Racks.RackNumber : Racks.RackNumber) - (@(Locations.Row + "-0" + Racks.RackNumber)) ------</p>
         @foreach (var Shelfs in Racks.Locations_Shelfs)
         {
-            <p>--- Shelf: @("0" + @Shelfs.ShelfNumber) - (@(Locations.Row + "-0" + Racks.RackNumber + "-0" + Shelfs.ShelfNumber))</p>
+            <p>--- Shelf: @(Shelfs.ShelfNumber < 10 ? "0" + Shelfs.ShelfNumber : Shelfs.ShelfNumber) - (@(Locations.Row + "-0" + Racks.RackNumber + "-0" + Shelfs.ShelfNumber))</p>
             @foreach (var Positions in Shelfs.Locations_Positions)
             {
-                <p>-------- Position: @("0" + @Positions.PositionNumber) - (@Positions.FullLocationBarcode)</p>
+                <p>-------- Position: @(Positions.PositionNumber < 10 ? "0" + Positions.PositionNumber : Positions.PositionNumber) - (@Positions.FullLocationBarcode)</p>
             }
             <br />
         }
