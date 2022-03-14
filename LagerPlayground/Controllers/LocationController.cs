@@ -106,12 +106,15 @@ namespace LagerPlayground.Controllers
             }
         }
 
+        [HttpPost]
+        [ValidateAntiForgeryToken]
         public async Task<IActionResult> CreateRack(int? ID)
         {
             if (ID == null)
             {
                 return NotFound();
             }
+            Locations_Racks locations_Racks = new();
 
             var getRack = await _context.Locations_Racks.OrderByDescending(x => x.RackNumber).FirstOrDefaultAsync(x => x.LocationsID == ID);
 
@@ -126,23 +129,16 @@ namespace LagerPlayground.Controllers
                 rackNumber = getRack.RackNumber + 1;
             }
 
-            ViewBag.RackNumber = rackNumber;
-            ViewBag.LocationID = ID;
-            return View();
-        }
-
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> CreateRack([Bind("RackNumber,LocationsID")] Locations_Racks locations_Racks)
-        {
             try
             {
                 if (ModelState.IsValid)
                 {
                     locations_Racks.Created = DateTime.Now;
+                    locations_Racks.RackNumber = rackNumber;
+                    locations_Racks.LocationsID = (int)ID;
                     _context.Locations_Racks.Add(locations_Racks);
                     await _context.SaveChangesAsync();
-                    return Redirect("/Location/LocationDetails/" + locations_Racks.LocationsID);
+                    return Redirect("/Location/LocationDetails/" + ID);
                 }
             }
             catch (DbUpdateException)
@@ -151,7 +147,7 @@ namespace LagerPlayground.Controllers
                 "Try again, and if the problem persists " +
                 "see your system administrator.");
             }
-            return View(locations_Racks);
+            return NotFound();
         }
 
         // https://docs.linnworks.com/articles/#!documentation/wms-location/a/WMSenablelocation

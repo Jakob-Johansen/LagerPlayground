@@ -363,3 +363,5 @@ MigrationBackup/
 FodyWeavers.xsd
 /LagerPlayground/Migrations/20220313115428_InitialCreate.cs
 /LagerPlayground/Migrations/20220313115428_InitialCreate.Designer.cs
+/LagerPlayground/Migrations/20220314123253_InitialCreate.Designer.cs
+/LagerPlayground/Migrations/20220314123253_InitialCreate.cs

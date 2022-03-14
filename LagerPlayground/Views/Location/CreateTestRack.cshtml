@@ -12,31 +12,6 @@
 <p>Row: @Model.Row</p>
 <br />
 
-<div class="row">
-    <div class="col-md-4">
-        <form asp-action="CreateTestRack">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-@*            <div class="form-group">
-                <label asp-for="Shelfs" class="control-label"></label>
-                <input asp-for="Shelfs" class="form-control background-dark" />
-                <span asp-validation-for="Shelfs" class="text-danger"></span>
-                <br />
-            </div>*@
-@*            <div class="form-group">
-                <label asp-for="Bins" class="control-label"></label>
-                <input asp-for="Bins" class="form-control background-dark" />
-                <span asp-validation-for="Bins" class="text-danger"></span>
-                <br />
-            </div>*@
-            <input hidden readonly name="@Model.ID" />
-            <div class="form-group">
-                <input type="submit" value="Create" class="btn-primary" />
-            </div>
-        </form>
-    </div>
-</div>
-
-
 @*<div class="createRack-overall-container">
     <div class="createRack-info-container">
 
