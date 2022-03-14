@@ -154,9 +154,23 @@ namespace LagerPlayground.Controllers
             return View(locations_Racks);
         }
 
-        public IActionResult CreateTestRack()
+        // https://docs.linnworks.com/articles/#!documentation/wms-location/a/WMSenablelocation
+
+        public async Task<IActionResult> CreateTestRack(int? ID)
         {
-            return View();
+            if (ID == null)
+            {
+                return NotFound();
+            }
+
+            var location = await _context.Locations.FirstOrDefaultAsync(x => x.ID == ID);
+
+            if (location == null)
+            {
+                return NotFound();
+            }
+
+            return View(location);
         }
 
         [HttpPost]
