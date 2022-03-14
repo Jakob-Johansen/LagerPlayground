@@ -1591,8 +1591,49 @@ li.dropdown {
     padding: 8px 0;
 }
 
-/*---Create Test Rack---*/
+/*---Location_Details---*/
 
+.locationDetails-overall-container {
+    width: 100%;
+    height: auto;
+}
+
+.locationDetails-overall-float-container {
+    float: left;
+    width: 20%;
+    height:auto;
+    padding: 0 11px;
+}
+
+.locationDetails-container {
+    width: 100%;
+    height: auto;
+/*    background-color: red;*/
+/*    border-left: 8px solid white;
+    border-right: 8px solid white;*/
+}
+
+.locationDetails-rack-headline-container {
+    width: 100%;
+    padding: 15px 0;
+    background-color: rgb(25, 26, 28);
+}
+
+.locationDetails-rack-headline-text {
+    text-align: center;
+    font-size: 15px;
+/*    color: white !important;*/
+    text-decoration: underline;
+}
+
+.locationDetails-rack-headline-number {
+    text-align: center; 
+    font-size: 60px;
+/*    color: white !important;*/
+/*    font-weight: bold;*/
+}
+
+/*---Create Test Rack---*/
 .createRack-overall-container {
     width: 1000px;
     height: auto;
