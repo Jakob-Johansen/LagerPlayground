@@ -1,4 +1,13 @@
-﻿@model LagerPlayground.Models.Locations_Racks
+﻿@inject Microsoft.AspNetCore.Antiforgery.IAntiforgery Xsrf
+
+@model LagerPlayground.Models.Locations_Racks
+
+@functions {
+    public string GetAntiXsrfRequestToken()
+    {
+        return Xsrf.GetAndStoreTokens(Context).RequestToken;
+    }
+}
 
 @{
     ViewData["Title"] = "Rack Details";
@@ -10,3 +19,61 @@
 <p>Section: @Model.Locations.Section</p>
 <p>Row: @Model.Locations.Row</p>
 <p>Rack: @Model.RackNumber</p>
+
+<div class="rackDetails-createBins-overall-container">
+    <div class="rackDetails-createBins-form-container">
+        <label class="rackDetails-createBins-form-label">Create Shelf & Bins</label>
+        <input class="rackDetails-createBins-form-number" placeholder="0" type="number" />
+        <a class="rackDetails-createBins-form-btn">Add</a>
+    </div>
+    <div class="rackDetails-rack-overall-container">
+    </div>
+</div>
+
+@section Scripts {
+<script>
+    let createBtn = $(".rackDetails-createBins-form-btn");
+    let binInputField = $(".rackDetails-createBins-form-number");
+
+    binInputField.on("input", function () {
+        let binInputFieldVal = parseInt(binInputField.val());
+        if (binInputFieldVal < 1 || binInputField.val().startsWith(0))
+        {
+            binInputField.val(0);
+        }
+    });
+
+    createBtn.click(function () {
+        let binInputFieldVal = parseInt(binInputField.val()); 
+        if (binInputField.val().trim() == "" || binInputFieldVal < 1) {
+            console.log("t");
+            return;
+        }
+
+        CreateShelfAndBins(binInputField.val());
+    });
+
+    // Ajax Functions
+
+function CreateShelfAndBins(qty) {
+    $.ajax({
+        type: "POST",
+        url: "/Location/CreateShelfAndBins",
+        headers: { "RequestVerificationToken": "@GetAntiXsrfRequestToken()" },
+        data: { quantity: qty, rackID: @Model.ID, rackNumber: @Model.RackNumber, row: "@Model.Locations.Row" },
+        success: function (result) {
+            if (result.booleanError == true) {
+                console.log("Success!");
+            }
+            else {
+                console.log(result.msg)
+            }
+        },
+        error: function (req, status, error) {
+            console.log(status);
+            console.log("ERROR");
+        }
+    });
+}
+</script>
+}
