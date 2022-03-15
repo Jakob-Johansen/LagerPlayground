@@ -1753,7 +1753,6 @@ li.dropdown {
     float: left;
     width: 50%;
     height: auto;
-/*    background-color: blue;*/
 }
 
 .rackDetails-rack-header-print-btn, .rackDetails-rack-header-delete-btn {
@@ -1820,7 +1819,7 @@ li.dropdown {
     float: left;
     width: 10%;
     height: auto;
-    padding: 0px 2px 4px 2px;
+    padding: 4px 2px 4px 2px;
 }
 
 .rackDetails-rack-Bins-container {
