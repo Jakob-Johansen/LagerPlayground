@@ -172,7 +172,7 @@
                         <tr>
                             <td>
                                 <input class="receive-rejectmodal-table-numberInput background-dark" type="number" />
-                                <p class="receive-rejectmodal-table-numberInput-error trim" style="padding-top: 2px !important; color: #dc3545 !important;"></p>
+                                <p class="receive-rejectmodal-table-numberInput-error trim" style="padding-top: 2px !important; color: #e62235 !important;"></p>
                             </td>
                             <td>
                                 <select class="receive-rejectmodal-table-select background-dark">
@@ -182,7 +182,7 @@
                                         <option data-reasonid="@item.ID">@item.Reason</option>
                                     }
                                 </select>
-                                <p class="receive-rejectmodal-table-select-error trim" style="padding-top: 2px !important; color: #dc3545 !important;"></p>
+                                <p class="receive-rejectmodal-table-select-error trim" style="padding-top: 2px !important; color: #e62235 !important;"></p>
                             </td>
                             <td><input class="receive-rejectmodal-table-create-note background-dark" type="text" /></td>
                             <td><button class="receive-rejectmodal-table-add-btn">Add</button></td>
@@ -465,8 +465,8 @@
     function ReceiveProgressBarFunction(thisElement) {
         //Grøn: #1a9c23
         //Gul: #ffc107
-        //Rød: #dc3545
-        //background: linear-gradient(to left, #1a9c23 0%, #1a9c23 33.333%, #ffc107 33.333%, #ffc107 67.333%, #dc3545 67.333%, #dc3545 100%);
+        //Rød: #e62235
+        //background: linear-gradient(to left, #1a9c23 0%, #1a9c23 33.333%, #ffc107 33.333%, #ffc107 67.333%, #e62235 67.333%, #e62235 100%);
 
         let getUnreceivedNumber = thisElement.find(unreceivedPTag).html();
         let getAcceptedNumber = thisElement.find(acceptedPTag).html();
@@ -479,7 +479,7 @@
             let percentageUnreceived = getUnreceivedNumber / thisElement.find(orderedPTag).data("ordered") * 100;
             let percentageRejected = getRejectedNumber / thisElement.find(orderedPTag).data("ordered") * 100;
             let percentage = percentageUnreceived + percentageRejected;
-            thisElement.find(receiveProgressBar).css( { background : "linear-gradient(to right, #dc3545 0%, #dc3545 " + percentageRejected + "%, #ffc107 " + percentageRejected + "%, #ffc107 " + percentage + "%, #1a9c23 " + percentage + "%, #1a9c23 100%)" });
+            thisElement.find(receiveProgressBar).css( { background : "linear-gradient(to right, #e62235 0%, #e62235 " + percentageRejected + "%, #ffc107 " + percentageRejected + "%, #ffc107 " + percentage + "%, #1a9c23 " + percentage + "%, #1a9c23 100%)" });
         }
         else {
             let percentageAccepted = getAcceptedNumber / thisElement.find(orderedPTag).data("ordered") * 100;
