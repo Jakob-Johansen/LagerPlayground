@@ -28,7 +28,7 @@ const savedProductModalContainer = $(".savedInDbModal-container");
 const savedProductModalIcon = $(".savedInDbModal-logo");
 const savedProductModalText = $(".savedInDbModal-text");
 
-var red = "#dc3545";
+var red = "#e62235";
 var yellow = "#ffc107";
 var green = "#28a745";
 

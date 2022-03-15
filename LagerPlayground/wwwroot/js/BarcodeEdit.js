@@ -114,7 +114,7 @@ function ajaxCall(barcode) {
             loader.css("display", "none");
             errorTextOutputTag.text(dataResult.msg);
             if (dataResult.boolean == false) {
-                errorTextIconColor("#dc3545");
+                errorTextIconColor("#e62235");
                 errorIconOutputTag.text("error_outline");
             }
             else {
