@@ -1671,12 +1671,12 @@ li.dropdown {
 
 .rackDetails-left-container {
     float: left;
-    width: 50%;
+    width: 40%;
 }
 
 .rackDetails-right-container {
     float: right;
-    width: 50%;
+    width: 60%;
 }
 
 .rackDetails-createBins-overall-container {
@@ -1804,6 +1804,7 @@ li.dropdown {
     height: auto;
     border-left: 10px solid white;
     border-right: 10px solid white;
+    padding-top: 10px;
 
 /*    border-left: 10px solid #9578ff;
     border-right: 10px solid #9578ff;*/
@@ -1823,9 +1824,24 @@ li.dropdown {
 }
 
 .rackDetails-rack-Bins-container {
-    width: 100%;
+    max-width: 150px;
+/*    width: 100%;*/
     height: 100px;
+    margin: 0 auto;
     background-color: #B0916E;
+    position: relative;
+}
+
+.rackDetails-rack-Bins-text-number {
+    text-align: center;
+    color: black !important;
+    font-weight: bold;
+    margin: 0 auto;
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 50%;
+    transform: translateY(-50%);
 }
 
 .rackDetails-rack-Bins-container:hover {
