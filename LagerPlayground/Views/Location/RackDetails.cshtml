@@ -49,54 +49,50 @@
 
             <div class="rackDetails-rack-top-border"></div>
             <div class="rackDetails-rack-overall-container">
-                <div class="rackDetails-rack-container">
+
+                @*                    <div class="rackDetails-rack-container">
                     <div class="rackDetails-rack-Bins-overall-container">
-                        <div class="rackDetails-rack-Bins-float-container">
-                            <div class="rackDetails-rack-Bins-container">
-                            </div>
-                        </div>
-                        <div class="rackDetails-rack-Bins-float-container">
-                            <div class="rackDetails-rack-Bins-container">
-                            </div>
-                        </div>
-                        <div class="rackDetails-rack-Bins-float-container">
-                            <div class="rackDetails-rack-Bins-container">
-                            </div>
-                        </div>
-                        <div class="rackDetails-rack-Bins-float-container">
-                            <div class="rackDetails-rack-Bins-container">
-                            </div>
-                        </div>
-                        <div class="rackDetails-rack-Bins-float-container">
-                            <div class="rackDetails-rack-Bins-container">
-                            </div>
-                        </div>
-                        <div class="rackDetails-rack-Bins-float-container">
-                            <div class="rackDetails-rack-Bins-container">
-                            </div>
-                        </div>
-                        <div class="rackDetails-rack-Bins-float-container">
-                            <div class="rackDetails-rack-Bins-container">
-                            </div>
-                        </div>
-                        <div class="rackDetails-rack-Bins-float-container">
-                            <div class="rackDetails-rack-Bins-container">
-                            </div>
-                        </div>
-                        <div class="rackDetails-rack-Bins-float-container">
-                            <div class="rackDetails-rack-Bins-container">
-                            </div>
-                        </div>
-                        <div class="rackDetails-rack-Bins-float-container">
-                            <div class="rackDetails-rack-Bins-container">
-                            </div>
-                        </div>
+                    <div class="rackDetails-rack-Bins-float-container">
+                    <div class="rackDetails-rack-Bins-container">
+                    <p class="trim rackDetails-rack-Bins-text-number">01</p>
+                    </div>
+                    </div>
+                    <div class="rackDetails-rack-Bins-float-container">
+                    <div class="rackDetails-rack-Bins-container">
+                    <p class="trim rackDetails-rack-Bins-text-number">01</p>
+                    </div>
+                    </div>
                     </div>
                     <div class="clearBoth"></div>
                     <div class="rackDetails-rack-shelf-container">
-                        <p class="trim rackDetails-rack-shelf-text">Shelf: <span class="rackDetails-rack-shelf-text-number">01</span></p>
+                    <p class="trim rackDetails-rack-shelf-text">Shelf: <span class="rackDetails-rack-shelf-text-number">03</span></p>
                     </div>
-                </div>
+                    </div>*@
+
+                @foreach (var shelf in Model.Locations_Shelfs.OrderByDescending(x => x.ShelfNumber))
+                {
+                    <div class="rackDetails-rack-container">
+                        <div class="rackDetails-rack-Bins-overall-container">
+                            @{
+                                var getWidth = Math.Round(Decimal.Divide(100, shelf.Locations_Positions.Count()), 3);
+                                string getWidthString = getWidth.ToString().Replace(",", ".");
+
+                                foreach (var position in shelf.Locations_Positions)
+                                {
+                                    <div class="rackDetails-rack-Bins-float-container" style="width: @getWidthString%;">
+                                        <div class="rackDetails-rack-Bins-container">
+                                            <p class="trim rackDetails-rack-Bins-text-number">@(position.PositionNumber < 10 ? "0" + position.PositionNumber : position.PositionNumber)</p>
+                                        </div>
+                                    </div>
+                                }
+                            }
+                        </div>
+                        <div class="clearBoth"></div>
+                        <div class="rackDetails-rack-shelf-container">
+                            <p class="trim rackDetails-rack-shelf-text">Shelf: <span class="rackDetails-rack-shelf-text-number">@(shelf.ShelfNumber < 10 ? "0" + shelf.ShelfNumber : shelf.ShelfNumber)</span> ^</p>
+                        </div>
+                    </div>
+                }
             </div>
             <div class="rackDetails-rack-bottom-border"></div>
         </div>
