@@ -131,7 +131,7 @@
 
     // Select functions
 
-    bin.click(function () {
+    $(document).on("click", ".rackDetails-rack-Bins-container", function () {
         if($(this).hasClass(activeSelectBin)) {
             $(this).removeClass(activeSelectBin);
             $(this).find(".rackDetails-rack-Bins-text-number").attr("style", "color: black !important;")
