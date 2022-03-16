@@ -1,5 +1,6 @@
 ﻿using LagerPlayground.Data;
 using LagerPlayground.Models;
+using LagerPlayground.Models.VM;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -249,7 +250,17 @@ namespace LagerPlayground.Controllers
                 _context.AddRange(locations_PositionsList);
                 await _context.SaveChangesAsync();
 
-                return Json(new { booleanError = true });
+                List<VMPositions> vmPositionsList = new();
+                foreach (var item in locations_PositionsList.OrderByDescending(x => x.PositionNumber))
+                {
+                    vmPositionsList.Add(new VMPositions
+                    { 
+                        ID = item.ID,
+                        PositionNumber = item.PositionNumber
+                    });
+                }
+
+                return Json(new { booleanError = true, shelfID = locations_Shelfs.ID, shelfNumber = locations_Shelfs.ShelfNumber, positions = vmPositionsList });
             }
             catch (DbUpdateException)
             {

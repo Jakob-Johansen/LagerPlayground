@@ -22,6 +22,7 @@
             <p>Section: @Model.Locations.Section</p>
             <p>Row: @Model.Locations.Row</p>
             <p>Rack: @Model.RackNumber</p>
+            <a href='javascript:history.go(-1)'>Back to Location Details</a>
 
             <div class="rackDetails-createBins-overall-container">
                 <div class="rackDetails-createBins-form-container">
@@ -101,28 +102,92 @@
 
 @section Scripts {
 <script>
-        let createBtn = $(".rackDetails-createBins-form-btn");
-        let binInputField = $(".rackDetails-createBins-form-number");
+    let createBtn = $(".rackDetails-createBins-form-btn");
+    let binInputField = $(".rackDetails-createBins-form-number");
 
-        binInputField.on("input", function () {
-            let binInputFieldVal = parseInt(binInputField.val());
-            if (binInputFieldVal < 1 || binInputField.val().startsWith(0))
-            {
-                binInputField.val(0);
+    let allSelectedBins = [];
+    let activeSelectBin = "activeSelectBin";
+
+    let bin = $(".rackDetails-rack-Bins-container");
+
+    const shelfOverAllContainer = $(".rackDetails-rack-overall-container");
+
+    binInputField.on("input", function () {
+        let binInputFieldVal = parseInt(binInputField.val());
+        if (binInputFieldVal < 1 || binInputField.val().startsWith(0))
+        {
+            binInputField.val(0);
+        }
+    });
+
+    createBtn.click(function () {
+        let binInputFieldVal = parseInt(binInputField.val());
+        if (binInputField.val().trim() == "" || binInputFieldVal < 1) {
+            return;
+        }
+
+        CreateShelfAndBins(binInputField.val());
+    });
+
+    // Select functions
+
+    bin.click(function () {
+        if($(this).hasClass(activeSelectBin)) {
+            $(this).removeClass(activeSelectBin);
+            $(this).find(".rackDetails-rack-Bins-text-number").attr("style", "color: black !important;")
+            //$(this).css("backgroundColor", "#B0916E");
+            //$(this).css("color","black");
+        }
+        else {
+            $(this).addClass(activeSelectBin);
+            //$(this).css("backgroundColor", "#5193e8");
+            $(this).find(".rackDetails-rack-Bins-text-number").attr("style", "color: white !important;")
+        }
+    });
+
+    // Create shelf & bins in html function
+
+    function CreateShelfAndBinsHtml(shelfID, shelfNumber, positions) {
+        if (shelfNumber < 10) {
+            shelfNumber = "0" + shelfNumber;
+        }
+
+        shelfOverAllContainer.prepend(
+            `
+            <div class="rackDetails-rack-container">
+                <div class="rackDetails-rack-Bins-overall-container">
+
+                </div>
+                <div class="clearBoth"></div>
+                <div class="rackDetails-rack-shelf-container" data-shelfid="${shelfID}">
+                    <p class="trim rackDetails-rack-shelf-text">Shelf: <span class="rackDetails-rack-shelf-text-number">${shelfNumber}</span> ^</p>
+                </div>
+            </div>
+            `
+        );
+
+        let getWidth = parseFloat(100 / positions.length).toFixed(3);
+
+        for(var i = 0; i < positions.length; i++) {
+            let newPositionNumber = positions[i].positionNumber;
+
+            if (positions[i].positionNumber < 10) {
+                newPositionNumber = "0" + positions[i].positionNumber;
             }
-        });
 
-        createBtn.click(function () {
-            let binInputFieldVal = parseInt(binInputField.val());
-            if (binInputField.val().trim() == "" || binInputFieldVal < 1) {
-                console.log("t");
-                return;
-            }
+            shelfOverAllContainer.children(":first").find(".rackDetails-rack-Bins-overall-container").prepend(
+                `
+                <div class="rackDetails-rack-Bins-float-container" style="width: ${getWidth}%;">
+                    <div class="rackDetails-rack-Bins-container" data-positionid="${positions[i].id}">
+                        <p class="trim rackDetails-rack-Bins-text-number">${newPositionNumber}</p>
+                    </div>
+                </div>
+                `
+            );
+        }
+    }
 
-            CreateShelfAndBins(binInputField.val());
-        });
-
-        // Ajax Functions
+    // Ajax Functions
 
     function CreateShelfAndBins(qty) {
         $.ajax({
@@ -133,6 +198,7 @@
             success: function (result) {
                 if (result.booleanError == true) {
                     console.log("Success!");
+                    CreateShelfAndBinsHtml(result.shelfID, result.shelfNumber, result.positions);
                 }
                 else {
                     console.log(result.msg)
