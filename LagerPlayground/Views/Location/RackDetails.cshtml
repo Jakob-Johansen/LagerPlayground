@@ -41,9 +41,9 @@
                     <div class="rackDetails-rack-header-btn-float-container">
                         <a class="rackDetails-rack-header-print-btn">Print</a>
                     </div>
-                    <div class="rackDetails-rack-header-btn-float-container">
+@*                    <div class="rackDetails-rack-header-btn-float-container">
                         <a class="rackDetails-rack-header-delete-btn">Delete</a>
-                    </div>
+                    </div>*@
                 </div>
                 <div class="clearBoth"></div>
             </div>
@@ -81,7 +81,7 @@
                                 foreach (var position in shelf.Locations_Positions)
                                 {
                                     <div class="rackDetails-rack-Bins-float-container" style="width: @getWidthString%;">
-                                        <div class="rackDetails-rack-Bins-container">
+                                        <div class="rackDetails-rack-Bins-container" data-positionid="@position.ID">
                                             <p class="trim rackDetails-rack-Bins-text-number">@(position.PositionNumber < 10 ? "0" + position.PositionNumber : position.PositionNumber)</p>
                                         </div>
                                     </div>
@@ -100,17 +100,20 @@
     </div>
 </div>
 
+<p>Når man trykker på en shelf skal man kunne slette og tilføje bins/positioner, den shelf skal skifte farve så man tydeligt kan se hvilken det er, man skal også kunne slette en shelf</p>
 @section Scripts {
 <script>
-    let createBtn = $(".rackDetails-createBins-form-btn");
+    const createBtn = $(".rackDetails-createBins-form-btn");
     let binInputField = $(".rackDetails-createBins-form-number");
 
     let allSelectedBins = [];
-    let activeSelectBin = "activeSelectBin";
+    const activeSelectBin = "activeSelectBin";
 
-    let bin = $(".rackDetails-rack-Bins-container");
+    const printBtn = $(".rackDetails-rack-header-print-btn"); 
 
     const shelfOverAllContainer = $(".rackDetails-rack-overall-container");
+
+    // Create Bins
 
     binInputField.on("input", function () {
         let binInputFieldVal = parseInt(binInputField.val());
@@ -129,19 +132,30 @@
         CreateShelfAndBins(binInputField.val());
     });
 
+    // Print
+
+    printBtn.click(function () {
+        if (allSelectedBins.length == 0) {
+            console.log("No Positions was selected");
+            return;
+        }
+
+        PrintSelectedPositions(allSelectedBins);
+    });
+
     // Select functions
 
     $(document).on("click", ".rackDetails-rack-Bins-container", function () {
         if($(this).hasClass(activeSelectBin)) {
             $(this).removeClass(activeSelectBin);
-            $(this).find(".rackDetails-rack-Bins-text-number").attr("style", "color: black !important;")
-            //$(this).css("backgroundColor", "#B0916E");
-            //$(this).css("color","black");
+            $(this).find(".rackDetails-rack-Bins-text-number").attr("style", "color: black !important;");
+            let index = allSelectedBins.indexOf($(this).data("positionid"));
+            allSelectedBins.splice(index, 1);
         }
         else {
             $(this).addClass(activeSelectBin);
-            //$(this).css("backgroundColor", "#5193e8");
-            $(this).find(".rackDetails-rack-Bins-text-number").attr("style", "color: white !important;")
+            $(this).find(".rackDetails-rack-Bins-text-number").attr("style", "color: white !important;");
+            allSelectedBins.push($(this).data("positionid"));
         }
     });
 
@@ -210,5 +224,28 @@
             }
         });
     }
+
+    function PrintSelectedPositions(selectedIds) {
+    $.ajax({
+        type: "POST",
+        url: "/Location/PrintLocationBarcodes",
+        data: { IDs: selectedIds },
+        success: function (result) {
+
+            if (result.booleanError == false) {
+                window.open('/Pdf/Barcode.pdf', '_blank');
+                $(".rackDetails-rack-Bins-container").removeClass(activeSelectBin);
+                $(".rackDetails-rack-Bins-text-number").attr("style", "color: black !important;");
+                allSelectedBins = [];
+            }
+            else {
+                console.log(result.errorMsg);
+            }
+        },
+        error: function (req, status, error) {
+            console.log(status);
+        }
+    });
+}
 </script>
 }

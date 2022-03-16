@@ -1762,6 +1762,7 @@ li.dropdown {
     text-align: center;
     text-decoration: none;
     font-size: 18px;
+    user-select: none;
 }
 
 .rackDetails-rack-header-print-btn:hover, .rackDetails-rack-header-delete-btn:hover {

@@ -1,4 +1,5 @@
 ﻿using LagerPlayground.Data;
+using LagerPlayground.Helpers;
 using LagerPlayground.Models;
 using LagerPlayground.Models.VM;
 using Microsoft.AspNetCore.Mvc;
@@ -9,9 +10,11 @@ namespace LagerPlayground.Controllers
     public class LocationController : Controller
     {
         private readonly Context _context;
-        public LocationController(Context context)
+        private readonly IWebHostEnvironment _env;
+        public LocationController(Context context, IWebHostEnvironment env)
         {
             _context = context;
+            _env = env;
         }
 
         // Når man creater en location skal man kunne custom tilføje flere racks og shelfs.
@@ -266,6 +269,36 @@ namespace LagerPlayground.Controllers
             {
                 return Json(new { booleanError = false, msg = "An Database error has occured" });
             }
+        }
+
+        [HttpPost]
+        public async Task<JsonResult> PrintLocationBarcodes(List<int> IDs)
+        {
+            if (IDs == null)
+            {
+                return Json(new { booleanError = true, errorMsg = "No IDs was found"});
+            }
+
+            List<PdfModel> pdfModels = new();
+
+            IDs.Sort();
+            foreach (var item in IDs)
+            {
+                var locationPosition = await _context.Locations_Positions.FirstOrDefaultAsync(x => x.ID == item);
+                if (locationPosition != null)
+                {
+                    pdfModels.Add(new PdfModel
+                    {
+                        Barcode = locationPosition.FullLocationBarcode,
+                        Name = locationPosition.FullLocationBarcode
+                    });
+                }
+            }
+
+            PdfHelper pdfHelper = new(_env);
+            pdfHelper.GenerateBarcodesPrint(pdfModels);
+
+            return Json(new { booleanError = false });
         }
     }
 }
