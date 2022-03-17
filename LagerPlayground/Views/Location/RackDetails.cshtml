@@ -37,19 +37,25 @@
         <div class="rackDetails-container">
 
             <div class="rackDetails-rack-header-btn-overall-container">
-                <div class="rackDetails-rack-header-btn-float-overall-container">
+                <div class="rackDetails-rack-header-btn-float-left-overall-container">
                     <div class="rackDetails-rack-header-btn-container-left">
-                        <div class="rackDetails-rack-header-btn-float-container">
+                        <div class="rackDetails-rack-header-btn-float-left-container">
+                            <a class="rackDetails-rack-header-selectall-btn">Select All</a>
+                        </div>
+                        <div class="rackDetails-rack-header-btn-float-left-container">
+                            <a class="rackDetails-rack-header-deselectall-btn">Deselect All</a>
+                        </div>
+                        <div class="rackDetails-rack-header-btn-float-left-container">
                             <a class="rackDetails-rack-header-print-btn">Print</a>
                         </div>
-@*                        <div class="rackDetails-rack-header-btn-float-container">
-                            <a class="rackDetails-rack-header-delete-btn">Delete</a>
-                        </div>*@
+                        <div class="rackDetails-rack-header-btn-float-left-container">
+                            <a class="rackDetails-rack-header-deletetop-shelf-btn">Delete Top Shelf</a>
+                        </div>
                         <div class="clearBoth"></div>
                     </div>
                 </div>
-                <div class="rackDetails-rack-header-btn-float-overall-container">
-  @*                  <div class="rackDetails-rack-header-btn-container-right">
+                <div class="rackDetails-rack-header-btn-float-right-overall-container">
+                    <div class="rackDetails-rack-header-btn-container-right">
                         <div class="rackDetails-rack-header-btn-float-container">
                             <a class="rackDetails-rack-header-delete-bin-btn">-</a>
                         </div>
@@ -57,7 +63,7 @@
                             <a class="rackDetails-rack-header-add-bin-btn">+</a>
                         </div>
                         <div class="clearBoth"></div>
-                    </div>*@
+                    </div>
                 </div>
                 <div class="clearBoth"></div>
             </div>
@@ -65,45 +71,29 @@
             <div class="rackDetails-rack-top-border"></div>
             <div class="rackDetails-rack-overall-container">
 
-                @*                    <div class="rackDetails-rack-container">
-                    <div class="rackDetails-rack-Bins-overall-container">
-                    <div class="rackDetails-rack-Bins-float-container">
-                    <div class="rackDetails-rack-Bins-container">
-                    <p class="trim rackDetails-rack-Bins-text-number">01</p>
-                    </div>
-                    </div>
-                    <div class="rackDetails-rack-Bins-float-container">
-                    <div class="rackDetails-rack-Bins-container">
-                    <p class="trim rackDetails-rack-Bins-text-number">01</p>
-                    </div>
-                    </div>
-                    </div>
-                    <div class="clearBoth"></div>
-                    <div class="rackDetails-rack-shelf-container">
-                    <p class="trim rackDetails-rack-shelf-text">Shelf: <span class="rackDetails-rack-shelf-text-number">03</span></p>
-                    </div>
-                    </div>*@
-
                 @foreach (var shelf in Model.Locations_Shelfs.OrderByDescending(x => x.ShelfNumber))
                 {
                     <div class="rackDetails-rack-container">
                         <div class="rackDetails-rack-Bins-overall-container">
                             @{
-                                var getWidth = Math.Round(Decimal.Divide(100, shelf.Locations_Positions.Count()), 3);
-                                string getWidthString = getWidth.ToString().Replace(",", ".");
-
-                                foreach (var position in shelf.Locations_Positions)
+                                if(shelf.Locations_Positions.Count() != 0) 
                                 {
-                                    <div class="rackDetails-rack-Bins-float-container" style="width: @getWidthString%;">
-                                        <div class="rackDetails-rack-Bins-container" data-positionid="@position.ID">
-                                            <p class="trim rackDetails-rack-Bins-text-number">@(position.PositionNumber < 10 ? "0" + position.PositionNumber : position.PositionNumber)</p>
+                                    var getWidth = Math.Round(Decimal.Divide(100, shelf.Locations_Positions.Count()), 3);
+                                    string getWidthString = getWidth.ToString().Replace(",", ".");
+
+                                    foreach (var position in shelf.Locations_Positions)
+                                    {
+                                        <div class="rackDetails-rack-Bins-float-container" style="width: @getWidthString%;">
+                                            <div class="rackDetails-rack-Bins-container" data-positionid="@position.ID">
+                                                <p class="trim rackDetails-rack-Bins-text-number">@(position.PositionNumber < 10 ? "0" + position.PositionNumber : position.PositionNumber)</p>
+                                            </div>
                                         </div>
-                                    </div>
+                                    }                                   
                                 }
                             }
                         </div>
                         <div class="clearBoth"></div>
-                        <div class="rackDetails-rack-shelf-container">
+                        <div class="rackDetails-rack-shelf-container" data-shelfid="@shelf.ID">
                             <p class="trim rackDetails-rack-shelf-text">Shelf: <span class="rackDetails-rack-shelf-text-number">@(shelf.ShelfNumber < 10 ? "0" + shelf.ShelfNumber : shelf.ShelfNumber)</span> ^</p>
                         </div>
                     </div>
@@ -114,7 +104,39 @@
     </div>
 </div>
 
-<p>Når man trykker på en shelf skal man kunne slette og tilføje bins/positioner, den shelf skal skifte farve så man tydeligt kan se hvilken det er, man skal også kunne slette en shelf</p>
+<div class="tote-delete-overlay-overall-container">
+    <div class="tote-overlay-container">
+        <div class="tote-overlay-nav-overall-container">
+            <div class="tote-overlay-nav-container">
+                <p>Are you sure?</p>
+            </div>
+            <div class="tote-overlay-nav-container">
+                <span class="material-icons tote-overlay-nav-close-btn">close</span>
+            </div>
+            <div class="clearBoth"></div>
+        </div>
+
+        <div class="tote-overlay-info-container">
+            <p></p>
+        </div>
+
+        <div class="tote-overlay-btns-overall-container">
+            <div class="tote-overlay-btns-container-cancel">
+                <button class="tote-overlay-btn-cancel tote-overlay-nav-close-btn">Cancel</button>
+            </div>
+            <div class="tote-overlay-btns-container-add">
+                <form asp-action="DeleteTopShelf">
+                    <input class="deleteModalFormInputHidden" type="hidden" readonly name="ID" value="@Model.ID" />
+                    <button class="tote-overlay-btn-add tote-overlay-btn-delete">Delete</button>
+                </form>
+            </div>
+
+            <div class="clearBoth"></div>
+        </div>
+
+    </div>
+</div>
+
 @section Scripts {
 <script>
     const createBtn = $(".rackDetails-createBins-form-btn");
@@ -124,9 +146,31 @@
     const activeSelectBin = "activeSelectBin";
     const activeSelectShelf = "activeSelectShelf";
 
-    const printBtn = $(".rackDetails-rack-header-print-btn"); 
+    const selectAll = $(".rackDetails-rack-header-selectall-btn");
+    const deselectAll = $(".rackDetails-rack-header-deselectall-btn");
+    const printBtn = $(".rackDetails-rack-header-print-btn");
+
+    const shelfSelectBtnsContainer = $(".rackDetails-rack-header-btn-container-right");
+    const addBinBtn = $(".rackDetails-rack-header-add-bin-btn");
+    const deleteBinBtn = $(".rackDetails-rack-header-delete-bin-btn");
 
     const shelfOverAllContainer = $(".rackDetails-rack-overall-container");
+
+
+    const closeBtn = $(".tote-overlay-nav-close-btn");
+    const deleteTopShelfBtn = $(".rackDetails-rack-header-deletetop-shelf-btn")
+    const overlayDeleteContainer = $(".tote-delete-overlay-overall-container");
+
+    // Delete Modal
+
+    deleteTopShelfBtn.click(function () {
+        overlayDeleteContainer.css("display", "block");
+        $(".tote-overlay-info-container").find("p").text("You are deleting a Shelf. Are you sure you want to proceed?");
+    });
+
+    closeBtn.click(function () {
+        overlayDeleteContainer.css("display", "none");
+    });
 
     // Create Bins
 
@@ -143,7 +187,6 @@
         if (binInputField.val().trim() == "" || binInputFieldVal < 1) {
             return;
         }
-
         CreateShelfAndBins(binInputField.val());
     });
 
@@ -154,16 +197,17 @@
             console.log("No Positions was selected");
             return;
         }
-
         PrintSelectedPositions(allSelectedBins);
     });
 
     // Select shelf functions
 
+        // Select shelf
     $(document).on("click", ".rackDetails-rack-shelf-container", function () {
         if($(this).hasClass(activeSelectShelf)) {
             $(".rackDetails-rack-shelf-text").attr("style", "color: black !important;");
             $(".rackDetails-rack-container").attr("style", "border-color: white !important;");
+            shelfSelectBtnsContainer.css("display", "none");
             $(this).removeClass(activeSelectShelf);
             $(this).find(".rackDetails-rack-shelf-text").attr("style", "color: black !important;");
             $(this).parent(".rackDetails-rack-container").attr("style", "border-color: white !important;");
@@ -171,15 +215,28 @@
         else {
             $(".rackDetails-rack-shelf-text").attr("style", "color: black !important;");
             $(".rackDetails-rack-container").attr("style", "border-color: white !important;");
+            shelfSelectBtnsContainer.css("display", "none");
             $(".rackDetails-rack-shelf-container").removeClass(activeSelectShelf);
             $(this).addClass(activeSelectShelf);
             $(this).find(".rackDetails-rack-shelf-text").attr("style", "color: white !important;");
             $(this).parent(".rackDetails-rack-container").attr("style", "border-color: #843df5 !important;");
+            shelfSelectBtnsContainer.css("display", "block");
         }
+    });
+
+        // Add & Delete bins
+
+    addBinBtn.click(function () {
+        AddBinToShelf($(".activeSelectShelf").data("shelfid"));
+    });
+
+    deleteBinBtn.click(function () {
+        DeleteBinFromShelf($(".activeSelectShelf").data("shelfid"));
     });
 
     // Select bins functions
 
+        // Select one at a time
     $(document).on("click", ".rackDetails-rack-Bins-container", function () {
         if($(this).hasClass(activeSelectBin)) {
             $(this).removeClass(activeSelectBin);
@@ -192,6 +249,28 @@
             $(this).find(".rackDetails-rack-Bins-text-number").attr("style", "color: white !important;");
             allSelectedBins.push($(this).data("positionid"));
         }
+    });
+
+        // Select All
+    selectAll.click(function () {
+        $(".rackDetails-rack-Bins-container").each(function(index) {
+            if(!$(this).hasClass(activeSelectBin)) {
+                $(this).addClass(activeSelectBin);
+                $(this).find(".rackDetails-rack-Bins-text-number").attr("style", "color: white !important;");
+                allSelectedBins.push($(this).data("positionid"));
+            }
+        });
+    });
+
+        // Deselect All
+    deselectAll.click(function () {
+        $(".rackDetails-rack-Bins-container").removeClass(activeSelectBin);
+        $(".rackDetails-rack-Bins-container").find(".rackDetails-rack-Bins-text-number").attr("style", "color: black !important;");
+        allSelectedBins = [];
+        $(".rackDetails-rack-shelf-text").attr("style", "color: black !important;");
+        $(".rackDetails-rack-container").attr("style", "border-color: white !important;");
+        shelfSelectBtnsContainer.css("display", "none");
+        $(".rackDetails-rack-shelf-container").removeClass(activeSelectShelf);
     });
 
     // Create shelf & bins in html function
@@ -236,6 +315,41 @@
         }
     }
 
+        // Add Bin Html
+    function CreateBinFunctionHtml (positionID, positionNumber) {
+        let newWidth = parseFloat(100 / positionNumber).toFixed(3);
+        
+        if(positionNumber < 10) {
+            positionNumber = "0" + positionNumber;
+        }
+
+        $(".activeSelectShelf").parent(".rackDetails-rack-container").find(".rackDetails-rack-Bins-overall-container").find(".rackDetails-rack-Bins-float-container").each(function(index){
+            $(this).css("width", newWidth + "%");
+        });
+
+        $(".activeSelectShelf").parent(".rackDetails-rack-container").find(".rackDetails-rack-Bins-overall-container").append(
+        `
+        <div class="rackDetails-rack-Bins-float-container" style="width: ${newWidth}%;">
+            <div class="rackDetails-rack-Bins-container" data-positionid="${positionID}">
+                <p class="trim rackDetails-rack-Bins-text-number">${positionNumber}</p>
+            </div>
+        </div>
+        `
+        );
+    }
+
+    // Remove Shelfs & Bins in Html
+
+        // Delete Bin
+    function DeleteBinFunctionHtml(positionNumber) {
+        $(".activeSelectShelf").parent(".rackDetails-rack-container").find(".rackDetails-rack-Bins-overall-container").children().last().remove();
+        let newWidth = parseFloat(100 / positionNumber).toFixed(3);
+
+        $(".activeSelectShelf").parent(".rackDetails-rack-container").find(".rackDetails-rack-Bins-overall-container").find(".rackDetails-rack-Bins-float-container").each(function(index){
+            $(this).css("width", newWidth + "%");
+        });
+    }
+
     // Ajax Functions
 
     function CreateShelfAndBins(qty) {
@@ -245,8 +359,8 @@
             headers: { "RequestVerificationToken": "@GetAntiXsrfRequestToken()" },
             data: { quantity: qty, rackID: @Model.ID, rackNumber: @Model.RackNumber, row: "@Model.Locations.Row" },
             success: function (result) {
+
                 if (result.booleanError == true) {
-                    console.log("Success!");
                     CreateShelfAndBinsHtml(result.shelfID, result.shelfNumber, result.positions);
                 }
                 else {
@@ -261,26 +375,75 @@
     }
 
     function PrintSelectedPositions(selectedIds) {
-    $.ajax({
-        type: "POST",
-        url: "/Location/PrintLocationBarcodes",
-        data: { IDs: selectedIds },
-        success: function (result) {
+        $.ajax({
+            type: "POST",
+            url: "/Location/PrintLocationBarcodes",
+            headers: { "RequestVerificationToken": "@GetAntiXsrfRequestToken()" },
+            data: { IDs: selectedIds },
+            success: function (result) {
 
-            if (result.booleanError == false) {
-                window.open('/Pdf/Barcode.pdf', '_blank');
-                $(".rackDetails-rack-Bins-container").removeClass(activeSelectBin);
-                $(".rackDetails-rack-Bins-text-number").attr("style", "color: black !important;");
-                allSelectedBins = [];
+                if (result.booleanError == false) {
+                    window.open('/Pdf/Barcode.pdf', '_blank');
+                    $(".rackDetails-rack-Bins-container").removeClass(activeSelectBin);
+                    $(".rackDetails-rack-Bins-text-number").attr("style", "color: black !important;");
+                    allSelectedBins = [];
+                }
+                else {
+                    console.log(result.errorMsg);
+                }
+            },
+            error: function (req, status, error) {
+                console.log(status);
             }
-            else {
-                console.log(result.errorMsg);
+        });
+    }
+
+    function AddBinToShelf(shelfID) {
+        $.ajax({
+            type: "POST",
+            url: "/Location/AddBinToShelf",
+            headers: { "RequestVerificationToken": "@GetAntiXsrfRequestToken()" },
+            data: { ShelfID: shelfID },
+            success: function (result) {
+
+                if (result.booleanError == false) {
+                    if (result.noPositions == true) {
+                        console.log("No bins to delete");
+                        return;
+                    }
+                    else {
+                    CreateBinFunctionHtml(result.positionID, result.positionNumber);
+                    }
+                }
+                else {
+                    console.log(result.errorMsg);
+                }
+            },
+            error: function (req, status, error) {
+                console.log(status);
             }
-        },
-        error: function (req, status, error) {
-            console.log(status);
-        }
-    });
-}
+        });
+    }
+
+    function DeleteBinFromShelf(shelfID) {
+        $.ajax({
+            type: "POST",
+            url: "/Location/DeleteBinFromShelf",
+            headers: { "RequestVerificationToken": "@GetAntiXsrfRequestToken()" },
+            data: { ShelfID: shelfID },
+            success: function (result) {
+
+                if (result.booleanError == false) {
+                    DeleteBinFunctionHtml(result.positionNumber);
+                }
+                else {
+                    console.log(result.errorMsg);
+                }
+            },
+            error: function (req, status, error) {
+                console.log(status);
+            }
+        });
+    }
 </script>
 }

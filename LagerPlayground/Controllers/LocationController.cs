@@ -272,6 +272,7 @@ namespace LagerPlayground.Controllers
         }
 
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public async Task<JsonResult> PrintLocationBarcodes(List<int> IDs)
         {
             if (IDs == null)
@@ -299,6 +300,131 @@ namespace LagerPlayground.Controllers
             pdfHelper.GenerateBarcodesPrint(pdfModels);
 
             return Json(new { booleanError = false });
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<JsonResult> AddBinToShelf(int? ShelfID)
+        {
+            if (ShelfID == null)
+            {
+                return Json(new { booleanError = true, errorMsg = "No ide was found" });
+            }
+
+            var shelf = await _context.Locations_Shelfs
+                .Include(x => x.Locations_Positions)
+                .Include(x => x.Locations_Rack)
+                    .ThenInclude(t => t.Locations)
+                .FirstOrDefaultAsync(x => x.ID == ShelfID);
+
+            if (shelf == null)
+            {
+                return Json(new { booleanError = true, errorMsg = "No shelf was found" });
+            }
+
+            var getNewPositionNumber = 0;
+
+            if (!shelf.Locations_Positions.Any())
+            {
+                getNewPositionNumber = 1;
+            }
+            else
+            {
+                getNewPositionNumber = shelf.Locations_Positions.ToArray()[shelf.Locations_Positions.Count() - 1].PositionNumber + 1;
+            }
+            
+            try
+            {
+                Locations_Positions locations_Positions = new();
+                locations_Positions.Locations_ShelfsID = (int)ShelfID;
+                locations_Positions.Created = DateTime.Now;
+                locations_Positions.PositionNumber = getNewPositionNumber;
+                locations_Positions.FullLocationBarcode = shelf.Locations_Rack.Locations.Row + (shelf.Locations_Rack.RackNumber < 10 ? "-0" + shelf.Locations_Rack.RackNumber : "-" + shelf.Locations_Rack.RackNumber) + (shelf.ShelfNumber < 10 ? "-0" + shelf.ShelfNumber : "-" + shelf.ShelfNumber) + (getNewPositionNumber < 10 ? "-0" + getNewPositionNumber : "-" + getNewPositionNumber);
+
+                _context.Locations_Positions.Add(locations_Positions);
+                await _context.SaveChangesAsync();
+
+                return Json(new { booleanError = false, positionID = locations_Positions.ID, positionNumber = getNewPositionNumber });
+            }
+            catch (DbUpdateException)
+            {
+                return Json(new { booleanError = true, errorMsg = "An database error has occured" });
+            }
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<JsonResult> DeleteBinFromShelf(int? ShelfID)
+        {
+            if (ShelfID == null)
+            {
+                return Json(new { booleanError = true, errorMsg = "No shelf Id was found" });
+            }
+
+            var position = await _context.Locations_Positions
+                .OrderByDescending(x => x.PositionNumber)
+                .FirstOrDefaultAsync(x => x.Locations_ShelfsID == ShelfID);
+
+            if (position == null)
+            {
+                return Json(new { booleanError = false, noPositions = true});
+            }
+
+            int positionNumber = position.PositionNumber;
+
+            try
+            {
+                _context.Locations_Positions.Remove(position);
+                await _context.SaveChangesAsync();
+
+                positionNumber--;
+
+                return Json(new { booleanError = false, positionNumber });
+            }
+            catch (DbUpdateException)
+            {
+                return Json(new { booleanError = true, errorMsg = "An database error has occured" });
+            }
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> DeleteTopShelf(int? ID)
+        {
+            if (ID == null)
+            {
+                return NotFound();
+            }
+
+            var shelf = await _context.Locations_Shelfs
+                .OrderByDescending(x => x.ShelfNumber)
+                .FirstOrDefaultAsync(x => x.Locations_RacksID == ID);
+
+            if (shelf == null)
+            {
+                return Redirect("/Location/RackDetails/" + ID);
+            }
+
+            //var getShelf = 0;
+            //if (!rack.Locations_Shelfs.Any())
+            //{
+            //    return Redirect("/Location/RackDetails/" + ID);
+            //}
+            //else
+            //{
+            //    getShelf = rack.Locations_Shelfs.ToArray()[rack.Locations_Shelfs.Count() - 1].ID;
+            //}
+
+            try
+            {
+                _context.Locations_Shelfs.Remove(shelf);
+                await _context.SaveChangesAsync();
+                return Redirect("/Location/RackDetails/" + ID);
+            }
+            catch (DbUpdateException)
+            {
+                return NotFound();
+            }
         }
     }
 }
