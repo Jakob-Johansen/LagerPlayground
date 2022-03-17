@@ -31,7 +31,6 @@
                     <a class="rackDetails-createBins-form-btn">Add</a>
                 </div>
             </div>
-            <p>Når man trykker på en shelf skal man kunne slette og tilføje bins/positioner, den shelf skal skifte farve så man tydeligt kan se hvilken det er, man skal også kunne slette en shelf</p>
         </div>
     </div>
     <div class="rackDetails-right-container">
@@ -72,40 +71,24 @@
             <div class="rackDetails-rack-top-border"></div>
             <div class="rackDetails-rack-overall-container">
 
-                @*                    <div class="rackDetails-rack-container">
-                    <div class="rackDetails-rack-Bins-overall-container">
-                    <div class="rackDetails-rack-Bins-float-container">
-                    <div class="rackDetails-rack-Bins-container">
-                    <p class="trim rackDetails-rack-Bins-text-number">01</p>
-                    </div>
-                    </div>
-                    <div class="rackDetails-rack-Bins-float-container">
-                    <div class="rackDetails-rack-Bins-container">
-                    <p class="trim rackDetails-rack-Bins-text-number">01</p>
-                    </div>
-                    </div>
-                    </div>
-                    <div class="clearBoth"></div>
-                    <div class="rackDetails-rack-shelf-container">
-                    <p class="trim rackDetails-rack-shelf-text">Shelf: <span class="rackDetails-rack-shelf-text-number">03</span></p>
-                    </div>
-                    </div>*@
-
                 @foreach (var shelf in Model.Locations_Shelfs.OrderByDescending(x => x.ShelfNumber))
                 {
                     <div class="rackDetails-rack-container">
                         <div class="rackDetails-rack-Bins-overall-container">
                             @{
-                                var getWidth = Math.Round(Decimal.Divide(100, shelf.Locations_Positions.Count()), 3);
-                                string getWidthString = getWidth.ToString().Replace(",", ".");
-
-                                foreach (var position in shelf.Locations_Positions)
+                                if(shelf.Locations_Positions.Count() != 0) 
                                 {
-                                    <div class="rackDetails-rack-Bins-float-container" style="width: @getWidthString%;">
-                                        <div class="rackDetails-rack-Bins-container" data-positionid="@position.ID">
-                                            <p class="trim rackDetails-rack-Bins-text-number">@(position.PositionNumber < 10 ? "0" + position.PositionNumber : position.PositionNumber)</p>
+                                    var getWidth = Math.Round(Decimal.Divide(100, shelf.Locations_Positions.Count()), 3);
+                                    string getWidthString = getWidth.ToString().Replace(",", ".");
+
+                                    foreach (var position in shelf.Locations_Positions)
+                                    {
+                                        <div class="rackDetails-rack-Bins-float-container" style="width: @getWidthString%;">
+                                            <div class="rackDetails-rack-Bins-container" data-positionid="@position.ID">
+                                                <p class="trim rackDetails-rack-Bins-text-number">@(position.PositionNumber < 10 ? "0" + position.PositionNumber : position.PositionNumber)</p>
+                                            </div>
                                         </div>
-                                    </div>
+                                    }                                   
                                 }
                             }
                         </div>
@@ -120,6 +103,40 @@
         </div>
     </div>
 </div>
+
+<div class="tote-delete-overlay-overall-container">
+    <div class="tote-overlay-container">
+        <div class="tote-overlay-nav-overall-container">
+            <div class="tote-overlay-nav-container">
+                <p>Are you sure?</p>
+            </div>
+            <div class="tote-overlay-nav-container">
+                <span class="material-icons tote-overlay-nav-close-btn">close</span>
+            </div>
+            <div class="clearBoth"></div>
+        </div>
+
+        <div class="tote-overlay-info-container">
+            <p></p>
+        </div>
+
+        <div class="tote-overlay-btns-overall-container">
+            <div class="tote-overlay-btns-container-cancel">
+                <button class="tote-overlay-btn-cancel tote-overlay-nav-close-btn">Cancel</button>
+            </div>
+            <div class="tote-overlay-btns-container-add">
+                <form asp-action="DeleteTopShelf">
+                    <input class="deleteModalFormInputHidden" type="hidden" readonly name="ID" value="@Model.ID" />
+                    <button class="tote-overlay-btn-add tote-overlay-btn-delete">Delete</button>
+                </form>
+            </div>
+
+            <div class="clearBoth"></div>
+        </div>
+
+    </div>
+</div>
+
 @section Scripts {
 <script>
     const createBtn = $(".rackDetails-createBins-form-btn");
@@ -138,6 +155,22 @@
     const deleteBinBtn = $(".rackDetails-rack-header-delete-bin-btn");
 
     const shelfOverAllContainer = $(".rackDetails-rack-overall-container");
+
+
+    const closeBtn = $(".tote-overlay-nav-close-btn");
+    const deleteTopShelfBtn = $(".rackDetails-rack-header-deletetop-shelf-btn")
+    const overlayDeleteContainer = $(".tote-delete-overlay-overall-container");
+
+    // Delete Modal
+
+    deleteTopShelfBtn.click(function () {
+        overlayDeleteContainer.css("display", "block");
+        $(".tote-overlay-info-container").find("p").text("You are deleting a Shelf. Are you sure you want to proceed?");
+    });
+
+    closeBtn.click(function () {
+        overlayDeleteContainer.css("display", "none");
+    });
 
     // Create Bins
 
@@ -198,7 +231,7 @@
     });
 
     deleteBinBtn.click(function () {
-        console.log("DELETE");
+        DeleteBinFromShelf($(".activeSelectShelf").data("shelfid"));
     });
 
     // Select bins functions
@@ -283,7 +316,7 @@
     }
 
         // Add Bin Html
-    function CreateBinFunctionHtml (shelfID, positionID, positionNumber) {
+    function CreateBinFunctionHtml (positionID, positionNumber) {
         let newWidth = parseFloat(100 / positionNumber).toFixed(3);
         
         if(positionNumber < 10) {
@@ -303,6 +336,18 @@
         </div>
         `
         );
+    }
+
+    // Remove Shelfs & Bins in Html
+
+        // Delete Bin
+    function DeleteBinFunctionHtml(positionNumber) {
+        $(".activeSelectShelf").parent(".rackDetails-rack-container").find(".rackDetails-rack-Bins-overall-container").children().last().remove();
+        let newWidth = parseFloat(100 / positionNumber).toFixed(3);
+
+        $(".activeSelectShelf").parent(".rackDetails-rack-container").find(".rackDetails-rack-Bins-overall-container").find(".rackDetails-rack-Bins-float-container").each(function(index){
+            $(this).css("width", newWidth + "%");
+        });
     }
 
     // Ajax Functions
@@ -362,7 +407,34 @@
             success: function (result) {
 
                 if (result.booleanError == false) {
-                    CreateBinFunctionHtml(result.shelfID, result.positionID, result.positionNumber);
+                    if (result.noPositions == true) {
+                        console.log("No bins to delete");
+                        return;
+                    }
+                    else {
+                    CreateBinFunctionHtml(result.positionID, result.positionNumber);
+                    }
+                }
+                else {
+                    console.log(result.errorMsg);
+                }
+            },
+            error: function (req, status, error) {
+                console.log(status);
+            }
+        });
+    }
+
+    function DeleteBinFromShelf(shelfID) {
+        $.ajax({
+            type: "POST",
+            url: "/Location/DeleteBinFromShelf",
+            headers: { "RequestVerificationToken": "@GetAntiXsrfRequestToken()" },
+            data: { ShelfID: shelfID },
+            success: function (result) {
+
+                if (result.booleanError == false) {
+                    DeleteBinFunctionHtml(result.positionNumber);
                 }
                 else {
                     console.log(result.errorMsg);
