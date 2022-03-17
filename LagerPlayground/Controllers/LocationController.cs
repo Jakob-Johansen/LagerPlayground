@@ -272,6 +272,7 @@ namespace LagerPlayground.Controllers
         }
 
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public async Task<JsonResult> PrintLocationBarcodes(List<int> IDs)
         {
             if (IDs == null)
@@ -299,6 +300,48 @@ namespace LagerPlayground.Controllers
             pdfHelper.GenerateBarcodesPrint(pdfModels);
 
             return Json(new { booleanError = false });
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<JsonResult> AddBinToShelf(int? ShelfID)
+        {
+            if (ShelfID == null)
+            {
+                return Json(new { booleanError = true, errorMsg = "No ide was found" });
+            }
+
+            var shelf = await _context.Locations_Shelfs
+                .Include(x => x.Locations_Positions)
+                .Include(x => x.Locations_Rack)
+                    .ThenInclude(t => t.Locations)
+                .OrderByDescending(x => x.ShelfNumber)
+                .FirstOrDefaultAsync(x => x.ID == ShelfID);
+
+            if (shelf == null)
+            {
+                return Json(new { booleanError = true, errorMsg = "No shelf was found" });
+            }
+
+            var getNewPositionNumber = shelf.Locations_Positions.ToArray()[shelf.Locations_Positions.Count() - 1].PositionNumber + 1;
+
+            try
+            {
+                Locations_Positions locations_Positions = new();
+                locations_Positions.Locations_ShelfsID = (int)ShelfID;
+                locations_Positions.Created = DateTime.Now;
+                locations_Positions.PositionNumber = getNewPositionNumber;
+                locations_Positions.FullLocationBarcode = shelf.Locations_Rack.Locations.Row + (shelf.Locations_Rack.RackNumber < 10 ? "-0" + shelf.Locations_Rack.RackNumber : "-" + shelf.Locations_Rack.RackNumber) + (shelf.ShelfNumber < 10 ? "-0" + shelf.ShelfNumber : "-" + shelf.ShelfNumber) + (getNewPositionNumber < 10 ? "-0" + getNewPositionNumber : "-" + getNewPositionNumber);
+
+                _context.Locations_Positions.Add(locations_Positions);
+                await _context.SaveChangesAsync();
+
+                return Json(new { booleanError = false, shelfID = shelf.ID, positionID = locations_Positions.ID, positionNumber = getNewPositionNumber });
+            }
+            catch (DbUpdateException)
+            {
+                return Json(new { booleanError = true, errorMsg = "An database error has occured" });
+            }
         }
     }
 }

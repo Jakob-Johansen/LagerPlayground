@@ -1743,32 +1743,50 @@ li.dropdown {
 
 /*---Rack Details Rack Header---*/
 
-.rackDetails-rack-header-btn-float-overall-container {
-/*    width: 240px;*/
+.rackDetails-rack-header-btn-float-left-overall-container, .rackDetails-rack-header-btn-float-right-overall-container {
+    /*    width: 240px;*/
     float: left;
-    width: 50%;
     height: auto;
-    position: relative;
+    position: relative !important;
+}
+
+.rackDetails-rack-header-btn-float-left-overall-container {
+    width: 80%;
+/*    background-color: red;*/
+}
+
+.rackDetails-rack-header-btn-float-right-overall-container {
+    width: 20%;
+/*    background-color: blue !important;*/
 }
 
 .rackDetails-rack-header-btn-container-left, .rackDetails-rack-header-btn-container-right {
-    width: 240px;
+    width: 100%;
     height: auto;
 }
 
 .rackDetails-rack-header-btn-container-right {
+    display: none;
     width: 160px;
-    position: absolute;
-    right: 0;
+    margin-left: auto;
+    margin-right: -0%;
 }
 
-.rackDetails-rack-header-btn-float-container {
+.rackDetails-rack-header-btn-float-container, .rackDetails-rack-header-btn-float-left-container {
     float: left;
     width: 50%;
     height: auto;
 }
 
-.rackDetails-rack-header-print-btn, .rackDetails-rack-header-delete-btn, .rackDetails-rack-header-delete-bin-btn, .rackDetails-rack-header-add-bin-btn {
+.rackDetails-rack-header-btn-float-left-container {
+    width: auto !important;
+}
+
+.rackDetails-rack-header-btn-float-left-container {
+    width: 20%;
+}
+
+.rackDetails-rack-header-selectall-btn, .rackDetails-rack-header-deselectall-btn, .rackDetails-rack-header-print-btn, .rackDetails-rack-header-deletetop-shelf-btn, .rackDetails-rack-header-delete-btn, .rackDetails-rack-header-delete-bin-btn, .rackDetails-rack-header-add-bin-btn {
     display: block;
     width: 90px;
     padding: 3px 0;
@@ -1776,18 +1794,43 @@ li.dropdown {
     text-decoration: none;
     font-size: 18px;
     user-select: none;
+/*    margin: 0 auto;*/
 }
 
-.rackDetails-rack-header-print-btn:hover, .rackDetails-rack-header-delete-btn:hover, .rackDetails-rack-header-delete-bin-btn:hover, .rackDetails-rack-header-add-bin-btn:hover {
-    cursor: pointer;
+.rackDetails-rack-header-selectall-btn, .rackDetails-rack-header-deselectall-btn, .rackDetails-rack-header-print-btn, .rackDetails-rack-header-deletetop-shelf-btn {
+    margin-right: 30px;
+}
+
+.rackDetails-rack-header-selectall-btn {
+    width: 90px;
+}
+
+.rackDetails-rack-header-deselectall-btn {
+    width: 110px;
 }
 
 .rackDetails-rack-header-print-btn {
+    width: 70px;
+}
+
+.rackDetails-rack-header-deletetop-shelf-btn {
+    width: 155px;
+}
+
+/*.rackDetails-rack-header-deselectall-btn {
+    width: 110px;
+}*/
+
+.rackDetails-rack-header-selectall-btn:hover, .rackDetails-rack-header-deselectall-btn:hover, .rackDetails-rack-header-print-btn:hover, .rackDetails-rack-header-deletetop-shelf-btn:hover, .rackDetails-rack-header-delete-btn:hover, .rackDetails-rack-header-delete-bin-btn:hover, .rackDetails-rack-header-add-bin-btn:hover {
+    cursor: pointer;
+}
+
+.rackDetails-rack-header-selectall-btn, .rackDetails-rack-header-deselectall-btn, .rackDetails-rack-header-print-btn {
     background-color: lightgray;
     color: black !important;
 }
 
-.rackDetails-rack-header-delete-btn, .rackDetails-rack-header-delete-bin-btn {
+.rackDetails-rack-header-delete-btn, .rackDetails-rack-header-delete-bin-btn, .rackDetails-rack-header-deletetop-shelf-btn {
     background-color: #e62235;
     color: white !important;
 }
@@ -1799,8 +1842,9 @@ li.dropdown {
 
 .rackDetails-rack-header-delete-bin-btn, .rackDetails-rack-header-add-bin-btn {
     width: 50px;
-    padding: 2px 0;
-    font-size: 23px;
+    font-size: 18px;
+    margin-left: auto;
+    margin-right: -0%;
 }
 
 /*---Ract Details Rack Border---*/
