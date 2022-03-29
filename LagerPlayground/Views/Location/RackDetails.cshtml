@@ -207,8 +207,7 @@
             console.log("Fejl");
             return;
         }
-        //CreateShelfAndBins(binInputField.val());
-        CreateShelfAndBinsTest(binInputField.val(), shelfInputField.val());
+        CreateShelfAndBins(binInputField.val(), shelfInputField.val());
     });
 
     // Print
@@ -296,51 +295,8 @@
 
     // Create shelf & bins in html function
 
-    function CreateShelfAndBinsHtml(shelfID, shelfNumber, positions) {
-        if (shelfNumber < 10) {
-            shelfNumber = "0" + shelfNumber;
-        }
-
-        shelfOverAllContainer.prepend(
-            `
-            <div class="rackDetails-rack-container">
-                <div class="rackDetails-rack-Bins-overall-container">
-
-                </div>
-                <div class="clearBoth"></div>
-                <div class="rackDetails-rack-shelf-container" data-shelfid="${shelfID}">
-                    <p class="trim rackDetails-rack-shelf-text">Shelf: <span class="rackDetails-rack-shelf-text-number">${shelfNumber}</span> ^</p>
-                </div>
-            </div>
-            `
-        );
-
-        let getWidth = parseFloat(100 / positions.length).toFixed(3);
-
-        for(var i = 0; i < positions.length; i++) {
-            let newPositionNumber = positions[i].positionNumber;
-
-            if (positions[i].positionNumber < 10) {
-                newPositionNumber = "0" + positions[i].positionNumber;
-            }
-
-            shelfOverAllContainer.children(":first").find(".rackDetails-rack-Bins-overall-container").prepend(
-                `
-                <div class="rackDetails-rack-Bins-float-container" style="width: ${getWidth}%;">
-                    <div class="rackDetails-rack-Bins-container" data-positionid="${positions[i].positionID}">
-                        <p class="trim rackDetails-rack-Bins-text-number">${newPositionNumber}</p>
-                    </div>
-                </div>
-                `
-            );
-        }
-    }
-
-    function CreateShelfAndBinsHtmlTest(locationData) {
-        //if (shelfNumber < 10) {
-        //    shelfNumber = "0" + shelfNumber;
-        //}
-
+        // New Version
+    function CreateShelfAndBinsHtml(locationData) {
         for(var i = 0; i < locationData.length; i++) {
             if (locationData[i].shelfNumber < 10) {
                 locationData[i].shelfNumber = "0" + locationData[i].shelfNumber;
@@ -353,7 +309,7 @@
 
                     </div>
                     <div class="clearBoth"></div>
-                    <div class="rackDetails-rack-shelf-container" data-shelfid="${locationData[i].ShelfID}">
+                    <div class="rackDetails-rack-shelf-container" data-shelfid="${locationData[i].shelfID}">
                         <p class="trim rackDetails-rack-shelf-text">Shelf: <span class="rackDetails-rack-shelf-text-number">${locationData[i].shelfNumber}</span> ^</p>
                     </div>
                 </div>
@@ -362,47 +318,66 @@
 
             let getWidth = parseFloat(100 / locationData[i].positionLength).toFixed(3);
 
-            //for(var t = 0; t < locationData[i].vMPositions.; t++) {
-            //    let newPositionNumber = locationData[i].vMPositions[t].positionNumber;
+            for(var j = 0; j < locationData[i].vmPositions.length; j++) {
+                let newPositionNumber = locationData[i].vmPositions[j].positionNumber;
 
-            //    console.log(newPositionNumber);
+                if (locationData[i].vmPositions[j].positionNumber < 10) {
+                    newPositionNumber = "0" + locationData[i].vmPositions[j].positionNumber;
+                }
 
-                //if (positions[i].positionNumber < 10) {
-                //    newPositionNumber = "0" + positions[i].positionNumber;
-                //}
-
-                //shelfOverAllContainer.children(":first").find(".rackDetails-rack-Bins-overall-container").prepend(
-                //    `
-                //    <div class="rackDetails-rack-Bins-float-container" style="width: ${getWidth}%;">
-                //        <div class="rackDetails-rack-Bins-container" data-positionid="${positions[i].positionID}">
-                //            <p class="trim rackDetails-rack-Bins-text-number">${newPositionNumber}</p>
-                //        </div>
-                //    </div>
-                //    `
-                //);
+                shelfOverAllContainer.children(":first").find(".rackDetails-rack-Bins-overall-container").prepend(
+                    `
+                    <div class="rackDetails-rack-Bins-float-container" style="width: ${getWidth}%;">
+                        <div class="rackDetails-rack-Bins-container" data-positionid="${locationData[i].vmPositions[j].positionID}">
+                            <p class="trim rackDetails-rack-Bins-text-number">${newPositionNumber}</p>
+                        </div>
+                    </div>
+                    `
+                );
             }
         }
-
-        //let getWidth = parseFloat(100 / positions.length).toFixed(3);
-
-        //for(var i = 0; i < positions.length; i++) {
-        //    let newPositionNumber = positions[i].positionNumber;
-
-        //    if (positions[i].positionNumber < 10) {
-        //        newPositionNumber = "0" + positions[i].positionNumber;
-        //    }
-
-        //    shelfOverAllContainer.children(":first").find(".rackDetails-rack-Bins-overall-container").prepend(
-        //        `
-        //        <div class="rackDetails-rack-Bins-float-container" style="width: ${getWidth}%;">
-        //            <div class="rackDetails-rack-Bins-container" data-positionid="${positions[i].positionID}">
-        //                <p class="trim rackDetails-rack-Bins-text-number">${newPositionNumber}</p>
-        //            </div>
-        //        </div>
-        //        `
-        //    );
-        //}
     }
+
+        // Old Version
+    //function CreateShelfAndBinsHtml(shelfID, shelfNumber, positions) {
+    //    if (shelfNumber < 10) {
+    //        shelfNumber = "0" + shelfNumber;
+    //    }
+
+    //    shelfOverAllContainer.prepend(
+    //        `
+    //        <div class="rackDetails-rack-container">
+    //            <div class="rackDetails-rack-Bins-overall-container">
+
+    //            </div>
+    //            <div class="clearBoth"></div>
+    //            <div class="rackDetails-rack-shelf-container" data-shelfid="${shelfID}">
+    //                <p class="trim rackDetails-rack-shelf-text">Shelf: <span class="rackDetails-rack-shelf-text-number">${shelfNumber}</span> ^</p>
+    //            </div>
+    //        </div>
+    //        `
+    //    );
+
+    //    let getWidth = parseFloat(100 / positions.length).toFixed(3);
+
+    //    for(var i = 0; i < positions.length; i++) {
+    //        let newPositionNumber = positions[i].positionNumber;
+
+    //        if (positions[i].positionNumber < 10) {
+    //            newPositionNumber = "0" + positions[i].positionNumber;
+    //        }
+
+    //        shelfOverAllContainer.children(":first").find(".rackDetails-rack-Bins-overall-container").prepend(
+    //            `
+    //            <div class="rackDetails-rack-Bins-float-container" style="width: ${getWidth}%;">
+    //                <div class="rackDetails-rack-Bins-container" data-positionid="${positions[i].positionID}">
+    //                    <p class="trim rackDetails-rack-Bins-text-number">${newPositionNumber}</p>
+    //                </div>
+    //            </div>
+    //            `
+    //        );
+    //    }
+    //}
 
         // Add Bin Html
     function CreateBinFunctionHtml (positionID, positionNumber) {
@@ -441,16 +416,17 @@
 
     // Ajax Functions
 
-    function CreateShelfAndBins(binQty) {
+        // New Version
+    function CreateShelfAndBins(binQty, shelfQty) {
         $.ajax({
             type: "POST",
             url: "/Location/CreateShelfAndBins",
             headers: { "RequestVerificationToken": "@GetAntiXsrfRequestToken()" },
-            data: { binQuantity: binQty, rackID: @Model.ID, rackNumber: @Model.RackNumber, row: "@Model.Locations.Row" },
+            data: { binQuantity: binQty, shelfQuantity: shelfQty, rackID: @Model.ID, rackNumber: @Model.RackNumber, row: "@Model.Locations.Row" },
             success: function (result) {
 
                 if (result.booleanError == true) {
-                    CreateShelfAndBinsHtml(result.shelfID, result.shelfNumber, result.positions);
+                    CreateShelfAndBinsHtml(result.locationData);
                 }
                 else {
                     console.log(result.msg);
@@ -463,6 +439,30 @@
             }
         });
     }
+
+        // Old Version
+    //function CreateShelfAndBins(binQty) {
+    //    $.ajax({
+    //        type: "POST",
+    //        url: "/Location/CreateShelfAndBins",
+    //        headers: { "RequestVerificationToken": "@GetAntiXsrfRequestToken()" },
+    //        data: { binQuantity: binQty, rackID: @Model.ID, rackNumber: @Model.RackNumber, row: "@Model.Locations.Row" },
+    //        success: function (result) {
+
+    //            if (result.booleanError == true) {
+    //                CreateShelfAndBinsHtml(result.shelfID, result.shelfNumber, result.positions);
+    //            }
+    //            else {
+    //                console.log(result.msg);
+    //                alert(result.msg);
+    //            }
+    //        },
+    //        error: function (req, status, error) {
+    //            console.log(status);
+    //            alert(status);
+    //        }
+    //    });
+    //}
 
     function PrintSelectedPositions(selectedIds) {
         $.ajax({
@@ -541,31 +541,5 @@
             }
         });
     }
-
-    // TEST
-    function CreateShelfAndBinsTest(binQty, shelfQty) {
-        $.ajax({
-            type: "POST",
-            url: "/Location/CreateShelfAndBinsTest",
-            headers: { "RequestVerificationToken": "@GetAntiXsrfRequestToken()" },
-            data: { binQuantity: binQty, shelfQuantity: shelfQty, rackID: @Model.ID, rackNumber: @Model.RackNumber, row: "@Model.Locations.Row" },
-            success: function (result) {
-
-                if (result.booleanError == true) {
-                    CreateShelfAndBinsHtmlTest(result.locationData);
-                    console.log("Success");
-                }
-                else {
-                    console.log(result.msg);
-                    alert(result.msg);
-                }
-            },
-            error: function (req, status, error) {
-                console.log(status);
-                alert(status);
-            }
-        });
-    }
-
 </script>
 }
