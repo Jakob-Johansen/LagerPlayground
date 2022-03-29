@@ -8,7 +8,7 @@ namespace LagerPlayground.Models.VM
 {
     public class VMPositions
     {
-        public int ID { get; set; }
+        public int PositionID { get; set; }
         public int PositionNumber { get; set; }
     }
 }

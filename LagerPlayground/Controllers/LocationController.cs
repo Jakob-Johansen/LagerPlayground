@@ -206,14 +206,14 @@ namespace LagerPlayground.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<JsonResult> CreateShelfAndBins(int? quantity, int? rackID, int rackNumber, string row)
+        public async Task<JsonResult> CreateShelfAndBins(int? binQuantity, int? rackID, int rackNumber, string row)
         {
             if (rackID == null || rackID == 0)
             {
                 return Json(new { booleanError = false, msg = "No RackID was found" });
             }
 
-            if (quantity == null || quantity < 1)
+            if (binQuantity == null || binQuantity < 1)
             {
                 return Json(new { booleanError = false, msg = "Quantity need to more than 0" });
             }
@@ -240,7 +240,7 @@ namespace LagerPlayground.Controllers
 
                 List<Locations_Positions> locations_PositionsList = new();
 
-                for (int i = 1; i < quantity + 1; i++)
+                for (int i = 1; i < binQuantity + 1; i++)
                 {
                     Locations_Positions locations_Positions = new();
                     locations_Positions.Locations_ShelfsID = locations_Shelfs.ID;
@@ -258,7 +258,7 @@ namespace LagerPlayground.Controllers
                 {
                     vmPositionsList.Add(new VMPositions
                     { 
-                        ID = item.ID,
+                        PositionID = item.ID,
                         PositionNumber = item.PositionNumber
                     });
                 }
@@ -270,6 +270,108 @@ namespace LagerPlayground.Controllers
                 return Json(new { booleanError = false, msg = "An Database error has occured" });
             }
         }
+
+        // TEST
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<JsonResult> CreateShelfAndBinsTest(int? binQuantity, int? shelfQuantity, int? rackID, int rackNumber, string row)
+        {
+            if (rackID == null || rackID == 0)
+            {
+                return Json(new { booleanError = false, msg = "No RackID was found" });
+            }
+
+            if (binQuantity == null || binQuantity < 1 && shelfQuantity == null || shelfQuantity < 1)
+            {
+                return Json(new { booleanError = false, msg = "Bin and Shelf input field need to be more than 0" });
+            }
+
+            if (binQuantity == null || binQuantity < 1)
+            {
+                return Json(new { booleanError = false, msg = "Bin input field need to be more than 0" });
+            }
+
+            if (shelfQuantity == null || shelfQuantity < 1)
+            {
+                return Json(new { booleanError = false, msg = "Shelf input field need to be more than 0" });
+            }
+            try
+            {
+                var locationShelf = await _context.Locations_Shelfs.OrderByDescending(x => x.ShelfNumber)
+                    .FirstOrDefaultAsync(x => x.Locations_RacksID == rackID);
+
+                int locationShelfNumber = 0;
+                if (locationShelf == null)
+                {
+                    locationShelfNumber = 1;
+                }
+                else
+                {
+                    locationShelfNumber = locationShelf.ShelfNumber + 1;
+                }
+
+                List<Locations_Shelfs> locations_ShelfsList = new();
+                for (int i = 1; i < shelfQuantity + 1; i++)
+                {
+                    Locations_Shelfs locations_Shelfs = new();
+                    locations_Shelfs.Locations_RacksID = (int)rackID;
+                    locations_Shelfs.ShelfNumber = locationShelfNumber;
+                    locations_Shelfs.Created = DateTime.Now;
+
+                    locations_ShelfsList.Add(locations_Shelfs);
+                    locationShelfNumber++;
+                }
+
+                _context.Locations_Shelfs.AddRange(locations_ShelfsList);
+                await _context.SaveChangesAsync();
+
+                List<Locations_Positions> locations_PositionsList = new();
+
+                foreach (var locationShelfsList in locations_ShelfsList)
+                {
+                    for (int i = 1; i < binQuantity + 1; i++)
+                    {
+                        Locations_Positions locations_Positions = new();
+                        locations_Positions.Locations_ShelfsID = locationShelfsList.ID;
+                        locations_Positions.PositionNumber = i;
+                        locations_Positions.Created = DateTime.Now;
+                        locations_Positions.FullLocationBarcode = row + (rackNumber < 10 ? "-0" + rackNumber : "-" + rackNumber) + (locationShelfsList.ShelfNumber < 10 ? "-0" + locationShelfsList.ShelfNumber : "-" + locationShelfsList.ShelfNumber) + (i < 10 ? "-0" + i : "-" + i);
+                        locations_PositionsList.Add(locations_Positions);
+                    }
+                }
+
+                _context.AddRange(locations_PositionsList);
+                await _context.SaveChangesAsync();
+
+                List<VMShelfAndPositions> vmShelfAndPositionsList = new();
+                foreach (var locationShelfList in locations_ShelfsList)
+                {
+                    VMShelfAndPositions vmShelfAndPositions = new();
+                    vmShelfAndPositions.ShelfID = locationShelfList.ID;
+                    vmShelfAndPositions.ShelfNumber = locationShelfList.ShelfNumber;
+                    vmShelfAndPositions.PositionLength = locations_PositionsList.Where(x => x.Locations_ShelfsID == locationShelfList.ID).Count();
+
+                    foreach (var locationPositionList in locations_PositionsList.OrderByDescending(x => x.PositionNumber).Where(x => x.Locations_ShelfsID == locationShelfList.ID))
+                    {
+                        VMPositions vmPositions = new();
+                        vmPositions.PositionID = locationPositionList.ID;
+                        vmPositions.PositionNumber = locationPositionList.PositionNumber;
+
+                        vmShelfAndPositions.VMPositions = new();
+                        vmShelfAndPositions.VMPositions.Add(vmPositions);
+                    }
+                    vmShelfAndPositionsList.Add(vmShelfAndPositions);
+                }
+
+                //return Json(new { booleanError = true, shelfID = locations_Shelfs.ID, shelfNumber = locations_Shelfs.ShelfNumber, positions = vmPositionsList });
+                return Json(new { booleanError = true, locationData = vmShelfAndPositionsList });
+            }
+            catch (DbUpdateException)
+            {
+                return Json(new { booleanError = false, msg = "An Database error has occured" });
+            }
+        }
+        //
 
         [HttpPost]
         [ValidateAntiForgeryToken]

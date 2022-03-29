@@ -1686,40 +1686,48 @@ li.dropdown {
 }
 
 .rackDetails-createBins-form-container {
-    width: 100%;
+    margin-top: 10px;
+    width: 205px;
+/*    margin: 0 auto; */
 }
 
 .rackDetails-createBins-form-label {
     display: block;
-    text-align: center;
     font-size: 24px;
     color: black;
+    margin-bottom: 10px;
 }
 
-.rackDetails-createBins-form-number {
+.rackDetails-createBins-form-bins-container, .rackDetails-createBins-form-shelfs-container {
+    margin-bottom: 10px;
+}
+
+.rackDetails-createBins-form-bins-container > label, .rackDetails-createBins-form-shelfs-container > label {
+    font-size: 20px;
+    padding-bottom: 2px;
+}
+
+.rackDetails-createBins-form-bins, .rackDetails-createBins-form-shelfs {
     display: block;
-    width: 95px;
+    width: 120px;
     text-align: center;
-    font-size: 23px;
-    margin: 6px auto 0 auto;
+    font-size: 22px;
+    padding: 4px 0;
     background-color: transparent;
-/*    padding-top: 3px !important;
-    padding-bottom: 3px !important;
-    border-top: none !important;
-    border-left: none !important;
-    border-right: none !important;*/
     border-radius: 0px;
     outline: none;
     border: 1px solid white;
-/*    border-color: white !important;*/
 }
 
-.rackDetails-createBins-form-number:focus, .rackDetails-createBins-form-number:active {
+.rackDetails-createBins-form-bins:focus, .rackDetails-createBins-form-bins:active,
+.rackDetails-createBins-form-shelfs:focus, .rackDetails-createBins-form-shelfs:active {
     outline: none !important;
 }
 
-.rackDetails-createBins-form-number::-webkit-outer-spin-button,
-.rackDetails-createBins-form-number::-webkit-inner-spin-button {
+.rackDetails-createBins-form-bins::-webkit-outer-spin-button,
+.rackDetails-createBins-form-bins::-webkit-inner-spin-button,
+.rackDetails-createBins-form-shelfs::-webkit-outer-spin-button,
+.rackDetails-createBins-form-shelfs::-webkit-inner-spin-button {
     -webkit-appearance: none;
     margin: 0;
 }
@@ -1729,12 +1737,12 @@ li.dropdown {
     width: 95px;
     text-align: center;
     padding: 6px 0;
-    font-size: 20px;
+    font-size: 19px;
     user-select: none;
     background-color: #1a9c23;
     color: white !important;
     text-decoration: none;
-    margin: 15px auto 0 auto;
+    margin-top: 20px;
 }
 
 .rackDetails-createBins-form-btn:hover {
