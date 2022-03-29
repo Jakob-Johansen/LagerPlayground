@@ -27,7 +27,16 @@
             <div class="rackDetails-createBins-overall-container">
                 <div class="rackDetails-createBins-form-container">
                     <label class="rackDetails-createBins-form-label">Create Shelf & Bins</label>
-                    <input class="rackDetails-createBins-form-number" placeholder="0" type="number" />
+                    <div class="rackDetails-createBins-form-bins-container">
+                        <label>Bins:</label>
+                        <br />
+                        <input class="rackDetails-createBins-form-bins rackDetails-binInput" placeholder="0" type="number" />
+                    </div>
+                    <div class="rackDetails-createBins-form-shelfs-container">
+                        <label>Shelfs:</label>
+                        <br />
+                        <input class="rackDetails-createBins-form-shelfs rackDetails-shelfInput" placeholder="0" type="number" />
+                    </div>
                     <a class="rackDetails-createBins-form-btn">Add</a>
                 </div>
             </div>
@@ -140,7 +149,8 @@
 @section Scripts {
 <script>
     const createBtn = $(".rackDetails-createBins-form-btn");
-    let binInputField = $(".rackDetails-createBins-form-number");
+    let binInputField = $(".rackDetails-binInput");
+    let shelfInputField = $(".rackDetails-shelfInput");
 
     let allSelectedBins = [];
     const activeSelectBin = "activeSelectBin";
@@ -182,12 +192,23 @@
         }
     });
 
+    shelfInputField.on("input", function () {
+        let shelfInputFieldVal = parseInt(shelfInputField.val());
+        if (shelfInputFieldVal < 1 || shelfInputField.val().startsWith(0))
+        {
+            shelfInputField.val(0);
+        }
+    });
+
     createBtn.click(function () {
         let binInputFieldVal = parseInt(binInputField.val());
-        if (binInputField.val().trim() == "" || binInputFieldVal < 1) {
+        let shelfInputFieldVal = parseInt(shelfInputField.val());
+        if (binInputField.val().trim() == "" || binInputFieldVal < 1 || shelfInputField.val().trim() == "" || shelfInputFieldVal < 1) {
+            console.log("Fejl");
             return;
         }
-        CreateShelfAndBins(binInputField.val());
+        //CreateShelfAndBins(binInputField.val());
+        CreateShelfAndBinsTest(binInputField.val(), shelfInputField.val());
     });
 
     // Print
@@ -306,13 +327,81 @@
             shelfOverAllContainer.children(":first").find(".rackDetails-rack-Bins-overall-container").prepend(
                 `
                 <div class="rackDetails-rack-Bins-float-container" style="width: ${getWidth}%;">
-                    <div class="rackDetails-rack-Bins-container" data-positionid="${positions[i].id}">
+                    <div class="rackDetails-rack-Bins-container" data-positionid="${positions[i].positionID}">
                         <p class="trim rackDetails-rack-Bins-text-number">${newPositionNumber}</p>
                     </div>
                 </div>
                 `
             );
         }
+    }
+
+    function CreateShelfAndBinsHtmlTest(locationData) {
+        //if (shelfNumber < 10) {
+        //    shelfNumber = "0" + shelfNumber;
+        //}
+
+        for(var i = 0; i < locationData.length; i++) {
+            if (locationData[i].shelfNumber < 10) {
+                locationData[i].shelfNumber = "0" + locationData[i].shelfNumber;
+            }
+
+            shelfOverAllContainer.prepend(
+                `
+                <div class="rackDetails-rack-container">
+                    <div class="rackDetails-rack-Bins-overall-container">
+
+                    </div>
+                    <div class="clearBoth"></div>
+                    <div class="rackDetails-rack-shelf-container" data-shelfid="${locationData[i].ShelfID}">
+                        <p class="trim rackDetails-rack-shelf-text">Shelf: <span class="rackDetails-rack-shelf-text-number">${locationData[i].shelfNumber}</span> ^</p>
+                    </div>
+                </div>
+                `
+            );
+
+            let getWidth = parseFloat(100 / locationData[i].positionLength).toFixed(3);
+
+            //for(var t = 0; t < locationData[i].vMPositions.; t++) {
+            //    let newPositionNumber = locationData[i].vMPositions[t].positionNumber;
+
+            //    console.log(newPositionNumber);
+
+                //if (positions[i].positionNumber < 10) {
+                //    newPositionNumber = "0" + positions[i].positionNumber;
+                //}
+
+                //shelfOverAllContainer.children(":first").find(".rackDetails-rack-Bins-overall-container").prepend(
+                //    `
+                //    <div class="rackDetails-rack-Bins-float-container" style="width: ${getWidth}%;">
+                //        <div class="rackDetails-rack-Bins-container" data-positionid="${positions[i].positionID}">
+                //            <p class="trim rackDetails-rack-Bins-text-number">${newPositionNumber}</p>
+                //        </div>
+                //    </div>
+                //    `
+                //);
+            }
+        }
+
+        //let getWidth = parseFloat(100 / positions.length).toFixed(3);
+
+        //for(var i = 0; i < positions.length; i++) {
+        //    let newPositionNumber = positions[i].positionNumber;
+
+        //    if (positions[i].positionNumber < 10) {
+        //        newPositionNumber = "0" + positions[i].positionNumber;
+        //    }
+
+        //    shelfOverAllContainer.children(":first").find(".rackDetails-rack-Bins-overall-container").prepend(
+        //        `
+        //        <div class="rackDetails-rack-Bins-float-container" style="width: ${getWidth}%;">
+        //            <div class="rackDetails-rack-Bins-container" data-positionid="${positions[i].positionID}">
+        //                <p class="trim rackDetails-rack-Bins-text-number">${newPositionNumber}</p>
+        //            </div>
+        //        </div>
+        //        `
+        //    );
+        //}
     }
 
         // Add Bin Html
@@ -352,24 +441,25 @@
 
     // Ajax Functions
 
-    function CreateShelfAndBins(qty) {
+    function CreateShelfAndBins(binQty) {
         $.ajax({
             type: "POST",
             url: "/Location/CreateShelfAndBins",
             headers: { "RequestVerificationToken": "@GetAntiXsrfRequestToken()" },
-            data: { quantity: qty, rackID: @Model.ID, rackNumber: @Model.RackNumber, row: "@Model.Locations.Row" },
+            data: { binQuantity: binQty, rackID: @Model.ID, rackNumber: @Model.RackNumber, row: "@Model.Locations.Row" },
             success: function (result) {
 
                 if (result.booleanError == true) {
                     CreateShelfAndBinsHtml(result.shelfID, result.shelfNumber, result.positions);
                 }
                 else {
-                    console.log(result.msg)
+                    console.log(result.msg);
+                    alert(result.msg);
                 }
             },
             error: function (req, status, error) {
                 console.log(status);
-                console.log("ERROR");
+                alert(status);
             }
         });
     }
@@ -390,10 +480,12 @@
                 }
                 else {
                     console.log(result.errorMsg);
+                    alert(result.errorMsg);
                 }
             },
             error: function (req, status, error) {
                 console.log(status);
+                alert(status);
             }
         });
     }
@@ -417,10 +509,12 @@
                 }
                 else {
                     console.log(result.errorMsg);
+                    alert(result.errorMsg);
                 }
             },
             error: function (req, status, error) {
                 console.log(status);
+                alert(status);
             }
         });
     }
@@ -438,12 +532,40 @@
                 }
                 else {
                     console.log(result.errorMsg);
+                    alert(result.errorMsg);
                 }
             },
             error: function (req, status, error) {
                 console.log(status);
+                alert(status);
             }
         });
     }
+
+    // TEST
+    function CreateShelfAndBinsTest(binQty, shelfQty) {
+        $.ajax({
+            type: "POST",
+            url: "/Location/CreateShelfAndBinsTest",
+            headers: { "RequestVerificationToken": "@GetAntiXsrfRequestToken()" },
+            data: { binQuantity: binQty, shelfQuantity: shelfQty, rackID: @Model.ID, rackNumber: @Model.RackNumber, row: "@Model.Locations.Row" },
+            success: function (result) {
+
+                if (result.booleanError == true) {
+                    CreateShelfAndBinsHtmlTest(result.locationData);
+                    console.log("Success");
+                }
+                else {
+                    console.log(result.msg);
+                    alert(result.msg);
+                }
+            },
+            error: function (req, status, error) {
+                console.log(status);
+                alert(status);
+            }
+        });
+    }
+
 </script>
 }
