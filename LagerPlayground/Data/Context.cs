@@ -30,5 +30,6 @@ namespace LagerPlayground.Data
         public DbSet<Locations_Racks> Locations_Racks { get; set; }
         public DbSet<Locations_Shelfs> Locations_Shelfs { get; set; }
         public DbSet<Locations_Positions> Locations_Positions { get; set; }
+        public DbSet<Product_Locations> Product_Locations { get; set; }
     }
 }
