@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace LagerPlayground.Migrations
 {
     [DbContext(typeof(Context))]
-    [Migration("20220330123012_LocationsPositions")]
-    partial class LocationsPositions
+    [Migration("20220331075548_InitialCreate")]
+    partial class InitialCreate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -117,6 +117,11 @@ namespace LagerPlayground.Migrations
 
                     b.Property<DateTime?>("Modified")
                         .HasColumnType("datetime2");
+
+                    b.Property<bool?>("Pickable")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bit")
+                        .HasDefaultValue(true);
 
                     b.Property<int>("PositionNumber")
                         .HasColumnType("int");

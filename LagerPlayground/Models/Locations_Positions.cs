@@ -12,6 +12,7 @@ namespace LagerPlayground.Models
         public int Locations_ShelfsID { get; set; }
         public int PositionNumber { get; set; }
         public string FullLocationBarcode { get; set; }
+        public bool? Pickable { get; set; }
         public DateTime? Created { get; set; }
         public DateTime? Modified { get; set; }
 

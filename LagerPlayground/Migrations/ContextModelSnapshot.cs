@@ -116,6 +116,11 @@ namespace LagerPlayground.Migrations
                     b.Property<DateTime?>("Modified")
                         .HasColumnType("datetime2");
 
+                    b.Property<bool?>("Pickable")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bit")
+                        .HasDefaultValue(true);
+
                     b.Property<int>("PositionNumber")
                         .HasColumnType("int");
 
