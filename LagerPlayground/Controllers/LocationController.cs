@@ -268,6 +268,7 @@ namespace LagerPlayground.Controllers
                         locations_Positions.Locations_ShelfsID = locationShelfsList.ID;
                         locations_Positions.PositionNumber = i;
                         locations_Positions.Created = DateTime.Now;
+                        //locations_Positions.Pickable = true;
                         locations_Positions.FullLocationBarcode = row + (rackNumber < 10 ? "-0" + rackNumber : "-" + rackNumber) + (locationShelfsList.ShelfNumber < 10 ? "-0" + locationShelfsList.ShelfNumber : "-" + locationShelfsList.ShelfNumber) + (i < 10 ? "-0" + i : "-" + i);
                         locations_PositionsList.Add(locations_Positions);
                     }

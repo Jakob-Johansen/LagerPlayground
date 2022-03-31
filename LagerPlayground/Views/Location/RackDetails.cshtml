@@ -93,9 +93,18 @@
                                     foreach (var position in shelf.Locations_Positions)
                                     {
                                         <div class="rackDetails-rack-Bins-float-container" style="width: @getWidthString%;">
+                                            @if(position.Pickable == true)
+                                            {
                                             <div class="rackDetails-rack-Bins-container" data-positionid="@position.ID">
                                                 <p class="trim rackDetails-rack-Bins-text-number">@(position.PositionNumber < 10 ? "0" + position.PositionNumber : position.PositionNumber)</p>
+                                                </div>
+                                            }
+                                            else
+                                            {
+                                            <div class="rackDetails-rack-Bins-container" data-positionid="@position.ID" style="background-color: #b8b8b8;">
+                                                <p class="trim rackDetails-rack-Bins-text-number">@(position.PositionNumber < 10 ? "0" + position.PositionNumber : position.PositionNumber)</p>
                                             </div>
+                                            }
                                         </div>
                                     }                                   
                                 }
@@ -224,18 +233,20 @@
 
         // Select shelf
     $(document).on("click", ".rackDetails-rack-shelf-container", function () {
+        $(".rackDetails-rack-Bins-container").removeClass(activeSelectBin);
+        $(".rackDetails-rack-Bins-container").find(".rackDetails-rack-Bins-text-number").attr("style", "color: black !important;");
+        allSelectedBins = [];
+
+        $(".rackDetails-rack-shelf-text").attr("style", "color: black !important;");
+        $(".rackDetails-rack-container").attr("style", "border-color: white !important;");
+        shelfSelectBtnsContainer.css("display", "none");
+
         if($(this).hasClass(activeSelectShelf)) {
-            $(".rackDetails-rack-shelf-text").attr("style", "color: black !important;");
-            $(".rackDetails-rack-container").attr("style", "border-color: white !important;");
-            shelfSelectBtnsContainer.css("display", "none");
             $(this).removeClass(activeSelectShelf);
             $(this).find(".rackDetails-rack-shelf-text").attr("style", "color: black !important;");
             $(this).parent(".rackDetails-rack-container").attr("style", "border-color: white !important;");
         }
         else {
-            $(".rackDetails-rack-shelf-text").attr("style", "color: black !important;");
-            $(".rackDetails-rack-container").attr("style", "border-color: white !important;");
-            shelfSelectBtnsContainer.css("display", "none");
             $(".rackDetails-rack-shelf-container").removeClass(activeSelectShelf);
             $(this).addClass(activeSelectShelf);
             $(this).find(".rackDetails-rack-shelf-text").attr("style", "color: white !important;");
@@ -258,6 +269,11 @@
 
         // Select one at a time
     $(document).on("click", ".rackDetails-rack-Bins-container", function () {
+        $(".rackDetails-rack-shelf-container").removeClass(activeSelectShelf);
+        $(".rackDetails-rack-shelf-text").attr("style", "color: black !important;");
+        $(".rackDetails-rack-container").attr("style", "border-color: white !important;");
+        shelfSelectBtnsContainer.css("display", "none");
+
         if($(this).hasClass(activeSelectBin)) {
             $(this).removeClass(activeSelectBin);
             $(this).find(".rackDetails-rack-Bins-text-number").attr("style", "color: black !important;");
