@@ -282,13 +282,14 @@
         positionsSelectBtnsContainer.css("display", "none");
 
         $(".rackDetails-rack-shelf-text").attr("style", "color: black !important;");
-        $(".rackDetails-rack-container").attr("style", "border-color: white !important;");
-        shelfSelectBtnsContainer.css("display", "none");
+        $(".rackDetails-rack-container").attr("style", "border-color: #f0f0f0 !important;");
+
 
         if($(this).hasClass(activeSelectShelf)) {
             $(this).removeClass(activeSelectShelf);
             $(this).find(".rackDetails-rack-shelf-text").attr("style", "color: black !important;");
-            $(this).parent(".rackDetails-rack-container").attr("style", "border-color: white !important;");
+            $(this).parent(".rackDetails-rack-container").attr("style", "border-color: #f0f0f0 !important;");
+            shelfSelectBtnsContainer.css("display", "none");
         }
         else {
             rackDetailsRackShelfContainer.removeClass(activeSelectShelf);
@@ -315,7 +316,7 @@
     $(document).on("click", ".rackDetails-rack-Bins-container", function () {
         rackDetailsRackShelfContainer.removeClass(activeSelectShelf);
         $(".rackDetails-rack-shelf-text").attr("style", "color: black !important;");
-        $(".rackDetails-rack-container").attr("style", "border-color: white !important;");
+        $(".rackDetails-rack-container").attr("style", "border-color: #f0f0f0 !important;");
         shelfSelectBtnsContainer.css("display", "none");
 
         if($(this).hasClass(activeSelectBin)) {
@@ -339,7 +340,7 @@
     selectAll.click(function () {
         rackDetailsRackShelfContainer.removeClass(activeSelectShelf);
         $(".rackDetails-rack-shelf-text").attr("style", "color: black !important;");
-        $(".rackDetails-rack-container").attr("style", "border-color: white !important;");
+        $(".rackDetails-rack-container").attr("style", "border-color: #f0f0f0 !important;");
         shelfSelectBtnsContainer.css("display", "none");
 
         positionsSelectBtnsContainer.css("display", "block");
@@ -360,7 +361,7 @@
         positionsSelectBtnsContainer.css("display", "none");
 
         $(".rackDetails-rack-shelf-text").attr("style", "color: black !important;");
-        $(".rackDetails-rack-container").attr("style", "border-color: white !important;");
+        $(".rackDetails-rack-container").attr("style", "border-color: #f0f0f0 !important;");
         shelfSelectBtnsContainer.css("display", "none");
         rackDetailsRackShelfContainer.removeClass(activeSelectShelf);
     });
