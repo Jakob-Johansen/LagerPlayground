@@ -208,13 +208,14 @@
     const printBtn = $(".rackDetails-rack-header-print-btn");
 
     const positionsSelectBtnsContainer = $(".rackDetails-rack-header-pickable-btn-container-right");
+    const pickableBtn = $(".rackDetails-rack-header-pickable-btn");
+    const nonPickableBtn = $(".rackDetails-rack-header-nonpickable-btn");
 
     const shelfSelectBtnsContainer = $(".rackDetails-rack-header-shelfoptions-btn-container-right");
     const addBinBtn = $(".rackDetails-rack-header-add-bin-btn");
     const deleteBinBtn = $(".rackDetails-rack-header-delete-bin-btn");
 
     const shelfOverAllContainer = $(".rackDetails-rack-overall-container");
-
 
     const closeBtn = $(".tote-overlay-nav-close-btn");
     const deleteTopShelfBtn = $(".rackDetails-rack-header-deletetop-shelf-btn")
@@ -308,6 +309,15 @@
 
     deleteBinBtn.click(function () {
         DeleteBinFromShelf($(".activeSelectShelf").data("shelfid"));
+    });
+
+        // Pickable & Non Pickable btns
+    pickableBtn.click(function () {
+        console.log("Pickable");
+    });
+
+    nonPickableBtn.click(function () {
+        console.log("Non Pickable");
     });
 
     // Select bins functions
