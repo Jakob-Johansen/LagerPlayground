@@ -133,13 +133,13 @@
                                         <div class="rackDetails-rack-Bins-float-container" style="width: @getWidthString%;">
                                             @if(position.Pickable == true)
                                             {
-                                            <div class="rackDetails-rack-Bins-container" data-positionid="@position.ID">
+                                            <div class="rackDetails-rack-Bins-container" data-positionid="@position.ID" data-pickablebool="true">
                                                 <p class="trim rackDetails-rack-Bins-text-number">@(position.PositionNumber < 10 ? "0" + position.PositionNumber : position.PositionNumber)</p>
                                                 </div>
                                             }
                                             else
                                             {
-                                            <div class="rackDetails-rack-Bins-container" data-positionid="@position.ID" style="background-color: #b8b8b8;">
+                                            <div class="rackDetails-rack-Bins-container" data-positionid="@position.ID" data-pickablebool="false" style="background-color: #b8b8b8;">
                                                 <p class="trim rackDetails-rack-Bins-text-number">@(position.PositionNumber < 10 ? "0" + position.PositionNumber : position.PositionNumber)</p>
                                             </div>
                                             }
@@ -210,6 +210,7 @@
     const positionsSelectBtnsContainer = $(".rackDetails-rack-header-pickable-btn-container-right");
     const pickableBtn = $(".rackDetails-rack-header-pickable-btn");
     const nonPickableBtn = $(".rackDetails-rack-header-nonpickable-btn");
+    let allPickableAndNonPickable = []; 
 
     const shelfSelectBtnsContainer = $(".rackDetails-rack-header-shelfoptions-btn-container-right");
     const addBinBtn = $(".rackDetails-rack-header-add-bin-btn");
@@ -311,13 +312,32 @@
         DeleteBinFromShelf($(".activeSelectShelf").data("shelfid"));
     });
 
-        // Pickable & Non Pickable btns
+        // Pickable & NonPickable btns
+
     pickableBtn.click(function () {
-        console.log("Pickable");
+        allPickableAndNonPickable = [];
+
+        $(".activeSelectBin").each(function () {
+            if ($(this).attr("data-pickablebool") == false || $(this).attr("data-pickablebool") == "false") {
+                if ($(this).data("positionid") != "") {
+                    allPickableAndNonPickable.push($(this).data("positionid"));
+                }
+            }
+        });
+        MakePickable(allPickableAndNonPickable);
     });
 
     nonPickableBtn.click(function () {
-        console.log("Non Pickable");
+        allPickableAndNonPickable = [];
+
+        $(".activeSelectBin").each(function () {
+            if ($(this).attr("data-pickablebool") == true || $(this).attr("data-pickablebool") == "true") {
+                if ($(this).data("positionid") != "") {
+                    allPickableAndNonPickable.push($(this).data("positionid"));
+                }
+            }
+        });
+        MakeNonPickable(allPickableAndNonPickable);
     });
 
     // Select bins functions
@@ -497,6 +517,25 @@
         });
     }
 
+    // Pickable & NonPickable Html
+
+        // Pickable edit html function
+    function PickableEditHtml(IDList, boolean, backgroundColor) {
+        $(".activeSelectBin").each(function () {
+            for(var i = 0; i < IDList.length; i++) {
+                if ($(this).data("positionid") == IDList[i]) {
+                    $(this).css("backgroundColor", backgroundColor);
+                    $(this).attr("data-pickablebool", boolean);
+                }
+            }
+        });
+        rackDetailsRackBinsContainer.removeClass("activeSelectBin");
+        rackDetailsRackBinsContainer.find(".rackDetails-rack-Bins-text-number").attr("style", "color: black !important;");
+        positionsSelectBtnsContainer.css("display", "none");
+        allSelectedBins = [];
+        allPickableAndNonPickable = [];
+    }
+
     // Ajax Functions
 
         // New Version
@@ -612,6 +651,52 @@
 
                 if (result.booleanError == false) {
                     DeleteBinFunctionHtml(result.positionNumber);
+                }
+                else {
+                    console.log(result.errorMsg);
+                    alert(result.errorMsg);
+                }
+            },
+            error: function (req, status, error) {
+                console.log(status);
+                alert(status);
+            }
+        });
+    }
+
+    function MakePickable(IDList) {
+        $.ajax({
+            type: "POST",
+            url: "/Location/MakePickableOrNonPickable",
+            headers: { "RequestVerificationToken": "@GetAntiXsrfRequestToken()" },
+            data: { IDList: IDList, makePickable: true },
+            success: function (result) {
+
+                if (result.booleanError == false) {
+                    PickableEditHtml(IDList, true, "#B0916E");
+                }
+                else {
+                    console.log(result.errorMsg);
+                    alert(result.errorMsg);
+                }
+            },
+            error: function (req, status, error) {
+                console.log(status);
+                alert(status);
+            }
+        });
+    }
+
+    function MakeNonPickable(IDList) {
+        $.ajax({
+            type: "POST",
+            url: "/Location/MakePickableOrNonPickable",
+            headers: { "RequestVerificationToken": "@GetAntiXsrfRequestToken()" },
+            data: { IDList: IDList, makePickable: false },
+            success: function (result) {
+
+                if (result.booleanError == false) {
+                    PickableEditHtml(IDList, false, "#b8b8b8");
                 }
                 else {
                     console.log(result.errorMsg);

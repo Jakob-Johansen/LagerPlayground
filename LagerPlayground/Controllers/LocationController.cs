@@ -528,5 +528,61 @@ namespace LagerPlayground.Controllers
                 return NotFound();
             }
         }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<JsonResult> MakePickableOrNonPickable(List<int> IDList, bool makePickable)
+        {
+            if (IDList.Count == 0)
+            {
+                string msg;
+                if (makePickable == true)
+                    msg = "No positions was selected or the positions is already pickable";
+                else
+                    msg = "No positions was selected or the positions is already non pickable";
+
+                return Json(new { booleanError = true, errorMsg = msg });
+            }
+
+            List<Locations_Positions> locations_PositionsList = new();
+            foreach (var item in IDList)
+            {
+                var positionToUpdate = await _context.Locations_Positions.FirstOrDefaultAsync(x => x.ID == item);
+
+                if (positionToUpdate == null)
+                {
+                    return Json(new { booleanError = true, errorMsg = "One or more positions could not be found" });
+                }
+
+                if (await TryUpdateModelAsync<Locations_Positions>(
+                    positionToUpdate,
+                    "",
+                    x => x.Pickable, x => x.Modified))
+                {
+                    if (makePickable == true)
+                    {
+                        positionToUpdate.Pickable = true;
+                    }
+                    else
+                    {
+                        positionToUpdate.Pickable = false;
+                    }
+
+                    positionToUpdate.Modified = DateTime.Now;
+                    locations_PositionsList.Add(positionToUpdate);
+                }
+            }
+
+            try
+            {
+                _context.Locations_Positions.UpdateRange(locations_PositionsList);
+                await _context.SaveChangesAsync();
+                return Json(new { booleanError = false });
+            }
+            catch (DbUpdateException)
+            {
+                return Json(new { booleanError = true, errorMsg = "An database error has occured" });
+            }
+        }
     }
 }
