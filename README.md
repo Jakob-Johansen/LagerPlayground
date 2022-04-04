@@ -14,3 +14,6 @@ fx lav sektioner så man ikke bliver i tvivl, og hold det hele samlet i de sekti
 Lav skabaloner som kan genbruges fx modaler, når en knap fx skal kunne noget gennem javascript så gi det en helt ny class som javascript kan bruge,
 i stedet for den default som måske skal bruges til andre ting.
 
+
+Ide til et medarbejder point system.
+Når en medarbejder pakker eller er ude og plukke eller andre ting skal personen modtage xp til at level op i rank og skal modtage points for hver ting de plukker, de points skal de så kunne bruge til at købe ting for fx en gave kurv med chokolade, vin og sådan noget, eller andre ting. Systemet skal laves for at motivere medarbejdere og give dem mere glæde for at arbejde.
