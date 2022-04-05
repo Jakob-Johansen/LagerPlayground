@@ -1928,6 +1928,7 @@ li.dropdown {
 }
 
 .rackDetails-rack-Bins-text-lock {
+    display: none;
     text-align: center;
     color: black !important;
     font-weight: normal;
