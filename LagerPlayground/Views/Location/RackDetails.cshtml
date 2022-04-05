@@ -49,22 +49,6 @@
 
                 <div class="rackDetails-rack-header-btn-float-left-overall-container">
 
-@*                    <div class="rackDetails-rack-header-btn-container-left">
-                        <div class="rackDetails-rack-header-btn-float-left-container">
-                            <a class="rackDetails-rack-header-selectall-btn">Select All</a>
-                        </div>
-                        <div class="rackDetails-rack-header-btn-float-left-container">
-                            <a class="rackDetails-rack-header-deselectall-btn">Deselect All</a>
-                        </div>
-                        <div class="rackDetails-rack-header-btn-float-left-container">
-                            <a class="rackDetails-rack-header-print-btn">Print</a>
-                        </div>
-                        <div class="rackDetails-rack-header-btn-float-left-container">
-                            <a class="rackDetails-rack-header-deletetop-shelf-btn">Delete Top Shelf</a>
-                        </div>
-                        <div class="clearBoth"></div>
-                    </div>*@
-
                     <div class="rackDetails-rack-header-btn-container-left">
                         <ul class="rackDetails-rack-header-btn-container-ul">
                             <li>
@@ -443,47 +427,6 @@
         }
     }
 
-        // Old Version
-    //function CreateShelfAndBinsHtml(shelfID, shelfNumber, positions) {
-    //    if (shelfNumber < 10) {
-    //        shelfNumber = "0" + shelfNumber;
-    //    }
-
-    //    shelfOverAllContainer.prepend(
-    //        `
-    //        <div class="rackDetails-rack-container">
-    //            <div class="rackDetails-rack-Bins-overall-container">
-
-    //            </div>
-    //            <div class="clearBoth"></div>
-    //            <div class="rackDetails-rack-shelf-container" data-shelfid="${shelfID}">
-    //                <p class="trim rackDetails-rack-shelf-text">Shelf: <span class="rackDetails-rack-shelf-text-number">${shelfNumber}</span> ^</p>
-    //            </div>
-    //        </div>
-    //        `
-    //    );
-
-    //    let getWidth = parseFloat(100 / positions.length).toFixed(3);
-
-    //    for(var i = 0; i < positions.length; i++) {
-    //        let newPositionNumber = positions[i].positionNumber;
-
-    //        if (positions[i].positionNumber < 10) {
-    //            newPositionNumber = "0" + positions[i].positionNumber;
-    //        }
-
-    //        shelfOverAllContainer.children(":first").find(".rackDetails-rack-Bins-overall-container").prepend(
-    //            `
-    //            <div class="rackDetails-rack-Bins-float-container" style="width: ${getWidth}%;">
-    //                <div class="rackDetails-rack-Bins-container" data-positionid="${positions[i].positionID}">
-    //                    <p class="trim rackDetails-rack-Bins-text-number">${newPositionNumber}</p>
-    //                </div>
-    //            </div>
-    //            `
-    //        );
-    //    }
-    //}
-
         // Add Bin Html
     function CreateBinFunctionHtml (positionID, positionNumber) {
         let newWidth = parseFloat(100 / positionNumber).toFixed(3);
@@ -569,30 +512,6 @@
             }
         });
     }
-
-        // Old Version
-    //function CreateShelfAndBins(binQty) {
-    //    $.ajax({
-    //        type: "POST",
-    //        url: "/Location/CreateShelfAndBins",
-    //        headers: { "RequestVerificationToken": "@GetAntiXsrfRequestToken()" },
-    //        data: { binQuantity: binQty, rackID: @Model.ID, rackNumber: @Model.RackNumber, row: "@Model.Locations.Row" },
-    //        success: function (result) {
-
-    //            if (result.booleanError == true) {
-    //                CreateShelfAndBinsHtml(result.shelfID, result.shelfNumber, result.positions);
-    //            }
-    //            else {
-    //                console.log(result.msg);
-    //                alert(result.msg);
-    //            }
-    //        },
-    //        error: function (req, status, error) {
-    //            console.log(status);
-    //            alert(status);
-    //        }
-    //    });
-    //}
 
     function PrintSelectedPositions(selectedIds) {
         $.ajax({
