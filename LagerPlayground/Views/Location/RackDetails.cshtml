@@ -125,7 +125,7 @@
                                             else
                                             {
                                             <div class="rackDetails-rack-Bins-container" data-positionid="@position.ID" data-pickablebool="false" style="background-color: #b8b8b8;">
-                                                <p class="trim rackDetails-rack-Bins-text-lock"><span class="material-icons">lock</span></p>
+                                                <p class="trim rackDetails-rack-Bins-text-lock" style="display: block;"><span class="material-icons">lock</span></p>
                                                 <p class="trim rackDetails-rack-Bins-text-number">@(position.PositionNumber < 10 ? "0" + position.PositionNumber : position.PositionNumber)</p>
                                             </div>
                                             }
@@ -300,7 +300,8 @@
 
         // Pickable & NonPickable btns
 
-    pickableBtn.click(function () {
+
+    $(document).on("click", ".rackDetails-rack-header-pickable-btn", function () {
         allPickableAndNonPickable = [];
 
         $(".activeSelectBin").each(function () {
@@ -313,7 +314,33 @@
         MakePickable(allPickableAndNonPickable);
     });
 
-    nonPickableBtn.click(function () {
+    //pickableBtn.click(function () {
+    //    allPickableAndNonPickable = [];
+
+    //    $(".activeSelectBin").each(function () {
+    //        if ($(this).attr("data-pickablebool") == false || $(this).attr("data-pickablebool") == "false") {
+    //            if ($(this).data("positionid") != "") {
+    //                allPickableAndNonPickable.push($(this).data("positionid"));
+    //            }
+    //        }
+    //    });
+    //    MakePickable(allPickableAndNonPickable);
+    //});
+
+    //nonPickableBtn.click(function () {
+    //    allPickableAndNonPickable = [];
+
+    //    $(".activeSelectBin").each(function () {
+    //        if ($(this).attr("data-pickablebool") == true || $(this).attr("data-pickablebool") == "true") {
+    //            if ($(this).data("positionid") != "") {
+    //                allPickableAndNonPickable.push($(this).data("positionid"));
+    //            }
+    //        }
+    //    });
+    //    MakeNonPickable(allPickableAndNonPickable);
+    //});
+
+    $(document).on("click", ".rackDetails-rack-header-nonpickable-btn", function () {
         allPickableAndNonPickable = [];
 
         $(".activeSelectBin").each(function () {
@@ -417,7 +444,7 @@
                 shelfOverAllContainer.children(":first").find(".rackDetails-rack-Bins-overall-container").prepend(
                     `
                     <div class="rackDetails-rack-Bins-float-container" style="width: ${getWidth}%;">
-                        <div class="rackDetails-rack-Bins-container" data-positionid="${locationData[i].vmPositions[j].positionID}">
+                        <div class="rackDetails-rack-Bins-container" data-positionid="${locationData[i].vmPositions[j].positionID}" data-pickablebool="true">
                             <p class="trim rackDetails-rack-Bins-text-number">${newPositionNumber}</p>
                         </div>
                     </div>
@@ -442,7 +469,7 @@
         $(".activeSelectShelf").parent(".rackDetails-rack-container").find(".rackDetails-rack-Bins-overall-container").append(
         `
         <div class="rackDetails-rack-Bins-float-container" style="width: ${newWidth}%;">
-            <div class="rackDetails-rack-Bins-container" data-positionid="${positionID}">
+            <div class="rackDetails-rack-Bins-container" data-positionid="${positionID} data-pickablebool="true">
                 <p class="trim rackDetails-rack-Bins-text-number">${positionNumber}</p>
             </div>
         </div>
@@ -472,16 +499,16 @@
                     $(this).css("backgroundColor", backgroundColor);
                     $(this).attr("data-pickablebool", boolean);
                     if (boolean == false) {
-                        $(this).find(".rackDetails-rack-Bins-text-lock").css("display", "block");
+                        $(this).find(".rackDetails-rack-Bins-text-lock").attr("style", "display: block;");
                     }
                     else {
-                        $(this).find(".rackDetails-rack-Bins-text-lock").css("display", "none");
+                        $(this).find(".rackDetails-rack-Bins-text-lock").attr("style", "display: none;");
                     }
                 }
             }
         });
-        rackDetailsRackBinsContainer.removeClass("activeSelectBin");
-        rackDetailsRackBinsContainer.find(".rackDetails-rack-Bins-text-number").attr("style", "color: black !important;");
+        $(".rackDetails-rack-Bins-container").removeClass("activeSelectBin");
+        $(".rackDetails-rack-Bins-container").find(".rackDetails-rack-Bins-text-number").attr("style", "color: black !important;");
         positionsSelectBtnsContainer.css("display", "none");
         allSelectedBins = [];
         allPickableAndNonPickable = [];
