@@ -134,12 +134,14 @@
                                             @if(position.Pickable == true)
                                             {
                                             <div class="rackDetails-rack-Bins-container" data-positionid="@position.ID" data-pickablebool="true">
+                                                <p class="trim rackDetails-rack-Bins-text-lock" style="display: none;"><span class="material-icons">lock</span></p>
                                                 <p class="trim rackDetails-rack-Bins-text-number">@(position.PositionNumber < 10 ? "0" + position.PositionNumber : position.PositionNumber)</p>
-                                                </div>
+                                            </div>
                                             }
                                             else
                                             {
                                             <div class="rackDetails-rack-Bins-container" data-positionid="@position.ID" data-pickablebool="false" style="background-color: #b8b8b8;">
+                                                <p class="trim rackDetails-rack-Bins-text-lock"><span class="material-icons">lock</span></p>
                                                 <p class="trim rackDetails-rack-Bins-text-number">@(position.PositionNumber < 10 ? "0" + position.PositionNumber : position.PositionNumber)</p>
                                             </div>
                                             }
@@ -526,6 +528,12 @@
                 if ($(this).data("positionid") == IDList[i]) {
                     $(this).css("backgroundColor", backgroundColor);
                     $(this).attr("data-pickablebool", boolean);
+                    if (boolean == false) {
+                        $(this).find(".rackDetails-rack-Bins-text-lock").css("display", "block");
+                    }
+                    else {
+                        $(this).find(".rackDetails-rack-Bins-text-lock").css("display", "none");
+                    }
                 }
             }
         });
