@@ -1939,6 +1939,10 @@ li.dropdown {
     left: 0;
 }
 
+.rackDetails-rack-Bins-text-lock > span {
+    font-size: 20px;
+}
+
 .rackDetails-rack-Bins-container:hover {
     cursor: pointer;
 }
@@ -1980,4 +1984,5 @@ li.dropdown {
 
 .activeSelectBin > p > span {
     color: white !important;
+    font-size: 20px;
 }
