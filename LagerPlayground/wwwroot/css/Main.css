@@ -1917,7 +1917,6 @@ li.dropdown {
 .rackDetails-rack-Bins-text-number {
     text-align: center;
     color: black !important;
-    color: black;
     font-weight: bold;
     user-select: none;
     margin: 0 auto;
@@ -1926,6 +1925,18 @@ li.dropdown {
     right: 0;
     top: 50%;
     transform: translateY(-50%);
+}
+
+.rackDetails-rack-Bins-text-lock {
+    text-align: center;
+    color: black !important;
+    font-weight: normal;
+    user-select: none;
+    margin: 0 auto;
+    position: absolute;
+    top: 18%;
+    right: 0;
+    left: 0;
 }
 
 .rackDetails-rack-Bins-container:hover {
@@ -1964,5 +1975,9 @@ li.dropdown {
 
 .activeSelectBin {
     background-color: #216fff !important;
+    color: white !important;
+}
+
+.activeSelectBin > p > span {
     color: white !important;
 }
