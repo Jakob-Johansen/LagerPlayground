@@ -264,8 +264,8 @@
 
         // Select shelf
     $(document).on("click", ".rackDetails-rack-shelf-container", function () {
-        rackDetailsRackBinsContainer.removeClass(activeSelectBin);
-        rackDetailsRackBinsContainer.find(".rackDetails-rack-Bins-text-number").attr("style", "color: black !important;");
+        $(".rackDetails-rack-Bins-container").removeClass(activeSelectBin);
+        $(".rackDetails-rack-Bins-container").find(".rackDetails-rack-Bins-text-number").attr("style", "color: black !important;");
         allSelectedBins = [];
         positionsSelectBtnsContainer.css("display", "none");
 
@@ -280,7 +280,7 @@
             shelfSelectBtnsContainer.css("display", "none");
         }
         else {
-            rackDetailsRackShelfContainer.removeClass(activeSelectShelf);
+            $(".rackDetails-rack-shelf-container").removeClass(activeSelectShelf);
             $(this).addClass(activeSelectShelf);
             $(this).find(".rackDetails-rack-shelf-text").attr("style", "color: white !important;");
             $(this).parent(".rackDetails-rack-container").attr("style", "border-color: #843df5 !important;");
@@ -357,7 +357,7 @@
 
         // Select one at a time
     $(document).on("click", ".rackDetails-rack-Bins-container", function () {
-        rackDetailsRackShelfContainer.removeClass(activeSelectShelf);
+        $(".rackDetails-rack-shelf-container").removeClass(activeSelectShelf);
         $(".rackDetails-rack-shelf-text").attr("style", "color: black !important;");
         $(".rackDetails-rack-container").attr("style", "border-color: #f0f0f0 !important;");
         shelfSelectBtnsContainer.css("display", "none");
@@ -381,13 +381,13 @@
 
         // Select All
     selectAll.click(function () {
-        rackDetailsRackShelfContainer.removeClass(activeSelectShelf);
+        $(".rackDetails-rack-shelf-container").removeClass(activeSelectShelf);
         $(".rackDetails-rack-shelf-text").attr("style", "color: black !important;");
         $(".rackDetails-rack-container").attr("style", "border-color: #f0f0f0 !important;");
         shelfSelectBtnsContainer.css("display", "none");
 
         positionsSelectBtnsContainer.css("display", "block");
-        rackDetailsRackBinsContainer.each(function(index) {
+        $(".rackDetails-rack-Bins-container").each(function(index) {
             if(!$(this).hasClass(activeSelectBin)) {
                 $(this).addClass(activeSelectBin);
                 $(this).find(".rackDetails-rack-Bins-text-number").attr("style", "color: white !important;");
@@ -398,15 +398,15 @@
 
         // Deselect All
     deselectAll.click(function () {
-        rackDetailsRackBinsContainer.removeClass(activeSelectBin);
-        rackDetailsRackBinsContainer.find(".rackDetails-rack-Bins-text-number").attr("style", "color: black !important;");
+        $(".rackDetails-rack-Bins-container").removeClass(activeSelectBin);
+        $(".rackDetails-rack-Bins-container").find(".rackDetails-rack-Bins-text-number").attr("style", "color: black !important;");
         allSelectedBins = [];
         positionsSelectBtnsContainer.css("display", "none");
 
         $(".rackDetails-rack-shelf-text").attr("style", "color: black !important;");
         $(".rackDetails-rack-container").attr("style", "border-color: #f0f0f0 !important;");
         shelfSelectBtnsContainer.css("display", "none");
-        rackDetailsRackShelfContainer.removeClass(activeSelectShelf);
+        $(".rackDetails-rack-shelf-container").removeClass(activeSelectShelf);
     });
 
     // Create shelf & bins in html function
@@ -470,7 +470,7 @@
         $(".activeSelectShelf").parent(".rackDetails-rack-container").find(".rackDetails-rack-Bins-overall-container").append(
         `
         <div class="rackDetails-rack-Bins-float-container" style="width: ${newWidth}%;">
-            <div class="rackDetails-rack-Bins-container" data-positionid="${positionID} data-pickablebool="true">
+            <div class="rackDetails-rack-Bins-container" data-positionid="${positionID}" data-pickablebool="true">
                 <p class="trim rackDetails-rack-Bins-text-lock" style="display: none;"><span class="material-icons">lock</span></p>
                 <p class="trim rackDetails-rack-Bins-text-number">${positionNumber}</p>
             </div>
@@ -552,7 +552,7 @@
 
                 if (result.booleanError == false) {
                     window.open('/Pdf/Barcode.pdf', '_blank');
-                    rackDetailsRackBinsContainer.removeClass(activeSelectBin);
+                    $(".rackDetails-rack-Bins-container").removeClass(activeSelectBin);
                     $(".rackDetails-rack-Bins-text-number").attr("style", "color: black !important;");
                     allSelectedBins = [];
                 }
