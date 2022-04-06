@@ -9,7 +9,7 @@ namespace LagerPlayground.Models
     public class Product_Locations
     {
         public int ID { get; set; }
-        public int Locations_PositionsID { get; set; }
+        public int? Locations_PositionsID { get; set; }
         public int ProductID { get; set; }
         public int Quantity { get; set; }
         public string LocationBarcode { get; set; }

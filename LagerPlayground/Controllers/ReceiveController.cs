@@ -88,17 +88,42 @@ namespace LagerPlayground.Controllers
                     // For Testing
                     //throw new DbUpdateException();
 
+                    var productLocation = await _context.Product_Locations.Where(x => x.LocationBarcode == "Receiving-Station").FirstOrDefaultAsync(x => x.ProductID == productToUpdate.ID);
+
+                    if (productLocation == null)
+                    {
+                        Product_Locations product_Locations = new();
+                        product_Locations.ProductID = productToUpdate.ID;
+                        product_Locations.Quantity = 1;
+                        product_Locations.LocationBarcode = "Receiving-Station";
+                        product_Locations.Created = DateTime.Now;
+
+                        _context.Product_Locations.Add(product_Locations);
+                    }
+                    else
+                    {
+                        var tryUpdateProductLocation = await TryUpdateModelAsync<Product_Locations>(
+                            productLocation, "", x => x.Quantity, x => x.Modified);
+
+                        productLocation.Quantity = productLocation.Quantity + 1;
+                        productLocation.Modified = DateTime.Now;
+                    }
+
                     receiveOrderItemToUpdate.Accepted = updateAccepted;
                     productToUpdate.Quantity = updatedQuantity;
                     await _context.SaveChangesAsync();
+
+                    return Json(new { boolean = true });
                 }
                 catch (DbUpdateException)
                 {
                     return Json(new { boolean = false, databaseError = true, msg = "An database error has occured, try again or contact an administrator" });
                 }
             }
-
-            return Json(new {boolean = true});
+            else
+            {
+                return Json(new { boolean = false,  msg = "An error has occured" });
+            }
         }
 
         [HttpGet]
