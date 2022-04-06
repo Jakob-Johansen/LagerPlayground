@@ -372,7 +372,7 @@ namespace LagerPlayground.Migrations
                 {
                     ID = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Locations_PositionsID = table.Column<int>(type: "int", nullable: false),
+                    Locations_PositionsID = table.Column<int>(type: "int", nullable: true),
                     ProductID = table.Column<int>(type: "int", nullable: false),
                     Quantity = table.Column<int>(type: "int", nullable: false),
                     LocationBarcode = table.Column<string>(type: "nvarchar(max)", nullable: true),
@@ -386,8 +386,7 @@ namespace LagerPlayground.Migrations
                         name: "FK_Product_Locations_Locations_Positions_Locations_PositionsID",
                         column: x => x.Locations_PositionsID,
                         principalTable: "Locations_Positions",
-                        principalColumn: "ID",
-                        onDelete: ReferentialAction.Cascade);
+                        principalColumn: "ID");
                     table.ForeignKey(
                         name: "FK_Product_Locations_Products_ProductID",
                         column: x => x.ProductID,

@@ -296,7 +296,7 @@ namespace LagerPlayground.Migrations
                     b.Property<string>("LocationBarcode")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("Locations_PositionsID")
+                    b.Property<int?>("Locations_PositionsID")
                         .HasColumnType("int");
 
                     b.Property<DateTime?>("Modified")
@@ -626,9 +626,7 @@ namespace LagerPlayground.Migrations
                 {
                     b.HasOne("LagerPlayground.Models.Locations_Positions", "Locations_Positions")
                         .WithMany()
-                        .HasForeignKey("Locations_PositionsID")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("Locations_PositionsID");
 
                     b.HasOne("LagerPlayground.Models.Product", "Product")
                         .WithMany()
