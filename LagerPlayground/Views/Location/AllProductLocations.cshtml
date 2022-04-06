@@ -1,0 +1,27 @@
+﻿@model IEnumerable<Product_Locations>
+
+@{
+    ViewData["Title"] = "All Product Locations";
+}
+
+<h3>All Products Locations</h3>
+
+<table class="table tote-table">
+    <thead>
+        <tr>
+            <th>Product</th>
+            <th>Quantity</th>
+            <th>Location</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>@item.Product.Name</td>
+                <td>@item.Quantity</td>
+                <td>@item.LocationBarcode</td>
+            </tr>
+        }
+    </tbody>
+</table>

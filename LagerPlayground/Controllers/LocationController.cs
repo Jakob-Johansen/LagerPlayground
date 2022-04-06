@@ -439,16 +439,6 @@ namespace LagerPlayground.Controllers
                 return Redirect("/Location/RackDetails/" + ID);
             }
 
-            //var getShelf = 0;
-            //if (!rack.Locations_Shelfs.Any())
-            //{
-            //    return Redirect("/Location/RackDetails/" + ID);
-            //}
-            //else
-            //{
-            //    getShelf = rack.Locations_Shelfs.ToArray()[rack.Locations_Shelfs.Count() - 1].ID;
-            //}
-
             try
             {
                 _context.Locations_Shelfs.Remove(shelf);
@@ -515,6 +505,17 @@ namespace LagerPlayground.Controllers
             {
                 return Json(new { booleanError = true, errorMsg = "An database error has occured" });
             }
+        }
+
+        public async Task<IActionResult> AllProductLocations()
+        {
+            var productlocations = await _context.Product_Locations
+                .Include(x => x.Product)
+                .Include(x => x.Locations_Positions)
+                .AsNoTracking()
+                .ToListAsync();
+
+            return View(productlocations);
         }
     }
 }
