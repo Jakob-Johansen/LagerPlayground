@@ -1,0 +1,85 @@
+﻿@{
+    ViewData["Title"] = "Transfer Product";
+}
+
+<h3>Transfer Product</h3>
+
+<div class="transferProduct-overall-container">
+    <div class="transferProduct-placeholder-container">
+    </div>
+</div>
+
+@section Scripts {
+<script>
+
+    // Barcode scanner variables
+    let barcode = '';
+    let lastScannedBarcode = '';
+    var currentBarcode = '';
+    let productExist = false;
+    let interval;
+
+    let productBarcode = '';
+
+    // Scanner event and functions
+    document.addEventListener("keydown", function (evt) {
+        if (interval) {
+            clearInterval(interval);
+        }
+
+        if (evt.code.includes("Enter")) {
+            if (barcode) {
+                handleBarcode(barcode);
+                barcode = '';
+                return;
+            }
+        }
+        if (!evt.code.includes("Shift") && !evt.code.includes("CapsLock")) {
+            barcode += evt.key;
+        }
+        interval = setInterval(() => barcode = '', 20);
+    });
+
+    function handleBarcode(scanned_barcode) {
+        scanned_barcode = scanned_barcode.trim();
+
+        if (scanned_barcode.length >= 1) {
+            currentBarcode = scanned_barcode;
+
+            if (productBarcode == '' || productBarcode.length == 0) {
+                console.log("Product Barcode");
+                GetNonLocationProduct(scanned_barcode);
+            }
+            else {
+                console.log("Location Barcode");
+            }
+        }
+    }
+
+    // Ajax Functions
+
+    function GetNonLocationProduct(scanned_barcode) {
+        $.ajax({
+            type: "GET",
+            url: "/Transfer/GetNonLocationProduct",
+            data: { barcode: scanned_barcode },
+            success: function (result) {
+
+                if (result.booleanError == false) {
+                    console.log("Success");
+                    productBarcode = result.productBarcode;
+                    console.log(productBarcode);
+                }
+                else {
+                    console.log(result.msg);
+                    alert(result.msg);
+                }
+            },
+            error: function (req, status, error) {
+                console.log(status);
+                alert(status);
+            }
+        });
+    }
+</script>
+}
