@@ -1987,3 +1987,12 @@ li.dropdown {
     color: white !important;
     font-size: 20px;
 }
+
+/*---Move Product---*/
+
+.moveProduct-overall-container {
+    width: 500px;
+    margin: 0 auto;
+    height: 700px;
+    background-color: red;
+}

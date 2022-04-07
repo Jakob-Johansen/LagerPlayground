@@ -314,32 +314,6 @@
         MakePickable(allPickableAndNonPickable);
     });
 
-    //pickableBtn.click(function () {
-    //    allPickableAndNonPickable = [];
-
-    //    $(".activeSelectBin").each(function () {
-    //        if ($(this).attr("data-pickablebool") == false || $(this).attr("data-pickablebool") == "false") {
-    //            if ($(this).data("positionid") != "") {
-    //                allPickableAndNonPickable.push($(this).data("positionid"));
-    //            }
-    //        }
-    //    });
-    //    MakePickable(allPickableAndNonPickable);
-    //});
-
-    //nonPickableBtn.click(function () {
-    //    allPickableAndNonPickable = [];
-
-    //    $(".activeSelectBin").each(function () {
-    //        if ($(this).attr("data-pickablebool") == true || $(this).attr("data-pickablebool") == "true") {
-    //            if ($(this).data("positionid") != "") {
-    //                allPickableAndNonPickable.push($(this).data("positionid"));
-    //            }
-    //        }
-    //    });
-    //    MakeNonPickable(allPickableAndNonPickable);
-    //});
-
     $(document).on("click", ".rackDetails-rack-header-nonpickable-btn", function () {
         allPickableAndNonPickable = [];
 
@@ -518,7 +492,6 @@
 
     // Ajax Functions
 
-        // New Version
     function CreateShelfAndBins(binQty, shelfQty) {
         $.ajax({
             type: "POST",
