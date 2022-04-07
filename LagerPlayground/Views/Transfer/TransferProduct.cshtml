@@ -1,4 +1,13 @@
-﻿@{
+﻿@inject Microsoft.AspNetCore.Antiforgery.IAntiforgery Xsrf
+
+@functions {
+    public string GetAntiXsrfRequestToken()
+    {
+        return Xsrf.GetAndStoreTokens(Context).RequestToken;
+    }
+}
+
+@{
     ViewData["Title"] = "Transfer Product";
 }
 
@@ -47,11 +56,10 @@
             currentBarcode = scanned_barcode;
 
             if (productBarcode == '' || productBarcode.length == 0) {
-                console.log("Product Barcode");
                 GetNonLocationProduct(scanned_barcode);
             }
             else {
-                console.log("Location Barcode");
+                TransferProduct(scanned_barcode);
             }
         }
     }
@@ -62,13 +70,36 @@
         $.ajax({
             type: "GET",
             url: "/Transfer/GetNonLocationProduct",
-            data: { barcode: scanned_barcode },
+            data: { scannedBarcode: scanned_barcode },
             success: function (result) {
 
                 if (result.booleanError == false) {
-                    console.log("Success");
+                    console.log("Success GetNonLocationProduct");
                     productBarcode = result.productBarcode;
-                    console.log(productBarcode);
+                }
+                else {
+                    console.log(result.msg);
+                    alert(result.msg);
+                }
+            },
+            error: function (req, status, error) {
+                console.log(status);
+                alert(status);
+            }
+        });
+    }
+
+    function TransferProduct(scanned_barcode) {
+        $.ajax({
+            type: "POST",
+            url: "/Transfer/TransferProduct",
+            headers: { "RequestVerificationToken": "@GetAntiXsrfRequestToken()" },
+            data: { scannedBarcode: scanned_barcode, productBarcode: productBarcode },
+            success: function (result) {
+
+                if (result.booleanError == false) {
+                    console.log("Success TransferProduct");
+                    productBarcode = '';
                 }
                 else {
                     console.log(result.msg);
