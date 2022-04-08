@@ -29,6 +29,7 @@
     let interval;
 
     let productBarcode = '';
+    let currentProductQuantity = 0;
 
     // Scanner event and functions
     document.addEventListener("keydown", function (evt) {
@@ -58,6 +59,9 @@
             if (productBarcode == '' || productBarcode.length == 0) {
                 GetNonLocationProduct(scanned_barcode);
             }
+            else if(scanned_barcode == productBarcode) {
+                currentProductQuantity++;
+            }
             else {
                 TransferProduct(scanned_barcode);
             }
@@ -76,6 +80,7 @@
                 if (result.booleanError == false) {
                     console.log("Success GetNonLocationProduct");
                     productBarcode = result.productBarcode;
+                    currentProductQuantity = 1;
                 }
                 else {
                     console.log(result.msg);
@@ -94,14 +99,19 @@
             type: "POST",
             url: "/Transfer/TransferProduct",
             headers: { "RequestVerificationToken": "@GetAntiXsrfRequestToken()" },
-            data: { scannedBarcode: scanned_barcode, productBarcode: productBarcode },
+            data: { scannedBarcode: scanned_barcode, productBarcode: productBarcode, quantity: currentProductQuantity },
             success: function (result) {
 
                 if (result.booleanError == false) {
                     console.log("Success TransferProduct");
                     productBarcode = '';
+                    currentProductQuantity = 0;
                 }
                 else {
+                    if (result.locationNotFound == false) {
+                        currentBarcode = '';
+                        currentProductQuantity = 0;
+                    }
                     console.log(result.msg);
                     alert(result.msg);
                 }
