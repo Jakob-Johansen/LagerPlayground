@@ -1,9 +1,13 @@
 # LagerPlayground
 
 -HUSK!-
+
 Lav unit tests på nye project
+
 Læs noget mere om cross site overposting halløj
+
 Læs noget mere om ef core.
+
 
 -Ting jeg har lært, og skal huske-
 
