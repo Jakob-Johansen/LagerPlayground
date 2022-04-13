@@ -1999,32 +1999,80 @@ li.dropdown {
 
 /*---Transform Product---*/
 
-.transferProduct-overall-container {
-    width: 450px;
+.putaway-overall-container {
+    width: 630px;
     height: auto;
-    background-color: red;
+    background-color: #1d1f21;
     margin: 0 auto;
+    padding-bottom: 15px;
 }
 
-.transferProduct-overall-headline-text {
+.putaway-overall-headline-container {
+    width: 100%;
+    height: auto;
+    background-color: #27292b;
+}
+
+.putaway-overall-headline-text {
     width: 100%;
     display: block;
     padding: 5px 0 !important;
     margin: 0 !important;
     text-align: center;
     font-size: 24px;
-    background-color: blue;
 }
 
-.transferProduct-product-image-container {
+.putaway-product-template-container {
+    width: 85%;
     height: auto;
-    background-color: darkgray;
+    margin: 20px auto 0 auto;
+    background-color: #cf1f1f;
+    border-radius: 3px;
 }
 
-.transferProduct-product-image {
-    width: 65%;
-    display: block;
-    padding: 0;
-    margin: 0 auto;
-    user-select: none;
+.putaway-product-info-template-container {
+    padding: 10px;
+}
+
+.putaway-product-image-float-container, .putaway-product-info-float-container {
+    float: left;
+}
+
+.putaway-product-image-float-container {
+    width: 15%;
+    height: 80px;
+}
+
+.putaway-product-info-float-container {
+    width: 85%;
+    height: auto;
+}
+
+.putaway-product-info-main-container, .putaway-product-info-secondary-container {
+    float: left;
+}
+
+.putaway-product-info-main-container {
+    width: 60%;
+}
+
+.putaway-product-info-secondary-container {
+    width: 25%;
+}
+
+.putaway-product-info-main-name {
+    font-weight: bold;
+    font-size: 18px;
+    padding: 0 10px;
+}
+
+.putaway-product-info-main-barcode, .putaway-product-info-main-custommer {
+    font-size: 13px;
+    padding: 0 10px;
+}
+
+.putaway-product-info-secondary-onhand {
+    text-align: right;
+/*    background-color: yellow;*/
+/*    padding: 0 10px;*/
 }
