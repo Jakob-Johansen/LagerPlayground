@@ -11,12 +11,30 @@
     ViewData["Title"] = "Transfer Product";
 }
 
-<div class="transferProduct-overall-container">
-    <p class="trim transferProduct-overall-headline-text">Transfer Product</p>
-
-    <div class="transferProduct-product-image-container">
-        <img class="transferProduct-product-image" src="~/Images/Placeholders/Placeholder.jpg" />
+<div class="putaway-overall-container">
+    <div class="putaway-overall-headline-container">
+        <p class="trim putaway-overall-headline-text">Transfer Product</p>
     </div>
+
+    <div class="putaway-product-template-container">
+        <div class="putaway-product-info-template-container">
+            <div class="putaway-product-image-float-container" style="background-color: #193ee3;">
+            </div>
+            <div class="putaway-product-info-float-main-container">
+                <div class="putaway-product-info-main-container">
+                    <p class="trim putaway-product-info-main-name">WIRELESS BARCODE SCANNER</p>
+                    <p class="trim putaway-product-info-main-barcode">SKU <span style="font-weight: bold;">K50674</span></p>
+                    <p class="trim putaway-product-info-main-custommer">Custommer <span style="font-weight: bold;">J-Import</span></p>
+                </div>
+                <div class="putaway-product-info-secondary-container">
+                    <p class="trim putaway-product-info-secondary-onhand">100 on hand</p>
+                </div>
+                <div class="clearBoth"></div>
+            </div>
+            <div class="clearBoth"></div>
+        </div>
+    </div>
+
 </div>
 
 @section Scripts {
