@@ -2045,6 +2045,7 @@ li.dropdown {
 /*    background-color: green;*/
     background-color: white;
     position: relative;
+    border-radius: 3px;
 }
 
 .putaway-product-info-float-container {
@@ -2055,6 +2056,7 @@ li.dropdown {
 .putaway-product-image {
     display: block;
     width: 90%;
+    border-radius: 3px;
     position: absolute;
     top: 0;
     bottom: 0;
@@ -2069,6 +2071,7 @@ li.dropdown {
 
 .putaway-product-info-main-container {
     width: 75%;
+    padding: 0 15px;
 }
 
 .putaway-product-info-secondary-container {
@@ -2079,18 +2082,14 @@ li.dropdown {
     font-weight: bold;
     font-size: 19px;
 /*    color: black !important;*/
-    padding: 0 10px;
 }
 
 .putaway-product-info-main-barcode, .putaway-product-info-main-custommer {
     font-size: 15px;
 /*    color: black !important;*/
-    padding: 0 10px;
 }
 
 .putaway-product-info-secondary-onhand {
     text-align: right;
 /*    color: black !important;*/
-/*    background-color: yellow;*/
-/*    padding: 0 10px;*/
 }
