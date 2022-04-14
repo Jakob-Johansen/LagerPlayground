@@ -21,6 +21,25 @@ namespace LagerPlayground.Controllers
                 .AsNoTracking()
                 .OrderByDescending(x => x.Quantity).Where(x => x.LocationBarcode == "Receiving-Station").ToListAsync();
 
+            int allUnits = 0;
+
+            foreach (var item in productLocation)
+            {
+                if (item.Quantity != 0)
+                {
+                    if (allUnits == 0)
+                    {
+                        allUnits = item.Quantity;
+                    }
+                    else
+                    {
+                        allUnits += item.Quantity;
+                    }
+                }
+            }
+
+            ViewBag.AllUnits = allUnits;
+
             return View(productLocation);
         }
 

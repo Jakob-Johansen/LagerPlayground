@@ -15,7 +15,19 @@
 
 <div class="putaway-overall-container">
     <div class="putaway-overall-headline-container">
-        <p class="trim putaway-overall-headline-text">Transfer Product</p>
+        <p class="trim putaway-overall-headline-text">Transfer Product List</p>
+        
+        <div class="putaway-overall-underheadline-container">
+            <div class="putaway-underheadline-container">
+                <div class="putaway-underline-skus-container">
+                    <a class="putaway-underheadline-skus-btn"><span style="font-weight: bold;">@Model.Count()</span> SKUs</a>
+                </div>
+                <div class="putaway-underheadline-units-container">
+                    <a class="putaway-underheadline-units-btn"><span style="font-weight: bold;">@(ViewBag.AllUnits == null ? "0" : @ViewBag.AllUnits)</span> units</a>
+                </div>
+                <div class="clearBoth"></div>
+            </div>
+        </div>
     </div>
 
     @foreach (var item in Model)
@@ -23,7 +35,9 @@
         <div class="putaway-product-template-container">
             <div class="putaway-product-info-template-container">
                 <div class="putaway-product-image-float-container">
-                    <img class="putaway-product-image" src="~/Images/@(item.Product.Image == null ? "Placeholders/Placeholder.jpg" : "Products/" + item.Product.Image)" />
+                    <div class="putaway-product-image-container">
+                        <img class="putaway-product-image" src="~/Images/@(item.Product.Image == null ? "Placeholders/PlaceholderWhite.jpg" : "Products/" + item.Product.Image)" />
+                    </div>
                 </div>
                 <div class="putaway-product-info-float-container">
                     <div class="putaway-product-info-main-container">
@@ -41,10 +55,10 @@
         </div>
     }
 
-    @*    <div class="putaway-product-template-container">
+@*        <div class="putaway-product-template-container">
         <div class="putaway-product-info-template-container">
         <div class="putaway-product-image-float-container">
-        <img class="putaway-product-image" src="~/Images/Placeholders/Placeholder.jpg" />
+        <img class="putaway-product-image" src="~/Images/Placeholders/PlaceholderWhite.jpg" />
         </div>
         <div class="putaway-product-info-float-container">
         <div class="putaway-product-info-main-container">
