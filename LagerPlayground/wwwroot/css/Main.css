@@ -2053,21 +2053,19 @@ li.dropdown {
 
 .putaway-underheadline-skus-btn, .putaway-underheadline-units-btn {
     display: inline-block;
-/*    width: 80%;*/
     width: auto;
-/*    margin: 0 auto;*/
     text-align: center;
     text-decoration: none;
-    padding: 3px 20px;
-    background-color: gray;
+    padding: 3px 23px;
+    background-color: #1d1f21;
     border-radius: 100px;
+    color: white !important;
 }
 
 .putaway-product-template-container {
     width: 85%;
     height: auto;
     margin: 20px auto 0 auto;
-    /*    background-color: #cf1f1f;*/
     background-color: #27292b;
     border-radius: 5px;
 }
@@ -2083,7 +2081,6 @@ li.dropdown {
 .putaway-product-image-float-container {
     width: 14%;
     height: 100px;
-/*    background-color: green;*/
     background-color: white;
     position: relative;
     border-radius: 3px;
@@ -2123,15 +2120,12 @@ li.dropdown {
 .putaway-product-info-main-name {
     font-weight: bold;
     font-size: 19px;
-/*    color: black !important;*/
 }
 
 .putaway-product-info-main-barcode, .putaway-product-info-main-custommer {
     font-size: 15px;
-/*    color: black !important;*/
 }
 
 .putaway-product-info-secondary-onhand {
     text-align: right;
-/*    color: black !important;*/
 }
