@@ -7,6 +7,8 @@
     }
 }
 
+@model IEnumerable<Product_Locations>
+
 @{
     ViewData["Title"] = "Transfer Product";
 }
@@ -16,25 +18,48 @@
         <p class="trim putaway-overall-headline-text">Transfer Product</p>
     </div>
 
-    <div class="putaway-product-template-container">
-        <div class="putaway-product-info-template-container">
-            <div class="putaway-product-image-float-container">
-                <img class="putaway-product-image" src="~/Images/Placeholders/Placeholder.jpg" />
-            </div>
-            <div class="putaway-product-info-float-container">
-                <div class="putaway-product-info-main-container">
-                    <p class="trim putaway-product-info-main-name">WIRELESS BARCODE SCANNER</p>
-                    <p class="trim putaway-product-info-main-barcode">SKU <span style="font-weight: bold;">K50674</span></p>
-                    <p class="trim putaway-product-info-main-custommer">Custommer <span style="font-weight: bold;">J-Import</span></p>
+    @foreach (var item in Model)
+    {
+        <div class="putaway-product-template-container">
+            <div class="putaway-product-info-template-container">
+                <div class="putaway-product-image-float-container">
+                    <img class="putaway-product-image" src="~/Images/@(item.Product.Image == null ? "Placeholders/Placeholder.jpg" : "Products/" + item.Product.Image)" />
                 </div>
-                <div class="putaway-product-info-secondary-container">
-                    <p class="trim putaway-product-info-secondary-onhand">100 on hand</p>
+                <div class="putaway-product-info-float-container">
+                    <div class="putaway-product-info-main-container">
+                        <p class="trim putaway-product-info-main-name">@item.Product.Name</p>
+                        <p class="trim putaway-product-info-main-barcode">SKU <span style="font-weight: bold;">@item.Product.BarcodeID</span></p>
+                        <p class="trim putaway-product-info-main-custommer">Custommer <span style="font-weight: bold;">J-Import</span></p>
+                    </div>
+                    <div class="putaway-product-info-secondary-container">
+                        <p class="trim putaway-product-info-secondary-onhand">@item.Quantity on hand</p>
+                    </div>
+                    <div class="clearBoth"></div>
                 </div>
                 <div class="clearBoth"></div>
             </div>
-            <div class="clearBoth"></div>
         </div>
-    </div>
+    }
+
+    @*    <div class="putaway-product-template-container">
+        <div class="putaway-product-info-template-container">
+        <div class="putaway-product-image-float-container">
+        <img class="putaway-product-image" src="~/Images/Placeholders/Placeholder.jpg" />
+        </div>
+        <div class="putaway-product-info-float-container">
+        <div class="putaway-product-info-main-container">
+        <p class="trim putaway-product-info-main-name">WIRELESS BARCODE SCANNER</p>
+        <p class="trim putaway-product-info-main-barcode">SKU <span style="font-weight: bold;">K50674</span></p>
+        <p class="trim putaway-product-info-main-custommer">Custommer <span style="font-weight: bold;">J-Import</span></p>
+        </div>
+        <div class="putaway-product-info-secondary-container">
+        <p class="trim putaway-product-info-secondary-onhand">100 on hand</p>
+        </div>
+        <div class="clearBoth"></div>
+        </div>
+        <div class="clearBoth"></div>
+        </div>
+        </div>*@
 
 </div>
 

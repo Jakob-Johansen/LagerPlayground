@@ -14,9 +14,14 @@ namespace LagerPlayground.Controllers
             _context = context;
         }
 
-        public IActionResult TransferProduct()
+        public async Task<IActionResult> TransferProduct()
         {
-            return View();
+            var productLocation = await _context.Product_Locations
+                .Include(x => x.Product)
+                .AsNoTracking()
+                .OrderByDescending(x => x.Quantity).Where(x => x.LocationBarcode == "Receiving-Station").ToListAsync();
+
+            return View(productLocation);
         }
 
         public async Task<JsonResult> GetNonLocationProduct(string scannedBarcode)
