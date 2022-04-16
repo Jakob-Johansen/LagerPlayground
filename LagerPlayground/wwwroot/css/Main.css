@@ -2133,6 +2133,7 @@ li.dropdown {
     display: inline-block;
     text-decoration: none;
     user-select: none;
+    color: #d6d6d6;
 }
 
 .putaway-product-info-secondary-menu-btn:hover {
