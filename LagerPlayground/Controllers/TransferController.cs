@@ -14,6 +14,8 @@ namespace LagerPlayground.Controllers
             _context = context;
         }
 
+        // https://software-help.shiphero.com/hc/en-us/articles/4419353992077-ShipHero-Putaway
+
         public async Task<IActionResult> TransferProduct()
         {
             var productLocation = await _context.Product_Locations
