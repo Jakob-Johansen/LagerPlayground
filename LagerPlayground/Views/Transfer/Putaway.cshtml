@@ -10,16 +10,14 @@
 @model IEnumerable<Product_Locations>
 
 @{
-    ViewData["Title"] = "Transfer Product";
+    ViewData["Title"] = "Putaway";
 }
 
 @*https://software-help.shiphero.com/hc/en-us/articles/4419353992077-ShipHero-Putaway*@
 
-<h1>Transfer Product</h1>
-
-@*<div class="putaway-overall-container">
+<div class="putaway-overall-container">
     <div class="putaway-overall-headline-container">
-        <p class="trim putaway-overall-headline-text">Transfer Product List</p>
+        <p class="trim putaway-overall-headline-text">Putaway List</p>
         
         <div class="putaway-overall-underheadline-container">
             <div class="putaway-underheadline-container">
@@ -60,6 +58,26 @@
         </div>
     }
 
+@*        <div class="putaway-product-template-container">
+        <div class="putaway-product-info-template-container">
+        <div class="putaway-product-image-float-container">
+        <img class="putaway-product-image" src="~/Images/Placeholders/PlaceholderWhite.jpg" />
+        </div>
+        <div class="putaway-product-info-float-container">
+        <div class="putaway-product-info-main-container">
+        <p class="trim putaway-product-info-main-name">WIRELESS BARCODE SCANNER</p>
+        <p class="trim putaway-product-info-main-barcode">SKU <span style="font-weight: bold;">K50674</span></p>
+        <p class="trim putaway-product-info-main-custommer">Custommer <span style="font-weight: bold;">J-Import</span></p>
+        </div>
+        <div class="putaway-product-info-secondary-container">
+        <p class="trim putaway-product-info-secondary-onhand">100 on hand</p>
+        </div>
+        <div class="clearBoth"></div>
+        </div>
+        <div class="clearBoth"></div>
+        </div>
+        </div>*@
+
 
     <div class="putaway-overall-bottom-btns-container">
         <div class="putaway-bottom-btns-container">
@@ -72,10 +90,13 @@
             <div class="clearBoth"></div>
         </div>
     </div>
-</div>*@
+</div>
 
 @section Scripts {
 <script>
+
+    let allUnits = @ViewBag.AllUnits
+
     // Barcode scanner variables
     let barcode = '';
     let lastScannedBarcode = '';
@@ -85,6 +106,10 @@
 
     let productBarcode = '';
     let currentProductQuantity = 0;
+
+    //$(document).ready(function () {
+    //    console.log(allUnits);
+    //});
 
     // Scanner event and functions
     document.addEventListener("keydown", function (evt) {
@@ -118,64 +143,12 @@
                 currentProductQuantity++;
             }
             else {
-                TransferProduct(scanned_barcode);
+                console.log("Ajax Function");
             }
         }
     }
 
     // Ajax Functions
 
-    function GetNonLocationProduct(scanned_barcode) {
-        $.ajax({
-            type: "GET",
-            url: "/Transfer/GetNonLocationProduct",
-            data: { scannedBarcode: scanned_barcode },
-            success: function (result) {
-
-                if (result.booleanError == false) {
-                    console.log("Success GetNonLocationProduct");
-                    productBarcode = result.productBarcode;
-                    currentProductQuantity = 1;
-                }
-                else {
-                    console.log(result.msg);
-                    alert(result.msg);
-                }
-            },
-            error: function (req, status, error) {
-                console.log(status);
-                alert(status);
-            }
-        });
-    }
-
-    function TransferProduct(scanned_barcode) {
-        $.ajax({
-            type: "POST",
-            url: "/Transfer/TransferProduct",
-            headers: { "RequestVerificationToken": "@GetAntiXsrfRequestToken()" },
-            data: { scannedBarcode: scanned_barcode, productBarcode: productBarcode, quantity: currentProductQuantity },
-            success: function (result) {
-
-                if (result.booleanError == false) {
-                    console.log("Success TransferProduct");
-                    productBarcode = '';
-                    currentProductQuantity = 0;
-                }
-                else {
-                    if (result.locationNotFound == false) {
-                        currentBarcode = '';
-                        currentProductQuantity = 0;
-                    }
-                    console.log(result.msg);
-                    alert(result.msg);
-                }
-            },
-            error: function (req, status, error) {
-                console.log(status);
-                alert(status);
-            }
-        });
-    }
 </script>
 }
