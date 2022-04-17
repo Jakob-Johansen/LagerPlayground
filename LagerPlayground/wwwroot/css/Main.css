@@ -2134,7 +2134,8 @@ li.dropdown {
     display: inline-block;
     text-decoration: none;
     user-select: none;
-/*    color: #d6d6d6;*/
+    color: rgb(220,53,69);
+    /*    color: #d6d6d6;*/
 }
 
 .putaway-product-info-secondary-menu-btn:hover {
@@ -2198,4 +2199,8 @@ li.dropdown {
 
 .putaway-bottom-clear-btn:hover, .putaway-bottom-startputaway-btn:hover {
     cursor: pointer;
+}
+
+.putaway-edit-numbertoputaway-text {
+    text-align: center;
 }
