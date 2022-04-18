@@ -1997,11 +1997,11 @@ li.dropdown {
     background-color: red;
 }
 
-/*---Transform Product---*/
+/*---Putaway Product---*/
 
 .putaway-overall-container {
     width: 900px;
-/*    height: 789px;*/
+    /*    height: 789px;*/
     height: auto !important;
     background-color: #1d1f21;
     margin: 0 auto;
@@ -2066,9 +2066,12 @@ li.dropdown {
 .putaway-product-template-container {
     width: 85%;
     height: auto;
-    margin: 20px auto 0 auto;
+    margin: 28px auto 0 auto;
     background-color: #27292b;
     border-radius: 5px;
+    box-shadow: 0px 6px 5px 1px rgba(0,0,0,0.06);
+    -webkit-box-shadow: 0px 6px 5px 1px rgba(0,0,0,0.06);
+    -moz-box-shadow: 0px 6px 5px 1px rgba(0,0,0,0.06);
 }
 
 .putaway-product-info-template-container {
@@ -2156,7 +2159,7 @@ li.dropdown {
 .putaway-overall-bottom-btns-container {
     width: inherit;
     height: auto;
-    margin-top: 20px;
+    margin-top: 28px;
 }
 
 .putaway-bottom-btns-container {
@@ -2201,6 +2204,27 @@ li.dropdown {
     cursor: pointer;
 }
 
-.putaway-edit-numbertoputaway-text {
+.putaway-edit-numbertoputaway-container {
+    border-top: 1.5px solid white;
     text-align: center;
+    padding: 10px;
+}
+
+.putaway-edit-numbertoputaway-text {
+    display: inline-block;
+    text-decoration: none;
+    user-select: none;
+    font-size: 18px;
+    color: white;
+}
+
+.putaway-edit-numbertoputaway-text:hover {
+    cursor: pointer;
+    color: lightgray;
+}
+
+.putaway-edit-numbertoputaway-text-icon {
+    font-size: 19px;
+    position: relative;
+    top: 4px;
 }
