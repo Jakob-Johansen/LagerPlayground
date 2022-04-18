@@ -2232,3 +2232,21 @@ li.dropdown {
     position: relative;
     top: 4px;
 }
+
+.putaway-edit-numbertoputaway-input {
+    width: 70px;
+    color: black !important;
+    padding: 0 5px;
+    text-align: center;
+}
+
+.putaway-edit-numbertoputaway-input::-webkit-outer-spin-button,
+.putaway-edit-numbertoputaway-input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+/* Firefox */
+.putaway-edit-numbertoputaway-input[type=number] {
+    -moz-appearance: textfield;
+}
