@@ -56,7 +56,7 @@
                 <div class="clearBoth"></div>
             </div>
             <div class="putaway-edit-numbertoputaway-container">
-                <input class="putaway-edit-numbertoputaway-input" style="display: none;" type="number" placeholder="0" value="@item.Quantity" />
+                <input class="putaway-edit-numbertoputaway-input" type="number" placeholder="0" value="@item.Quantity" />
                 <a class="trim putaway-edit-numbertoputaway-text"><span style="font-weight: bold;">@item.Quantity</span> to putaway <span class="putaway-edit-numbertoputaway-text-icon material-icons">edit</span></a>
             </div>
         </div>
@@ -123,6 +123,14 @@
         console.log("T");
     });
 
+    // Edit Putaway Number
+    $(document).on("click", ".putaway-edit-numbertoputaway-text", function() {
+        $(".putaway-edit-numbertoputaway-input").css("display","none");
+        $(".putaway-edit-numbertoputaway-text").css("display","block");
+
+        $(this).closest(".putaway-edit-numbertoputaway-container").find(".putaway-edit-numbertoputaway-input").css("display","block");
+        $(this).closest(".putaway-edit-numbertoputaway-text").css("display","none");
+    });
 
     // Scanner event and functions
     //document.addEventListener("keydown", function (evt) {

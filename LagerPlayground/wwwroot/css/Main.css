@@ -2234,10 +2234,12 @@ li.dropdown {
 }
 
 .putaway-edit-numbertoputaway-input {
+    display: none;
     width: 70px;
     color: black !important;
     padding: 0 5px;
     text-align: center;
+    margin: 0 auto;
 }
 
 .putaway-edit-numbertoputaway-input::-webkit-outer-spin-button,
@@ -2246,7 +2248,7 @@ li.dropdown {
     margin: 0;
 }
 
-/* Firefox */
+ Firefox 
 .putaway-edit-numbertoputaway-input[type=number] {
     -moz-appearance: textfield;
 }
