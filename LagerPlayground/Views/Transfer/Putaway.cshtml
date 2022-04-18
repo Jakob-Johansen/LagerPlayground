@@ -18,14 +18,14 @@
 <div class="putaway-overall-container">
     <div class="putaway-overall-headline-container">
         <p class="trim putaway-overall-headline-text">Putaway List</p>
-        
+
         <div class="putaway-overall-underheadline-container">
             <div class="putaway-underheadline-container">
                 <div class="putaway-underline-skus-container">
-                    <a class="putaway-underheadline-skus-btn"><span style="font-weight: bold;">@Model.Count()</span> SKUs</a>
+                    <p class="trim putaway-underheadline-skus-text"><span class="putaway-underheadline-skus-number-text">@Model.Count()</span> SKUs</p>
                 </div>
                 <div class="putaway-underheadline-units-container">
-                    <a class="putaway-underheadline-units-btn"><span style="font-weight: bold;">@(ViewBag.AllUnits == null ? "0" : @ViewBag.AllUnits)</span> units</a>
+                    <p class="trim putaway-underheadline-units-text"><span class="putaway-underheadline-units-number-text">@(ViewBag.AllUnits == null ? "0" : @ViewBag.AllUnits)</span> units</p>
                 </div>
                 <div class="clearBoth"></div>
             </div>
@@ -48,40 +48,18 @@
                         <p class="trim putaway-product-info-main-custommer">Custommer <span style="font-weight: bold;">J-Import</span></p>
                     </div>
                     <div class="putaway-product-info-secondary-container">
-@*                        <a class="putaway-product-info-secondary-menu-btn"><span class="material-icons">more_horiz</span></a>*@
-                          <a class="putaway-product-info-secondary-menu-btn">Remove</a>
+                        <a class="putaway-product-info-secondary-menu-btn" data-itemunits="@item.Quantity">Remove</a>
                         <p class="trim putaway-product-info-secondary-onhand">@item.Quantity on hand</p>
                     </div>
                     <div class="clearBoth"></div>
                 </div>
                 <div class="clearBoth"></div>
             </div>
-                            <div class="putaway-edit-numbertoputaway-container">
-                    <a class="trim putaway-edit-numbertoputaway-text"><span style="font-weight: bold;">@item.Product.Quantity</span> to putaway <span class="putaway-edit-numbertoputaway-text-icon material-icons">edit</span></a>
-                </div>
+            <div class="putaway-edit-numbertoputaway-container">
+                <a class="trim putaway-edit-numbertoputaway-text"><span style="font-weight: bold;">@item.Quantity</span> to putaway <span class="putaway-edit-numbertoputaway-text-icon material-icons">edit</span></a>
+            </div>
         </div>
     }
-
-@*        <div class="putaway-product-template-container">
-        <div class="putaway-product-info-template-container">
-        <div class="putaway-product-image-float-container">
-        <img class="putaway-product-image" src="~/Images/Placeholders/PlaceholderWhite.jpg" />
-        </div>
-        <div class="putaway-product-info-float-container">
-        <div class="putaway-product-info-main-container">
-        <p class="trim putaway-product-info-main-name">WIRELESS BARCODE SCANNER</p>
-        <p class="trim putaway-product-info-main-barcode">SKU <span style="font-weight: bold;">K50674</span></p>
-        <p class="trim putaway-product-info-main-custommer">Custommer <span style="font-weight: bold;">J-Import</span></p>
-        </div>
-        <div class="putaway-product-info-secondary-container">
-        <p class="trim putaway-product-info-secondary-onhand">100 on hand</p>
-        </div>
-        <div class="clearBoth"></div>
-        </div>
-        <div class="clearBoth"></div>
-        </div>
-        </div>*@
-
 
     <div class="putaway-overall-bottom-btns-container">
         <div class="putaway-bottom-btns-container">
@@ -100,6 +78,9 @@
 <script>
 
     let allUnits = @ViewBag.AllUnits
+    let allSkus = @Model.Count();
+
+    let removeFromListBtn = $(".putaway-product-info-secondary-menu-btn");
 
     // Barcode scanner variables
     let barcode = '';
@@ -111,46 +92,54 @@
     let productBarcode = '';
     let currentProductQuantity = 0;
 
-    //$(document).ready(function () {
-    //    console.log(allUnits);
-    //});
 
-    // Scanner event and functions
-    document.addEventListener("keydown", function (evt) {
-        if (interval) {
-            clearInterval(interval);
-        }
+    // Remove Item from list
+    $(document).on("click", ".putaway-product-info-secondary-menu-btn", function () {
+        console.log(allUnits);
+        allUnits = allUnits - $(this).data("itemunits");
+        console.log(allUnits);
 
-        if (evt.code.includes("Enter")) {
-            if (barcode) {
-                handleBarcode(barcode);
-                barcode = '';
-                return;
-            }
-        }
-        if (!evt.code.includes("Shift") && !evt.code.includes("CapsLock")) {
-            barcode += evt.key;
-        }
-        interval = setInterval(() => barcode = '', 20);
+        $(this).find(".putaway-product-template-container").remove();
+        $(".putaway-underheadline-units-number-text").text(allUnits);
+
     });
 
-    function handleBarcode(scanned_barcode) {
-        scanned_barcode = scanned_barcode.trim();
+    // Scanner event and functions
+    //document.addEventListener("keydown", function (evt) {
+    //    if (interval) {
+    //        clearInterval(interval);
+    //    }
 
-        if (scanned_barcode.length >= 1) {
-            currentBarcode = scanned_barcode;
+    //    if (evt.code.includes("Enter")) {
+    //        if (barcode) {
+    //            handleBarcode(barcode);
+    //            barcode = '';
+    //            return;
+    //        }
+    //    }
+    //    if (!evt.code.includes("Shift") && !evt.code.includes("CapsLock")) {
+    //        barcode += evt.key;
+    //    }
+    //    interval = setInterval(() => barcode = '', 20);
+    //});
 
-            if (productBarcode == '' || productBarcode.length == 0) {
-                GetNonLocationProduct(scanned_barcode);
-            }
-            else if(scanned_barcode == productBarcode) {
-                currentProductQuantity++;
-            }
-            else {
-                console.log("Ajax Function");
-            }
-        }
-    }
+    //function handleBarcode(scanned_barcode) {
+    //    scanned_barcode = scanned_barcode.trim();
+
+    //    if (scanned_barcode.length >= 1) {
+    //        currentBarcode = scanned_barcode;
+
+    //        if (productBarcode == '' || productBarcode.length == 0) {
+    //            GetNonLocationProduct(scanned_barcode);
+    //        }
+    //        else if(scanned_barcode == productBarcode) {
+    //            currentProductQuantity++;
+    //        }
+    //        else {
+    //            console.log("Ajax Function");
+    //        }
+    //    }
+    //}
 
     // Ajax Functions
 
