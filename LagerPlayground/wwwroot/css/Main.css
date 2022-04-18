@@ -2052,7 +2052,7 @@ li.dropdown {
     width: 50%;
 }
 
-.putaway-underheadline-skus-btn, .putaway-underheadline-units-btn {
+.putaway-underheadline-skus-text, .putaway-underheadline-units-text {
     display: inline-block;
     width: auto;
     text-align: center;
@@ -2061,6 +2061,10 @@ li.dropdown {
     background-color: #1d1f21;
     border-radius: 100px;
     color: white !important;
+}
+
+.putaway-underheadline-units-number-text, .putaway-underheadline-skus-number-text {
+    font-weight: bold;
 }
 
 .putaway-product-template-container {
