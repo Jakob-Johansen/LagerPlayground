@@ -34,7 +34,7 @@
 
     @foreach (var item in Model)
     {
-        <div class="putaway-product-template-container">
+        <div class="putaway-product-template-container" data-itemunits="@item.Quantity" data-itemskus="@Model.Count()">
             <div class="putaway-product-info-template-container">
                 <div class="putaway-product-image-float-container">
                     <div class="putaway-product-image-container">
@@ -48,7 +48,7 @@
                         <p class="trim putaway-product-info-main-custommer">Custommer <span style="font-weight: bold;">J-Import</span></p>
                     </div>
                     <div class="putaway-product-info-secondary-container">
-                        <a class="putaway-product-info-secondary-menu-btn" data-itemunits="@item.Quantity" data-itemskus="@Model.Count()">Remove</a>
+                        <a class="putaway-product-info-secondary-menu-btn">Remove</a>
                         <p class="trim putaway-product-info-secondary-onhand">@item.Quantity on hand</p>
                     </div>
                     <div class="clearBoth"></div>
@@ -57,7 +57,7 @@
             </div>
             <div class="putaway-edit-numbertoputaway-container">
                 <input class="putaway-edit-numbertoputaway-input" type="number" placeholder="0" value="@item.Quantity" />
-                <a class="trim putaway-edit-numbertoputaway-text"><span style="font-weight: bold;">@item.Quantity</span> to putaway <span class="putaway-edit-numbertoputaway-text-icon material-icons">edit</span></a>
+                <a class="trim putaway-edit-numbertoputaway-text"><span class="putaway-edit-numbertoputaway-text-number" style="font-weight: bold;">@item.Quantity</span> to putaway <span class="putaway-edit-numbertoputaway-text-icon material-icons">edit</span></a>
             </div>
         </div>
     }
@@ -85,6 +85,8 @@
 
     let numberToPutawayInput = $(".putaway-edit-numbertoputaway-input");
 
+    let putawayIsRunning = false;
+
     // Barcode scanner variables
     let barcode = '';
     let lastScannedBarcode = '';
@@ -96,52 +98,97 @@
     let currentProductQuantity = 0;
 
 
-    // Remove Item from list
+    // SECTION 1
+        //-Remove Item From List
     $(document).on("click", ".putaway-product-info-secondary-menu-btn", function () {
-        let parsedItemUnits = parseInt($(this).data("itemunits"));
-        let parsedItemSku = parseInt($(this).data("itemskus"));
-
-        if (!parsedItemUnits < 1 && !allUnits < 1) {
-            //console.log(allUnits);
-            allUnits = allUnits - parsedItemUnits;
-            //console.log(allUnits);
-            $(".putaway-underheadline-units-number-text").text(allUnits);
+        if (putawayIsRunning == false) {
+            RemoveItem($(this));
         }
-
-        if (!parsedItemSku < 1) {
-            //console.log(parsedItemSku);
-            allSkus = allSkus - 1;
-            //console.log(allSkus);
-            $(".putaway-underheadline-skus-number-text").text(allSkus);
-        }
-
-        $(this).closest(".putaway-product-template-container").remove();
     });
 
-    // Number to putaway input
-    $(document).on("input", ".putaway-edit-numbertoputaway-input", function () {
-        console.log("T");
-    });
-
-    // Edit Putaway Number
+    // SECTION 2 - Inputfield
+        //-Putaway Show Inputfield
     $(document).on("click", ".putaway-edit-numbertoputaway-text", function() {
-        $(".putaway-edit-numbertoputaway-input").css("display","none");
-        $(".putaway-edit-numbertoputaway-text").css("display","block");
-        $(".putaway-product-template-container").removeClass("putawayActiveInput");
+        if (putawayIsRunning == false) {
+            if ($(".putawayActiveInput").val() != 0) {
+                $(".putawayActiveInput").closest(".putaway-edit-numbertoputaway-container").find(".putaway-edit-numbertoputaway-text").find(".putaway-edit-numbertoputaway-text-number").text($(".putawayActiveInput").val());
 
-        $(this).closest(".putaway-edit-numbertoputaway-container").find(".putaway-edit-numbertoputaway-input").css("display","block");
-        $(this).closest(".putaway-edit-numbertoputaway-text").css("display","none");
-        $(this).closest(".putaway-product-template-container").addClass("putawayActiveInput");
+                $(".putaway-edit-numbertoputaway-input").css("display","none");
+                $(".putaway-edit-numbertoputaway-text").css("display","inline-block");
+                $(".putaway-edit-numbertoputaway-input").removeClass("putawayActiveInput");
+
+                $(this).closest(".putaway-edit-numbertoputaway-container").find(".putaway-edit-numbertoputaway-input").css("display","block");
+                $(this).closest(".putaway-edit-numbertoputaway-text").css("display","none");
+                $(this).closest(".putaway-edit-numbertoputaway-container").find(".putaway-edit-numbertoputaway-input").addClass("putawayActiveInput");
+            } 
+        }
     });
 
-        // Edit putaway number save
-    //$(document).click(function () {
-    //    if ($(this).hasClass(".putaway-edit-numbertoputaway-text")) {
-    //        //$(".putaway-edit-numbertoputaway-input").css("display","none");
-    //        //$(".putaway-edit-numbertoputaway-text").css("display","block");
-    //        //$(".putaway-product-template-container").removeClass("putawayActiveInput");
-    //    }
-    //});
+        //-Putaway number save
+    $(document).on("click", function (event) {
+        if (!$(event.target).closest(".putaway-edit-numbertoputaway-container").find(".putaway-edit-numbertoputaway-input").hasClass("putawayActiveInput")) {
+            if ($(".putawayActiveInput").val() != 0) {
+                $(".putawayActiveInput").closest(".putaway-edit-numbertoputaway-container").find(".putaway-edit-numbertoputaway-text").find(".putaway-edit-numbertoputaway-text-number").text($(".putawayActiveInput").val());
+
+                $(".putaway-edit-numbertoputaway-input").css("display","none");
+                $(".putaway-edit-numbertoputaway-text").css("display","inline-block");
+                $(".putaway-edit-numbertoputaway-input").removeClass("putawayActiveInput");
+            }
+            else {
+                if (RemovePutawayItemModal() == true) {
+                    RemoveItem($(".putawayActiveInput"));
+                }
+            }
+        }
+    });
+
+        //-Putawat Edit Input Number
+    $(document).on("input", ".putaway-edit-numbertoputaway-input", function (event) {
+        if ($(this).val() < 0) {
+            $(this).val("0");
+        }
+
+        if ($(this).val() != 0 && $(this).val().startsWith("0")) {
+            $(this).val("0");
+        }
+    });
+
+    // SECTION 3 - Functions
+        //-Remove Item Modal Function
+    function RemovePutawayItemModal() {
+        if (confirm('Are you sure you want to REMOVE this item from your putaway list?')) {
+            // Remove!
+            return true;
+        }
+        else {
+            // Do nothing!
+            return false;
+        }
+    }
+
+        //-Remove Item
+    function RemoveItem(thisClass) {
+        if (RemovePutawayItemModal() == true) {
+            let parsedItemUnits = parseInt(thisClass.closest(".putaway-product-template-container").data("itemunits"));
+            let parsedItemSku = parseInt(thisClass.closest(".putaway-product-template-container").data("itemskus"));
+
+            if (!parsedItemUnits < 1 && !allUnits < 1) {
+                //console.log(allUnits);
+                allUnits = allUnits - parsedItemUnits;
+                //console.log(allUnits);
+                $(".putaway-underheadline-units-number-text").text(allUnits);
+            }
+
+            if (!parsedItemSku < 1) {
+                //console.log(parsedItemSku);
+                allSkus = allSkus - 1;
+                //console.log(allSkus);
+                $(".putaway-underheadline-skus-number-text").text(allSkus);
+            }
+
+            thisClass.closest(".putaway-product-template-container").remove();
+        }
+    }
 
     // Scanner event and functions
     //document.addEventListener("keydown", function (evt) {
