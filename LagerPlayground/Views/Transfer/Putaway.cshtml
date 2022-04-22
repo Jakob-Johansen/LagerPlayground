@@ -75,17 +75,53 @@
     </div>
 </div>
 
+@*--- Delete Modal ---*@
+
+<div class="modal-delete-overall-container">
+    <div class="modal-delete-container">
+
+        <div class="modal-delete-header-container">
+            <div class="modal-delete-header-headline-container">
+                <p class="trim modal-delete-header-headline">Are you sure?</p>
+            </div>
+            <div class="modal-delete-header-close-container">
+                <span class="material-icons modal-delete-header-close-icon">close</span>
+            </div>
+            <div class="clearBoth"></div>
+        </div>
+
+        <div class="modal-delete-body-info-container">
+            <p class="trim modal-delete-body-info">You are removing a product from the putaway list. <br />Are you sure you want to proceed?</p>
+        </div>
+
+        <div class="modal-delete-footer-btns-container">
+            <a class="modal-delete-footer-btn-delete">Remove</a>
+            <a class="modal-delete-footer-btn-cancel">Cancel</a>
+            <div class="clearBoth"></div>
+        </div>
+    </div>
+</div>
+
 @section Scripts {
 <script>
 
     let allUnits = @ViewBag.AllUnits;
     let allSkus = @Model.Count();
 
-    let removeFromListBtn = $(".putaway-product-info-secondary-menu-btn");
+    const removeFromListBtn = $(".putaway-product-info-secondary-menu-btn");
 
     let numberToPutawayInput = $(".putaway-edit-numbertoputaway-input");
 
     let putawayIsRunning = false;
+
+    // Delete Modal
+    let selectedItem;
+    let deleteModalActive = false;
+
+    const deleteModalOvarlayContainer = $(".modal-delete-overall-container");
+    const deleteModalCloseBtn = $(".modal-delete-header-close-icon");
+    const deleteModalCancelBtn = $(".modal-delete-footer-btn-cancel");
+    const deleteModalDeleteBtn = $(".modal-delete-footer-btn-delete");
 
     // Barcode scanner variables
     let barcode = '';
@@ -102,42 +138,37 @@
         //-Remove Item From List
     $(document).on("click", ".putaway-product-info-secondary-menu-btn", function () {
         if (putawayIsRunning == false) {
-            RemoveItem($(this));
+            OpenDeleteModal($(this));
         }
     });
 
     // SECTION 2 - Inputfield
-        //-Putaway Show Inputfield
-    $(document).on("click", ".putaway-edit-numbertoputaway-text", function() {
-        if (putawayIsRunning == false) {
-            if ($(".putawayActiveInput").val() != 0) {
-                $(".putawayActiveInput").closest(".putaway-edit-numbertoputaway-container").find(".putaway-edit-numbertoputaway-text").find(".putaway-edit-numbertoputaway-text-number").text($(".putawayActiveInput").val());
-
-                $(".putaway-edit-numbertoputaway-input").css("display","none");
-                $(".putaway-edit-numbertoputaway-text").css("display","inline-block");
-                $(".putaway-edit-numbertoputaway-input").removeClass("putawayActiveInput");
-
-                $(this).closest(".putaway-edit-numbertoputaway-container").find(".putaway-edit-numbertoputaway-input").css("display","block");
-                $(this).closest(".putaway-edit-numbertoputaway-text").css("display","none");
-                $(this).closest(".putaway-edit-numbertoputaway-container").find(".putaway-edit-numbertoputaway-input").addClass("putawayActiveInput");
-            } 
-        }
-    });
-
         //-Putaway number save
     $(document).on("click", function (event) {
         if (!$(event.target).closest(".putaway-edit-numbertoputaway-container").find(".putaway-edit-numbertoputaway-input").hasClass("putawayActiveInput")) {
             if ($(".putawayActiveInput").val() != 0) {
+                deleteModalActive = false;
                 $(".putawayActiveInput").closest(".putaway-edit-numbertoputaway-container").find(".putaway-edit-numbertoputaway-text").find(".putaway-edit-numbertoputaway-text-number").text($(".putawayActiveInput").val());
+
+                //EditUnitsAndSkus($(".putawayActiveInput"));
 
                 $(".putaway-edit-numbertoputaway-input").css("display","none");
                 $(".putaway-edit-numbertoputaway-text").css("display","inline-block");
                 $(".putaway-edit-numbertoputaway-input").removeClass("putawayActiveInput");
+
+                if ($(event.target).hasClass("putaway-edit-numbertoputaway-text")) {
+                    $(event.target).closest(".putaway-edit-numbertoputaway-container").find(".putaway-edit-numbertoputaway-input").css("display","block");
+                    $(event.target).closest(".putaway-edit-numbertoputaway-text").css("display","none");
+                    $(event.target).closest(".putaway-edit-numbertoputaway-container").find(".putaway-edit-numbertoputaway-input").addClass("putawayActiveInput");
+                    $(".putawayActiveInput").focus();
+                }
             }
             else {
-                if (RemovePutawayItemModal() == true) {
-                    RemoveItem($(".putawayActiveInput"));
+                if(deleteModalActive != true) {
+                    deleteModalActive = true;
+                    OpenDeleteModal($(".putawayActiveInput"));
                 }
+                $(".putawayActiveInput").focus();
             }
         }
     });
@@ -154,41 +185,83 @@
     });
 
     // SECTION 3 - Functions
-        //-Remove Item Modal Function
-    function RemovePutawayItemModal() {
-        if (confirm('Are you sure you want to REMOVE this item from your putaway list?')) {
-            // Remove!
-            return true;
-        }
-        else {
-            // Do nothing!
-            return false;
-        }
-    }
-
         //-Remove Item
     function RemoveItem(thisClass) {
-        if (RemovePutawayItemModal() == true) {
-            let parsedItemUnits = parseInt(thisClass.closest(".putaway-product-template-container").data("itemunits"));
-            let parsedItemSku = parseInt(thisClass.closest(".putaway-product-template-container").data("itemskus"));
+        EditUnitsAndSkus(thisClass);
+        thisClass.closest(".putaway-product-template-container").remove();
+        CloseDeleteModal();
+    }
 
-            if (!parsedItemUnits < 1 && !allUnits < 1) {
-                //console.log(allUnits);
-                allUnits = allUnits - parsedItemUnits;
-                //console.log(allUnits);
-                $(".putaway-underheadline-units-number-text").text(allUnits);
-            }
+        //-Edit Units & Skus
+    function EditUnitsAndSkus(thisClass) {
+        let parsedItemUnits = parseInt(thisClass.closest(".putaway-product-template-container").data("itemunits"));
+        let parsedItemSku = parseInt(thisClass.closest(".putaway-product-template-container").data("itemskus"));
 
-            if (!parsedItemSku < 1) {
-                //console.log(parsedItemSku);
-                allSkus = allSkus - 1;
-                //console.log(allSkus);
-                $(".putaway-underheadline-skus-number-text").text(allSkus);
-            }
+        if (!parsedItemUnits < 1 && !allUnits < 1) {
+            //console.log(allUnits);
+            allUnits = allUnits - parsedItemUnits;
+            //console.log(allUnits);
+            $(".putaway-underheadline-units-number-text").text(allUnits);
+        }
 
-            thisClass.closest(".putaway-product-template-container").remove();
+        if (!parsedItemSku < 1) {
+            //console.log(parsedItemSku);
+            allSkus = allSkus - 1;
+            //console.log(allSkus);
+            $(".putaway-underheadline-skus-number-text").text(allSkus);
         }
     }
+
+        //-TEST Edit Units & Skus
+    //function EditUnitsAndSkus() {
+
+    //    console.log("TEST");
+    //    let itemUnits = 0;
+
+    //    $(".putaway-product-template-container").each(function () {
+
+    //        let parsedItemUnits = parseInt($(this).data("itemunits"));
+
+    //        if (itemUnits == 0) {
+    //            itemUnits = parsedItemUnits;
+    //        }
+    //        else {
+    //            itemUnits = itemUnits + parsedItemUnits;
+    //        }
+    //    });
+
+    //    $(".putaway-underheadline-units-number-text").text(itemUnits);
+    //}
+
+        //-Open Delete Modal
+    function OpenDeleteModal(thisClass) {
+        selectedItem = thisClass;
+        deleteModalOvarlayContainer.css("display", "block")
+    }
+
+        //-Close Delete Modal
+    function CloseDeleteModal() {
+        selectedItem = "";
+        deleteModalOvarlayContainer.css("display", "none");
+    }
+
+    // SECTION 4 - Delete Modal
+        //-Delete Modal close btn click
+    deleteModalCloseBtn.click(function () {
+        CloseDeleteModal();
+    });
+
+        //-Delete Modal delete btn click
+    deleteModalDeleteBtn.click(function () {
+        RemoveItem(selectedItem);
+    });
+
+        //-Delete Modal cancel btn click
+    deleteModalCancelBtn.click(function () {
+        CloseDeleteModal();
+    });
+
+    // SECTION 5 - Scanner
 
     // Scanner event and functions
     //document.addEventListener("keydown", function (evt) {
