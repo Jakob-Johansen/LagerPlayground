@@ -150,6 +150,8 @@
                 deleteModalActive = false;
                 $(".putawayActiveInput").closest(".putaway-edit-numbertoputaway-container").find(".putaway-edit-numbertoputaway-text").find(".putaway-edit-numbertoputaway-text-number").text($(".putawayActiveInput").val());
 
+                //EditUnitsAndSkus($(".putawayActiveInput"));
+
                 $(".putaway-edit-numbertoputaway-input").css("display","none");
                 $(".putaway-edit-numbertoputaway-text").css("display","inline-block");
                 $(".putaway-edit-numbertoputaway-input").removeClass("putawayActiveInput");
@@ -209,6 +211,27 @@
             $(".putaway-underheadline-skus-number-text").text(allSkus);
         }
     }
+
+        //-TEST Edit Units & Skus
+    //function EditUnitsAndSkus() {
+
+    //    console.log("TEST");
+    //    let itemUnits = 0;
+
+    //    $(".putaway-product-template-container").each(function () {
+
+    //        let parsedItemUnits = parseInt($(this).data("itemunits"));
+
+    //        if (itemUnits == 0) {
+    //            itemUnits = parsedItemUnits;
+    //        }
+    //        else {
+    //            itemUnits = itemUnits + parsedItemUnits;
+    //        }
+    //    });
+
+    //    $(".putaway-underheadline-units-number-text").text(itemUnits);
+    //}
 
         //-Open Delete Modal
     function OpenDeleteModal(thisClass) {
