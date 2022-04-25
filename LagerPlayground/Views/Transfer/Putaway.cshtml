@@ -147,14 +147,15 @@
     $(document).on("click", function (event) {
         if (!$(event.target).closest(".putaway-edit-numbertoputaway-container").find(".putaway-edit-numbertoputaway-input").hasClass("putawayActiveInput")) {
             if ($(".putawayActiveInput").val() != 0) {
-                deleteModalActive = false;
-                $(".putawayActiveInput").closest(".putaway-edit-numbertoputaway-container").find(".putaway-edit-numbertoputaway-text").find(".putaway-edit-numbertoputaway-text-number").text($(".putawayActiveInput").val());
 
-                //EditUnitsAndSkus($(".putawayActiveInput"));
-
-                $(".putaway-edit-numbertoputaway-input").css("display","none");
-                $(".putaway-edit-numbertoputaway-text").css("display","inline-block");
-                $(".putaway-edit-numbertoputaway-input").removeClass("putawayActiveInput");
+                if($(".putaway-edit-numbertoputaway-input").hasClass("putawayActiveInput")) {
+                    EditUnits();
+                    deleteModalActive = false;
+                    $(".putawayActiveInput").closest(".putaway-edit-numbertoputaway-container").find(".putaway-edit-numbertoputaway-text").find(".putaway-edit-numbertoputaway-text-number").text($(".putawayActiveInput").val());
+                    $(".putaway-edit-numbertoputaway-input").css("display","none");
+                    $(".putaway-edit-numbertoputaway-text").css("display","inline-block");
+                    $(".putaway-edit-numbertoputaway-input").removeClass("putawayActiveInput");
+                }
 
                 if ($(event.target).hasClass("putaway-edit-numbertoputaway-text")) {
                     $(event.target).closest(".putaway-edit-numbertoputaway-container").find(".putaway-edit-numbertoputaway-input").css("display","block");
@@ -212,26 +213,19 @@
         }
     }
 
-        //-TEST Edit Units & Skus
-    //function EditUnitsAndSkus() {
-
-    //    console.log("TEST");
-    //    let itemUnits = 0;
-
-    //    $(".putaway-product-template-container").each(function () {
-
-    //        let parsedItemUnits = parseInt($(this).data("itemunits"));
-
-    //        if (itemUnits == 0) {
-    //            itemUnits = parsedItemUnits;
-    //        }
-    //        else {
-    //            itemUnits = itemUnits + parsedItemUnits;
-    //        }
-    //    });
-
-    //    $(".putaway-underheadline-units-number-text").text(itemUnits);
-    //}
+        //-Edit Units
+    function EditUnits() {
+        let units = 0;
+        $(".putaway-edit-numbertoputaway-input").each(function () {
+            if(units == 0) {
+                units = parseInt($(this).val());
+            }
+            else {
+                units += parseInt($(this).val());
+            }
+        });
+        $(".putaway-underheadline-units-number-text").text(units);
+    }
 
         //-Open Delete Modal
     function OpenDeleteModal(thisClass) {
@@ -262,8 +256,7 @@
     });
 
     // SECTION 5 - Scanner
-
-    // Scanner event and functions
+        // Scanner event and functions
     //document.addEventListener("keydown", function (evt) {
     //    if (interval) {
     //        clearInterval(interval);
@@ -289,7 +282,7 @@
     //        currentBarcode = scanned_barcode;
 
     //        if (productBarcode == '' || productBarcode.length == 0) {
-    //            GetNonLocationProduct(scanned_barcode);
+    //            //GetNonLocationProduct(scanned_barcode);
     //        }
     //        else if(scanned_barcode == productBarcode) {
     //            currentProductQuantity++;
