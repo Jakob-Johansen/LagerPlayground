@@ -91,7 +91,7 @@
         </div>
 
         <div class="modal-delete-body-info-container">
-            <p class="trim modal-delete-body-info">You are removing a product from the putaway list. <br />Are you sure you want to proceed?</p>
+            <p class="trim modal-delete-body-info"><span class="modal-delete-body-info-main">You are removing a product from the putaway list.</span><br />Are you sure you want to proceed?</p>
         </div>
 
         <div class="modal-delete-footer-btns-container">
@@ -115,7 +115,7 @@
     let putawayIsRunning = false;
 
     // Delete Modal
-    let selectedItem;
+    let selectedItem = "";
     let deleteModalActive = false;
 
     const deleteModalOvarlayContainer = $(".modal-delete-overall-container");
@@ -138,7 +138,7 @@
         //-Remove Item From List
     $(document).on("click", ".putaway-product-info-secondary-menu-btn", function () {
         if (putawayIsRunning == false) {
-            OpenDeleteModal($(this));
+            OpenDeleteModal($(this), "You are removing a product from the putaway list.");
         }
     });
 
@@ -167,7 +167,7 @@
             else {
                 if(deleteModalActive != true) {
                     deleteModalActive = true;
-                    OpenDeleteModal($(".putawayActiveInput"));
+                    OpenDeleteModal($(".putawayActiveInput"), "You are removing a product from the putaway list.");
                 }
                 $(".putawayActiveInput").focus();
             }
@@ -187,9 +187,16 @@
 
     // SECTION 3 - Functions
         //-Remove Item
-    function RemoveItem(thisClass) {
-        EditUnitsAndSkus(thisClass);
-        thisClass.closest(".putaway-product-template-container").remove();
+    function RemoveItem() {
+        if(selectedItem != "") {
+            EditUnitsAndSkus(selectedItem);
+            selectedItem.closest(".putaway-product-template-container").remove();
+        }
+        else {
+            $(".putaway-product-template-container").remove();
+            $(".putaway-underheadline-units-number-text").text("0");
+            $(".putaway-underheadline-skus-number-text").text("0");
+        }
         CloseDeleteModal();
     }
 
@@ -228,8 +235,9 @@
     }
 
         //-Open Delete Modal
-    function OpenDeleteModal(thisClass) {
-        selectedItem = thisClass;
+    function OpenDeleteModal(t, modalDesc) {
+        selectedItem = t;
+        $(".modal-delete-body-info-main").text(modalDesc);
         deleteModalOvarlayContainer.css("display", "block")
     }
 
@@ -247,7 +255,7 @@
 
         //-Delete Modal delete btn click
     deleteModalDeleteBtn.click(function () {
-        RemoveItem(selectedItem);
+        RemoveItem();
     });
 
         //-Delete Modal cancel btn click
@@ -255,43 +263,51 @@
         CloseDeleteModal();
     });
 
+        // Clear Btn
+    $(".putaway-bottom-clear-btn").click(function () {
+        OpenDeleteModal("", "You are removing all products from the putaway list.");
+    });
+
     // SECTION 5 - Scanner
         // Scanner event and functions
-    //document.addEventListener("keydown", function (evt) {
-    //    if (interval) {
-    //        clearInterval(interval);
-    //    }
+    document.addEventListener("keydown", function (evt) {
+        if (interval) {
+            clearInterval(interval);
+        }
 
-    //    if (evt.code.includes("Enter")) {
-    //        if (barcode) {
-    //            handleBarcode(barcode);
-    //            barcode = '';
-    //            return;
-    //        }
-    //    }
-    //    if (!evt.code.includes("Shift") && !evt.code.includes("CapsLock")) {
-    //        barcode += evt.key;
-    //    }
-    //    interval = setInterval(() => barcode = '', 20);
-    //});
+        if (evt.code.includes("Enter")) {
+            if (barcode) {
+                handleBarcode(barcode);
+                barcode = '';
+                return;
+            }
+        }
+        if (!evt.code.includes("Shift") && !evt.code.includes("CapsLock")) {
+            barcode += evt.key;
+        }
+        interval = setInterval(() => barcode = '', 20);
+    });
 
-    //function handleBarcode(scanned_barcode) {
-    //    scanned_barcode = scanned_barcode.trim();
+    function handleBarcode(scanned_barcode) {
+        scanned_barcode = scanned_barcode.trim();
 
-    //    if (scanned_barcode.length >= 1) {
-    //        currentBarcode = scanned_barcode;
+        if (scanned_barcode.length >= 1) {
+            currentBarcode = scanned_barcode;
 
-    //        if (productBarcode == '' || productBarcode.length == 0) {
-    //            //GetNonLocationProduct(scanned_barcode);
-    //        }
-    //        else if(scanned_barcode == productBarcode) {
-    //            currentProductQuantity++;
-    //        }
-    //        else {
-    //            console.log("Ajax Function");
-    //        }
-    //    }
-    //}
+            if(putawayIsRunning == false) {
+                console.log(scanned_barcode);
+                //if (productBarcode == '' || productBarcode.length == 0) {
+                //    //GetNonLocationProduct(scanned_barcode);
+                //}
+                //else if(scanned_barcode == productBarcode) {
+                //    currentProductQuantity++;
+                //}
+                //else {
+                //    console.log("Ajax Function");
+                //}
+            }
+        }
+    }
 
     // Ajax Functions
 
