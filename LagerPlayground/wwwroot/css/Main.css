@@ -2082,11 +2082,11 @@ li.dropdown {
     padding: 13px;
 }
 
-.putaway-product-image-float-container, .putaway-product-info-float-container {
+.putaway-product-image-float-container, .putaway-product-info-float-container, .modal-addfromlocation-product-image-float-container, .modal-addfromlocation-product-info-float-container {
     float: left;
 }
 
-.putaway-product-image-float-container {
+.putaway-product-image-float-container, .modal-addfromlocation-product-image-float-container {
     width: 13%;
     height: 100px;
     background-color: white;
@@ -2095,14 +2095,14 @@ li.dropdown {
     overflow: hidden;
 }
 
-.putaway-product-info-float-container {
+.putaway-product-info-float-container, .modal-addfromlocation-product-info-float-container {
     width: 87%;
     height: auto;
 }
 
-.putaway-product-image {
+.putaway-product-image, .modal-addfromlocation-product-image {
     display: block;
-/*    width: 90%;*/
+    /*    width: 90%;*/
     width: 100%;
     user-select: none;
     border-radius: 3px;
@@ -2114,26 +2114,26 @@ li.dropdown {
     margin: auto auto;
 }
 
-.putaway-product-info-main-container, .putaway-product-info-secondary-container {
+.putaway-product-info-main-container, .putaway-product-info-secondary-container, .modal-addfromlocation-product-info-main-container, .modal-addfromlocation-product-info-secondary-container {
     float: left;
 }
 
-.putaway-product-info-main-container {
+.putaway-product-info-main-container, .modal-addfromlocation-product-info-main-container {
     width: 75%;
     padding: 0 15px;
 }
 
-.putaway-product-info-secondary-container {
+.putaway-product-info-secondary-container, .modal-addfromlocation-product-info-secondary-container {
     width: 25%;
     text-align: right;
 }
 
-.putaway-product-info-main-name {
+.putaway-product-info-main-name, .modal-addfromlocation-product-info-main-name {
     font-weight: bold;
     font-size: 19px;
 }
 
-.putaway-product-info-main-barcode, .putaway-product-info-main-custommer {
+.putaway-product-info-main-barcode, .putaway-product-info-main-custommer, .modal-addfromlocation-product-info-main-barcode {
     font-size: 15px;
 }
 
@@ -2154,7 +2154,7 @@ li.dropdown {
     font-size: 28px;
 }
 
-.putaway-product-info-secondary-onhand {
+.putaway-product-info-secondary-onhand, .modal-addfromlocation-product-info-secondary-onhand {
     text-align: right;
     font-size: 18px;
     margin-top: 10px;
@@ -2271,6 +2271,7 @@ li.dropdown {
     height: auto;
     padding: 15px 20px;
     background-color: rgba(20, 22, 23);
+    border-radius: 2px;
     margin: 0 auto;
     position: absolute;
     top: 35%;
@@ -2337,4 +2338,129 @@ li.dropdown {
 
 .modal-delete-footer-btn-cancel:hover, .modal-delete-footer-btn-delete:hover {
     cursor: pointer;
+}
+
+/*---Putaway Add To List From Location---*/
+
+.modal-addfromlocation-overall-container {
+    display: block;
+    width: 100%;
+    height: 100vh;
+    background-color: rgba(13, 13, 13, 0.80);
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 999;
+}
+
+.modal-addfromlocaion-container {
+    width: 600px;
+    height: auto;
+    padding: 15px 20px;
+    background-color: darkcyan;
+    border-radius: 2px;
+    margin: 0 auto;
+    position: absolute;
+    top: 35%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 9999 !important;
+}
+
+.modal-addfromlocation-header-headline-contianer, .modal-addfromlocation-header-close-btn-container {
+    float: left;
+}
+
+.modal-addfromlocation-header-headline-contianer {
+    width: 85%;
+}
+
+.modal-addfromlocation-header-close-btn-container {
+    width: 15%;
+    text-align: right;
+}
+
+.modal-addfromlocation-header-headline {
+    font-size: 20px;
+    color: lightgray !important;
+}
+
+.modal-addfromlocation-header-close-btn {
+    display: inline-block;
+    font-size: 27px;
+    color: lightgray !important;
+    user-select: none;
+}
+
+.modal-addfromlocation-header-close-btn:hover {
+    cursor: pointer;
+}
+
+.modal-addfromlocation-product-container {
+    margin-top: 25px;
+}
+
+.modal-addfromlocation-product-image-float-container {
+    width: 16% !important;
+    height: 100px !important;
+}
+
+.modal-addfromlocation-product-info-float-container {
+    width: 84% !important;
+}
+
+.modal-addfromlocation-product-image-float-container {
+    height: 90px !important;
+}
+
+.modal-addfromlocation-product-info-main-name {
+    font-size: 18px !important;
+    padding-bottom: 2px;
+}
+
+.modal-addfromlocation-product-info-main-barcode {
+    font-size: 13px !important;
+}
+
+.modal-addfromlocation-locations-headline-container {
+    padding: 25px 0;
+    border-bottom: 1px solid white;
+}
+
+.modal-addfromlocation-locations-container {
+    padding: 6px 0;
+    border-bottom: 1px solid white;
+}
+
+.modal-addfromlocation-location-info-headline-left-container, .modal-addfromlocation-location-info-headline-right-container {
+    float: left;
+}
+
+.modal-addfromlocation-location-info-headline-left-container {
+    width: 70%;
+}
+
+.modal-addfromlocation-location-info-headline-right-container {
+    width: 30%;
+    text-align: right;
+}
+
+.modal-addfromlocation-location-info-headline-unpickable {
+    display: inline-block;
+    background-color: rgb(220,53,69);
+    padding: 0px 15px;
+    border-radius: 100px;
+    font-size: 13px !important;
+}
+
+.modal-addfromlocation-location-product-info-ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.modal-addfromlocation-location-product-info-ul > li {
+    float: left;
+    display: inline-block;
+    padding-right: 10px;
 }
