@@ -204,6 +204,7 @@ namespace LagerPlayground.Controllers
 
             var getProduct = await _context.Product_Locations
                 .Include(x => x.Product).Where(x => x.Product.BarcodeID == barcode)
+                .Include(x => x.Locations_Positions)
                 .AsNoTracking().ToListAsync();
 
             var product = await _context.Products.FirstOrDefaultAsync(x => x.BarcodeID == barcode);
@@ -214,6 +215,7 @@ namespace LagerPlayground.Controllers
             }
 
             var getProductLocation = await _context.Product_Locations
+                .Include(x => x.Locations_Positions)
                 .Where(x => x.Locations_Positions.FullLocationBarcode == barcode)
                 .Include(x => x.Product)
                 .AsNoTracking().ToListAsync();
