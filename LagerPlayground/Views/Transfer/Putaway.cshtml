@@ -137,7 +137,7 @@
             </div>
 
             <div class="modal-addfromlocation-locations-container">
-                <div class="modal-addfromlocation-location-info-contianer">
+@*                <div class="modal-addfromlocation-location-info-contianer">
                     <div class="modal-addfromlocation-location-info-headline-container">
                         <div class="modal-addfromlocation-location-info-headline-left-container">
                             <p class="trim">Section <span style="font-weight:bold;">Hal 1</span></p>
@@ -159,7 +159,7 @@
                         </ul>
                         <div class="clearBoth"></div>
                     </div>
-                </div>
+                </div>*@
             </div>
 
             <div class="modal-addfromlocation-bottom-btns-overall-container">
@@ -353,7 +353,41 @@
         else
             addFromModalProductImg.attr("src", "/Images/Products/" + result.product.image)
 
+        AddFromModalInputHtmlFunction(result);
         addFromModalOverlay.css("display","block");
+    }
+
+        //-Add From Modal Info Html Function
+    function AddFromModalInputHtmlFunction(result) {
+        for(var i = 0; i < result.productlocations.length; i++) {
+            $(".modal-addfromlocation-locations-container").append(
+            `
+                <div class="modal-addfromlocation-location-info-contianer" data-productlocationid="${result.productlocations[i].id}">
+                    <div class="modal-addfromlocation-location-info-headline-container">
+                        <div class="modal-addfromlocation-location-info-headline-left-container">
+                            <p class="trim">Section <span style="font-weight:bold;">Hal 1</span></p>
+                            <p class="trim">Location <span style="font-weight:bold;">${result.productlocations[i].locationBarcode}</span></p>
+                        </div>
+                        <div class="modal-addfromlocation-location-info-headline-right-container">
+                            <p class="trim modal-addfromlocation-location-info-headline-unpickable">UNPICKABLE</p>
+                        </div>
+                        <div class="clearBoth"></div>
+                    </div>
+
+                    <div class="modal-addfromlocation-location-product-info-container">
+                        <ul class="modal-addfromlocation-location-product-info-ul">
+                            <li>Total</li>
+                            <li>SKUs <span style="font-weight:bold;">0</span></li>
+                            <li>Units <span style="font-weight:bold;">0</span></li>
+                            <li><span style="font-weight:bold;">SKU ${result.productlocations[i].product.barcodeID}</span></li>
+                            <li>Units <span style="font-weight:bold;">${result.productlocations[i].quantity}</span></li>
+                        </ul>
+                        <div class="clearBoth"></div>
+                    </div>
+                </div>
+            `
+            );
+        }
     }
 
     // SECTION 4 - Delete Modal
@@ -439,7 +473,7 @@
                     }
                     else {
                         console.log("Location");
-                        console.log(result.product);
+                        console.log(result.productlocations);
                     }
                 }
                 else {
@@ -449,6 +483,8 @@
             },
             error: function (req, status, error) {
                 console.log(status);
+                console.log(req);
+                console.log(error);
                 alert(status);
             }
         });

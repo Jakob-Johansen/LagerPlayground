@@ -17,5 +17,6 @@ namespace LagerPlayground.Models
         public DateTime? Modified { get; set; }
 
         public Locations_Shelfs Locations_Shelf { get; set; }
+        public Product_Locations Product_Locations { get; set; }
     }
 }
