@@ -2160,51 +2160,37 @@ li.dropdown {
     margin-top: 10px;
 }
 
-.putaway-overall-bottom-btns-container {
-    width: inherit;
+.putaway-overall-bottom-btns-container, .modal-addfromlocation-bottom-btns-overall-container {
     height: auto;
     margin-top: 28px;
 }
 
-.putaway-bottom-btns-container {
-    width: 35%;
-    margin-left: auto;
-    margin-right: 0;
+.putaway-bottom-btns-container, .modal-addfromlocation-bottom-btns-container {
+    text-align: right;
 }
 
-.putaway-bottom-clear-btn-container, .putaway-bottom-startputaway-btn-container {
-    float: left;
-    width: 40%;
-    text-align: center;
-}
-
-.putaway-bottom-startputaway-btn-container {
-    width: 60% !important;
-}
-
-.putaway-bottom-clear-btn-container {
-    text-align: right !important;
-/*    padding-right: 5px;*/
-}
-
-.putaway-bottom-clear-btn, .putaway-bottom-startputaway-btn {
+.putaway-bottom-clear-btn, .putaway-bottom-startputaway-btn, .modal-addfromlocation-bottom-cancel-btn, .modal-addfromlocation-bottom-confirm-btn {
     display: inline-block;
     padding: 4px 20px;
     text-align: center;
     text-decoration: none;
-    background-color: #0c44c7;
     user-select: none;
     font-size: 19px;
     border-radius: 3px;
     color: white !important;
+    margin-right: 18px;
+}
+
+.putaway-bottom-startputaway-btn {
+    background-color: #0c44c7;
 }
 
 .putaway-bottom-clear-btn {
     text-align: right !important;
-    background-color: #27292b !important;
+    background-color: #27292b;
 }
 
-.putaway-bottom-clear-btn:hover, .putaway-bottom-startputaway-btn:hover {
+.putaway-bottom-clear-btn:hover, .putaway-bottom-startputaway-btn:hover, .modal-addfromlocation-bottom-cancel-btn:hover, .modal-addfromlocation-bottom-confirm-btn:hover {
     cursor: pointer;
 }
 
@@ -2358,7 +2344,7 @@ li.dropdown {
     height: auto;
     padding: 15px 20px;
     background-color: darkcyan;
-    border-radius: 2px;
+    border-radius: 4px;
     margin: 0 auto;
     position: absolute;
     top: 35%;
@@ -2381,13 +2367,13 @@ li.dropdown {
 }
 
 .modal-addfromlocation-header-headline {
-    font-size: 20px;
+    font-size: 24px;
     color: lightgray !important;
 }
 
 .modal-addfromlocation-header-close-btn {
     display: inline-block;
-    font-size: 27px;
+    font-size: 30px;
     color: lightgray !important;
     user-select: none;
 }
@@ -2428,8 +2414,13 @@ li.dropdown {
 }
 
 .modal-addfromlocation-locations-container {
+    display: block;
     padding: 6px 0;
     border-bottom: 1px solid white;
+}
+
+.modal-addfromlocation-locations-container:hover {
+    cursor: pointer;
 }
 
 .modal-addfromlocation-location-info-headline-left-container, .modal-addfromlocation-location-info-headline-right-container {
@@ -2463,4 +2454,19 @@ li.dropdown {
     float: left;
     display: inline-block;
     padding-right: 10px;
+}
+
+.modal-addfromlocation-bottom-cancel-btn, .modal-addfromlocation-bottom-confirm-btn {
+    font-size: 17px !important;
+}
+
+.modal-addfromlocation-bottom-cancel-btn {
+    background-color: lightgray;
+    color: black !important;
+    margin-right: 12px;
+}
+
+.modal-addfromlocation-bottom-confirm-btn {
+    background-color: #0c44c7;
+    margin-right: 0px !important;
 }
