@@ -194,5 +194,36 @@ namespace LagerPlayground.Controllers
             ViewBag.AllUnits = allUnits;
             return View(productLocation);
         }
+
+        public async Task<JsonResult> PutawayGetProductFromLocation(string barcode)
+        {
+            if (barcode == null)
+            {
+                return Json(new { booleanError = true, errorMsg = "No barcode was scanned" });
+            }
+
+            var getProduct = await _context.Product_Locations
+                .Include(x => x.Product).Where(x => x.Product.BarcodeID == barcode)
+                .AsNoTracking().ToListAsync();
+
+            var product = await _context.Products.FirstOrDefaultAsync(x => x.BarcodeID == barcode);
+
+            if (getProduct != null && getProduct.Count != 0 && product != null)
+            {
+                return Json(new { booleanError = false, productFound = true, productlocations = getProduct, product });
+            }
+
+            var getProductLocation = await _context.Product_Locations
+                .Where(x => x.Locations_Positions.FullLocationBarcode == barcode)
+                .Include(x => x.Product)
+                .AsNoTracking().ToListAsync();
+
+            if (getProductLocation != null && getProductLocation.Count != 0)
+            {
+                return Json(new { booleanError = false, productFound = false, productlocations = getProductLocation });
+            }
+
+            return Json(new { booleanError = true, errorMsg = "No product or location was found" });
+        }
     }
 }
