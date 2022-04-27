@@ -121,7 +121,7 @@
             <div class="modal-addfromlocation-product-info-float-container">
                 <div class="modal-addfromlocation-product-info-main-container">
                     <p class="trim modal-addfromlocation-product-info-main-name">PLACEHOLDER</p>
-                    <p class="trim modal-addfromlocation-product-info-main-barcode">SKU <span style="font-weight: bold;">PLACEHOLDER</span></p>
+                    <p class="trim modal-addfromlocation-product-info-main-barcode">SKU <span class="modal-addfromlocation-product-info-main-barcode-span" style="font-weight: bold;">PLACEHOLDER</span></p>
                 </div>
                 <div class="modal-addfromlocation-product-info-secondary-container">
                     <p class="trim modal-addfromlocation-product-info-secondary-onhand">100 on hand</p>
@@ -194,6 +194,19 @@
     const deleteModalCloseBtn = $(".modal-delete-header-close-icon");
     const deleteModalCancelBtn = $(".modal-delete-footer-btn-cancel");
     const deleteModalDeleteBtn = $(".modal-delete-footer-btn-delete");
+
+    // Pick From location Modal
+    const addFromModalOverlay = $(".modal-addfromlocation-overall-container");
+
+    const addFromModalConfirmBtn = $(".modal-addfromlocation-bottom-confirm-btn");
+    const addFromModalCancelBtn = $(".modal-addfromlocation-bottom-cancel-btn");
+    const addFromModalCloseBtn = $(".modal-addfromlocation-header-close-btn");
+
+    let addFromModalProductName = $(".modal-addfromlocation-product-info-main-name");
+    let addFromModalProductSku = $(".modal-addfromlocation-product-info-main-barcode-span");
+    let addFromModalProductOnHand = $(".modal-addfromlocation-product-info-secondary-onhand");
+    let addFromModalProductImg = $(".modal-addfromlocation-product-image");
+
 
     // Barcode scanner variables
     let barcode = '';
@@ -319,6 +332,30 @@
         deleteModalOvarlayContainer.css("display", "none");
     }
 
+        //-Close AddFrom Modal
+    function CloseAddFromModal() {
+        addFromModalProductName.text("PLACEHOLDER");
+        addFromModalProductSku.text("PLACEHOLDER");
+        addFromModalProductImg.attr("src", "/Images/Placeholders/PlaceholderWhite.jpg");
+        addFromModalProductOnHand.text("0");
+        $(".modal-addfromlocation-location-info-contianer").remove();
+        addFromModalOverlay.css("display","none");
+    }
+
+        //-Add From Modal Info Input Function
+    function AddFromModalInfoInputFunction(result) {
+        addFromModalProductName.text(result.product.name);
+        addFromModalProductSku.text(result.product.barcodeID);
+        addFromModalProductOnHand.text(result.product.quantity);
+
+        if (result.product.image == null)
+            addFromModalProductImg.attr("src", "/Images/Placeholders/PlaceholderWhite.jpg")
+        else
+            addFromModalProductImg.attr("src", "/Images/Products/" + result.product.image)
+
+        addFromModalOverlay.css("display","block");
+    }
+
     // SECTION 4 - Delete Modal
         //-Delete Modal close btn click
     deleteModalCloseBtn.click(function () {
@@ -340,7 +377,18 @@
         OpenDeleteModal("", "You are removing all products from the putaway list.");
     });
 
-    // SECTION 5 - Scanner
+    // SECTION 5 - Add From Modal
+        //-Close Btn
+    addFromModalCloseBtn.click(function () {
+        CloseAddFromModal();
+    });
+
+        //-Cancel Btn
+    addFromModalCancelBtn.click(function () {
+        CloseAddFromModal();
+    });
+
+    // SECTION 6 - Scanner
         // Scanner event and functions
     document.addEventListener("keydown", function (evt) {
         if (interval) {
@@ -367,21 +415,43 @@
             currentBarcode = scanned_barcode;
 
             if(putawayIsRunning == false) {
-                console.log(scanned_barcode);
-                //if (productBarcode == '' || productBarcode.length == 0) {
-                //    //GetNonLocationProduct(scanned_barcode);
-                //}
-                //else if(scanned_barcode == productBarcode) {
-                //    currentProductQuantity++;
-                //}
-                //else {
-                //    console.log("Ajax Function");
-                //}
+                //console.log(scanned_barcode);
+                GetProductFromLocation(scanned_barcode);
             }
         }
     }
 
     // Ajax Functions
+        //-Putaway Get Product From Location Ajax Function
+    function GetProductFromLocation(barcode) {
+        $.ajax({
+            type: "GET",
+            url: "/Transfer/PutawayGetProductFromLocation",
+            data: { barcode: barcode },
+            success: function (result) {
 
+                if (result.booleanError == false) {
+                    if (result.productFound == true) {
+                        console.log("Product");
+                        console.log(result.productlocations);
+                        console.log(result.product.name);
+                        AddFromModalInfoInputFunction(result);
+                    }
+                    else {
+                        console.log("Location");
+                        console.log(result.product);
+                    }
+                }
+                else {
+                    console.log(result.errorMsg);
+                    alert(result.errorMsg);
+                }
+            },
+            error: function (req, status, error) {
+                console.log(status);
+                alert(status);
+            }
+        });
+    }
 </script>
 }

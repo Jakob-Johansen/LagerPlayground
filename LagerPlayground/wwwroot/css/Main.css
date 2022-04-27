@@ -2171,12 +2171,12 @@ li.dropdown {
 
 .putaway-bottom-clear-btn, .putaway-bottom-startputaway-btn, .modal-addfromlocation-bottom-cancel-btn, .modal-addfromlocation-bottom-confirm-btn {
     display: inline-block;
-    padding: 4px 20px;
+    padding: 4px 23px;
     text-align: center;
     text-decoration: none;
     user-select: none;
     font-size: 19px;
-    border-radius: 3px;
+    border-radius: 100px;
     color: white !important;
     margin-right: 18px;
 }
@@ -2329,7 +2329,7 @@ li.dropdown {
 /*---Putaway Add To List From Location---*/
 
 .modal-addfromlocation-overall-container {
-    display: block;
+    display: none;
     width: 100%;
     height: 100vh;
     background-color: rgba(13, 13, 13, 0.80);
@@ -2413,13 +2413,13 @@ li.dropdown {
     border-bottom: 1px solid white;
 }
 
-.modal-addfromlocation-locations-container {
+.modal-addfromlocation-location-info-contianer {
     display: block;
     padding: 6px 0;
     border-bottom: 1px solid white;
 }
 
-.modal-addfromlocation-locations-container:hover {
+.modal-addfromlocation-location-info-contianer:hover {
     cursor: pointer;
 }
 
