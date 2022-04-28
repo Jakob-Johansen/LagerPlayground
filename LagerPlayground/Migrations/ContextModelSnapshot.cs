@@ -310,7 +310,9 @@ namespace LagerPlayground.Migrations
 
                     b.HasKey("ID");
 
-                    b.HasIndex("Locations_PositionsID");
+                    b.HasIndex("Locations_PositionsID")
+                        .IsUnique()
+                        .HasFilter("[Locations_PositionsID] IS NOT NULL");
 
                     b.HasIndex("ProductID");
 
@@ -625,8 +627,8 @@ namespace LagerPlayground.Migrations
             modelBuilder.Entity("LagerPlayground.Models.Product_Locations", b =>
                 {
                     b.HasOne("LagerPlayground.Models.Locations_Positions", "Locations_Positions")
-                        .WithMany()
-                        .HasForeignKey("Locations_PositionsID");
+                        .WithOne("Product_Locations")
+                        .HasForeignKey("LagerPlayground.Models.Product_Locations", "Locations_PositionsID");
 
                     b.HasOne("LagerPlayground.Models.Product", "Product")
                         .WithMany()
@@ -715,6 +717,11 @@ namespace LagerPlayground.Migrations
             modelBuilder.Entity("LagerPlayground.Models.Locations", b =>
                 {
                     b.Navigation("locations_Racks");
+                });
+
+            modelBuilder.Entity("LagerPlayground.Models.Locations_Positions", b =>
+                {
+                    b.Navigation("Product_Locations");
                 });
 
             modelBuilder.Entity("LagerPlayground.Models.Locations_Racks", b =>

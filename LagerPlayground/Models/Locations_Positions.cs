@@ -17,6 +17,8 @@ namespace LagerPlayground.Models
         public DateTime? Modified { get; set; }
 
         public Locations_Shelfs Locations_Shelf { get; set; }
-        public Product_Locations Product_Locations { get; set; }
+
+        [System.Text.Json.Serialization.JsonIgnore]
+        public IEnumerable<Product_Locations> Product_Locations { get; set; }
     }
 }

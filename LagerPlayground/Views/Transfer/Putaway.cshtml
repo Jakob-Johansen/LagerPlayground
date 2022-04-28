@@ -346,7 +346,7 @@
     function AddFromModalInfoInputFunction(result) {
         addFromModalProductName.text(result.product.name);
         addFromModalProductSku.text(result.product.barcodeID);
-        addFromModalProductOnHand.text(result.product.quantity);
+        addFromModalProductOnHand.text(result.product.quantity + " on hand");
 
         if (result.product.image == null)
             addFromModalProductImg.attr("src", "/Images/Placeholders/PlaceholderWhite.jpg")
@@ -359,7 +359,24 @@
 
         //-Add From Modal Info Html Function
     function AddFromModalInputHtmlFunction(result) {
+
         for(var i = 0; i < result.productlocations.length; i++) {
+
+            let unpickable = "";
+            let totalSkus = result.productlocations.length;
+
+            if(result.productlocations[i].locations_Positions != null) {
+                if (result.productlocations[i].locations_Positions.unpickable == true) {
+                    unpickable = "UNPICKABLE";
+                }
+                else {
+                    unpickable = "";
+                }
+            }
+            else {
+                unpickable = "UNPICKABLE";
+            }
+
             $(".modal-addfromlocation-locations-container").append(
             `
                 <div class="modal-addfromlocation-location-info-contianer" data-productlocationid="${result.productlocations[i].id}">
@@ -369,7 +386,7 @@
                             <p class="trim">Location <span style="font-weight:bold;">${result.productlocations[i].locationBarcode}</span></p>
                         </div>
                         <div class="modal-addfromlocation-location-info-headline-right-container">
-                            <p class="trim modal-addfromlocation-location-info-headline-unpickable">UNPICKABLE</p>
+                            <p class="trim modal-addfromlocation-location-info-headline-unpickable">${unpickable}</p>
                         </div>
                         <div class="clearBoth"></div>
                     </div>
@@ -468,7 +485,6 @@
                     if (result.productFound == true) {
                         console.log("Product");
                         console.log(result.productlocations);
-                        console.log(result.product.name);
                         AddFromModalInfoInputFunction(result);
                     }
                     else {

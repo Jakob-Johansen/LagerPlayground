@@ -511,7 +511,6 @@ namespace LagerPlayground.Controllers
         {
             var productlocations = await _context.Product_Locations
                 .Include(x => x.Product)
-                .Include(x => x.Locations_Positions)
                 .AsNoTracking()
                 .ToListAsync();
 

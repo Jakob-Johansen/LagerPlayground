@@ -214,16 +214,15 @@ namespace LagerPlayground.Controllers
                 return Json(new { booleanError = false, productFound = true, productlocations = getProduct, product });
             }
 
-            var getProductLocation = await _context.Product_Locations
-                .Include(x => x.Locations_Positions)
-                .Where(x => x.Locations_Positions.FullLocationBarcode == barcode)
-                .Include(x => x.Product)
-                .AsNoTracking().ToListAsync();
+            //var getProductLocation = await _context.Product_Locations
+            //    .Include(x => x.Locations_Positions)
+            //    .Include(x => x.Product)
+            //    .AsNoTracking().ToListAsync();
 
-            if (getProductLocation != null && getProductLocation.Count != 0)
-            {
-                return Json(new { booleanError = false, productFound = false, productlocations = getProductLocation });
-            }
+            //if (getProductLocation != null && getProductLocation.Count != 0)
+            //{
+            //    return Json(new { booleanError = false, productFound = false, productlocations = getProductLocation });
+            //}
 
             return Json(new { booleanError = true, errorMsg = "No product or location was found" });
         }
