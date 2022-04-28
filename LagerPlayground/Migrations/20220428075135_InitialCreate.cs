@@ -429,7 +429,9 @@ namespace LagerPlayground.Migrations
             migrationBuilder.CreateIndex(
                 name: "IX_Product_Locations_Locations_PositionsID",
                 table: "Product_Locations",
-                column: "Locations_PositionsID");
+                column: "Locations_PositionsID",
+                unique: true,
+                filter: "[Locations_PositionsID] IS NOT NULL");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Product_Locations_ProductID",
