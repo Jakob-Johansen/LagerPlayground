@@ -1,5 +1,6 @@
 ﻿using LagerPlayground.Data;
 using LagerPlayground.Models;
+using LagerPlayground.Models.VM;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -202,16 +203,43 @@ namespace LagerPlayground.Controllers
                 return Json(new { booleanError = true, errorMsg = "No barcode was scanned" });
             }
 
+            List<VMPutawayGetProductFromLocation> vmList = new();
+
             var getProduct = await _context.Product_Locations
                 .Include(x => x.Product).Where(x => x.Product.BarcodeID == barcode)
                 .Include(x => x.Locations_Positions)
                 .AsNoTracking().ToListAsync();
 
+            var getLocations = await _context.Product_Locations
+                .AsNoTracking().ToListAsync();
+
+            foreach (var productlocations in getProduct)
+            {
+                VMPutawayGetProductFromLocation vm = new();
+
+                int allSkus = 0;
+                int allUnits = 0;
+                foreach (var locations in getLocations.Where(x => x.Locations_PositionsID == productlocations.Locations_PositionsID))
+                {
+                    allSkus++;
+                    if(allUnits == 0)
+                        allUnits = locations.Quantity;
+                    else
+                        allUnits += locations.Quantity;
+                }
+
+                vm.AllUnits = allUnits;
+                vm.AllSkus = allSkus;
+
+                vm.Product_Locations = productlocations;
+                vmList.Add(vm);
+            }
+
             var product = await _context.Products.FirstOrDefaultAsync(x => x.BarcodeID == barcode);
 
-            if (getProduct != null && getProduct.Count != 0 && product != null)
+            if (vmList != null && vmList.Count != 0 && product != null)
             {
-                return Json(new { booleanError = false, productFound = true, productlocations = getProduct, product });
+                return Json(new { booleanError = false, productFound = true, productlocations = vmList, product });
             }
 
             //var getProductLocation = await _context.Product_Locations
