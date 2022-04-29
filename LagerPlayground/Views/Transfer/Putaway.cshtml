@@ -185,6 +185,7 @@
     let numberToPutawayInput = $(".putaway-edit-numbertoputaway-input");
 
     let putawayIsRunning = false;
+    let addFromModalIsRunning = false;
 
     // Delete Modal
     let selectedItem = "";
@@ -291,16 +292,12 @@
         let parsedItemSku = parseInt(thisClass.closest(".putaway-product-template-container").data("itemskus"));
 
         if (!parsedItemUnits < 1 && !allUnits < 1) {
-            //console.log(allUnits);
             allUnits = allUnits - parsedItemUnits;
-            //console.log(allUnits);
             $(".putaway-underheadline-units-number-text").text(allUnits);
         }
 
         if (!parsedItemSku < 1) {
-            //console.log(parsedItemSku);
             allSkus = allSkus - 1;
-            //console.log(allSkus);
             $(".putaway-underheadline-skus-number-text").text(allSkus);
         }
     }
@@ -332,18 +329,32 @@
         deleteModalOvarlayContainer.css("display", "none");
     }
 
-        //-Close AddFrom Modal
+        //-Open Add From Modal
+    function OpenAddFromModal(result) {
+        if (addFromModalIsRunning == true) {
+            UpdateAddFromModalInfo(result);
+        }
+        else {
+            addFromModalIsRunning = true;
+            UpdateAddFromModalInfo(result);
+            addFromModalOverlay.css("display","block");
+        }
+    }
+
+        //-Close Add From Modal
     function CloseAddFromModal() {
         addFromModalProductName.text("PLACEHOLDER");
         addFromModalProductSku.text("PLACEHOLDER");
         addFromModalProductImg.attr("src", "/Images/Placeholders/PlaceholderWhite.jpg");
         addFromModalProductOnHand.text("0");
         $(".modal-addfromlocation-location-info-contianer").remove();
+        addFromModalIsRunning = false;
+        lastScannedBarcode = "";
         addFromModalOverlay.css("display","none");
     }
 
-        //-Add From Modal Info Input Function
-    function AddFromModalInfoInputFunction(result) {
+        //-Update Add From Modal Info
+    function UpdateAddFromModalInfo(result) {
         addFromModalProductName.text(result.product.name);
         addFromModalProductSku.text(result.product.barcodeID);
         addFromModalProductOnHand.text(result.product.quantity + " on hand");
@@ -354,11 +365,11 @@
             addFromModalProductImg.attr("src", "/Images/Products/" + result.product.image)
 
         AddFromModalInputHtmlFunction(result);
-        addFromModalOverlay.css("display","block");
     }
 
         //-Add From Modal Info Html Function
     function AddFromModalInputHtmlFunction(result) {
+        $(".modal-addfromlocation-location-info-contianer").remove();
 
         for(var i = 0; i < result.productlocations.length; i++) {
 
@@ -465,9 +476,9 @@
         if (scanned_barcode.length >= 1) {
             currentBarcode = scanned_barcode;
 
-            if(putawayIsRunning == false) {
-                //console.log(scanned_barcode);
+            if(putawayIsRunning == false && scanned_barcode != lastScannedBarcode) {
                 GetProductFromLocation(scanned_barcode);
+                lastScannedBarcode = scanned_barcode;
             }
         }
     }
@@ -485,7 +496,7 @@
                     if (result.productFound == true) {
                         console.log("Product");
                         console.log(result.productlocations);
-                        AddFromModalInfoInputFunction(result);
+                        OpenAddFromModal(result);
                     }
                     else {
                         console.log("Location");
