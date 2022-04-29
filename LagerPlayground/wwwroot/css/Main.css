@@ -2067,6 +2067,11 @@ li.dropdown {
     font-weight: bold;
 }
 
+.putaway-product-template-overall-container {
+    max-height: 65vh;
+    overflow: auto;
+}
+
 .putaway-product-template-container {
     width: 85%;
     height: auto;
@@ -2411,6 +2416,11 @@ li.dropdown {
 .modal-addfromlocation-locations-headline-container {
     padding: 25px 0;
     border-bottom: 1px solid white;
+}
+
+.modal-addfromlocation-locations-container {
+    max-height: 37vh;
+    overflow: auto;
 }
 
 .modal-addfromlocation-location-info-contianer {

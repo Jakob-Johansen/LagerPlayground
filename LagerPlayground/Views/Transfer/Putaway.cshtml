@@ -32,36 +32,38 @@
         </div>
     </div>
 
-    @foreach (var item in Model)
-    {
-        <div class="putaway-product-template-container" data-itemunits="@item.Quantity" data-itemskus="@Model.Count()">
-            <div class="putaway-product-info-template-container">
-                <div class="putaway-product-image-float-container">
-                    <div class="putaway-product-image-container">
-                        <img class="putaway-product-image" src="~/Images/@(item.Product.Image == null ? "Placeholders/PlaceholderWhite.jpg" : "Products/" + item.Product.Image)" />
+    <div class="putaway-product-template-overall-container">
+        @foreach (var item in Model)
+        {
+            <div class="putaway-product-template-container" data-itemunits="@item.Quantity" data-itemskus="@Model.Count()">
+                <div class="putaway-product-info-template-container">
+                    <div class="putaway-product-image-float-container">
+                        <div class="putaway-product-image-container">
+                            <img class="putaway-product-image" src="~/Images/@(item.Product.Image == null ? "Placeholders/PlaceholderWhite.jpg" : "Products/" + item.Product.Image)" />
+                        </div>
                     </div>
-                </div>
-                <div class="putaway-product-info-float-container">
-                    <div class="putaway-product-info-main-container">
-                        <p class="trim putaway-product-info-main-name">@item.Product.Name</p>
-                        <p class="trim putaway-product-info-main-barcode">SKU <span style="font-weight: bold;">@item.Product.BarcodeID</span></p>
-                        <p class="trim putaway-product-info-main-barcode">Location <span style="font-weight: bold;">@item.LocationBarcode</span></p>
-                        <p class="trim putaway-product-info-main-custommer">Custommer <span style="font-weight: bold;">J-Import</span></p>
-                    </div>
-                    <div class="putaway-product-info-secondary-container">
-                        <a class="putaway-product-info-secondary-menu-btn">Remove</a>
-                        <p class="trim putaway-product-info-secondary-onhand">@item.Quantity on hand</p>
+                    <div class="putaway-product-info-float-container">
+                        <div class="putaway-product-info-main-container">
+                            <p class="trim putaway-product-info-main-name">@item.Product.Name</p>
+                            <p class="trim putaway-product-info-main-barcode">SKU <span style="font-weight: bold;">@item.Product.BarcodeID</span></p>
+                            <p class="trim putaway-product-info-main-barcode">Location <span style="font-weight: bold;">@item.LocationBarcode</span></p>
+@*                            <p class="trim putaway-product-info-main-custommer">Custommer <span style="font-weight: bold;">J-Import</span></p>*@
+                        </div>
+                        <div class="putaway-product-info-secondary-container">
+                            <a class="putaway-product-info-secondary-menu-btn">Remove</a>
+                            <p class="trim putaway-product-info-secondary-onhand">@item.Quantity on hand</p>
+                        </div>
+                        <div class="clearBoth"></div>
                     </div>
                     <div class="clearBoth"></div>
                 </div>
-                <div class="clearBoth"></div>
+                <div class="putaway-edit-numbertoputaway-container">
+                    <input class="putaway-edit-numbertoputaway-input" type="number" placeholder="0" value="@item.Quantity" />
+                    <a class="trim putaway-edit-numbertoputaway-text"><span class="putaway-edit-numbertoputaway-text-number" style="font-weight: bold;">@item.Quantity</span> to putaway <span class="putaway-edit-numbertoputaway-text-icon material-icons">edit</span></a>
+                </div>
             </div>
-            <div class="putaway-edit-numbertoputaway-container">
-                <input class="putaway-edit-numbertoputaway-input" type="number" placeholder="0" value="@item.Quantity" />
-                <a class="trim putaway-edit-numbertoputaway-text"><span class="putaway-edit-numbertoputaway-text-number" style="font-weight: bold;">@item.Quantity</span> to putaway <span class="putaway-edit-numbertoputaway-text-icon material-icons">edit</span></a>
-            </div>
-        </div>
-    }
+        }
+    </div>
 
     <div class="putaway-overall-bottom-btns-container">
         <div class="putaway-bottom-btns-container">
@@ -137,29 +139,29 @@
             </div>
 
             <div class="modal-addfromlocation-locations-container">
-@*                <div class="modal-addfromlocation-location-info-contianer">
+                @*                <div class="modal-addfromlocation-location-info-contianer">
                     <div class="modal-addfromlocation-location-info-headline-container">
-                        <div class="modal-addfromlocation-location-info-headline-left-container">
-                            <p class="trim">Section <span style="font-weight:bold;">Hal 1</span></p>
-                            <p class="trim">Location <span style="font-weight:bold;">A-01-01-01</span></p>
-                        </div>
-                        <div class="modal-addfromlocation-location-info-headline-right-container">
-                            <p class="trim modal-addfromlocation-location-info-headline-unpickable">UNPICKABLE</p>
-                        </div>
-                        <div class="clearBoth"></div>
+                    <div class="modal-addfromlocation-location-info-headline-left-container">
+                    <p class="trim">Section <span style="font-weight:bold;">Hal 1</span></p>
+                    <p class="trim">Location <span style="font-weight:bold;">A-01-01-01</span></p>
+                    </div>
+                    <div class="modal-addfromlocation-location-info-headline-right-container">
+                    <p class="trim modal-addfromlocation-location-info-headline-unpickable">UNPICKABLE</p>
+                    </div>
+                    <div class="clearBoth"></div>
                     </div>
 
                     <div class="modal-addfromlocation-location-product-info-container">
-                        <ul class="modal-addfromlocation-location-product-info-ul">
-                            <li>Total</li>
-                            <li>SKUs <span style="font-weight:bold;">2</span></li>
-                            <li>Units <span style="font-weight:bold;">200</span></li>
-                            <li><span style="font-weight:bold;">SKU 468468464684</span></li>
-                            <li>Units <span style="font-weight:bold;">100</span></li>
-                        </ul>
-                        <div class="clearBoth"></div>
+                    <ul class="modal-addfromlocation-location-product-info-ul">
+                    <li>Total</li>
+                    <li>SKUs <span style="font-weight:bold;">2</span></li>
+                    <li>Units <span style="font-weight:bold;">200</span></li>
+                    <li><span style="font-weight:bold;">SKU 468468464684</span></li>
+                    <li>Units <span style="font-weight:bold;">100</span></li>
+                    </ul>
+                    <div class="clearBoth"></div>
                     </div>
-                </div>*@
+                    </div>*@
             </div>
 
             <div class="modal-addfromlocation-bottom-btns-overall-container">
@@ -277,9 +279,12 @@
         if(selectedItem != "") {
             EditUnitsAndSkus(selectedItem);
             selectedItem.closest(".putaway-product-template-container").remove();
+            $(".putaway-underheadline-units-number-text").text(allUnits);
         }
         else {
             $(".putaway-product-template-container").remove();
+            allSkus = 0;
+            allUnits = 0;
             $(".putaway-underheadline-units-number-text").text("0");
             $(".putaway-underheadline-skus-number-text").text("0");
         }
@@ -292,12 +297,12 @@
         let parsedItemSku = parseInt(thisClass.closest(".putaway-product-template-container").data("itemskus"));
 
         if (!parsedItemUnits < 1 && !allUnits < 1) {
-            allUnits = allUnits - parsedItemUnits;
+            allUnits -= parsedItemUnits;
             $(".putaway-underheadline-units-number-text").text(allUnits);
         }
 
         if (!parsedItemSku < 1) {
-            allSkus = allSkus - 1;
+            allSkus -= 1;
             $(".putaway-underheadline-skus-number-text").text(allSkus);
         }
     }
@@ -317,8 +322,8 @@
     }
 
         //-Open Delete Modal
-    function OpenDeleteModal(t, modalDesc) {
-        selectedItem = t;
+    function OpenDeleteModal(item, modalDesc) {
+        selectedItem = item;
         $(".modal-delete-body-info-main").text(modalDesc);
         deleteModalOvarlayContainer.css("display", "block")
     }
@@ -374,7 +379,7 @@
         for(var i = 0; i < result.productlocations.length; i++) {
 
             let unpickable = "";
-            //let totalSkus = result.productlocations.length;
+            let totalSkus = result.productlocations.length;
 
             if(result.productlocations[i].product_Locations.locations_Positions != null) {
                 if (result.productlocations[i].product_Locations.locations_Positions.unpickable == true) {
@@ -416,6 +421,64 @@
             `
             );
         }
+    }
+
+        //-Add Product Putaway To List
+    function AddProductToPutawayList(result) {
+        let productQuantity = 0;
+
+        for(var i = 0; i < result.productlocations.length; i++) {
+
+            let totalSkus = result.productlocations.length;
+            let productImage;
+
+            productQuantity += result.productlocations[i].product.quantity;
+
+            if (result.productlocations[i].product.image == null) {
+                productImage = "Placeholders/PlaceholderWhite.jpg";
+            }
+            else {
+                productImage = "Products/" + result.productlocations[i].product.image;
+            }
+
+            $(".putaway-product-template-overall-container").append(
+                `
+                <div class="putaway-product-template-container" data-itemunits="${result.productlocations[i].quantity}" data-itemskus="${totalSkus}">
+                    <div class="putaway-product-info-template-container">
+                        <div class="putaway-product-image-float-container">
+                            <div class="putaway-product-image-container">
+                                <img class="putaway-product-image" src="/Images/${productImage}" />
+                            </div>
+                        </div>
+                        <div class="putaway-product-info-float-container">
+                            <div class="putaway-product-info-main-container">
+                                <p class="trim putaway-product-info-main-name">${result.productlocations[i].product.name}</p>
+                                <p class="trim putaway-product-info-main-barcode">SKU <span style="font-weight: bold;">${result.productlocations[i].product.barcodeID}</span></p>
+                                <p class="trim putaway-product-info-main-barcode">Location <span style="font-weight: bold;">${result.productlocations[i].locationBarcode}</span></p>
+                            </div>
+                            <div class="putaway-product-info-secondary-container">
+                                <a class="putaway-product-info-secondary-menu-btn">Remove</a>
+                                <p class="trim putaway-product-info-secondary-onhand">${result.productlocations[i].quantity} on hand</p>
+                            </div>
+                            <div class="clearBoth"></div>
+                        </div>
+                        <div class="clearBoth"></div>
+                    </div>
+                    <div class="putaway-edit-numbertoputaway-container">
+                        <input class="putaway-edit-numbertoputaway-input" type="number" placeholder="0" value="${result.productlocations[i].quantity}" />
+                        <a class="trim putaway-edit-numbertoputaway-text"><span class="putaway-edit-numbertoputaway-text-number" style="font-weight: bold;">${result.productlocations[i].quantity}</span> to putaway <span class="putaway-edit-numbertoputaway-text-icon material-icons">edit</span></a>
+                    </div>
+                </div>
+            `
+            );
+            
+            allUnits += result.productlocations[i].quantity;
+        }
+        allSkus += result.productlocations.length;
+
+        $(".putaway-underheadline-skus-number-text").text(allSkus)
+        $(".putaway-underheadline-units-number-text").text(allUnits);
+
     }
 
     // SECTION 4 - Delete Modal
@@ -501,6 +564,8 @@
                     else {
                         console.log("Location");
                         console.log(result.productlocations);
+                        CloseAddFromModal();
+                        AddProductToPutawayList(result);
                     }
                 }
                 else {
