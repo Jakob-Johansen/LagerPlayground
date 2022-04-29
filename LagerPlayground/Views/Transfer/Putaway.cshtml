@@ -374,10 +374,10 @@
         for(var i = 0; i < result.productlocations.length; i++) {
 
             let unpickable = "";
-            let totalSkus = result.productlocations.length;
+            //let totalSkus = result.productlocations.length;
 
-            if(result.productlocations[i].locations_Positions != null) {
-                if (result.productlocations[i].locations_Positions.unpickable == true) {
+            if(result.productlocations[i].product_Locations.locations_Positions != null) {
+                if (result.productlocations[i].product_Locations.locations_Positions.unpickable == true) {
                     unpickable = "UNPICKABLE";
                 }
                 else {
@@ -390,11 +390,11 @@
 
             $(".modal-addfromlocation-locations-container").append(
             `
-                <div class="modal-addfromlocation-location-info-contianer" data-productlocationid="${result.productlocations[i].id}">
+                <div class="modal-addfromlocation-location-info-contianer" data-productlocationid="${result.productlocations[i].product_Locations.id}">
                     <div class="modal-addfromlocation-location-info-headline-container">
                         <div class="modal-addfromlocation-location-info-headline-left-container">
                             <p class="trim">Section <span style="font-weight:bold;">Hal 1</span></p>
-                            <p class="trim">Location <span style="font-weight:bold;">${result.productlocations[i].locationBarcode}</span></p>
+                            <p class="trim">Location <span style="font-weight:bold;">${result.productlocations[i].product_Locations.locationBarcode}</span></p>
                         </div>
                         <div class="modal-addfromlocation-location-info-headline-right-container">
                             <p class="trim modal-addfromlocation-location-info-headline-unpickable">${unpickable}</p>
@@ -405,10 +405,10 @@
                     <div class="modal-addfromlocation-location-product-info-container">
                         <ul class="modal-addfromlocation-location-product-info-ul">
                             <li>Total</li>
-                            <li>SKUs <span style="font-weight:bold;">0</span></li>
-                            <li>Units <span style="font-weight:bold;">0</span></li>
-                            <li><span style="font-weight:bold;">SKU ${result.productlocations[i].product.barcodeID}</span></li>
-                            <li>Units <span style="font-weight:bold;">${result.productlocations[i].quantity}</span></li>
+                            <li>SKUs <span style="font-weight:bold;">${result.productlocations[i].allSkus}</span></li>
+                            <li>Units <span style="font-weight:bold;">${result.productlocations[i].allUnits}</span></li>
+                            <li><span style="font-weight:bold;">SKU ${result.productlocations[i].product_Locations.product.barcodeID}</span></li>
+                            <li>Units <span style="font-weight:bold;">${result.productlocations[i].product_Locations.quantity}</span></li>
                         </ul>
                         <div class="clearBoth"></div>
                     </div>

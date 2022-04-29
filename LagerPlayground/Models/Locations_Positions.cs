@@ -18,7 +18,7 @@ namespace LagerPlayground.Models
 
         public Locations_Shelfs Locations_Shelf { get; set; }
 
-        [System.Text.Json.Serialization.JsonIgnore]
-        public IEnumerable<Product_Locations> Product_Locations { get; set; }
+        //[System.Text.Json.Serialization.JsonIgnore]
+        //public ICollection<Product_Locations> Product_Locations { get; set; }
     }
 }
