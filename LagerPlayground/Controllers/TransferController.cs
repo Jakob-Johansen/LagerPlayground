@@ -254,5 +254,25 @@ namespace LagerPlayground.Controllers
 
             return Json(new { booleanError = true, errorMsg = "No product or location was found" });
         }
+
+        public async Task<JsonResult> PutawayGetOneProductFromLocation(int? productlocationID)
+        {
+            if (productlocationID == null || productlocationID == 0)
+            {
+                return Json(new { booleanError = true, errorMsg = "No Product Location ID Was Found" });
+            }
+
+            var productlocations = await _context.Product_Locations
+                .Include(x => x.Locations_Positions)
+                .Include(x => x.Product)
+                .AsNoTracking().FirstOrDefaultAsync(x => x.ID == productlocationID);
+
+            if (productlocations == null)
+            {
+                return Json(new { booleanError = true, errorMsg = "No Product Location Was Found" });
+            }
+
+            return Json(new { booleanError = false, productlocations });
+        }
     }
 }

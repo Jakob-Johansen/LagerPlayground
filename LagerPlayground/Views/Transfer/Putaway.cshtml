@@ -426,62 +426,96 @@
         }
     }
 
-        //-Add Product Putaway To List
-    function AddProductToPutawayList(result) {
-        let productQuantity = 0;
-
+        //-Add Products To Putaway To List
+    function AddProductsToPutawayList(result) {
         for(var i = 0; i < result.productlocations.length; i++) {
 
-            let totalSkus = result.productlocations.length;
-            let productImage;
+            AddProductToPutawayListHtmlFunction(result, i);
+        }
 
-            productQuantity += result.productlocations[i].product.quantity;
+        allSkus += result.productlocations.length;
+        $(".putaway-underheadline-skus-number-text").text(allSkus);
+        $(".putaway-underheadline-units-number-text").text(allUnits);
+    }
 
-            if (result.productlocations[i].product.image == null) {
-                productImage = "Placeholders/PlaceholderWhite.jpg";
-            }
-            else {
-                productImage = "Products/" + result.productlocations[i].product.image;
-            }
+        //-Add One Product To Putaway List
+    function AddOneProductToPutawayList(result) {
+        AddProductToPutawayListHtmlFunction(result, null);
 
-            $(".putaway-product-template-overall-container").append(
-                `
-                <div class="putaway-product-template-container" data-itemunits="${result.productlocations[i].quantity}" data-itemskus="${totalSkus}">
-                    <div class="putaway-product-info-template-container">
-                        <div class="putaway-product-image-float-container">
-                            <div class="putaway-product-image-container">
-                                <img class="putaway-product-image" src="/Images/${productImage}" />
-                            </div>
+        allSkus += 1;
+        $(".putaway-underheadline-skus-number-text").text(allSkus);
+        $(".putaway-underheadline-units-number-text").text(allUnits);
+
+        CloseAddFromModal();
+    }
+
+        //-Add Product Html To Putaway List
+    function AddProductToPutawayListHtmlFunction(result, i) {
+        let totalSkus;
+        let productImage;
+
+        let resultProductImage;
+        let resultProductLocationQuantity;
+        let resultProductName;
+        let resultProductBarcode;
+        let resultProductLocationBarcode;
+
+        if (i == null) {
+            resultProductImage = result.productlocations.product.image;
+            resultProductLocationQuantity = result.productlocations.quantity;
+            resultProductName = result.productlocations.product.name;
+            resultProductBarcode = result.productlocations.product.barcodeID;
+            resultProductLocationBarcode = result.productlocations.locationBarcode;
+            totalSkus = 1;
+        }
+        else {
+            resultProductImage = result.productlocations[i].product.image;
+            resultProductLocationQuantity = result.productlocations[i].quantity;
+            resultProductName = result.productlocations[i].product.name;
+            resultProductBarcode = result.productlocations[i].product.barcodeID;
+            resultProductLocationBarcode = result.productlocations[i].locationBarcode;
+            totalSkus = result.productlocations.length;
+        }
+
+        if (resultProductImage == null) {
+            productImage = "Placeholders/PlaceholderWhite.jpg";
+        }
+        else {
+            productImage = "Products/" + resultProductImage;
+        }
+
+        $(".putaway-product-template-overall-container").append(
+            `
+            <div class="putaway-product-template-container" data-itemunits="${resultProductLocationQuantity}" data-itemskus="${totalSkus}">
+                <div class="putaway-product-info-template-container">
+                    <div class="putaway-product-image-float-container">
+                        <div class="putaway-product-image-container">
+                            <img class="putaway-product-image" src="/Images/${productImage}" />
                         </div>
-                        <div class="putaway-product-info-float-container">
-                            <div class="putaway-product-info-main-container">
-                                <p class="trim putaway-product-info-main-name">${result.productlocations[i].product.name}</p>
-                                <p class="trim putaway-product-info-main-barcode">SKU <span style="font-weight: bold;">${result.productlocations[i].product.barcodeID}</span></p>
-                                <p class="trim putaway-product-info-main-barcode">Location <span style="font-weight: bold;">${result.productlocations[i].locationBarcode}</span></p>
-                            </div>
-                            <div class="putaway-product-info-secondary-container">
-                                <a class="putaway-product-info-secondary-menu-btn">Remove</a>
-                                <p class="trim putaway-product-info-secondary-onhand">${result.productlocations[i].quantity} on hand</p>
-                            </div>
-                            <div class="clearBoth"></div>
+                    </div>
+                    <div class="putaway-product-info-float-container">
+                        <div class="putaway-product-info-main-container">
+                            <p class="trim putaway-product-info-main-name">${resultProductName}</p>
+                            <p class="trim putaway-product-info-main-barcode">SKU <span style="font-weight: bold;">${resultProductBarcode}</span></p>
+                            <p class="trim putaway-product-info-main-barcode">Location <span style="font-weight: bold;">${resultProductLocationBarcode}</span></p>
+                        </div>
+                        <div class="putaway-product-info-secondary-container">
+                            <a class="putaway-product-info-secondary-menu-btn">Remove</a>
+                            <p class="trim putaway-product-info-secondary-onhand">${resultProductLocationQuantity} on hand</p>
                         </div>
                         <div class="clearBoth"></div>
                     </div>
-                    <div class="putaway-edit-numbertoputaway-container">
-                        <input class="putaway-edit-numbertoputaway-input" type="number" placeholder="0" value="${result.productlocations[i].quantity}" />
-                        <a class="trim putaway-edit-numbertoputaway-text"><span class="putaway-edit-numbertoputaway-text-number" style="font-weight: bold;">${result.productlocations[i].quantity}</span> to putaway <span class="putaway-edit-numbertoputaway-text-icon material-icons">edit</span></a>
-                    </div>
+                    <div class="clearBoth"></div>
                 </div>
-            `
-            );
+                <div class="putaway-edit-numbertoputaway-container">
+                    <input class="putaway-edit-numbertoputaway-input" type="number" placeholder="0" value="${resultProductLocationQuantity}" />
+                    <a class="trim putaway-edit-numbertoputaway-text"><span class="putaway-edit-numbertoputaway-text-number" style="font-weight: bold;">${resultProductLocationQuantity}</span> to putaway <span class="putaway-edit-numbertoputaway-text-icon material-icons">edit</span></a>
+                </div>
+            </div>
+        `
+        );
             
-            allUnits += result.productlocations[i].quantity;
-        }
-        allSkus += result.productlocations.length;
-
-        $(".putaway-underheadline-skus-number-text").text(allSkus)
-        $(".putaway-underheadline-units-number-text").text(allUnits);
-
+        allUnits += resultProductLocationQuantity;
     }
 
     // SECTION 4 - Delete Modal
@@ -520,8 +554,17 @@
     $(document).on("click", ".modal-addfromlocation-location-info-contianer", function () {
         $(".modal-addfromlocation-location-info-contianer").removeClass("modalAddFromLocationActive");
         $(this).addClass("modalAddFromLocationActive");
-        //console.log($(this).data("productlocationid"));
     })
+        
+        //-Confirm Btn
+    addFromModalConfirmBtn.click(function () {
+        if($(".modal-addfromlocation-location-info-contianer").hasClass("modalAddFromLocationActive")) {
+            GetOneProductFromLocation($(".modalAddFromLocationActive").data("productlocationid"));
+        }
+        else {
+            alert("Select A Location");
+        }
+    });
 
     // SECTION 6 - Scanner
         // Scanner event and functions
@@ -567,16 +610,41 @@
 
                 if (result.booleanError == false) {
                     if (result.productFound == true) {
-                        console.log("Product");
-                        console.log(result.productlocations);
+                        //console.log("Product");
+                        //console.log(result.productlocations);
                         OpenAddFromModal(result);
                     }
                     else {
-                        console.log("Location");
-                        console.log(result.productlocations);
+                        //console.log("Location");
+                        //console.log(result.productlocations);
                         CloseAddFromModal();
-                        AddProductToPutawayList(result);
+                        AddProductsToPutawayList(result);
                     }
+                }
+                else {
+                    console.log(result.errorMsg);
+                    alert(result.errorMsg);
+                }
+            },
+            error: function (req, status, error) {
+                console.log(status);
+                console.log(req);
+                console.log(error);
+                alert(status);
+            }
+        });
+    }
+
+        //-Putaway Get One Product From Location Ajax Function
+    function GetOneProductFromLocation(ID) {
+        $.ajax({
+            type: "GET",
+            url: "/Transfer/PutawayGetOneProductFromLocation",
+            data: { productLocationID: ID},
+            success: function (result) {
+
+                if (result.booleanError == false) {
+                    AddOneProductToPutawayList(result);
                 }
                 else {
                     console.log(result.errorMsg);
