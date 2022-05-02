@@ -139,7 +139,7 @@
             </div>
 
             <div class="modal-addfromlocation-locations-container">
-                @*                <div class="modal-addfromlocation-location-info-contianer">
+                @*<div class="modal-addfromlocation-location-info-contianer">
                     <div class="modal-addfromlocation-location-info-headline-container">
                     <div class="modal-addfromlocation-location-info-headline-left-container">
                     <p class="trim">Section <span style="font-weight:bold;">Hal 1</span></p>
@@ -188,6 +188,8 @@
 
     let putawayIsRunning = false;
     let addFromModalIsRunning = false;
+
+    let modalAddFromLocationLocationInfoContianer = $(".modal-addfromlocation-location-info-contianer");
 
     // Delete Modal
     let selectedItem = "";
@@ -348,6 +350,7 @@
 
         //-Close Add From Modal
     function CloseAddFromModal() {
+        $(".modal-addfromlocation-location-info-contianer").removeClass("modalAddFromLocationActive");
         addFromModalProductName.text("PLACEHOLDER");
         addFromModalProductSku.text("PLACEHOLDER");
         addFromModalProductImg.attr("src", "/Images/Placeholders/PlaceholderWhite.jpg");
@@ -512,6 +515,13 @@
     addFromModalCancelBtn.click(function () {
         CloseAddFromModal();
     });
+
+        //-Select from location
+    $(document).on("click", ".modal-addfromlocation-location-info-contianer", function () {
+        $(".modal-addfromlocation-location-info-contianer").removeClass("modalAddFromLocationActive");
+        $(this).addClass("modalAddFromLocationActive");
+        //console.log($(this).data("productlocationid"));
+    })
 
     // SECTION 6 - Scanner
         // Scanner event and functions
