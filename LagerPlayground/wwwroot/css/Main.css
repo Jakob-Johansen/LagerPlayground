@@ -2425,8 +2425,9 @@ li.dropdown {
 
 .modal-addfromlocation-location-info-contianer {
     display: block;
-    padding: 6px 0;
+    padding: 6px 0px;
     border-bottom: 1px solid white;
+    background-color: transparent;
 }
 
 .modal-addfromlocation-location-info-contianer:hover {
@@ -2479,4 +2480,9 @@ li.dropdown {
 .modal-addfromlocation-bottom-confirm-btn {
     background-color: #0c44c7;
     margin-right: 0px !important;
+}
+
+.modalAddFromLocationActive {
+    background-color: #004563;
+    padding: 6px 8px !important;
 }
