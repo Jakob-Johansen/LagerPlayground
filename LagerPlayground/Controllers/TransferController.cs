@@ -196,7 +196,7 @@ namespace LagerPlayground.Controllers
             return View(productLocation);
         }
 
-        public async Task<JsonResult> PutawayGetProductFromLocation(string barcode)
+        public async Task<JsonResult> PutawayGetProductFromLocation(string barcode, List<int> productsInList)
         {
             if (barcode == null)
             {
@@ -215,29 +215,33 @@ namespace LagerPlayground.Controllers
 
             foreach (var productlocations in getProduct)
             {
-                VMPutawayGetProductFromLocation vm = new();
-
-                int allSkus = 0;
-                int allUnits = 0;
-                foreach (var locations in getLocations.Where(x => x.Locations_PositionsID == productlocations.Locations_PositionsID))
+                if (!productsInList.Contains(productlocations.ID))
                 {
-                    allSkus++;
-                    if(allUnits == 0)
-                        allUnits = locations.Quantity;
-                    else
-                        allUnits += locations.Quantity;
+                    VMPutawayGetProductFromLocation vm = new();
+
+                    int allSkus = 0;
+                    int allUnits = 0;
+                    foreach (var locations in getLocations.Where(x => x.Locations_PositionsID == productlocations.Locations_PositionsID))
+                    {
+                        allSkus++;
+                        if (allUnits == 0)
+                            allUnits = locations.Quantity;
+                        else
+                            allUnits += locations.Quantity;
+                    }
+
+                    vm.AllUnits = allUnits;
+                    vm.AllSkus = allSkus;
+
+                    vm.Product_Locations = productlocations;
+                    vmList.Add(vm);
                 }
-
-                vm.AllUnits = allUnits;
-                vm.AllSkus = allSkus;
-
-                vm.Product_Locations = productlocations;
-                vmList.Add(vm);
             }
 
             var product = await _context.Products.FirstOrDefaultAsync(x => x.BarcodeID == barcode);
 
-            if (vmList != null && vmList.Count != 0 && product != null)
+            //vmList != null && vmList.Count != 0 && 
+            if (product != null)
             {
                 return Json(new { booleanError = false, productFound = true, productlocations = vmList, product });
             }
