@@ -2348,7 +2348,7 @@ li.dropdown {
     width: 600px;
     height: auto;
     padding: 15px 20px;
-    background-color: darkcyan;
+    background-color: #242424;
     border-radius: 4px;
     margin: 0 auto;
     position: absolute;
@@ -2478,11 +2478,14 @@ li.dropdown {
 }
 
 .modal-addfromlocation-bottom-confirm-btn {
-    background-color: #0c44c7; 
+    /*    background-color: #0c44c7;*/
+    background-color: #0058d4;
     margin-right: 0px !important;
 }
 
 .modalAddFromLocationActive {
-    background-color: #0068de;
+    /*background-color: #0068de;*/
+    /*background-color: #0e54c4;*/
+    background-color: #0058d4;
     padding: 6px 8px !important;
 }

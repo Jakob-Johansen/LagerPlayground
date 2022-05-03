@@ -35,7 +35,7 @@
     <div class="putaway-product-template-overall-container">
         @foreach (var item in Model)
         {
-            <div class="putaway-product-template-container" data-itemunits="@item.Quantity" data-itemskus="@Model.Count()">
+            <div class="putaway-product-template-container" data-productlocationid="@item.ID" data-itemunits="@item.Quantity" data-itemskus="@Model.Count()">
                 <div class="putaway-product-info-template-container">
                     <div class="putaway-product-image-float-container">
                         <div class="putaway-product-image-container">
@@ -222,7 +222,6 @@
 
     let productBarcode = '';
     let currentProductQuantity = 0;
-
 
     // SECTION 1
         //-Remove Item From List
@@ -454,6 +453,7 @@
         let totalSkus;
         let productImage;
 
+        let resultProductLocationID;
         let resultProductImage;
         let resultProductLocationQuantity;
         let resultProductName;
@@ -461,6 +461,7 @@
         let resultProductLocationBarcode;
 
         if (i == null) {
+            resultProductLocationID = result.productlocations.id;
             resultProductImage = result.productlocations.product.image;
             resultProductLocationQuantity = result.productlocations.quantity;
             resultProductName = result.productlocations.product.name;
@@ -469,6 +470,7 @@
             totalSkus = 1;
         }
         else {
+            resultProductLocationID = result.productlocations[i].id
             resultProductImage = result.productlocations[i].product.image;
             resultProductLocationQuantity = result.productlocations[i].quantity;
             resultProductName = result.productlocations[i].product.name;
@@ -486,7 +488,7 @@
 
         $(".putaway-product-template-overall-container").append(
             `
-            <div class="putaway-product-template-container" data-itemunits="${resultProductLocationQuantity}" data-itemskus="${totalSkus}">
+            <div class="putaway-product-template-container" data-productlocationid="${resultProductLocationID}" data-itemunits="${resultProductLocationQuantity}" data-itemskus="${totalSkus}">
                 <div class="putaway-product-info-template-container">
                     <div class="putaway-product-image-float-container">
                         <div class="putaway-product-image-container">
@@ -593,7 +595,16 @@
             currentBarcode = scanned_barcode;
 
             if(putawayIsRunning == false && scanned_barcode != lastScannedBarcode) {
-                GetProductFromLocation(scanned_barcode);
+                let productsInList = [];
+                $(".putaway-product-template-container").each(function () {
+                    productsInList.push($(this).data("productlocationid"));
+                });
+
+                //let productsInList = $(".putaway-product-template-container").map(function(){
+                //    return $(this).data("productlocationid");
+                //}).get();
+
+                GetProductFromLocation(scanned_barcode, productsInList);
                 lastScannedBarcode = scanned_barcode;
             }
         }
@@ -601,11 +612,14 @@
 
     // Ajax Functions
         //-Putaway Get Product From Location Ajax Function
-    function GetProductFromLocation(barcode) {
+    function GetProductFromLocation(barcode, productsInList) {
+        // Send Array in GET
+        //https://stackoverflow.com/questions/52073851/how-to-pass-an-array-as-a-querystring-in-a-get-request-by-using-jquery-ajax
         $.ajax({
             type: "GET",
             url: "/Transfer/PutawayGetProductFromLocation",
-            data: { barcode: barcode },
+            data: { barcode: barcode, productsInList: productsInList },
+            traditional: true,
             success: function (result) {
 
                 if (result.booleanError == false) {
