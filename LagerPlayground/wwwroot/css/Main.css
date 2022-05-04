@@ -3,6 +3,10 @@
     margin: 0;
 }
 
+.hover:hover {
+    cursor: pointer;
+}
+
 .website-background-dark {
     background-color: rgb(20, 22, 23) !important;
 }
