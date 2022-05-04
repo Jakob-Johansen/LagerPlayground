@@ -156,7 +156,7 @@ namespace LagerPlayground.Controllers
 
                 productLocationsList.Add(productLocationReceivingStation);
 
-                _context.Product_Locations.UpdateRange(productLocationReceivingStation);
+                _context.Product_Locations.UpdateRange(productLocationsList);
 
                 await _context.SaveChangesAsync();
 

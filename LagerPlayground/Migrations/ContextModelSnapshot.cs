@@ -17,7 +17,7 @@ namespace LagerPlayground.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "6.0.1")
+                .HasAnnotation("ProductVersion", "6.0.4")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder, 1L, 1);
@@ -310,9 +310,7 @@ namespace LagerPlayground.Migrations
 
                     b.HasKey("ID");
 
-                    b.HasIndex("Locations_PositionsID")
-                        .IsUnique()
-                        .HasFilter("[Locations_PositionsID] IS NOT NULL");
+                    b.HasIndex("Locations_PositionsID");
 
                     b.HasIndex("ProductID");
 
@@ -627,8 +625,8 @@ namespace LagerPlayground.Migrations
             modelBuilder.Entity("LagerPlayground.Models.Product_Locations", b =>
                 {
                     b.HasOne("LagerPlayground.Models.Locations_Positions", "Locations_Positions")
-                        .WithOne("Product_Locations")
-                        .HasForeignKey("LagerPlayground.Models.Product_Locations", "Locations_PositionsID");
+                        .WithMany()
+                        .HasForeignKey("Locations_PositionsID");
 
                     b.HasOne("LagerPlayground.Models.Product", "Product")
                         .WithMany()
@@ -717,11 +715,6 @@ namespace LagerPlayground.Migrations
             modelBuilder.Entity("LagerPlayground.Models.Locations", b =>
                 {
                     b.Navigation("locations_Racks");
-                });
-
-            modelBuilder.Entity("LagerPlayground.Models.Locations_Positions", b =>
-                {
-                    b.Navigation("Product_Locations");
                 });
 
             modelBuilder.Entity("LagerPlayground.Models.Locations_Racks", b =>

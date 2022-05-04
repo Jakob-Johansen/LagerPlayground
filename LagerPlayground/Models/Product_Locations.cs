@@ -16,8 +16,8 @@ namespace LagerPlayground.Models
         public DateTime? Created { get; set; }
         public DateTime? Modified { get; set; }
 
-        public Product Product { get; set; }
 
+        public Product Product { get; set; }
         //[System.Text.Json.Serialization.JsonIgnore]
         public Locations_Positions Locations_Positions { get; set; }
     }
