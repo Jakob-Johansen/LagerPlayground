@@ -21,10 +21,11 @@
 
         <div class="putaway-overall-underheadline-container">
             <div class="putaway-underheadline-container">
-                <div class="putaway-underline-skus-container">
-                    <p class="trim putaway-underheadline-skus-text"><span class="putaway-underheadline-skus-number-text">@Model.Count()</span> SKUs</p>
+                <div class="putaway-underheadline-left-float-container">
+                    <p class="trim putaway-underheadline-inprogress">In progress</p>
                 </div>
-                <div class="putaway-underheadline-units-container">
+                <div class="putaway-underheadline-right-float-container">
+                    <p class="trim putaway-underheadline-skus-text"><span class="putaway-underheadline-skus-number-text">@Model.Count()</span> SKUs</p>
                     <p class="trim putaway-underheadline-units-text"><span class="putaway-underheadline-units-number-text">@(ViewBag.AllUnits == null ? "0" : @ViewBag.AllUnits)</span> units</p>
                 </div>
                 <div class="clearBoth"></div>
@@ -192,6 +193,8 @@
     let modalAddFromLocationLocationInfoContianer = $(".modal-addfromlocation-location-info-contianer");
 
     let productsInList = [];
+
+    const startPutawayBtn = $(".putaway-bottom-startputaway-btn");
 
     // Delete Modal
     let selectedItem = "";
@@ -612,6 +615,18 @@
             }
         }
     }
+
+    // SECTION 7 - Start Putaway
+        //-Start Putaway btn
+    startPutawayBtn.click(function () {
+        putawayIsRunning = true;
+        $(".putaway-bottom-btns-container").css("display","none");
+
+        $(".putaway-underheadline-skus-text").html('<span class="putaway-underheadline-skus-number-text">0</span> / <b>' + allSkus + '</b> SKUs');
+        $(".putaway-underheadline-units-text").html('<span class="putaway-underheadline-units-number-text">0</span> / <b>' + allUnits + '</b> units');
+
+        $(".putaway-underheadline-inprogress").css("visibility","visible");
+    });
 
     // Ajax Functions
         //-Putaway Get Product From Location Ajax Function
