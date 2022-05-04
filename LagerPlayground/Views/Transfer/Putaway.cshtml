@@ -22,7 +22,7 @@
         <div class="putaway-overall-underheadline-container">
             <div class="putaway-underheadline-container">
                 <div class="putaway-underheadline-left-float-container">
-                    <p class="trim putaway-underheadline-inprogress">In progress</p>
+                    <p class="trim putaway-underheadline-inprogress">IN PROGRESS</p>
                 </div>
                 <div class="putaway-underheadline-right-float-container">
                     <p class="trim putaway-underheadline-skus-text"><span class="putaway-underheadline-skus-number-text">@Model.Count()</span> SKUs</p>
@@ -58,10 +58,23 @@
                     </div>
                     <div class="clearBoth"></div>
                 </div>
-                <div class="putaway-edit-numbertoputaway-container">
-                    <input class="putaway-edit-numbertoputaway-input" type="number" placeholder="0" value="@item.Quantity" />
-                    <a class="trim putaway-edit-numbertoputaway-text"><span class="putaway-edit-numbertoputaway-text-number" style="font-weight: bold;">@item.Quantity</span> to putaway <span class="putaway-edit-numbertoputaway-text-icon material-icons">edit</span></a>
+                <div class="putaway-edit-numbertoputaway-and-isrunning-container">
+                    <div class="putaway-edit-numbertoputaway-container">
+                        <input class="putaway-edit-numbertoputaway-input" type="number" placeholder="0" value="@item.Quantity" />
+                        <a class="trim putaway-edit-numbertoputaway-text"><span class="putaway-edit-numbertoputaway-text-number" style="font-weight: bold;">@item.Quantity</span> to putaway <span class="putaway-edit-numbertoputaway-text-icon material-icons">edit</span></a>
+                    </div>
+
+                    <div class="putaway-isrunning-numbertoputaway-container">
+                        <div class="putaway-isrunning-numbertoputaway-float-container">
+                            <p class="trim putaway-isrunning-numbertoputaway-putawaytext"><span class="putaway-isrunning-numbertoputaway-putawaytext-span">0</span> Putaway</p>
+                        </div>
+                        <div class="putaway-isrunning-numbertoputaway-float-container">
+                            <p class="trim putaway-isrunning-numbertoputaway-requiredtext"><span class="putaway-isrunning-numbertoputaway-requiredtext-span">@item.Quantity</span> Required</p>
+                        </div>
+                        <div class="clearBoth"></div>
+                    </div>
                 </div>
+
             </div>
         }
     </div>
@@ -621,10 +634,16 @@
     startPutawayBtn.click(function () {
         putawayIsRunning = true;
         $(".putaway-bottom-btns-container").css("display","none");
+        $(".putaway-edit-numbertoputaway-container").css("display","none");
+        $(".putaway-isrunning-numbertoputaway-container").css("display","block");
+        removeFromListBtn.css("display","none");
 
         $(".putaway-underheadline-skus-text").html('<span class="putaway-underheadline-skus-number-text">0</span> / <b>' + allSkus + '</b> SKUs');
         $(".putaway-underheadline-units-text").html('<span class="putaway-underheadline-units-number-text">0</span> / <b>' + allUnits + '</b> units');
 
+        $(".putaway-underheadline-skus-text").attr('style', 'color: #ff9d52 !important');
+        $(".putaway-underheadline-units-text").attr('style', 'color: #ff9d52 !important');
+        
         $(".putaway-underheadline-inprogress").css("visibility","visible");
     });
 
