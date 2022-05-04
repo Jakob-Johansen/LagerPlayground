@@ -387,7 +387,7 @@
             let totalSkus = result.productlocations.length;
 
             if(result.productlocations[i].product_Locations.locations_Positions != null) {
-                if (result.productlocations[i].product_Locations.locations_Positions.unpickable == true) {
+                if (result.productlocations[i].product_Locations.locations_Positions.pickable == false) {
                     unpickable = "UNPICKABLE";
                 }
                 else {
