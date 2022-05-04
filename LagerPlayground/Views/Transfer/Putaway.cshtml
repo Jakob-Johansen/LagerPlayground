@@ -191,6 +191,8 @@
 
     let modalAddFromLocationLocationInfoContianer = $(".modal-addfromlocation-location-info-contianer");
 
+    let productsInList = [];
+
     // Delete Modal
     let selectedItem = "";
     let deleteModalActive = false;
@@ -349,6 +351,7 @@
 
         //-Close Add From Modal
     function CloseAddFromModal() {
+        productsInList = [];
         $(".modal-addfromlocation-location-info-contianer").removeClass("modalAddFromLocationActive");
         addFromModalProductName.text("PLACEHOLDER");
         addFromModalProductSku.text("PLACEHOLDER");
@@ -595,7 +598,7 @@
             currentBarcode = scanned_barcode;
 
             if(putawayIsRunning == false && scanned_barcode != lastScannedBarcode) {
-                let productsInList = [];
+                productsInList = [];
                 $(".putaway-product-template-container").each(function () {
                     productsInList.push($(this).data("productlocationid"));
                 });
@@ -654,7 +657,8 @@
         $.ajax({
             type: "GET",
             url: "/Transfer/PutawayGetOneProductFromLocation",
-            data: { productLocationID: ID},
+            data: { productLocationID: ID, productsInList: productsInList},
+            traditional: true,
             success: function (result) {
 
                 if (result.booleanError == false) {

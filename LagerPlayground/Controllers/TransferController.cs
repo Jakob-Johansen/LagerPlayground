@@ -251,6 +251,15 @@ namespace LagerPlayground.Controllers
                 .Include(x => x.Product)
                 .AsNoTracking().ToListAsync();
 
+            //https://stackoverflow.com/a/27851493/12839168
+            foreach (var item in getProductLocation.ToList())
+            {
+                if (productsInList.Contains(item.ID))
+                {
+                    getProductLocation.Remove(item);
+                }
+            }
+
             if (getProductLocation != null && getProductLocation.Count != 0)
             {
                 return Json(new { booleanError = false, productFound = false, productlocations = getProductLocation });
@@ -259,7 +268,7 @@ namespace LagerPlayground.Controllers
             return Json(new { booleanError = true, errorMsg = "No product or location was found" });
         }
 
-        public async Task<JsonResult> PutawayGetOneProductFromLocation(int? productlocationID)
+        public async Task<JsonResult> PutawayGetOneProductFromLocation(int? productlocationID, List<int> productsInList)
         {
             if (productlocationID == null || productlocationID == 0)
             {
@@ -274,6 +283,11 @@ namespace LagerPlayground.Controllers
             if (productlocations == null)
             {
                 return Json(new { booleanError = true, errorMsg = "No Product Location Was Found" });
+            }
+
+            if (productsInList.Contains(productlocations.ID))
+            {
+                return Json(new { booleanError = true, errorMsg = "Product Location already exist on the list" });
             }
 
             return Json(new { booleanError = false, productlocations });
