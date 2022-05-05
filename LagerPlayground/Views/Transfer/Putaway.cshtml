@@ -16,75 +16,113 @@
 @*https://software-help.shiphero.com/hc/en-us/articles/4419353992077-ShipHero-Putaway*@
 
 <div class="putaway-overall-container">
-    <div class="putaway-overall-headline-container">
-        <p class="trim putaway-overall-headline-text">Putaway List</p>
+    <div class="putaway-default-isnotrunning-container" style="display: none;">
+        <div class="putaway-overall-headline-container">
+            <p class="trim putaway-overall-headline-text">Putaway List</p>
 
-        <div class="putaway-overall-underheadline-container">
-            <div class="putaway-underheadline-container">
-                <div class="putaway-underheadline-left-float-container">
-                    <p class="trim putaway-underheadline-inprogress">IN PROGRESS</p>
+            <div class="putaway-overall-underheadline-container">
+                <div class="putaway-underheadline-container">
+                    <div class="putaway-underheadline-left-float-container">
+                        <p class="trim putaway-underheadline-inprogress">IN PROGRESS</p>
+                    </div>
+                    <div class="putaway-underheadline-right-float-container">
+                        <p class="trim putaway-underheadline-skus-text"><span class="putaway-underheadline-skus-number-text">@Model.Count()</span> SKUs</p>
+                        <p class="trim putaway-underheadline-units-text"><span class="putaway-underheadline-units-number-text">@(ViewBag.AllUnits == null ? "0" : @ViewBag.AllUnits)</span> units</p>
+                    </div>
+                    <div class="clearBoth"></div>
                 </div>
-                <div class="putaway-underheadline-right-float-container">
-                    <p class="trim putaway-underheadline-skus-text"><span class="putaway-underheadline-skus-number-text">@Model.Count()</span> SKUs</p>
-                    <p class="trim putaway-underheadline-units-text"><span class="putaway-underheadline-units-number-text">@(ViewBag.AllUnits == null ? "0" : @ViewBag.AllUnits)</span> units</p>
+            </div>
+        </div>
+
+        <div class="putaway-product-template-overall-container">
+            @foreach (var item in Model)
+            {
+                <div class="putaway-product-template-container" data-productlocationid="@item.ID" data-itemunits="@item.Quantity" data-itemskus="@Model.Count()">
+                    <div class="putaway-product-info-template-overall-container">
+                        <div class="putaway-product-info-template-container">
+                            <div class="putaway-product-image-float-container">
+                                <div class="putaway-product-image-container">
+                                    <img class="putaway-product-image" src="~/Images/@(item.Product.Image == null ? "Placeholders/PlaceholderWhite.jpg" : "Products/" + item.Product.Image)" />
+                                </div>
+                            </div>
+                            <div class="putaway-product-info-float-container">
+                                <div class="putaway-product-info-main-container">
+                                    <p class="trim putaway-product-info-main-name">@item.Product.Name</p>
+                                    <p class="trim putaway-product-info-main-barcode">SKU <span style="font-weight: bold;">@item.Product.BarcodeID</span></p>
+                                    <p class="trim putaway-product-info-main-barcode">Location <span style="font-weight: bold;">@item.LocationBarcode</span></p>
+                                    @*                            <p class="trim putaway-product-info-main-custommer">Custommer <span style="font-weight: bold;">J-Import</span></p>*@
+                                </div>
+                                <div class="putaway-product-info-secondary-container">
+                                    <a class="putaway-product-info-secondary-menu-btn">Remove</a>
+                                    <p class="trim putaway-product-info-secondary-onhand">@item.Quantity on hand</p>
+                                </div>
+                                <div class="clearBoth"></div>
+                            </div>
+                            <div class="clearBoth"></div>
+                        </div>
+                        <div class="putaway-edit-numbertoputaway-and-isrunning-container">
+                            <div class="putaway-edit-numbertoputaway-container">
+                                <input class="putaway-edit-numbertoputaway-input" type="number" placeholder="0" value="@item.Quantity" />
+                                <a class="trim putaway-edit-numbertoputaway-text"><span class="putaway-edit-numbertoputaway-text-number" style="font-weight: bold;">@item.Quantity</span> to putaway <span class="putaway-edit-numbertoputaway-text-icon material-icons">edit</span></a>
+                            </div>
+
+                            <div class="putaway-isrunning-numbertoputaway-container">
+                                <div class="putaway-isrunning-numbertoputaway-float-container">
+                                    <p class="trim putaway-isrunning-numbertoputaway-putawaytext"><span class="putaway-isrunning-numbertoputaway-putawaytext-span">0</span> Putaway</p>
+                                </div>
+                                <div class="putaway-isrunning-numbertoputaway-float-container">
+                                    <p class="trim putaway-isrunning-numbertoputaway-requiredtext"><span class="putaway-isrunning-numbertoputaway-requiredtext-span">@item.Quantity</span> Required</p>
+                                </div>
+                                <div class="clearBoth"></div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
-                <div class="clearBoth"></div>
+            }
+        </div>
+        <div class="putaway-overall-bottom-btns-container">
+            <div class="putaway-bottom-btns-container">
+                <a class="putaway-bottom-clear-btn">Clear</a>
+                <a class="putaway-bottom-startputaway-btn">Start Putaway</a>
             </div>
         </div>
     </div>
 
-    <div class="putaway-product-template-overall-container">
-        @foreach (var item in Model)
-        {
-            <div class="putaway-product-template-container" data-productlocationid="@item.ID" data-itemunits="@item.Quantity" data-itemskus="@Model.Count()">
-                <div class="putaway-product-info-template-overall-container">
-                    <div class="putaway-product-info-template-container">
-                        <div class="putaway-product-image-float-container">
-                            <div class="putaway-product-image-container">
-                                <img class="putaway-product-image" src="~/Images/@(item.Product.Image == null ? "Placeholders/PlaceholderWhite.jpg" : "Products/" + item.Product.Image)" />
-                            </div>
-                        </div>
-                        <div class="putaway-product-info-float-container">
-                            <div class="putaway-product-info-main-container">
-                                <p class="trim putaway-product-info-main-name">@item.Product.Name</p>
-                                <p class="trim putaway-product-info-main-barcode">SKU <span style="font-weight: bold;">@item.Product.BarcodeID</span></p>
-                                <p class="trim putaway-product-info-main-barcode">Location <span style="font-weight: bold;">@item.LocationBarcode</span></p>
-                                @*                            <p class="trim putaway-product-info-main-custommer">Custommer <span style="font-weight: bold;">J-Import</span></p>*@
-                            </div>
-                            <div class="putaway-product-info-secondary-container">
-                                <a class="putaway-product-info-secondary-menu-btn">Remove</a>
-                                <p class="trim putaway-product-info-secondary-onhand">@item.Quantity on hand</p>
-                            </div>
-                            <div class="clearBoth"></div>
-                        </div>
-                        <div class="clearBoth"></div>
-                    </div>
-                    <div class="putaway-edit-numbertoputaway-and-isrunning-container">
-                        <div class="putaway-edit-numbertoputaway-container">
-                            <input class="putaway-edit-numbertoputaway-input" type="number" placeholder="0" value="@item.Quantity" />
-                            <a class="trim putaway-edit-numbertoputaway-text"><span class="putaway-edit-numbertoputaway-text-number" style="font-weight: bold;">@item.Quantity</span> to putaway <span class="putaway-edit-numbertoputaway-text-icon material-icons">edit</span></a>
-                        </div>
+    <div class="putaway-isrunning-picklocation-container" style="display: block;">
+        <div class="putaway-isrunning-picklocation-header-container">
+            <p class="trim putaway-isrunning-picklocation-header-headline"><span class="material-icons putaway-isrunning-picklocation-header-headline-icon">chevron_left</span>Scan or select a location</p>
+            <div class="clearBoth"></div>
+        </div>
+        <div class="putaway-isrunning-picklocation-locations-container">
+            <div class="putaway-isrunning-picklocation-locations-assigned-headline-container">
+                <p class="trim putaway-isrunning-picklocation-locations-assigned-headline">LOCATIONS ASSIGNED TO THIS SKU</p>
+                <div class="putaway-isrunning-picklocation-locations-info-overall-container">
 
-                        <div class="putaway-isrunning-numbertoputaway-container">
-                            <div class="putaway-isrunning-numbertoputaway-float-container">
-                                <p class="trim putaway-isrunning-numbertoputaway-putawaytext"><span class="putaway-isrunning-numbertoputaway-putawaytext-span">0</span> Putaway</p>
-                            </div>
-                            <div class="putaway-isrunning-numbertoputaway-float-container">
-                                <p class="trim putaway-isrunning-numbertoputaway-requiredtext"><span class="putaway-isrunning-numbertoputaway-requiredtext-span">@item.Quantity</span> Required</p>
-                            </div>
-                            <div class="clearBoth"></div>
+                    <div class="putaway-isrunning-picklocation-location-info-float-container">
+                        <div class="putaway-isrunning-picklocation-location-info-container" style="background-color: red;">
+                            T
+                        </div>
+                    </div>
+
+                    <div class="putaway-isrunning-picklocation-location-info-float-container">
+                        <div class="putaway-isrunning-picklocation-location-info-container" style="background-color: green;">
+                            Y
+                        </div>
+                    </div>
+
+                    <div class="putaway-isrunning-picklocation-location-info-float-container">
+                        <div class="putaway-isrunning-picklocation-location-info-container" style="background-color: yellow;">
+                            U
+                        </div>
+                    </div>
+
+                    <div class="putaway-isrunning-picklocation-location-info-float-container">
+                        <div class="putaway-isrunning-picklocation-location-info-container" style="background-color: blue;">
+                            I
                         </div>
                     </div>
                 </div>
-
             </div>
-        }
-    </div>
-
-    <div class="putaway-overall-bottom-btns-container">
-        <div class="putaway-bottom-btns-container">
-            <a class="putaway-bottom-clear-btn">Clear</a>
-            <a class="putaway-bottom-startputaway-btn">Start Putaway</a>
         </div>
     </div>
 </div>
@@ -644,7 +682,7 @@
         }
     }
 
-    // SECTION 7 - Start Putaway
+    // SECTION 7 - Putaway Is Running - Pick A Product
         //-Start Putaway btn
     startPutawayBtn.click(function () {
         putawayIsRunning = true;
