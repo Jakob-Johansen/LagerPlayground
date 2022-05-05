@@ -2089,8 +2089,9 @@ li.dropdown {
     font-weight: bold;
 }
 
-.putaway-product-template-overall-container {
+.putaway-product-template-overall-container, .putaway-isrunning-picklocation-locations-container {
     max-height: 65vh;
+    min-height: 65vh;
     overflow: auto;
 }
 
@@ -2469,6 +2470,7 @@ li.dropdown {
 
 .modal-addfromlocation-locations-container {
     max-height: 37vh;
+    min-height: 37vh;
     overflow: auto;
 }
 
@@ -2527,14 +2529,59 @@ li.dropdown {
 }
 
 .modal-addfromlocation-bottom-confirm-btn {
-    /*    background-color: #0c44c7;*/
     background-color: #0058d4;
     margin-right: 0px !important;
 }
 
 .modalAddFromLocationActive {
-    /*background-color: #0068de;*/
-    /*background-color: #0e54c4;*/
     background-color: #0058d4;
     padding: 6px 8px !important;
+}
+
+.putaway-isrunning-picklocation-header-container {
+    position: relative;
+    padding: 10px;
+}
+
+.putaway-isrunning-picklocation-header-headline {
+    width: 100%;
+    font-size: 22px;
+    display: inline-block;
+    text-align: center !important;
+    position: relative;
+}
+
+.putaway-isrunning-picklocation-header-headline-icon {
+    float: left;
+    display: inline-block;
+    color: white !important;
+    font-size: 35px;
+    position: absolute;
+    left: 0;
+    user-select: none;
+}
+
+.putaway-isrunning-picklocation-header-headline-icon:hover {
+    cursor: pointer;
+}
+
+.putaway-isrunning-picklocation-locations-container {
+    padding: 10px 15px 0px 15px !important;
+}
+
+.putaway-isrunning-picklocation-locations-assigned-headline {
+    font-size: 18px;
+    padding-bottom: 13px;
+}
+
+.putaway-isrunning-picklocation-location-info-float-container {
+    float: left;
+    width: 50%;
+    margin-bottom: 15px;
+}
+
+.putaway-isrunning-picklocation-location-info-container {
+    width: 95%;
+    height: 50px;
+    margin: 0 auto;
 }
