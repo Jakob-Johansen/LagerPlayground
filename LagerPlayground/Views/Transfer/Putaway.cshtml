@@ -50,7 +50,7 @@
                                     <p class="trim putaway-product-info-main-name">@item.Product.Name</p>
                                     <p class="trim putaway-product-info-main-barcode">SKU <span style="font-weight: bold;">@item.Product.BarcodeID</span></p>
                                     <p class="trim putaway-product-info-main-barcode">Location <span style="font-weight: bold;">@item.LocationBarcode</span></p>
-                                    @*                            <p class="trim putaway-product-info-main-custommer">Custommer <span style="font-weight: bold;">J-Import</span></p>*@
+                                    @*<p class="trim putaway-product-info-main-custommer">Custommer <span style="font-weight: bold;">J-Import</span></p>*@
                                 </div>
                                 <div class="putaway-product-info-secondary-container">
                                     <a class="putaway-product-info-secondary-menu-btn">Remove</a>
@@ -204,8 +204,6 @@
 
     let allUnits = @ViewBag.AllUnits;
     let allSkus = @Model.Count();
-
-    const removeFromListBtn = $(".putaway-product-info-secondary-menu-btn");
 
     let numberToPutawayInput = $(".putaway-edit-numbertoputaway-input");
 
@@ -664,9 +662,9 @@
         $(".putaway-edit-numbertoputaway-container").css("display","none");
         $(".putaway-isrunning-numbertoputaway-container").css("display","block");
 
-        $(".putaway-product-info-template-overall-container").addClass('hover');
+        $(".putaway-product-info-template-overall-container").addClass('putawayIsRunningActive');
 
-        removeFromListBtn.css("display","none");
+        $(".putaway-product-info-secondary-menu-btn").css("display","none");
         $(".putaway-product-info-template-container").css("display","block");
 
         $(".putaway-underheadline-skus-text").html('<span class="putaway-underheadline-skus-number-text">0</span> / <b>' + allSkus + '</b> SKUs');
@@ -679,7 +677,7 @@
     });
 
         //-Product Location click
-    $(".putaway-product-info-template-overall-container").click(function () {
+    $(document).on("click", ".putawayIsRunningActive", function () {
         console.log("Click");
         console.log($(this).closest(".putaway-product-template-container").data("productlocationid"));
         console.log($(this).closest(".putaway-product-template-container").data("productid"));
@@ -702,11 +700,14 @@
         //-Add Locations Html
     function AddLocationsHtml(result) {
         for(var i = 0; i < result.productlocations.length; i++) {
-
-            let pickableBoolean = result.productlocations[i].product_Locations.locations_Positions.pickable;
             let unpickable = "";
 
-            if (pickableBoolean == false) {
+            if(result.productlocations[i].product_Locations.locations_Positions != null) {
+                if (result.productlocations[i].product_Locations.locations_Positions.pickable == false) {
+                    unpickable = "UNPICKABLE";
+                }
+            }
+            else {
                 unpickable = "UNPICKABLE";
             }
 
@@ -836,14 +837,17 @@
     }
 
         //-Get Locations
-    function GetLocations(productionLocationID, productID) {
+    function GetLocations(productLocationID, productID) {
+        console.log(productID);
+        console.log(productLocationID);
         $.ajax({
             type: "GET",
             url: "/Transfer/GetLocations",
-            data: { productLocationID: productionLocationID, productID: productID},
+            data: { productLocationID: productLocationID, productID: productID},
             success: function (result) {
 
                 if (result.booleanError == false) {
+                    console.log(result.productlocations);
                     AddLocationsHtml(result);
                 }
                 else {

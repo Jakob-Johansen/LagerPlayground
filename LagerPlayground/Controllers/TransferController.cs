@@ -312,7 +312,7 @@ namespace LagerPlayground.Controllers
 
             foreach (var productlocations in getProduct)
             {
-                if (productLocationID != productlocations.ID)
+                if (productLocationID != productlocations.ID && productlocations.Locations_PositionsID != null)
                 {
                     VMPutawayGetProductFromLocation vm = new();
 
