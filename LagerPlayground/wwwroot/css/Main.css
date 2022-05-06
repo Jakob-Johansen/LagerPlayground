@@ -2010,6 +2010,15 @@ li.dropdown {
     background-color: #1d1f21;
     margin: 0 auto;
     padding-bottom: 15px;
+    border-radius: 3px;
+}
+
+/*.putaway-default-isnotrunning-container {
+
+}*/
+
+.putaway-isrunning-picklocation-container {
+    display: none;
 }
 
 .putaway-overall-headline-container {
@@ -2485,20 +2494,20 @@ li.dropdown {
     cursor: pointer;
 }
 
-.modal-addfromlocation-location-info-headline-left-container, .modal-addfromlocation-location-info-headline-right-container {
+.modal-addfromlocation-location-info-headline-left-container, .modal-addfromlocation-location-info-headline-right-container, .putaway-isrunning-picklocation-location-info-headline-left-container, .putaway-isrunning-picklocation-location-info-headline-right-container {
     float: left;
 }
 
-.modal-addfromlocation-location-info-headline-left-container {
+.modal-addfromlocation-location-info-headline-left-container, .putaway-isrunning-picklocation-location-info-headline-left-container {
     width: 70%;
 }
 
-.modal-addfromlocation-location-info-headline-right-container {
+.modal-addfromlocation-location-info-headline-right-container, .putaway-isrunning-picklocation-location-info-headline-right-container {
     width: 30%;
     text-align: right;
 }
 
-.modal-addfromlocation-location-info-headline-unpickable {
+.modal-addfromlocation-location-info-headline-unpickable, .putaway-isrunning-picklocation-location-info-headline-unpickable {
     display: inline-block;
     background-color: rgb(220,53,69);
     padding: 0px 15px;
@@ -2506,13 +2515,13 @@ li.dropdown {
     font-size: 13px !important;
 }
 
-.modal-addfromlocation-location-product-info-ul {
+.modal-addfromlocation-location-product-info-ul, .putaway-isrunning-picklocation-location-product-info-ul {
     list-style: none;
     padding: 0;
     margin: 0;
 }
 
-.modal-addfromlocation-location-product-info-ul > li {
+.modal-addfromlocation-location-product-info-ul > li, .putaway-isrunning-picklocation-location-product-info-ul > li {
     float: left;
     display: inline-block;
     padding-right: 10px;
@@ -2569,9 +2578,13 @@ li.dropdown {
     padding: 10px 15px 0px 15px !important;
 }
 
-.putaway-isrunning-picklocation-locations-assigned-headline {
+.putaway-isrunning-picklocation-locations-assigned-headline, .putaway-isrunning-picklocation-locations-empty-headline {
     font-size: 18px;
     padding-bottom: 13px;
+}
+
+.putaway-isrunning-picklocation-locations-empty-headline {
+    margin-top: 15px !important;
 }
 
 .putaway-isrunning-picklocation-location-info-float-container {
@@ -2582,6 +2595,10 @@ li.dropdown {
 
 .putaway-isrunning-picklocation-location-info-container {
     width: 95%;
-    height: 50px;
+    height: auto;
+    min-height: 50px;
+    background-color: red;
     margin: 0 auto;
+    padding: 8px 8px;
+    border-radius: 3px;
 }
