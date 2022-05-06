@@ -2005,17 +2005,15 @@ li.dropdown {
 
 .putaway-overall-container {
     width: 900px;
+    /*min-height: 75vh;
+    max-height: 75vh;*/
     /*    height: 789px;*/
-    height: auto !important;
+    height: auto;
     background-color: #1d1f21;
     margin: 0 auto;
     padding-bottom: 15px;
     border-radius: 3px;
 }
-
-/*.putaway-default-isnotrunning-container {
-
-}*/
 
 .putaway-isrunning-picklocation-container {
     display: none;
@@ -2025,6 +2023,8 @@ li.dropdown {
     width: 100%;
     height: auto;
     background-color: #27292b;
+    border-top-left-radius: 2px;
+    border-top-right-radius: 2px;
 }
 
 .putaway-overall-headline-text {
@@ -2039,13 +2039,6 @@ li.dropdown {
 .putaway-overall-underheadline-container {
     padding: 0px 0 8px 0;
 }
-
-/*.putaway-underheadline-container {
-    width: 33%;
-    margin-left: auto;
-    margin-right: 0;
-    text-align: right;
-}*/
 
 .putaway-underheadline-left-float-container, .putaway-underheadline-right-float-container {
     float: left;
@@ -2099,8 +2092,9 @@ li.dropdown {
 }
 
 .putaway-product-template-overall-container, .putaway-isrunning-picklocation-locations-container {
-    max-height: 65vh;
-    min-height: 65vh;
+    height: 65vh;
+/*    min-height: 100%;
+    max-height: 100%;*/
     overflow: auto;
 }
 
@@ -2549,12 +2543,15 @@ li.dropdown {
 
 .putaway-isrunning-picklocation-header-container {
     position: relative;
-    padding: 10px;
+    padding: 20px 10px;
+    background-color: #27292b;
+    border-top-left-radius: 2px;
+    border-top-right-radius: 2px;
 }
 
 .putaway-isrunning-picklocation-header-headline {
     width: 100%;
-    font-size: 22px;
+    font-size: 23px;
     display: inline-block;
     text-align: center !important;
     position: relative;
@@ -2597,8 +2594,12 @@ li.dropdown {
     width: 95%;
     height: auto;
     min-height: 50px;
-    background-color: red;
+    background-color: #27292b;
     margin: 0 auto;
     padding: 8px 8px;
     border-radius: 3px;
+}
+
+.putaway-isrunning-picklocation-location-info-container:hover {
+    cursor: pointer;
 }

@@ -37,7 +37,7 @@
         <div class="putaway-product-template-overall-container">
             @foreach (var item in Model)
             {
-                <div class="putaway-product-template-container" data-productlocationid="@item.ID" data-itemunits="@item.Quantity" data-itemskus="@Model.Count()">
+                <div class="putaway-product-template-container" data-productlocationid="@item.ID" data-productid="@item.ProductID" data-itemunits="@item.Quantity" data-itemskus="@Model.Count()">
                     <div class="putaway-product-info-template-overall-container">
                         <div class="putaway-product-info-template-container">
                             <div class="putaway-product-image-float-container">
@@ -98,32 +98,7 @@
                 <p class="trim putaway-isrunning-picklocation-locations-assigned-headline">LOCATIONS ASSIGNED TO THIS SKU</p>
                 <div class="putaway-isrunning-picklocation-locations-assigned-overall-container">
 
-                    <div class="putaway-isrunning-picklocation-location-info-float-container">
-                        <div class="putaway-isrunning-picklocation-location-info-container" data-productlocationid="0">
-
-                            <div class="putaway-isrunning-picklocation-location-info-headline-container">
-                                <div class="putaway-isrunning-picklocation-location-info-headline-left-container">
-                                    <p class="trim">Section <span style="font-weight:bold;">Hal 1</span></p>
-                                    <p class="trim">Location <span style="font-weight:bold;">A-01-01-01</span></p>
-                                </div>
-                                <div class="putaway-isrunning-picklocation-location-info-headline-right-container">
-                                    <p class="trim putaway-isrunning-picklocation-location-info-headline-unpickable"></p>
-                                </div>
-                                <div class="clearBoth"></div>
-                            </div>
-                            <div class="putaway-isrunning-picklocation-location-product-info-container">
-                                <ul class="putaway-isrunning-picklocation-location-product-info-ul">
-                                    <li>Total</li>
-                                    <li>SKUs <span style="font-weight:bold;">0</span></li>
-                                    <li>Units <span style="font-weight:bold;">0</span></li>
-                                    <li><span style="font-weight:bold;">SKU 0</span></li>
-                                    <li>Units <span style="font-weight:bold;">0</span></li>
-                                </ul>
-                                <div class="clearBoth"></div>
-                            </div>
-
-                        </div>
-                    </div>
+                    @*-Javascript-*@
 
                 </div>
                 <div class="clearBoth"></div>
@@ -131,22 +106,7 @@
                 <p class="trim putaway-isrunning-picklocation-locations-empty-headline">EMPTY LOCATIONS</p>
                 <div class="putaway-isrunning-picklocation-locations-empty-overall-container">
 
-                    <div class="putaway-isrunning-picklocation-location-info-float-container">
-                        <div class="putaway-isrunning-picklocation-location-info-container" data-productlocationid="0">
-
-                            <div class="putaway-isrunning-picklocation-location-info-headline-container">
-                                <div class="putaway-isrunning-picklocation-location-info-headline-left-container">
-                                    <p class="trim">Section <span style="font-weight:bold;">Hal 1</span></p>
-                                    <p class="trim">Location <span style="font-weight:bold;">A-01-01-01</span></p>
-                                </div>
-                                <div class="putaway-isrunning-picklocation-location-info-headline-right-container">
-                                    <p class="trim putaway-isrunning-picklocation-location-info-headline-unpickable"></p>
-                                </div>
-                                <div class="clearBoth"></div>
-                            </div>
-
-                        </div>
-                    </div>
+                    @*-Javascript-*@
 
                 </div>
                 <div class="clearBoth"></div>
@@ -222,29 +182,9 @@
             </div>
 
             <div class="modal-addfromlocation-locations-container">
-                @*<div class="modal-addfromlocation-location-info-contianer">
-                    <div class="modal-addfromlocation-location-info-headline-container">
-                    <div class="modal-addfromlocation-location-info-headline-left-container">
-                    <p class="trim">Section <span style="font-weight:bold;">Hal 1</span></p>
-                    <p class="trim">Location <span style="font-weight:bold;">A-01-01-01</span></p>
-                    </div>
-                    <div class="modal-addfromlocation-location-info-headline-right-container">
-                    <p class="trim modal-addfromlocation-location-info-headline-unpickable">UNPICKABLE</p>
-                    </div>
-                    <div class="clearBoth"></div>
-                    </div>
 
-                    <div class="modal-addfromlocation-location-product-info-container">
-                    <ul class="modal-addfromlocation-location-product-info-ul">
-                    <li>Total</li>
-                    <li>SKUs <span style="font-weight:bold;">2</span></li>
-                    <li>Units <span style="font-weight:bold;">200</span></li>
-                    <li><span style="font-weight:bold;">SKU 468468464684</span></li>
-                    <li>Units <span style="font-weight:bold;">100</span></li>
-                    </ul>
-                    <div class="clearBoth"></div>
-                    </div>
-                    </div>*@
+                @*-Javascript-*@
+
             </div>
 
             <div class="modal-addfromlocation-bottom-btns-overall-container">
@@ -549,8 +489,10 @@
         let resultProductName;
         let resultProductBarcode;
         let resultProductLocationBarcode;
+        let resultProductID;
 
         if (i == null) {
+            resultProductID = result.productlocations.productID;
             resultProductLocationID = result.productlocations.id;
             resultProductImage = result.productlocations.product.image;
             resultProductLocationQuantity = result.productlocations.quantity;
@@ -560,6 +502,7 @@
             totalSkus = 1;
         }
         else {
+            resultProductID = result.productlocations[i].productID;
             resultProductLocationID = result.productlocations[i].id
             resultProductImage = result.productlocations[i].product.image;
             resultProductLocationQuantity = result.productlocations[i].quantity;
@@ -578,7 +521,7 @@
 
         $(".putaway-product-template-overall-container").append(
             `
-            <div class="putaway-product-template-container" data-productlocationid="${resultProductLocationID}" data-itemunits="${resultProductLocationQuantity}" data-itemskus="${totalSkus}">
+            <div class="putaway-product-template-container" data-productlocationid="${resultProductLocationID}" data-productid="${resultProductID}" data-itemunits="${resultProductLocationQuantity}" data-itemskus="${totalSkus}">
                 <div class="putaway-product-info-template-overall-container">
                     <div class="putaway-product-info-template-container">
                         <div class="putaway-product-image-float-container">
@@ -739,6 +682,10 @@
     $(".putaway-product-info-template-overall-container").click(function () {
         console.log("Click");
         console.log($(this).closest(".putaway-product-template-container").data("productlocationid"));
+        console.log($(this).closest(".putaway-product-template-container").data("productid"));
+
+        GetLocations($(this).closest(".putaway-product-template-container").data("productlocationid"), $(this).closest(".putaway-product-template-container").data("productid"));
+
         $(".putaway-default-isnotrunning-container").css("display","none");
         $(".putaway-isrunning-picklocation-container").css("display","block");
     });
@@ -746,9 +693,82 @@
     // SECTION 8 - Locations
         //-Back Btn
     backBtnLocations.click(function () {
+        $(".putaway-isrunning-picklocation-location-info-float-container").remove();
+
         $(".putaway-isrunning-picklocation-container").css("display","none");
         $(".putaway-default-isnotrunning-container").css("display","block");
     });
+
+        //-Add Locations Html
+    function AddLocationsHtml(result) {
+        for(var i = 0; i < result.productlocations.length; i++) {
+
+            let pickableBoolean = result.productlocations[i].product_Locations.locations_Positions.pickable;
+            let unpickable = "";
+
+            if (pickableBoolean == false) {
+                unpickable = "UNPICKABLE";
+            }
+
+            $(".putaway-isrunning-picklocation-locations-assigned-overall-container").append(
+            `
+            <div class="putaway-isrunning-picklocation-location-info-float-container">
+                <div class="putaway-isrunning-picklocation-location-info-container" data-productlocationid="${result.productlocations[i].product_Locations.id}">
+
+                    <div class="putaway-isrunning-picklocation-location-info-headline-container">
+                        <div class="putaway-isrunning-picklocation-location-info-headline-left-container">
+                            <p class="trim">Section <span style="font-weight:bold;">Hal 1</span></p>
+                            <p class="trim">Location <span style="font-weight:bold;">${result.productlocations[i].product_Locations.locationBarcode}</span></p>
+                        </div>
+                        <div class="putaway-isrunning-picklocation-location-info-headline-right-container">
+                            <p class="trim putaway-isrunning-picklocation-location-info-headline-unpickable">${unpickable}</p>
+                        </div>
+                        <div class="clearBoth"></div>
+                    </div>
+                    <div class="putaway-isrunning-picklocation-location-product-info-container">
+                        <ul class="putaway-isrunning-picklocation-location-product-info-ul">
+                            <li>Total</li>
+                            <li>SKUs <span style="font-weight:bold;">${result.productlocations[i].allSkus}</span></li>
+                            <li>Units <span style="font-weight:bold;">${result.productlocations[i].allUnits}</span></li>
+                            <li><span style="font-weight:bold;">SKU ${result.productlocations[i].product_Locations.product.barcodeID}</span></li>
+                            <li>Units <span style="font-weight:bold;">${result.productlocations[i].product_Locations.quantity}</span></li>
+                        </ul>
+                        <div class="clearBoth"></div>
+                    </div>
+
+                </div>
+            </div>
+            `
+            );
+        }
+
+        for(var i = 0; i < result.allemptylocations.length; i++) {
+            let pickableBoolean = result.allemptylocations[i].pickable;
+            let unpickable = "";
+
+            if (pickableBoolean == false) {
+                unpickable = "UNPICKABLE";
+            }
+            $(".putaway-isrunning-picklocation-locations-empty-overall-container").append(
+            `
+            <div class="putaway-isrunning-picklocation-location-info-float-container">
+                <div class="putaway-isrunning-picklocation-location-info-container" data-locationid="${result.allemptylocations[i].id}">
+                    <div class="putaway-isrunning-picklocation-location-info-headline-container">
+                        <div class="putaway-isrunning-picklocation-location-info-headline-left-container">
+                            <p class="trim">Section <span style="font-weight:bold;">Hal 1</span></p>
+                            <p class="trim">Location <span style="font-weight:bold;">${result.allemptylocations[i].fullLocationBarcode}</span></p>
+                        </div>
+                        <div class="putaway-isrunning-picklocation-location-info-headline-right-container">
+                            <p class="trim putaway-isrunning-picklocation-location-info-headline-unpickable">${unpickable}</p>
+                        </div>
+                        <div class="clearBoth"></div>
+                    </div>
+                </div>
+            </div>
+            `
+            );
+        }
+    }
 
     // Ajax Functions
         //-Putaway Get Product From Location Ajax Function
@@ -800,6 +820,31 @@
 
                 if (result.booleanError == false) {
                     AddOneProductToPutawayList(result);
+                }
+                else {
+                    console.log(result.errorMsg);
+                    alert(result.errorMsg);
+                }
+            },
+            error: function (req, status, error) {
+                console.log(status);
+                console.log(req);
+                console.log(error);
+                alert(status);
+            }
+        });
+    }
+
+        //-Get Locations
+    function GetLocations(productionLocationID, productID) {
+        $.ajax({
+            type: "GET",
+            url: "/Transfer/GetLocations",
+            data: { productLocationID: productionLocationID, productID: productID},
+            success: function (result) {
+
+                if (result.booleanError == false) {
+                    AddLocationsHtml(result);
                 }
                 else {
                     console.log(result.errorMsg);

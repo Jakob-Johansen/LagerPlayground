@@ -292,5 +292,55 @@ namespace LagerPlayground.Controllers
 
             return Json(new { booleanError = false, productlocations });
         }
+
+        public async Task<JsonResult> GetLocations(int? productLocationID, int? productID)
+        {
+            if (productLocationID == null || productLocationID == 0 || productID == null || productID == 0)
+            {
+                return Json(new { booleanError = true, errorMsg = "No Id was found" });
+            }
+
+            List<VMPutawayGetProductFromLocation> vmList = new();
+
+            var getProduct = await _context.Product_Locations
+                .Include(x => x.Product).Where(x => x.Product.ID == productID)
+                .Include(x => x.Locations_Positions)
+                .AsNoTracking().ToListAsync();
+
+            var getLocations = await _context.Product_Locations
+                .AsNoTracking().ToListAsync();
+
+            foreach (var productlocations in getProduct)
+            {
+                if (productLocationID != productlocations.ID)
+                {
+                    VMPutawayGetProductFromLocation vm = new();
+
+                    int allSkus = 0;
+                    int allUnits = 0;
+                    foreach (var locations in getLocations.Where(x => x.Locations_PositionsID == productlocations.Locations_PositionsID))
+                    {
+                        allSkus++;
+                        if (allUnits == 0)
+                            allUnits = locations.Quantity;
+                        else
+                            allUnits += locations.Quantity;
+                    }
+
+                    vm.AllUnits = allUnits;
+                    vm.AllSkus = allSkus;
+
+                    vm.Product_Locations = productlocations;
+                    vmList.Add(vm);
+                }
+            }
+
+            var allEmptyLocations = await _context.Locations_Positions
+                .Include(x => x.Product_Locations).Where(x => x.Product_Locations.Count == 0)
+                .AsNoTracking().ToListAsync();
+
+            return Json(new { booleanError = false, productlocations = vmList, allemptylocations = allEmptyLocations });
+
+        }
     }
 }
