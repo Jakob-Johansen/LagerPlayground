@@ -2541,7 +2541,7 @@ li.dropdown {
     padding: 6px 8px !important;
 }
 
-.putaway-isrunning-picklocation-header-container {
+.putaway-isrunning-picklocation-header-container, .putaway-isrunning-productdetails-header-container {
     position: relative;
     padding: 20px 10px;
     background-color: #27292b;
@@ -2549,7 +2549,7 @@ li.dropdown {
     border-top-right-radius: 2px;
 }
 
-.putaway-isrunning-picklocation-header-headline {
+.putaway-isrunning-picklocation-header-headline, .putaway-isrunning-productdetails-header-headline {
     width: 100%;
     font-size: 23px;
     display: inline-block;
@@ -2557,7 +2557,7 @@ li.dropdown {
     position: relative;
 }
 
-.putaway-isrunning-picklocation-header-headline-icon {
+.putaway-isrunning-picklocation-header-headline-icon, .putaway-isrunning-productdetails-header-headline-icon {
     float: left;
     display: inline-block;
     color: white !important;
@@ -2598,6 +2598,7 @@ li.dropdown {
     margin: 0 auto;
     padding: 8px 8px;
     border-radius: 3px;
+    user-select: none;
 }
 
 .putaway-isrunning-picklocation-location-info-container:hover {
