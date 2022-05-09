@@ -2015,7 +2015,7 @@ li.dropdown {
     border-radius: 3px;
 }
 
-.putaway-isrunning-picklocation-container {
+.putaway-isrunning-picklocation-container, .putaway-isrunning-productdetails-container {
     display: none;
 }
 
@@ -2567,7 +2567,7 @@ li.dropdown {
     user-select: none;
 }
 
-.putaway-isrunning-picklocation-header-headline-icon:hover {
+.putaway-isrunning-picklocation-header-headline-icon:hover, .putaway-isrunning-productdetails-header-headline-icon:hover {
     cursor: pointer;
 }
 

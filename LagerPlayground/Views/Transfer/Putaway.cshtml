@@ -120,13 +120,13 @@
 
     @*---Product Details---*@
 
-@*    <div class="putaway-isrunning-productdetails-container">
+    <div class="putaway-isrunning-productdetails-container">
         <div class="putaway-isrunning-productdetails-header-container">
             <p class="trim putaway-isrunning-productdetails-header-headline"><span class="material-icons putaway-isrunning-productdetails-header-headline-icon">chevron_left</span>Transfer product</p>
             <div class="clearBoth"></div>
         </div>
 
-    </div>*@
+    </div>
 
 </div>
 
@@ -232,7 +232,10 @@
 
     const backBtnLocations = $(".putaway-isrunning-picklocation-header-headline-icon");
 
-    let pickedProduct = "";
+    let pickedProductLocation = "";
+
+    let pickedLocation = "";
+    let pickedLocationID = "";
 
     // Delete Modal
     let selectedItem = "";
@@ -673,6 +676,15 @@
                 GetProductFromLocation(scanned_barcode, productsInList);
                 lastScannedBarcode = scanned_barcode;
             }
+            else if (pickedProductLocation != "")
+            {
+                GetTransferLocation(scanned_barcode);
+                lastScannedBarcode = scanned_barcode;
+            }
+            else {
+                alert("Pick a product location before you can pick a location");
+            }
+
         }
     }
 
@@ -698,14 +710,9 @@
         $(".putaway-underheadline-inprogress").css("visibility","visible");
     });
 
-        //-Product Location click
+        //-Product running click
     $(document).on("click", ".putawayIsRunningActive", function () {
-        //console.log("Click");
-        //console.log($(this).closest(".putaway-product-template-container").data("productlocationid"));
-        //console.log($(this).closest(".putaway-product-template-container").data("productid"));
-
         GetLocations($(this).closest(".putaway-product-template-container").data("productlocationid"), $(this).closest(".putaway-product-template-container").data("productid"));
-
         $(".putaway-default-isnotrunning-container").css("display","none");
         $(".putaway-isrunning-picklocation-container").css("display","block");
     });
@@ -715,7 +722,7 @@
     backBtnLocations.click(function () {
         $(".putaway-isrunning-picklocation-location-info-float-container").remove();
 
-        pickedProduct = "";
+        pickedProductLocation = "";
 
         $(".putaway-isrunning-picklocation-container").css("display","none");
         $(".putaway-default-isnotrunning-container").css("display","block");
@@ -738,7 +745,7 @@
             $(".putaway-isrunning-picklocation-locations-assigned-overall-container").append(
             `
             <div class="putaway-isrunning-picklocation-location-info-float-container">
-                <div class="putaway-isrunning-picklocation-location-info-container" data-productlocationid="${result.productlocations[i].product_Locations.id}">
+                <div class="putaway-isrunning-picklocation-location-info-container" data-locationbarcode="${result.productlocations[i].product_Locations.locationBarcode}">
 
                     <div class="putaway-isrunning-picklocation-location-info-headline-container">
                         <div class="putaway-isrunning-picklocation-location-info-headline-left-container">
@@ -777,7 +784,7 @@
             $(".putaway-isrunning-picklocation-locations-empty-overall-container").append(
             `
             <div class="putaway-isrunning-picklocation-location-info-float-container">
-                <div class="putaway-isrunning-picklocation-location-info-container" data-productlocationid="${result.allemptylocations[i].id}">
+                <div class="putaway-isrunning-picklocation-location-info-container" data-locationbarcode="${result.allemptylocations[i].fullLocationBarcode}">
                     <div class="putaway-isrunning-picklocation-location-info-headline-container">
                         <div class="putaway-isrunning-picklocation-location-info-headline-left-container">
                             <p class="trim">Section <span style="font-weight:bold;">Hal 1</span></p>
@@ -797,12 +804,18 @@
 
         //-Product Lcation click
     $(document).on("click", ".putaway-isrunning-picklocation-location-info-container", function () {
-        console.log($(this).data("productlocationid"));
-
+        GetTransferLocation($(this).data("locationbarcode"));
     });
 
     // SECTION 9 - Product Details
-        //
+        //-Bacn Btn
+    $(".putaway-isrunning-productdetails-header-headline-icon").click(function () {
+        pickedLocation = "";
+        pickedLocationID = "";
+
+        $(".putaway-isrunning-productdetails-container").css("display", "none");
+        $(".putaway-isrunning-picklocation-container").css("display", "block");
+    });
 
     // Ajax Functions
         //-Putaway Get Product From Location Ajax Function
@@ -818,13 +831,9 @@
 
                 if (result.booleanError == false) {
                     if (result.productFound == true) {
-                        //console.log("Product");
-                        //console.log(result.productlocations);
                         OpenAddFromModal(result);
                     }
                     else {
-                        //console.log("Location");
-                        //console.log(result.productlocations);
                         CloseAddFromModal();
                         AddProductsToPutawayList(result);
                     }
@@ -879,7 +888,37 @@
 
                 if (result.booleanError == false) {
                     //console.log(result.productlocations);
+                    pickedProductLocation = productLocationID;
                     AddLocationsHtml(result);
+                }
+                else {
+                    console.log(result.errorMsg);
+                    alert(result.errorMsg);
+                }
+            },
+            error: function (req, status, error) {
+                console.log(status);
+                console.log(req);
+                console.log(error);
+                alert(status);
+            }
+        });
+    }
+
+    //-Get Transfer Location
+    function GetTransferLocation(scanned_barcode) {
+        $.ajax({
+            type: "GET",
+            url: "/Transfer/GetTransferLocation",
+            data: { barcode: scanned_barcode },
+            success: function (result) {
+
+                if (result.booleanError == false) {
+                    pickedLocation = scanned_barcode;
+                    pickedLocationID = result.locationid;
+
+                    $(".putaway-isrunning-picklocation-container").css("display", "none");
+                    $(".putaway-isrunning-productdetails-container").css("display", "block");
                 }
                 else {
                     console.log(result.errorMsg);

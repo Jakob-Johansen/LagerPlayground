@@ -342,5 +342,24 @@ namespace LagerPlayground.Controllers
             return Json(new { booleanError = false, productlocations = vmList, allemptylocations = allEmptyLocations });
 
         }
+
+        public async Task<JsonResult> GetTransferLocation(string barcode)
+        {
+            if (barcode == null)
+            {
+                return Json(new { booleanError = true, errorMsg = "No barcode was found" });
+            }
+
+            var location = await _context.Locations_Positions
+                .AsNoTracking()
+                .FirstOrDefaultAsync(x => x.FullLocationBarcode == barcode);
+
+            if (location == null)
+            {
+                return Json(new { booleanError = true, errorMsg = "No location was found" });
+            }
+
+            return Json(new { booleanError = false, locationid = location.ID});
+        }
     }
 }
