@@ -75,6 +75,7 @@
                                 </div>
                                 <div class="clearBoth"></div>
                             </div>
+
                         </div>
                     </div>
                 </div>
@@ -270,6 +271,11 @@
                     $(".putawayActiveInput").closest(".putaway-edit-numbertoputaway-container").find(".putaway-edit-numbertoputaway-text").find(".putaway-edit-numbertoputaway-text-number").text($(".putawayActiveInput").val());
                     $(".putaway-edit-numbertoputaway-input").css("display","none");
                     $(".putaway-edit-numbertoputaway-text").css("display","inline-block");
+
+                    console.log($(".putawayActiveInput").val());
+                    //$(".putaway-product-template-container")
+                    $(".putawayActiveInput").parents(".putaway-product-template-container").find(".putaway-isrunning-numbertoputaway-requiredtext").find(".putaway-isrunning-numbertoputaway-requiredtext-span").text($(".putawayActiveInput").val());
+
                     $(".putaway-edit-numbertoputaway-input").removeClass("putawayActiveInput");
                 }
 
@@ -678,9 +684,9 @@
 
         //-Product Location click
     $(document).on("click", ".putawayIsRunningActive", function () {
-        console.log("Click");
-        console.log($(this).closest(".putaway-product-template-container").data("productlocationid"));
-        console.log($(this).closest(".putaway-product-template-container").data("productid"));
+        //console.log("Click");
+        //console.log($(this).closest(".putaway-product-template-container").data("productlocationid"));
+        //console.log($(this).closest(".putaway-product-template-container").data("productid"));
 
         GetLocations($(this).closest(".putaway-product-template-container").data("productlocationid"), $(this).closest(".putaway-product-template-container").data("productid"));
 
@@ -838,8 +844,6 @@
 
         //-Get Locations
     function GetLocations(productLocationID, productID) {
-        console.log(productID);
-        console.log(productLocationID);
         $.ajax({
             type: "GET",
             url: "/Transfer/GetLocations",
@@ -847,7 +851,7 @@
             success: function (result) {
 
                 if (result.booleanError == false) {
-                    console.log(result.productlocations);
+                    //console.log(result.productlocations);
                     AddLocationsHtml(result);
                 }
                 else {
