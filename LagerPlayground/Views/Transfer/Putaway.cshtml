@@ -271,11 +271,7 @@
                     $(".putawayActiveInput").closest(".putaway-edit-numbertoputaway-container").find(".putaway-edit-numbertoputaway-text").find(".putaway-edit-numbertoputaway-text-number").text($(".putawayActiveInput").val());
                     $(".putaway-edit-numbertoputaway-input").css("display","none");
                     $(".putaway-edit-numbertoputaway-text").css("display","inline-block");
-
-                    console.log($(".putawayActiveInput").val());
-                    //$(".putaway-product-template-container")
                     $(".putawayActiveInput").parents(".putaway-product-template-container").find(".putaway-isrunning-numbertoputaway-requiredtext").find(".putaway-isrunning-numbertoputaway-requiredtext-span").text($(".putawayActiveInput").val());
-
                     $(".putaway-edit-numbertoputaway-input").removeClass("putawayActiveInput");
                 }
 
