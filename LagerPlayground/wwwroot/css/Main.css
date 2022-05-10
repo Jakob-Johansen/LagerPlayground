@@ -2277,7 +2277,7 @@ li.dropdown {
     top: 4px;
 }
 
-.putaway-edit-numbertoputaway-input {
+.putaway-edit-numbertoputaway-input, .putaway-isrunning-productdetails-input {
     display: none;
     width: 70px;
     color: black !important;
@@ -2286,14 +2286,22 @@ li.dropdown {
     margin: 0 auto;
 }
 
-.putaway-edit-numbertoputaway-input::-webkit-outer-spin-button,
-.putaway-edit-numbertoputaway-input::-webkit-inner-spin-button {
-    -webkit-appearance: none;
-    margin: 0;
+.putaway-isrunning-productdetails-input:active, .putaway-isrunning-productdetails-input:focus {
+    border: none;
+    outline: none;
 }
 
- Firefox 
-.putaway-edit-numbertoputaway-input[type=number] {
+.putaway-edit-numbertoputaway-input::-webkit-outer-spin-button,
+.putaway-edit-numbertoputaway-input::-webkit-inner-spin-button,
+.putaway-isrunning-productdetails-input::-webkit-outer-spin-button,
+.putaway-isrunning-productdetails-input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+    border: none;
+}
+
+Firefox
+.putaway-edit-numbertoputaway-input[type=number], .putaway-isrunning-productdetails[type=number] {
     -moz-appearance: textfield;
 }
 
@@ -2686,6 +2694,42 @@ li.dropdown {
     padding-right: 50px;
 }
 
+.putaway-isrunning-productdetails-input-custom {
+    display: none;
+    /*display: flex;*/
+    width: 115px;
+    background-color: white;
+    border-radius: 3px;
+    margin-left: auto;
+    margin-right: 0;
+}
+
+.putaway-isrunning-productdetails-input {
+    width: 100%;
+    display: block;
+    padding: 2px 0px 2px 5px;
+    font-size: 17px !important;
+    background-color: transparent !important;
+    border: none;
+}
+
+.putaway-isrunning-productdetails-input:focus > .putaway-isrunning-productdetails-input-custom, .putaway-isrunning-productdetails-input:active > .putaway-isrunning-productdetails-input-custom {
+    border: 10px solid black !important;
+}
+
+.putaway-isrunning-productdetails-input-all-text {
+    text-align: left !important;
+    padding: 0 12px;
+    color: blueviolet !important;
+    user-select: none;
+    font-size: 15px;
+    align-self: center;
+}
+
+.putaway-isrunning-productdetails-input-all-text:hover {
+    cursor: pointer;
+}
+
 .putaway-isrunning-productdetails-input-required-container {
     text-align: left;
     padding-left: 50px;
@@ -2697,6 +2741,7 @@ li.dropdown {
 
 .putaway-isrunning-productdetails-input-text {
     display: inline-block;
+    user-select: none;
 }
 
 .putaway-isrunning-productdetails-input-text:hover {
