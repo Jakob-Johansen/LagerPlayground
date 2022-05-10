@@ -141,13 +141,17 @@
             </div>
 
             <div class="putaway-isrunning-productdetails-product-barcode-container">
-                <p class="trim putaway-isrunning-productdetails-product-barcode-headline">Product Barcode</p>
+                <p class="trim putaway-isrunning-productdetails-product-barcode-headline">Scan Product Barcode</p>
                 <p class="trim putaway-isrunning-productdetails-product-barcode">K50674</p>
             </div>
 
             <div class="putaway-isrunning-productdetails-input-overall-container">
                 <div class="putaway-isrunning-productdetails-input-float-left-container">
                     <div class="putaway-isrunning-productdetails-input-container">
+                        <div class="putaway-isrunning-productdetails-input-custom">
+                            <input class="putaway-isrunning-productdetails-input" type="number" placeholder="0" />
+                            <p class="trim putaway-isrunning-productdetails-input-all-text">All</p>
+                        </div>
                         <p class="trim putaway-isrunning-productdetails-input-text"><span class="putaway-isrunning-productdetails-input-text-span">0</span> Putaway <span class="material-icons putaway-isrunning-productdetails-input-text-icon">edit</span></p>
                     </div>
                 </div>
@@ -843,13 +847,31 @@
     });
 
     // SECTION 9 - Product Details
-        //-Bacn Btn
+        //-Back Btn
     $(".putaway-isrunning-productdetails-header-headline-icon").click(function () {
         pickedLocation = "";
         pickedLocationID = "";
 
         $(".putaway-isrunning-productdetails-container").css("display", "none");
         $(".putaway-isrunning-picklocation-container").css("display", "block");
+    });
+
+        //-Putaway edit text click
+    $(".putaway-isrunning-productdetails-input-text").click(function () {
+        $(".putaway-isrunning-productdetails-input-text").css("display","none");
+        $(".putaway-isrunning-productdetails-input-custom").css("display","flex");
+        $(".putaway-isrunning-productdetails-input").focus();
+    });
+
+        //-Validate Input
+    $(document).on("input", ".putaway-isrunning-productdetails-input", function (event) {
+        if ($(this).val() < 0) {
+            $(this).val("0");
+        }
+
+        if ($(this).val() != 0 && $(this).val().startsWith("0")) {
+            $(this).val("0");
+        }
     });
 
     // Ajax Functions
