@@ -2604,3 +2604,107 @@ li.dropdown {
 .putaway-isrunning-picklocation-location-info-container:hover {
     cursor: pointer;
 }
+
+.putaway-isrunning-productdetails-product-overall-container {
+    width: 80%;
+    margin: auto;
+    margin-top: 18px;
+    background-color: #27292b;
+    border-radius: 3px;
+    padding: 18px;
+}
+
+.putaway-isrunning-productdetails-product-info-overall-container {
+    display: flex;
+}
+
+.putaway-isrunning-productdetails-product-info-image-container {
+    width: 35%;
+    padding: 10px;
+    background-color: white;
+    margin: 0 auto;
+    border-radius: 3px;
+}
+
+.putaway-isrunning-productdetails-product-info-image {
+    display: block;
+    width: 100%;
+    margin: auto;
+    user-select: none;
+/*    border-radius: 3px;*/
+}
+
+.putaway-isrunning-productdetails-product-info-container {
+    width: 65%;
+/*    display: flex;
+    align-self: center;
+    flex-direction: column;*/
+    padding-left: 20px;
+}
+
+.putaway-isrunning-productdetails-product-info-headline {
+    font-weight: bold;
+    font-size: 20px;
+    padding-bottom: 6px;
+}
+
+.putaway-isrunning-productdetails-product-info-sku, .putaway-isrunning-productdetails-product-info-fromlocation, .putaway-isrunning-productdetails-product-info-tolocation {
+    font-size: 17px;
+}
+
+.putaway-isrunning-productdetails-product-info-fromlocation {
+    margin-top: 10px;
+}
+
+.putaway-isrunning-productdetails-product-info-tolocation {
+    margin-top: 10px;
+}
+
+.putaway-isrunning-productdetails-product-info-sku-span, .putaway-isrunning-productdetails-product-info-tolocation-span, .putaway-isrunning-productdetails-product-info-fromlocation-span, .putaway-isrunning-productdetails-product-barcode, .putaway-isrunning-productdetails-input-required-span, .putaway-isrunning-productdetails-input-text-span {
+    font-weight: bold;
+}
+
+.putaway-isrunning-productdetails-product-barcode-container {
+    margin: 30px 0 20px 0;
+    padding: 13px 0;
+    border-top: 1px solid lightgray;
+    border-bottom: 1px solid lightgray;
+}
+
+.putaway-isrunning-productdetails-product-barcode-headline, .putaway-isrunning-productdetails-product-barcode {
+    font-size: 19px;
+    text-align: center;
+}
+
+.putaway-isrunning-productdetails-input-float-left-container, .putaway-isrunning-productdetails-input-float-right-container {
+    float: left;
+    width: 50%;
+}
+
+.putaway-isrunning-productdetails-input-container {
+    text-align: right;
+    padding-right: 50px;
+}
+
+.putaway-isrunning-productdetails-input-required-container {
+    text-align: left;
+    padding-left: 50px;
+}
+
+.putaway-isrunning-productdetails-input-text, .putaway-isrunning-productdetails-input-required {
+    font-size: 20px;
+}
+
+.putaway-isrunning-productdetails-input-text {
+    display: inline-block;
+}
+
+.putaway-isrunning-productdetails-input-text:hover {
+    cursor: pointer;
+}
+
+.putaway-isrunning-productdetails-input-text-icon {
+    font-size: 19px;
+    position: relative;
+    top: 4px;
+}
