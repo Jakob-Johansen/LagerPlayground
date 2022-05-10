@@ -16,7 +16,7 @@
 @*https://software-help.shiphero.com/hc/en-us/articles/4419353992077-ShipHero-Putaway*@
 
 <div class="putaway-overall-container">
-    <div class="putaway-default-isnotrunning-container">
+    <div class="putaway-default-isnotrunning-container" style="display: none;">
         <div class="putaway-overall-headline-container">
             <p class="trim putaway-overall-headline-text">Putaway List</p>
 
@@ -120,10 +120,45 @@
 
     @*---Product Details---*@
 
-    <div class="putaway-isrunning-productdetails-container">
+    <div class="putaway-isrunning-productdetails-container" style="display: block;">
         <div class="putaway-isrunning-productdetails-header-container">
             <p class="trim putaway-isrunning-productdetails-header-headline"><span class="material-icons putaway-isrunning-productdetails-header-headline-icon">chevron_left</span>Transfer product</p>
             <div class="clearBoth"></div>
+        </div>
+        <div class="putaway-isrunning-productdetails-product-overall-container">
+
+            <div class="putaway-isrunning-productdetails-product-info-overall-container">
+                <div class="putaway-isrunning-productdetails-product-info-image-container">
+                    <img class="putaway-isrunning-productdetails-product-info-image" src="~/Images/Placeholders/Placeholder.jpg" />
+                </div>
+
+                <div class="putaway-isrunning-productdetails-product-info-container">
+                    <p class="trim putaway-isrunning-productdetails-product-info-headline">WIRELESS BARCODE SCANNER</p>
+                    <p class="trim putaway-isrunning-productdetails-product-info-sku">SKU <span class="putaway-isrunning-productdetails-product-info-sku-span">K50674</span></p>
+                    <p class="trim putaway-isrunning-productdetails-product-info-fromlocation">From Location: <br/> <span class="putaway-isrunning-productdetails-product-info-fromlocation-span">A-01-01-01</span></p>
+                    <p class="trim putaway-isrunning-productdetails-product-info-tolocation">To Location: <br /> <span class="putaway-isrunning-productdetails-product-info-tolocation-span">A-01-03-04</span></p>
+                </div>
+            </div>
+
+            <div class="putaway-isrunning-productdetails-product-barcode-container">
+                <p class="trim putaway-isrunning-productdetails-product-barcode-headline">Product Barcode</p>
+                <p class="trim putaway-isrunning-productdetails-product-barcode">K50674</p>
+            </div>
+
+            <div class="putaway-isrunning-productdetails-input-overall-container">
+                <div class="putaway-isrunning-productdetails-input-float-left-container">
+                    <div class="putaway-isrunning-productdetails-input-container">
+                        <p class="trim putaway-isrunning-productdetails-input-text"><span class="putaway-isrunning-productdetails-input-text-span">0</span> Putaway <span class="material-icons putaway-isrunning-productdetails-input-text-icon">edit</span></p>
+                    </div>
+                </div>
+                <div class="putaway-isrunning-productdetails-input-float-right-container">
+                    <div class="putaway-isrunning-productdetails-input-required-container">
+                        <p class="trim putaway-isrunning-productdetails-input-required"><span class="putaway-isrunning-productdetails-input-required-span">10</span> Required</p>
+                    </div>
+                </div>
+                <div class="clearBoth"></div>
+            </div>
+
         </div>
 
     </div>
