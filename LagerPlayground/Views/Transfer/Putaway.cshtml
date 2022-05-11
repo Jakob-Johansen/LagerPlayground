@@ -872,6 +872,19 @@
         if ($(this).val() != 0 && $(this).val().startsWith("0")) {
             $(this).val("0");
         }
+
+        let number = parseInt($(".putaway-isrunning-productdetails-input-required-span").text());
+
+        if($(this).val() > number) {
+            $(this).val(number);
+        }
+    });
+
+        //-On click all input field
+    $(".putaway-isrunning-productdetails-input-all-text").click(function () {
+        let number = parseInt($(".putaway-isrunning-productdetails-input-required-span").text());
+        $(".putaway-isrunning-productdetails-input").val(number);
+        $(".putaway-isrunning-productdetails-input").focus();
     });
 
     // Ajax Functions
