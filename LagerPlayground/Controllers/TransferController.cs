@@ -343,7 +343,7 @@ namespace LagerPlayground.Controllers
 
         }
 
-        public async Task<JsonResult> GetTransferLocation(string barcode)
+        public async Task<JsonResult> GetTransferLocation(string barcode, int productLocationID)
         {
             if (barcode == null)
             {
@@ -359,7 +359,17 @@ namespace LagerPlayground.Controllers
                 return Json(new { booleanError = true, errorMsg = "No location was found" });
             }
 
-            return Json(new { booleanError = false, locationid = location.ID});
+            var productlocation = await _context.Product_Locations
+                .Include(x => x.Product)
+                .AsNoTracking()
+                .FirstOrDefaultAsync(x => x.ID == productLocationID);
+
+            if (productlocation == null)
+            {
+                return Json(new { booleanError = true, errorMsg = "No Product Location was found" });
+            }
+
+            return Json(new { booleanError = false, locationid = location.ID, productlocation });
         }
     }
 }
