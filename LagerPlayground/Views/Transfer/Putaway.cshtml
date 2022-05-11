@@ -16,7 +16,7 @@
 @*https://software-help.shiphero.com/hc/en-us/articles/4419353992077-ShipHero-Putaway*@
 
 <div class="putaway-overall-container">
-    <div class="putaway-default-isnotrunning-container" style="display: none;">
+    <div class="putaway-default-isnotrunning-container">
         <div class="putaway-overall-headline-container">
             <p class="trim putaway-overall-headline-text">Putaway List</p>
 
@@ -120,7 +120,7 @@
 
     @*---Product Details---*@
 
-    <div class="putaway-isrunning-productdetails-container" style="display: block;">
+    <div class="putaway-isrunning-productdetails-container">
         <div class="putaway-isrunning-productdetails-header-container">
             <p class="trim putaway-isrunning-productdetails-header-headline"><span class="material-icons putaway-isrunning-productdetails-header-headline-icon">chevron_left</span>Transfer product</p>
             <div class="clearBoth"></div>
@@ -276,6 +276,9 @@
     let pickedLocation = "";
     let pickedLocationID = "";
 
+    let putawayRequiredNumber = 0;
+    let putawayNumber = 0;
+
     // Delete Modal
     let selectedItem = "";
     let deleteModalActive = false;
@@ -324,11 +327,13 @@
         if(pickedProductLocation != "" && pickedLocationID != "") {
             if(!$(event.target).hasClass("putaway-isrunning-productdetails-input") && !$(event.target).hasClass("putaway-isrunning-productdetails-input-all-text") && !$(event.target).hasClass("putaway-isrunning-productdetails-input-text") && !$(event.target).hasClass("putaway-isrunning-productdetails-input-text-icon") && !$(event.target).hasClass("putaway-isrunning-productdetails-input-text-span")) {
                 if($(".putaway-isrunning-productdetails-input").val() == "") {
+                    putawayNumber = 0;
                     $(".putaway-isrunning-productdetails-input").val("0");
                     $(".putaway-isrunning-productdetails-input-text-span").text("0");
                 }
                 else {
-                    $(".putaway-isrunning-productdetails-input-text-span").text($(".putaway-isrunning-productdetails-input").val());
+                    putawayNumber = $(".putaway-isrunning-productdetails-input").val();
+                    $(".putaway-isrunning-productdetails-input-text-span").text(putawayNumber);
                 }
 
                 $(".putaway-isrunning-productdetails-input-custom").css("display","none");
@@ -766,6 +771,8 @@
         //-Product running click
     $(document).on("click", ".putawayIsRunningActive", function () {
         GetLocations($(this).closest(".putaway-product-template-container").data("productlocationid"), $(this).closest(".putaway-product-template-container").data("productid"));
+        putawayRequiredNumber = parseInt($(this).find(".putaway-edit-numbertoputaway-text-number").text());
+        
         $(".putaway-default-isnotrunning-container").css("display","none");
         $(".putaway-isrunning-picklocation-container").css("display","block");
     });
@@ -776,6 +783,7 @@
         $(".putaway-isrunning-picklocation-location-info-float-container").remove();
 
         pickedProductLocation = "";
+        putawayRequiredNumber = 0;
 
         $(".putaway-isrunning-picklocation-container").css("display","none");
         $(".putaway-default-isnotrunning-container").css("display","block");
@@ -855,7 +863,7 @@
         }
     }
 
-        //-Product Lcation click
+        //-Product Location Click
     $(document).on("click", ".putaway-isrunning-picklocation-location-info-container", function () {
         GetTransferLocation($(this).data("locationbarcode"));
     });
@@ -866,9 +874,47 @@
         pickedLocation = "";
         pickedLocationID = "";
 
+        AddProductDetailsInfoHtml("");
+
         $(".putaway-isrunning-productdetails-container").css("display", "none");
         $(".putaway-isrunning-picklocation-container").css("display", "block");
     });
+
+    function ProductDetailsInfoHtml(result) {
+        AddProductDetailsInfoHtml(result);
+        $(".putaway-isrunning-picklocation-container").css("display", "none");
+        $(".putaway-isrunning-productdetails-container").css("display", "block");
+    }
+
+    function AddProductDetailsInfoHtml(result) {
+        let image = "/Images/Placeholders/PlaceholderWhite.jpg";
+        let productName = "PLACEHOLDER";
+        let productBarcode = "PRACEHOLDER";
+        let productLocationBarcode = "PLACEHOLDER";
+        let productPickedLocation = "PLACEHOLDER";
+
+        if (result != "") {
+            productName = result.productlocation.product.name;
+            productBarcode = result.productlocation.product.barcodeID;
+            productLocationBarcode = result.productlocation.locationBarcode;
+            productPickedLocation = pickedLocation;
+            
+            if(result.productlocation.product.image != null) {
+                image = "/Images/Products/" + result.productlocation.product.image;
+            }
+        }
+
+        $(".putaway-isrunning-productdetails-product-info-image").attr("src", image);
+        $(".putaway-isrunning-productdetails-product-info-headline").text(productName);
+        $(".putaway-isrunning-productdetails-product-info-sku-span").text(productBarcode);
+        $(".putaway-isrunning-productdetails-product-info-fromlocation-span").text(productLocationBarcode);
+        $(".putaway-isrunning-productdetails-product-info-tolocation-span").text(productPickedLocation);
+        $(".putaway-isrunning-productdetails-product-barcode").text(productBarcode);
+        $(".putaway-isrunning-productdetails-input-text-span").text("0");
+        $(".putaway-isrunning-productdetails-input-required-span").text(putawayRequiredNumber);
+        $(".putaway-isrunning-productdetails-input-text-span").text("0");
+        $(".putaway-isrunning-productdetails-input").val("0");
+    }
 
         //-Putaway edit text click
     $(".putaway-isrunning-productdetails-input-text").click(function () {
@@ -994,15 +1040,14 @@
         $.ajax({
             type: "GET",
             url: "/Transfer/GetTransferLocation",
-            data: { barcode: scanned_barcode },
+            data: { barcode: scanned_barcode, productLocationID: pickedProductLocation },
             success: function (result) {
 
                 if (result.booleanError == false) {
                     pickedLocation = scanned_barcode;
                     pickedLocationID = result.locationid;
 
-                    $(".putaway-isrunning-picklocation-container").css("display", "none");
-                    $(".putaway-isrunning-productdetails-container").css("display", "block");
+                    ProductDetailsInfoHtml(result);
                 }
                 else {
                     console.log(result.errorMsg);
