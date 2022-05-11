@@ -135,7 +135,7 @@
                 <div class="putaway-isrunning-productdetails-product-info-container">
                     <p class="trim putaway-isrunning-productdetails-product-info-headline">WIRELESS BARCODE SCANNER</p>
                     <p class="trim putaway-isrunning-productdetails-product-info-sku">SKU <span class="putaway-isrunning-productdetails-product-info-sku-span">K50674</span></p>
-                    <p class="trim putaway-isrunning-productdetails-product-info-fromlocation">From Location: <br/> <span class="putaway-isrunning-productdetails-product-info-fromlocation-span">A-01-01-01</span></p>
+                    <p class="trim putaway-isrunning-productdetails-product-info-fromlocation">From Location: <br /> <span class="putaway-isrunning-productdetails-product-info-fromlocation-span">A-01-01-01</span></p>
                     <p class="trim putaway-isrunning-productdetails-product-info-tolocation">To Location: <br /> <span class="putaway-isrunning-productdetails-product-info-tolocation-span">A-01-03-04</span></p>
                 </div>
             </div>
@@ -149,7 +149,7 @@
                 <div class="putaway-isrunning-productdetails-input-float-left-container">
                     <div class="putaway-isrunning-productdetails-input-container">
                         <div class="putaway-isrunning-productdetails-input-custom">
-                            <input class="putaway-isrunning-productdetails-input" type="number" placeholder="0" />
+                            <input class="putaway-isrunning-productdetails-input" type="number" placeholder="0" value="0" />
                             <p class="trim putaway-isrunning-productdetails-input-all-text">All</p>
                         </div>
                         <p class="trim putaway-isrunning-productdetails-input-text"><span class="putaway-isrunning-productdetails-input-text-span">0</span> Putaway <span class="material-icons putaway-isrunning-productdetails-input-text-icon">edit</span></p>
@@ -317,8 +317,25 @@
     });
 
     // SECTION 2 - Inputfield
+        //-Remove focus on input
+        //-&&
         //-Putaway number save
     $(document).on("click", function (event) {
+        if(pickedProductLocation != "" && pickedLocationID != "") {
+            if(!$(event.target).hasClass("putaway-isrunning-productdetails-input") && !$(event.target).hasClass("putaway-isrunning-productdetails-input-all-text") && !$(event.target).hasClass("putaway-isrunning-productdetails-input-text")) {
+                if($(".putaway-isrunning-productdetails-input").val() == "") {
+                    $(".putaway-isrunning-productdetails-input").val("0");
+                    $(".putaway-isrunning-productdetails-input-text-span").text("0");
+                }
+                else {
+                    $(".putaway-isrunning-productdetails-input-text-span").text($(".putaway-isrunning-productdetails-input").val());
+                }
+
+                $(".putaway-isrunning-productdetails-input-custom").css("display","none");
+                $(".putaway-isrunning-productdetails-input-text").css("display","inline-block");
+            }
+        }
+        else {
         if (!$(event.target).closest(".putaway-edit-numbertoputaway-container").find(".putaway-edit-numbertoputaway-input").hasClass("putawayActiveInput")) {
             if ($(".putawayActiveInput").val() != 0) {
 
@@ -330,7 +347,7 @@
                     $(".putaway-edit-numbertoputaway-text").css("display","inline-block");
 
                     $(".putawayActiveInput").parents(".putaway-product-template-container").find(".putaway-isrunning-numbertoputaway-requiredtext").find(".putaway-isrunning-numbertoputaway-requiredtext-span").text($(".putawayActiveInput").val());
-                    
+
                     $(".putaway-edit-numbertoputaway-input").removeClass("putawayActiveInput");
                 }
 
@@ -348,6 +365,7 @@
                 }
                 $(".putawayActiveInput").focus();
             }
+        }
         }
     });
 
@@ -708,10 +726,6 @@
                     productsInList.push($(this).data("productlocationid"));
                 });
 
-                //let productsInList = $(".putaway-product-template-container").map(function(){
-                //    return $(this).data("productlocationid");
-                //}).get();
-
                 GetProductFromLocation(scanned_barcode, productsInList);
                 lastScannedBarcode = scanned_barcode;
             }
@@ -757,7 +771,7 @@
     });
 
     // SECTION 8 - Locations
-        //-Back Btn
+        //-Back From Location Btn
     backBtnLocations.click(function () {
         $(".putaway-isrunning-picklocation-location-info-float-container").remove();
 
@@ -865,7 +879,7 @@
 
         //-Validate Input
     $(document).on("input", ".putaway-isrunning-productdetails-input", function (event) {
-        if ($(this).val() < 0) {
+        if ($(this).val() < 0 || $(this).val() == "") {
             $(this).val("0");
         }
 
