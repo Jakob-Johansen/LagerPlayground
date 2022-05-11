@@ -322,7 +322,7 @@
         //-Putaway number save
     $(document).on("click", function (event) {
         if(pickedProductLocation != "" && pickedLocationID != "") {
-            if(!$(event.target).hasClass("putaway-isrunning-productdetails-input") && !$(event.target).hasClass("putaway-isrunning-productdetails-input-all-text") && !$(event.target).hasClass("putaway-isrunning-productdetails-input-text")) {
+            if(!$(event.target).hasClass("putaway-isrunning-productdetails-input") && !$(event.target).hasClass("putaway-isrunning-productdetails-input-all-text") && !$(event.target).hasClass("putaway-isrunning-productdetails-input-text") && !$(event.target).hasClass("putaway-isrunning-productdetails-input-text-icon") && !$(event.target).hasClass("putaway-isrunning-productdetails-input-text-span")) {
                 if($(".putaway-isrunning-productdetails-input").val() == "") {
                     $(".putaway-isrunning-productdetails-input").val("0");
                     $(".putaway-isrunning-productdetails-input-text-span").text("0");
