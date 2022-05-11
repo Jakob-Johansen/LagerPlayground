@@ -261,6 +261,8 @@
     let numberToPutawayInput = $(".putaway-edit-numbertoputaway-input");
 
     let putawayIsRunning = false;
+    let putawayLocationsIsRunning = false;
+    let putawayProductDetailsIsRunning = false;
     let addFromModalIsRunning = false;
 
     let modalAddFromLocationLocationInfoContianer = $(".modal-addfromlocation-location-info-contianer");
@@ -332,7 +334,7 @@
                     $(".putaway-isrunning-productdetails-input-text-span").text("0");
                 }
                 else {
-                    putawayNumber = $(".putaway-isrunning-productdetails-input").val();
+                    putawayNumber = parseInt($(".putaway-isrunning-productdetails-input").val());
                     $(".putaway-isrunning-productdetails-input-text-span").text(putawayNumber);
                 }
 
@@ -651,6 +653,27 @@
         allUnits += resultProductLocationQuantity;
     }
 
+        //-Add Putaway Number Function Transfer Product Modal
+    function AddPutawayNumberFunction(scanned_barcode) {
+        if (scanned_barcode != $(".putaway-isrunning-productdetails-product-barcode").text()) {
+            alert("You scanned the wrong product");
+        }
+        else {
+            if (putawayNumber < putawayRequiredNumber) {
+                if (putawayNumber == 0) {
+                    putawayNumber = 1;
+                }
+                else {
+                    putawayNumber += 1;
+                }
+
+                $(".putaway-isrunning-productdetails-input-text-span").text(putawayNumber);
+                $(".putaway-isrunning-productdetails-input").val(putawayNumber);
+            }
+            //console.log(putawayNumber);
+        }
+    }
+
     // SECTION 4 - Delete Modal
         //-Delete Modal close btn click
     deleteModalCloseBtn.click(function () {
@@ -734,6 +757,14 @@
                 GetProductFromLocation(scanned_barcode, productsInList);
                 lastScannedBarcode = scanned_barcode;
             }
+            //else if (putawayLocationsIsRunning == true) {
+            //    GetTransferLocation(scanned_barcode);
+            //    lastScannedBarcode = scanned_barcode;
+            //}
+            else if (putawayProductDetailsIsRunning == true) {
+                AddPutawayNumberFunction(scanned_barcode);
+                lastScannedBarcode = scanned_barcode;
+            }
             else if (pickedProductLocation != "")
             {
                 GetTransferLocation(scanned_barcode);
@@ -772,7 +803,8 @@
     $(document).on("click", ".putawayIsRunningActive", function () {
         GetLocations($(this).closest(".putaway-product-template-container").data("productlocationid"), $(this).closest(".putaway-product-template-container").data("productid"));
         putawayRequiredNumber = parseInt($(this).find(".putaway-edit-numbertoputaway-text-number").text());
-        
+        putawayLocationsIsRunning = true;
+
         $(".putaway-default-isnotrunning-container").css("display","none");
         $(".putaway-isrunning-picklocation-container").css("display","block");
     });
@@ -782,6 +814,7 @@
     backBtnLocations.click(function () {
         $(".putaway-isrunning-picklocation-location-info-float-container").remove();
 
+        putawayLocationsIsRunning = false;
         pickedProductLocation = "";
         putawayRequiredNumber = 0;
 
@@ -873,6 +906,8 @@
     $(".putaway-isrunning-productdetails-header-headline-icon").click(function () {
         pickedLocation = "";
         pickedLocationID = "";
+        putawayNumber = 0;
+        putawayProductDetailsIsRunning = false;
 
         AddProductDetailsInfoHtml("");
 
@@ -888,16 +923,16 @@
 
     function AddProductDetailsInfoHtml(result) {
         let image = "/Images/Placeholders/PlaceholderWhite.jpg";
-        let productName = "PLACEHOLDER";
-        let productBarcode = "PRACEHOLDER";
-        let productLocationBarcode = "PLACEHOLDER";
-        let productPickedLocation = "PLACEHOLDER";
+        let thisProductName = "PLACEHOLDER";
+        let thisProductBarcode = "PRACEHOLDER";
+        let thisProductLocationBarcode = "PLACEHOLDER";
+        let thisProductPickedLocation = "PLACEHOLDER";
 
         if (result != "") {
-            productName = result.productlocation.product.name;
-            productBarcode = result.productlocation.product.barcodeID;
-            productLocationBarcode = result.productlocation.locationBarcode;
-            productPickedLocation = pickedLocation;
+            thisProductName = result.productlocation.product.name;
+            thisProductBarcode = result.productlocation.product.barcodeID;
+            thisProductLocationBarcode = result.productlocation.locationBarcode;
+            thisProductPickedLocation = pickedLocation;
             
             if(result.productlocation.product.image != null) {
                 image = "/Images/Products/" + result.productlocation.product.image;
@@ -905,11 +940,11 @@
         }
 
         $(".putaway-isrunning-productdetails-product-info-image").attr("src", image);
-        $(".putaway-isrunning-productdetails-product-info-headline").text(productName);
-        $(".putaway-isrunning-productdetails-product-info-sku-span").text(productBarcode);
-        $(".putaway-isrunning-productdetails-product-info-fromlocation-span").text(productLocationBarcode);
-        $(".putaway-isrunning-productdetails-product-info-tolocation-span").text(productPickedLocation);
-        $(".putaway-isrunning-productdetails-product-barcode").text(productBarcode);
+        $(".putaway-isrunning-productdetails-product-info-headline").text(thisProductName);
+        $(".putaway-isrunning-productdetails-product-info-sku-span").text(thisProductBarcode);
+        $(".putaway-isrunning-productdetails-product-info-fromlocation-span").text(thisProductLocationBarcode);
+        $(".putaway-isrunning-productdetails-product-info-tolocation-span").text(thisProductPickedLocation);
+        $(".putaway-isrunning-productdetails-product-barcode").text(thisProductBarcode);
         $(".putaway-isrunning-productdetails-input-text-span").text("0");
         $(".putaway-isrunning-productdetails-input-required-span").text(putawayRequiredNumber);
         $(".putaway-isrunning-productdetails-input-text-span").text("0");
@@ -1046,6 +1081,8 @@
                 if (result.booleanError == false) {
                     pickedLocation = scanned_barcode;
                     pickedLocationID = result.locationid;
+                    putawayLocationsIsRunning = false;
+                    putawayProductDetailsIsRunning = true;
 
                     ProductDetailsInfoHtml(result);
                 }
