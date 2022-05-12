@@ -2196,11 +2196,11 @@ li.dropdown {
     margin-top: 28px;
 }
 
-.putaway-bottom-btns-container, .modal-addfromlocation-bottom-btns-container {
+.putaway-bottom-btns-container, .modal-addfromlocation-bottom-btns-container, .putaway-isrunning-productdetails-btns {
     text-align: right;
 }
 
-.putaway-bottom-clear-btn, .putaway-bottom-startputaway-btn, .modal-addfromlocation-bottom-cancel-btn, .modal-addfromlocation-bottom-confirm-btn {
+.putaway-bottom-clear-btn, .putaway-bottom-startputaway-btn, .modal-addfromlocation-bottom-cancel-btn, .modal-addfromlocation-bottom-confirm-btn, .putaway-isrunning-productdetails-btns-clear-btn, .putaway-isrunning-productdetails-btns-confirm-btn {
     display: inline-block;
     padding: 4px 23px;
     text-align: center;
@@ -2212,18 +2212,18 @@ li.dropdown {
     margin-right: 18px;
 }
 
-.putaway-bottom-startputaway-btn {
+.putaway-bottom-startputaway-btn, .putaway-isrunning-productdetails-btns-confirm-btn {
     background-color: #0c44c7;
 }
 
-.putaway-bottom-clear-btn {
+.putaway-bottom-clear-btn, .putaway-isrunning-productdetails-btns-clear-btn {
     text-align: right !important;
     background-color: #27292b;
 }
 
-.putaway-bottom-clear-btn:hover, .putaway-bottom-startputaway-btn:hover, .modal-addfromlocation-bottom-cancel-btn:hover, .modal-addfromlocation-bottom-confirm-btn:hover {
-    cursor: pointer;
-}
+    .putaway-bottom-clear-btn:hover, .putaway-bottom-startputaway-btn:hover, .modal-addfromlocation-bottom-cancel-btn:hover, .modal-addfromlocation-bottom-confirm-btn:hover, .putaway-isrunning-productdetails-btns-clear-btn:hover, .putaway-isrunning-productdetails-btns-confirm-btn:hover {
+        cursor: pointer;
+    }
 
 .putaway-edit-numbertoputaway-and-isrunning-container {
     border-top: 1.5px solid white;
@@ -2752,4 +2752,8 @@ Firefox
     font-size: 19px;
     position: relative;
     top: 4px;
+}
+
+.putaway-isrunning-productdetails-btns-overall-container {
+    margin-top: 20px;
 }
