@@ -371,5 +371,96 @@ namespace LagerPlayground.Controllers
 
             return Json(new { booleanError = false, locationid = location.ID, productlocation });
         }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<JsonResult> PutawayProductToLocation(int productLocationID, int locationID, int quantity)
+        {
+            if (quantity == 0)
+            {
+                return Json(new { booleanError = true, locationNotFound = false, errorMsg = "No product quantity to move" });
+            }
+
+            var positionLocation = await _context.Locations_Positions.FirstOrDefaultAsync(x => x.ID == locationID);
+            
+            if (positionLocation == null)
+            {
+                return Json(new { booleanError = true, locationNotFound = true, errorMsg = "No location was found" });
+            }
+
+            var oldProductLocation = await _context.Product_Locations
+                .Include(x => x.Product)
+                .Include(x => x.Locations_Positions)
+                .FirstOrDefaultAsync(x => x.ID == productLocationID);
+
+            if (oldProductLocation == null)
+            {
+                return Json(new { booleanError = true, locationNotFound = false, errorMsg = "No product was found" });
+            }
+
+            if (quantity > oldProductLocation.Quantity)
+            {
+                return Json(new { booleanError = true, locationNotFound = false, errorMsg = "The current product location doesn't hold this many of this product" });
+            }
+
+            var newProductLocation = await _context.Product_Locations
+                .Include(x => x.Locations_Positions).Where(x => x.Locations_PositionsID == locationID)
+                .Include(x => x.Product).Where(x => x.ProductID == oldProductLocation.ProductID)
+                .FirstOrDefaultAsync();
+
+            try
+            {
+
+                int newQuantity = 0;
+                Product_Locations product_Locations = new();
+                List<Product_Locations> product_LocationsList = new();
+
+                if (newProductLocation == null)
+                {
+                    product_Locations.Locations_PositionsID = locationID;
+                    product_Locations.ProductID = oldProductLocation.ProductID;
+                    product_Locations.Quantity = quantity;
+                    product_Locations.LocationBarcode = positionLocation.FullLocationBarcode;
+                    product_Locations.Created = DateTime.Now;
+
+                    _context.Product_Locations.Add(product_Locations);
+                    //return Json(new { booleanError = true, locationNotFound = true, errorMsg = "No newProductLocation was found" });
+                }
+                else
+                {
+                    newQuantity = newProductLocation.Quantity + quantity;
+                    if (await TryUpdateModelAsync<Product_Locations>(
+                        newProductLocation,
+                        "",
+                        x => x.Quantity))
+                    {
+                        newProductLocation.Quantity = newQuantity;
+                    }
+                    product_LocationsList.Add(newProductLocation);
+                    //return Json(new { booleanError = true, locationNotFound = true, errorMsg = "newProductLocation was found" });
+                }
+
+                newQuantity = oldProductLocation.Quantity - quantity;
+                if (await TryUpdateModelAsync<Product_Locations>(
+                    oldProductLocation,
+                    "",
+                    x => x.Quantity))
+                {
+                    oldProductLocation.Quantity = newQuantity;
+                }
+
+                product_LocationsList.Add(oldProductLocation);
+                _context.Product_Locations.UpdateRange(product_LocationsList);
+
+                await _context.SaveChangesAsync();
+
+                return Json(new { booleanError = false });
+            }
+            catch (DbUpdateException)
+            {
+                return Json(new { booleanError = true, locationNotFound = true, errorMsg = "An database error has occured" });
+            }
+        }
+
     }
 }
