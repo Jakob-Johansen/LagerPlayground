@@ -1127,7 +1127,17 @@
             success: function (result) {
 
                 if (result.booleanError == false) {
+                    // HUSK AT UPDATE HVOR MANGE UNITS SOM LIGGER I DEN NYE  LOCATION OG HVOR MANGE AF DET PRODUCT MAN HAR ON HAND
                     console.log("Success!");
+                    pickedLocation = "";
+                    pickedLocationID = "";
+                    pickedProductLocation = "";
+                    putawayNumber = 0;
+                    putawayProductDetailsIsRunning = false;
+                    AddProductDetailsInfoHtml("");
+                    $(".putaway-isrunning-productdetails-container").css("display", "none");
+                    $(".putaway-default-isnotrunning-container").css("display","block");
+
                 }
                 else {
                     console.log(result.errorMsg);
