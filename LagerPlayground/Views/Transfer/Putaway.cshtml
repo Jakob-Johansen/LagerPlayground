@@ -988,6 +988,16 @@
         $(".putaway-isrunning-productdetails-input").focus();
     });
 
+        //-Product Details Confirm Click
+
+    $(".putaway-isrunning-productdetails-btns-confirm-btn").click(function () {
+        let getQuantityVal = parseInt($(".putaway-isrunning-productdetails-input").val());
+        if(getQuantityVal > 0) {
+            //console.log(getQuantityVal);
+            PutawayProductToLocation(getQuantityVal);
+        }
+    });
+
     // Ajax Functions
         //-Putaway Get Product From Location Ajax Function
     function GetProductFromLocation(barcode, productsInList) {
@@ -1076,7 +1086,7 @@
         });
     }
 
-    //-Get Transfer Location
+        //-Get Transfer Location
     function GetTransferLocation(scanned_barcode) {
         $.ajax({
             type: "GET",
@@ -1091,6 +1101,33 @@
                     putawayProductDetailsIsRunning = true;
 
                     ProductDetailsInfoHtml(result);
+                }
+                else {
+                    console.log(result.errorMsg);
+                    alert(result.errorMsg);
+                }
+            },
+            error: function (req, status, error) {
+                console.log(status);
+                console.log(req);
+                console.log(error);
+                alert(status);
+            }
+        });
+    }
+
+
+        //-Putaway Product To Location
+    function PutawayProductToLocation(putawayQuantity) {
+        $.ajax({
+            type: "POST",
+            url: "/Transfer/PutawayProductToLocation",
+            headers: { "RequestVerificationToken": "@GetAntiXsrfRequestToken()" },
+            data: { productLocationID: pickedProductLocation, locationID: pickedLocationID , quantity: putawayQuantity },
+            success: function (result) {
+
+                if (result.booleanError == false) {
+                    console.log("Success!");
                 }
                 else {
                     console.log(result.errorMsg);
