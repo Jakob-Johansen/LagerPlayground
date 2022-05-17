@@ -1025,24 +1025,19 @@
 
         //-Update html after transfer has happend
     function PutawayProductToLocationUpdateHtml(putawayQuantity) {
-
-        let onHandHtml = pickedProductLocationHtml.find(".putaway-product-info-secondary-onhand-span");
-        let requiredHtml = pickedProductLocationHtml.find(".putaway-isrunning-numbertoputaway-requiredtext-span");
-        let putawayHtml = pickedProductLocationHtml.find(".putaway-isrunning-numbertoputaway-putawaytext-span");
-        let allUnitsHtml = $(".putaway-underheadline-units-number-text");
+        const onHandHtml = pickedProductLocationHtml.find(".putaway-product-info-secondary-onhand-span");
+        const requiredHtml = pickedProductLocationHtml.find(".putaway-isrunning-numbertoputaway-requiredtext-span");
+        const putawayHtml = pickedProductLocationHtml.find(".putaway-isrunning-numbertoputaway-putawaytext-span");
+        const allUnitsHtml = $(".putaway-underheadline-units-number-text");
 
         let onHandUpdateNumber = parseInt(onHandHtml.text());
         let requiredUpdateNumber = parseInt(requiredHtml.text());
         let putawayUpdateNumber = parseInt(putawayHtml.text());
         let allUnitsUpdateNumber = parseInt(allUnitsHtml.text());
 
-        console.log("Old On Hand: " + onHandUpdateNumber);
-        console.log("Old Required: " + requiredUpdateNumber);
-        console.log("Old Putawat Number: " + putawayUpdateNumber);
-        console.log("Old All Units: " + allUnitsUpdateNumber);
-
         onHandUpdateNumber -= putawayQuantity;
         requiredUpdateNumber -= putawayQuantity;
+
         if(putawayUpdateNumber == 0) {
             putawayUpdateNumber = putawayQuantity;
         }
@@ -1056,11 +1051,6 @@
         else {
             allUnitsUpdateNumber += putawayQuantity;
         }
-
-        console.log("New On Hand: " + onHandUpdateNumber);
-        console.log("New Required: " + requiredUpdateNumber);
-        console.log("New Putawat Number: " + putawayUpdateNumber);
-        console.log("New All Units: " + allUnitsUpdateNumber);
 
         onHandHtml.text(onHandUpdateNumber);
         requiredHtml.text(requiredUpdateNumber);
@@ -1201,6 +1191,7 @@
 
                 if (result.booleanError == false) {
                     // Husk at lav så man kan cancel og complete en putaway productlocation, og update all skus.
+                    // Fix putaway input feltet, så man ksan skrive numre ind.
                     console.log("Success!");
                     PutawayProductToLocationUpdateHtml(putawayQuantity);
                 }
