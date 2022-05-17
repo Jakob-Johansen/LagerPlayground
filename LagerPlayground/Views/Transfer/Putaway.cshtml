@@ -764,10 +764,6 @@
                 GetProductFromLocation(scanned_barcode, productsInList);
                 lastScannedBarcode = scanned_barcode;
             }
-            //else if (putawayLocationsIsRunning == true) {
-            //    GetTransferLocation(scanned_barcode);
-            //    lastScannedBarcode = scanned_barcode;
-            //}
             else if (putawayProductDetailsIsRunning == true) {
                 AddPutawayNumberFunction(scanned_barcode);
                 lastScannedBarcode = scanned_barcode;
@@ -952,11 +948,7 @@
 
         //-Validate Input
     $(document).on("input", ".putaway-isrunning-productdetails-input", function (event) {
-        if ($(this).val() < 0 || $(this).val() == "") {
-            $(this).val("0");
-        }
-
-        if ($(this).val() != 0 && $(this).val().startsWith("0")) {
+        if ($(this).val() != 0 && $(this).val().startsWith("0") || $(this).val() != 0 && $(this).val().startsWith("-")) {
             $(this).val("0");
         }
 
@@ -975,7 +967,6 @@
     });
 
         //-Product Details Confirm Click
-
     $(".putaway-isrunning-productdetails-btns-confirm-btn").click(function () {
         let getQuantityVal = parseInt($(".putaway-isrunning-productdetails-input").val());
         if(getQuantityVal > 0) {
@@ -1191,7 +1182,6 @@
 
                 if (result.booleanError == false) {
                     // Husk at lav så man kan cancel og complete en putaway productlocation, og update all skus.
-                    // Fix putaway input feltet, så man ksan skrive numre ind.
                     console.log("Success!");
                     PutawayProductToLocationUpdateHtml(putawayQuantity);
                 }
