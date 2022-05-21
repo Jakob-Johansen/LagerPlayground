@@ -87,6 +87,13 @@
                 <a class="putaway-bottom-startputaway-btn">Start Putaway</a>
             </div>
         </div>
+
+        <div class="putaway-isRunning-overall-bottom-btns-container">
+            <div class="putaway-isRunning-bottom-btns-container">
+                <a class="putaway-isRunning-bottom-cancel-btn">Cancel</a>
+                <a class="putaway-isRunning-bottom-complete-btn">Complete</a>
+            </div>
+        </div>
     </div>
 
     @*---Pick Location Html---*@
@@ -998,6 +1005,7 @@
             $(".putaway-isrunning-productdetails-container").css("display", "none");
             $(".putaway-isrunning-picklocation-container").css("display","none");
             $(".putaway-default-isnotrunning-container").css("display","block");
+            $(".putaway-isRunning-overall-bottom-btns-container").css("display","block");
         }
 
         if(keyword === "details") {
