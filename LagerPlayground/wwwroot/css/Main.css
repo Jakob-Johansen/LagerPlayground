@@ -2203,16 +2203,20 @@ li.dropdown {
     margin-top: 10px;
 }
 
-.putaway-overall-bottom-btns-container, .modal-addfromlocation-bottom-btns-overall-container {
+.putaway-overall-bottom-btns-container, .modal-addfromlocation-bottom-btns-overall-container, .putaway-isRunning-overall-bottom-btns-container {
     height: auto;
     margin-top: 28px;
 }
 
-.putaway-bottom-btns-container, .modal-addfromlocation-bottom-btns-container, .putaway-isrunning-productdetails-btns {
+.putaway-isRunning-overall-bottom-btns-container {
+    display: none;
+}
+
+.putaway-bottom-btns-container, .modal-addfromlocation-bottom-btns-container, .putaway-isrunning-productdetails-btns, .putaway-isRunning-bottom-btns-container {
     text-align: right;
 }
 
-.putaway-bottom-clear-btn, .putaway-bottom-startputaway-btn, .modal-addfromlocation-bottom-cancel-btn, .modal-addfromlocation-bottom-confirm-btn, .putaway-isrunning-productdetails-btns-clear-btn, .putaway-isrunning-productdetails-btns-confirm-btn {
+.putaway-bottom-clear-btn, .putaway-bottom-startputaway-btn, .modal-addfromlocation-bottom-cancel-btn, .modal-addfromlocation-bottom-confirm-btn, .putaway-isrunning-productdetails-btns-clear-btn, .putaway-isrunning-productdetails-btns-confirm-btn, .putaway-isRunning-bottom-cancel-btn, .putaway-isRunning-bottom-complete-btn {
     display: inline-block;
     padding: 4px 23px;
     text-align: center;
@@ -2224,16 +2228,16 @@ li.dropdown {
     margin-right: 18px;
 }
 
-.putaway-bottom-startputaway-btn, .putaway-isrunning-productdetails-btns-confirm-btn {
+.putaway-bottom-startputaway-btn, .putaway-isrunning-productdetails-btns-confirm-btn, .putaway-isRunning-bottom-complete-btn {
     background-color: #0c44c7;
 }
 
-.putaway-bottom-clear-btn, .putaway-isrunning-productdetails-btns-clear-btn {
+.putaway-bottom-clear-btn, .putaway-isrunning-productdetails-btns-clear-btn, .putaway-isRunning-bottom-cancel-btn {
     text-align: right !important;
     background-color: #27292b;
 }
 
-    .putaway-bottom-clear-btn:hover, .putaway-bottom-startputaway-btn:hover, .modal-addfromlocation-bottom-cancel-btn:hover, .modal-addfromlocation-bottom-confirm-btn:hover, .putaway-isrunning-productdetails-btns-clear-btn:hover, .putaway-isrunning-productdetails-btns-confirm-btn:hover {
+    .putaway-bottom-clear-btn:hover, .putaway-bottom-startputaway-btn:hover, .modal-addfromlocation-bottom-cancel-btn:hover, .modal-addfromlocation-bottom-confirm-btn:hover, .putaway-isrunning-productdetails-btns-clear-btn:hover, .putaway-isrunning-productdetails-btns-confirm-btn:hover, .putaway-isRunning-bottom-cancel-btn:hover, .putaway-isRunning-bottom-complete-btn:hover {
         cursor: pointer;
     }
 
