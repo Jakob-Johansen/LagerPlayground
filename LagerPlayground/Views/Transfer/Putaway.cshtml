@@ -37,7 +37,7 @@
         <div class="putaway-product-template-overall-container">
             @foreach (var item in Model)
             {
-                <div class="putaway-product-template-container" data-productlocationid="@item.ID" data-productid="@item.ProductID" data-itemunits="@item.Quantity" data-itemskus="@Model.Count()">
+                <div class="putaway-product-template-container" data-productlocationid="@item.ID" data-productid="@item.ProductID" data-itemunits="@item.Quantity">
                     <div class="putaway-product-info-template-overall-container">
                         <div class="putaway-product-info-template-container">
                             <div class="putaway-product-image-float-container">
@@ -354,7 +354,7 @@
             if ($(".putawayActiveInput").val() != 0) {
 
                 if($(".putaway-edit-numbertoputaway-input").hasClass("putawayActiveInput")) {
-                    EditUnits();
+                    //EditUnits();
                     deleteModalActive = false;
                     $(".putawayActiveInput").closest(".putaway-edit-numbertoputaway-container").find(".putaway-edit-numbertoputaway-text").find(".putaway-edit-numbertoputaway-text-number").text($(".putawayActiveInput").val());
                     $(".putaway-edit-numbertoputaway-input").css("display","none");
@@ -392,6 +392,8 @@
         if ($(this).val() != 0 && $(this).val().startsWith("0")) {
             $(this).val("0");
         }
+
+        EditUnits();
     });
 
     // SECTION 3 - Functions
@@ -415,7 +417,7 @@
         //-Edit Units & Skus
     function EditUnitsAndSkus(thisClass) {
         let parsedItemUnits = parseInt(thisClass.closest(".putaway-product-template-container").data("itemunits"));
-        let parsedItemSku = parseInt(thisClass.closest(".putaway-product-template-container").data("itemskus"));
+        let parsedItemSku = parseInt($(".putaway-underheadline-skus-number-text").text());
 
         if (!parsedItemUnits < 1 && !allUnits < 1) {
             allUnits -= parsedItemUnits;
@@ -615,7 +617,7 @@
 
         $(".putaway-product-template-overall-container").append(
             `
-            <div class="putaway-product-template-container" data-productlocationid="${resultProductLocationID}" data-productid="${resultProductID}" data-itemunits="${resultProductLocationQuantity}" data-itemskus="${totalSkus}">
+            <div class="putaway-product-template-container" data-productlocationid="${resultProductLocationID}" data-productid="${resultProductID}" data-itemunits="${resultProductLocationQuantity}">
                 <div class="putaway-product-info-template-overall-container">
                     <div class="putaway-product-info-template-container">
                         <div class="putaway-product-image-float-container">
@@ -1025,11 +1027,13 @@
         const requiredHtml = pickedProductLocationHtml.find(".putaway-isrunning-numbertoputaway-requiredtext-span");
         const putawayHtml = pickedProductLocationHtml.find(".putaway-isrunning-numbertoputaway-putawaytext-span");
         const allUnitsHtml = $(".putaway-underheadline-units-number-text");
+        const allSkusHtml = $(".putaway-underheadline-skus-number-text");
 
         let onHandUpdateNumber = parseInt(onHandHtml.text());
         let requiredUpdateNumber = parseInt(requiredHtml.text());
         let putawayUpdateNumber = parseInt(putawayHtml.text());
         let allUnitsUpdateNumber = parseInt(allUnitsHtml.text());
+        let allSkusUpdateNumber = parseInt(allSkusHtml.text());
 
         onHandUpdateNumber -= putawayQuantity;
         requiredUpdateNumber -= putawayQuantity;
@@ -1048,10 +1052,23 @@
             allUnitsUpdateNumber += putawayQuantity;
         }
 
+        if(requiredUpdateNumber == 0) {
+            if (allSkusUpdateNumber == 0) {
+                allSkusUpdateNumber = 1;
+            }
+            else {
+                allSkusUpdateNumber++;
+            }
+            pickedProductLocationHtml.parents(".putaway-product-template-container").remove();
+            $(".putaway-product-template-overall-container").append(pickedProductLocationHtml.parents(".putaway-product-template-container"));
+            pickedProductLocationHtml.parents(".putaway-product-template-container").append(`<div class="putaway-product-template-complete"></div>`);
+        }
+
         onHandHtml.text(onHandUpdateNumber);
         requiredHtml.text(requiredUpdateNumber);
         putawayHtml.text(putawayUpdateNumber);
         allUnitsHtml.text(allUnitsUpdateNumber);
+        allSkusHtml.text(allSkusUpdateNumber);
         pickedProductLocationHtml.parents(".putaway-product-template-container").attr("data-itemunits", onHandUpdateNumber);
 
         ResetToDefault("all");
