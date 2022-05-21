@@ -208,7 +208,7 @@ namespace LagerPlayground.Controllers
             var getProduct = await _context.Product_Locations
                 .Include(x => x.Product).Where(x => x.Product.BarcodeID == barcode)
                 .Include(x => x.Locations_Positions)
-                .AsNoTracking().ToListAsync();
+                .AsNoTracking().Where(x => x.Quantity != 0).ToListAsync();
 
             var getLocations = await _context.Product_Locations
                 .AsNoTracking().ToListAsync();
@@ -441,15 +441,24 @@ namespace LagerPlayground.Controllers
                 }
 
                 newQuantity = oldProductLocation.Quantity - quantity;
-                if (await TryUpdateModelAsync<Product_Locations>(
-                    oldProductLocation,
-                    "",
-                    x => x.Quantity))
-                {
-                    oldProductLocation.Quantity = newQuantity;
-                }
 
-                product_LocationsList.Add(oldProductLocation);
+                if (newQuantity == 0 && oldProductLocation.LocationBarcode != "Receiving-Station")
+                {
+                    _context.Product_Locations.Remove(oldProductLocation);
+                }
+                else
+                {
+                    if (await TryUpdateModelAsync<Product_Locations>(
+                        oldProductLocation,
+                        "",
+                        x => x.Quantity, x => x.Modified))
+                    {
+                        oldProductLocation.Quantity = newQuantity;
+                        oldProductLocation.Modified = DateTime.Now;
+                    }
+
+                    product_LocationsList.Add(oldProductLocation);
+                }
                 _context.Product_Locations.UpdateRange(product_LocationsList);
 
                 await _context.SaveChangesAsync();
