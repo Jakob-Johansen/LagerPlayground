@@ -2101,12 +2101,24 @@ li.dropdown {
 .putaway-product-template-container {
     width: 85%;
     height: auto;
+    position: relative;
     margin: 28px auto 0 auto;
     background-color: #27292b;
     border-radius: 5px;
     box-shadow: 0px 6px 5px 1px rgba(0,0,0,0.06);
     -webkit-box-shadow: 0px 6px 5px 1px rgba(0,0,0,0.06);
     -moz-box-shadow: 0px 6px 5px 1px rgba(0,0,0,0.06);
+}
+
+.putaway-product-template-complete {
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 999;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(48, 48, 48, 0.8);
+    border-radius: 5px;
 }
 
 .putaway-product-info-template-container {

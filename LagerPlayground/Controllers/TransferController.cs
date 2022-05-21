@@ -173,7 +173,7 @@ namespace LagerPlayground.Controllers
             var productLocation = await _context.Product_Locations
                 .Include(x => x.Product)
                 .AsNoTracking()
-                .OrderByDescending(x => x.Quantity).Where(x => x.LocationBarcode == "Receiving-Station").ToListAsync();
+                .OrderByDescending(x => x.Quantity).Where(x => x.LocationBarcode == "Receiving-Station").Where(x => x.Quantity != 0).ToListAsync();
 
             int allUnits = 0;
 
