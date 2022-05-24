@@ -2323,7 +2323,7 @@ Firefox
 
  /*---Delete Modal---*/
 
-.modal-delete-overall-container {
+.modal-delete-overall-container, .modal-putaway-complete-overall-container {
     display: none;
     width: 100%;
     height: 100%;
@@ -2334,7 +2334,7 @@ Firefox
     z-index: 999;
 }
 
-.modal-delete-container {
+.modal-delete-container, .modal-putaway-complete-container {
     width: 600px;
     height: auto;
     padding: 15px 20px;
@@ -2348,53 +2348,52 @@ Firefox
     z-index: 9999 !important;
 }
 
-.modal-delete-header-headline-container, .modal-delete-header-close-container {
+.modal-delete-header-headline-container, .modal-delete-header-close-container, .modal-putaway-complete-header-headline-container, .modal-putaway-complete-header-close-container {
     float: left;
     width: 50%;
 }
 
-.modal-delete-header-close-container {
+.modal-delete-header-close-container, .modal-putaway-complete-header-close-container {
     text-align: right;
 }
 
-.modal-delete-header-headline {
+.modal-delete-header-headline, .modal-putaway-complete-header-headline {
     font-size: 24px;
     color: white !important;
 }
 
-.modal-delete-header-close-icon {
+.modal-delete-header-close-icon, .modal-putaway-complete-header-close-icon {
     font-size: 25px;
     color: white !important;
     user-select: none;
 }
 
-.modal-delete-header-close-icon:hover {
+.modal-delete-header-close-icon:hover, .modal-putaway-complete-header-close-icon:hover {
     cursor: pointer;
 }
 
-.modal-delete-body-info-container {
+.modal-delete-body-info-container, .modal-putaway-complete-body-info-contianer {
     padding: 30px 0;
 }
 
-.modal-delete-body-info {
+.modal-delete-body-info, .modal-putaway-complete-body-info {
     font-size: 19px;
     color: white !important;
     text-align: center;
 }
 
-.modal-delete-footer-btn-cancel, .modal-delete-footer-btn-delete {
+.modal-delete-footer-btn-cancel, .modal-delete-footer-btn-delete, .modal-putaway-complete-footer-btn-complete, .modal-putaway-complete-footer-btn-cancel {
     float: right;
-    display: block;
-    width: 100px;
+    display: inline-block;
     background-color: lightgray;
     text-align: center;
-    padding: 4px 4px;
+    padding: 4px 14px;
     font-size: 18px;
     text-decoration: none;
     user-select: none;
 }
 
-.modal-delete-footer-btn-cancel {
+.modal-delete-footer-btn-cancel, .modal-putaway-complete-footer-btn-cancel {
     margin-right: 10px;
     color: black !important;
 }
@@ -2404,7 +2403,13 @@ Firefox
     color: white !important;
 }
 
-.modal-delete-footer-btn-cancel:hover, .modal-delete-footer-btn-delete:hover {
+.modal-putaway-complete-footer-btn-complete {
+    background-color: #0c44c7;
+    color: white !important;
+}
+
+
+.modal-delete-footer-btn-cancel:hover, .modal-delete-footer-btn-delete:hover, .modal-putaway-complete-footer-btn-complete:hover, .modal-putaway-complete-footer-btn-cancel:hover {
     cursor: pointer;
 }
 
