@@ -182,7 +182,7 @@
 
 </div>
 
-@*--- Delete Modal ---*@
+@*--- Delete Modal (Next time create a modal that can be modified...) ---*@
 
 <div class="modal-delete-overall-container">
     <div class="modal-delete-container">
@@ -204,6 +204,33 @@
         <div class="modal-delete-footer-btns-container">
             <a class="modal-delete-footer-btn-delete">Remove</a>
             <a class="modal-delete-footer-btn-cancel">Cancel</a>
+            <div class="clearBoth"></div>
+        </div>
+    </div>
+</div>
+
+@*--- Complete Modal (Next time create a modal that can be modified...) ---*@
+
+<div class="modal-putaway-complete-overall-container">
+    <div class="modal-putaway-complete-container">
+
+        <div class="modal-putaway-complete-header-container">
+            <div class="modal-putaway-complete-header-headline-container">
+                <p class="trim modal-putaway-complete-header-headline">Mark as complete?</p>
+            </div>
+            <div class="modal-putaway-complete-header-close-container">
+                <span class="material-icons modal-putaway-complete-header-close-icon modal-putaway-complete-close">close</span>
+            </div>
+            <div class="clearBoth"></div>
+        </div>
+
+        <div class="modal-putaway-complete-body-info-contianer">
+            <p class="trim modal-putaway-complete-body-info"><span class="modal-putaway-complete-body-info-main">You still haven't finished transferring all items.</span><br />Are you sure you want to proceed?</p>
+        </div>
+
+        <div class="modal-putaway-complete-footer-btns-container">
+            <a class="modal-putaway-complete-footer-btn-complete">Mark as complete</a>
+            <a class="modal-putaway-complete-footer-btn-cancel modal-putaway-complete-close">Cancel</a>
             <div class="clearBoth"></div>
         </div>
     </div>
@@ -820,6 +847,24 @@
 
         $(".putaway-default-isnotrunning-container").css("display","none");
         $(".putaway-isrunning-picklocation-container").css("display","block");
+    });
+
+        //-Click complete btn
+    $(".putaway-isRunning-bottom-complete-btn").click(function () {
+        if (putawayIsRunning == true) {
+            $(".modal-putaway-complete-overall-container").css("display","block");
+        }
+    });
+
+        //-Click modal complete btn
+    $(".modal-putaway-complete-footer-btn-complete").click(function () {
+        alert("Your putaway list is now complete! This complete fuction needs some more love");
+        location.reload();
+    });
+
+        //-Close complete modal
+    $(".modal-putaway-complete-close").click(function () {
+        $(".modal-putaway-complete-overall-container").css("display","none");
     });
 
     // SECTION 8 - Locations
