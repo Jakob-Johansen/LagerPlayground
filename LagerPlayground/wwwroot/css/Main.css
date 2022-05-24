@@ -2003,11 +2003,8 @@ li.dropdown {
 
 /*---Putaway Product---*/
 
-.putaway-overall-container {
+.putaway-overall-container, .pick-index-overall-container {
     width: 900px;
-    /*min-height: 75vh;
-    max-height: 75vh;*/
-    /*    height: 789px;*/
     height: auto;
     background-color: #1d1f21;
     margin: 0 auto;
@@ -2777,4 +2774,38 @@ Firefox
 
 .putaway-isrunning-productdetails-btns-overall-container {
     margin-top: 20px;
+}
+
+/*---Pick Index---*/
+
+.pick-index-overall-container {
+/*    width: 800px !important;*/
+    padding: 15px !important;
+}
+
+.pick-index-header-headline {
+    text-align: center;
+}
+
+.pick-index-header-info {
+    margin-top: 8px;
+    text-align: center;
+}
+
+.pick-index-orderinfo-overall-container {
+    width: 600px;
+    margin: 8px auto 0 auto;
+    border-radius: 2px;
+    background-color: #27292b;
+    padding: 5px 0;
+}
+
+.pick-index-orderinfo-container {
+    float: left;
+    width: 50%;
+    padding: 0px 8px;
+}
+
+.pick-index-orderinfo-headline {
+    color: white !important;
 }
