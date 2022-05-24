@@ -16,7 +16,7 @@ Lav baggrunden hvid.
 Lav backend som api.
 
 Lav så jeg genbruger flere ting fx modaler og knapper, så fx hav en main class som indeholder styling og så kan må så tilføje og fjerne derfra,
-et godt exempel på meget dårligt genbrug er fx putaway.
+et godt exempel er fx. putaway siden.
 
 Lav det hele mere løst, så fx. javascript ikke er afhæning af nogle værdier fra html, det gør også det hele mere sikkert.
 
