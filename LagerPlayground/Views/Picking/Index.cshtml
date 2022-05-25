@@ -5,16 +5,49 @@
 <div class="pick-index-overall-container">
     <div class="pick-index-header-container">
         <h3 class="trim pick-index-header-headline">Welcome Jakob Johansen!</h3>
-        <p class="trim pick-index-header-info">These are your orders for <span style="color:lightblue;">Today</span> status <br />in <span style="color:lightblue;">Primary</span> warehouse </p>
+        <p class="trim pick-index-header-info">These are your orders for <span style="color:deepskyblue;">Today</span> status <br />in <span style="color:deepskyblue;">Primary</span> warehouse </p>
     </div>
 
     <div class="pick-index-orderinfo-overall-container">
          <div class="pick-index-orderinfo-container" style="border-right: 1px solid lightgray;">
-            <p class="trim pick-index-orderinfo-headline">Orders</p>
+            <ul class="pick-index-orderinfo-ul">
+                <li>Orders</li>
+                <li><span class="pick-index-orderinfo-orders-span-rdyToShip">7</span> ready to ship</li>
+                <li><span class="pick-index-orderinfo-orders-span-dueToday">0</span> due today</li>
+                <li><span class="pick-index-orderinfo-orders-span-shippedToday">0</span> shipped today</li>
+            </ul>
          </div>
          <div class="pick-index-orderinfo-container">
-            <p class="trim pick-index-orderinfo-headline">Items</p>
+            <ul class="pick-index-orderinfo-ul">
+                <li>Items</li>
+                <li><span class="pick-index-orderinfo-items-span-rdyToShip">14</span> ready to pick</li>
+                <li><span class="pick-index-orderinfo-items-span-dueToday">0</span> due today</li>
+                <li><span class="pick-index-orderinfo-items-span-shippedToday">0</span> shipped today</li>
+            </ul>
          </div>
         <div class="clearBoth"></div>
+    </div>
+
+    <div class="pick-index-pickselection-overall-container">
+        <p class="trim pick-index-pickselection-header-headline">How would you like to process them?</p>
+
+        <div class="pick-index-pickselection-wrapper-container">
+
+            <div class="pick-index-pickselection-container">
+                <div class="pick-index-pickselection-icon-container">
+                    <span class="material-icons pick-index-pickselection-icon">shopping_basket</span>
+                </div>
+                <div class="pick-index-pickselection-info-container">
+                    <p class="trim pick-index-pickselection-info-headline">Single Item Batch</p>
+                    <p class="trim pick-index-pickselection-info-text">Pick several orders with one SKU into the same tote</p>
+                </div>
+                <div class="pick-index-pickselection-arrow-conainer">
+                    <span class="material-icons pick-index-pickselection-arrow">navigate_next</span>
+                </div>
+                <div class="clearBoth"></div>
+            </div>
+
+            <div class="clearBoth"></div>
+        </div>
     </div>
 </div>
