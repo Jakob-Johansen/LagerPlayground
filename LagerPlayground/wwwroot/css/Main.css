@@ -2780,7 +2780,7 @@ Firefox
 
 .pick-index-overall-container {
 /*    width: 800px !important;*/
-    padding: 15px !important;
+    padding: 15px 15px 30px 15px !important;
 }
 
 .pick-index-header-headline {
@@ -2839,14 +2839,18 @@ Firefox
 .pick-index-pickselection-container {
     width: 600px;
     height: auto;
-    margin-top: 15px !important;
+    display: block;
+    margin-top: 20px !important;
     background-color: #27292b;
-    /*    padding: 10px;*/
     margin: auto;
     border-radius: 3px;
     box-shadow: 0px 6px 5px 1px rgba(0,0,0,0.06);
     -webkit-box-shadow: 0px 6px 5px 1px rgba(0,0,0,0.06);
     -moz-box-shadow: 0px 6px 5px 1px rgba(0,0,0,0.06);
+}
+
+.pick-index-pickselection-container:hover {
+    cursor: pointer;
 }
 
 .pick-index-pickselection-icon-container, .pick-index-pickselection-info-container, .pick-index-pickselection-arrow-conainer {
@@ -2889,8 +2893,10 @@ Firefox
 
 .pick-index-pickselection-info-headline {
     font-size: 19px;
+    user-select: none;
 }
 
 .pick-index-pickselection-info-text {
     margin-top: 2px;
+    user-select: none;
 }
