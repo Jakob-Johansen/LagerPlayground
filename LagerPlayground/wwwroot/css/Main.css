@@ -2003,7 +2003,7 @@ li.dropdown {
 
 /*---Putaway Product---*/
 
-.putaway-overall-container, .pick-index-overall-container {
+.putaway-overall-container, .pick-index-overall-container, .pickSite-overall-container {
     width: 900px;
     height: auto;
     background-color: #1d1f21;
@@ -2899,4 +2899,95 @@ Firefox
 .pick-index-pickselection-info-text {
     margin-top: 2px;
     user-select: none;
+}
+
+/*---Pick Site---*/
+
+.pickSite-header-headline {
+    text-align: center;
+    user-select: none;
+    padding: 12px 0 12px 0;
+    font-size: 17px;
+    border-bottom: 1px solid lightgray;
+}
+
+.pickSite-pickBatchAmount-info-overall-container {
+    width: 500px;
+    background-color: red;
+    margin: auto;
+    padding: 50px 0;
+}
+
+.pickSite-pickBatchAmount-info-logo {
+    display: block;
+    text-align: center;
+    font-size: 100px;
+}
+
+.pickSite-pickBatchAmount-info-headlines-container {
+    margin-top: 20px;
+}
+
+.pickSite-pickBatchAmount-info-headline {
+    text-align: center;
+    font-size: 15px;
+}
+
+.pickSite-pickBatchAmount-info-underHeadline {
+    margin-top: 3px;
+    display: block;
+    text-align: center;
+    font-size: 30px;
+    line-height: 1.2;
+}
+
+.pickSite-pickBatchAmount-info-inputAndBtns-container {
+    margin-top: 20px;
+    display: flex;
+/*    align-content: center;*/
+    justify-content: center;
+}
+
+.pickSite-pickBatchAmount-info-inputAndBtns-input {
+    width: 75px;
+    font-size: 19px;
+    color: black !important;
+    padding: 2px 5px;
+    text-align: center;
+}
+
+.pickSite-pickBatchAmount-info-inputAndBtns-input:active, .pickSite-pickBatchAmount-info-inputAndBtns-input:focus {
+    outline: none;
+}
+
+/* Chrome, Safari, Edge, Opera */
+.pickSite-pickBatchAmount-info-inputAndBtns-input::-webkit-outer-spin-button,
+.pickSite-pickBatchAmount-info-inputAndBtns-input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+/* Firefox */
+.pickSite-pickBatchAmount-info-inputAndBtns-input[type=number] {
+    -moz-appearance: textfield;
+}
+
+.pickSite-pickBatchAmount-info-inputAndBtns-btn {
+    outline: none;
+    border: none;
+    padding: 0 13px;
+    font-size: 25px;
+    background-color: transparent;
+}
+
+.pickSite-pickBatchAmount-info-start-btn-container {
+    text-align: center;
+}
+
+.pickSite-pickBatchAmount-info-start-btn {
+    display: inline-block;
+    padding: 3px 8px;
+    background-color: yellow;
+    margin: auto;
+    text-align: center;
 }
