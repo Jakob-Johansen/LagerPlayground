@@ -2907,13 +2907,13 @@ Firefox
     text-align: center;
     user-select: none;
     padding: 12px 0 12px 0;
-    font-size: 17px;
+    font-size: 18px;
     border-bottom: 1px solid lightgray;
 }
 
 .pickSite-pickBatchAmount-info-overall-container {
     width: 500px;
-    background-color: red;
+/*    background-color: red;*/
     margin: auto;
     padding: 50px 0;
 }
@@ -2921,39 +2921,42 @@ Firefox
 .pickSite-pickBatchAmount-info-logo {
     display: block;
     text-align: center;
-    font-size: 100px;
+    font-size: 90px;
+    color: lightgray;
 }
 
 .pickSite-pickBatchAmount-info-headlines-container {
-    margin-top: 20px;
+    margin-top: 30px;
 }
 
 .pickSite-pickBatchAmount-info-headline {
     text-align: center;
-    font-size: 15px;
+    font-size: 14px;
 }
 
 .pickSite-pickBatchAmount-info-underHeadline {
     margin-top: 3px;
     display: block;
     text-align: center;
-    font-size: 30px;
+    font-size: 29px;
     line-height: 1.2;
 }
 
 .pickSite-pickBatchAmount-info-inputAndBtns-container {
-    margin-top: 20px;
+    margin-top: 30px;
     display: flex;
-/*    align-content: center;*/
     justify-content: center;
+    align-items: center;
 }
 
 .pickSite-pickBatchAmount-info-inputAndBtns-input {
-    width: 75px;
-    font-size: 19px;
+    width: 90px;
+    font-size: 28px;
     color: black !important;
     padding: 2px 5px;
     text-align: center;
+    border-radius: 3px;
+    border: 0;
 }
 
 .pickSite-pickBatchAmount-info-inputAndBtns-input:active, .pickSite-pickBatchAmount-info-inputAndBtns-input:focus {
@@ -2973,11 +2976,13 @@ Firefox
 }
 
 .pickSite-pickBatchAmount-info-inputAndBtns-btn {
-    outline: none;
-    border: none;
-    padding: 0 13px;
-    font-size: 25px;
+    padding: 1px 20px;
+    font-size: 40px;
     background-color: transparent;
+    color: lightgray !important;
+    line-height: unset !important;
+    border: none;
+    outline: none;
 }
 
 .pickSite-pickBatchAmount-info-start-btn-container {
@@ -2986,8 +2991,18 @@ Firefox
 
 .pickSite-pickBatchAmount-info-start-btn {
     display: inline-block;
-    padding: 3px 8px;
-    background-color: yellow;
+    padding: 6px 65px;
+    font-size: 23px;
+    background-color: #0c44c7;
+    color: white;
     margin: auto;
     text-align: center;
+    border-radius: 3px;
+    text-decoration: none;
+    user-select: none;
+    margin-top: 30px;
+}
+
+.pickSite-pickBatchAmount-info-start-btn:hover {
+    cursor: pointer;
 }
