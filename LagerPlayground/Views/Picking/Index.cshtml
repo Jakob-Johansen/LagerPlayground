@@ -1,4 +1,6 @@
-﻿@{
+﻿@model LagerPlayground.Models.VM.OrdersReadyToPickCount
+
+@{
     ViewData["Title"] = "Picking Index";
 }
 
@@ -12,7 +14,7 @@
          <div class="pick-index-orderinfo-container" style="border-right: 1px solid lightgray;">
             <ul class="pick-index-orderinfo-ul">
                 <li>Orders</li>
-                <li><span class="pick-index-orderinfo-orders-span-rdyToShip">7</span> ready to ship</li>
+                <li><span class="pick-index-orderinfo-orders-span-rdyToShip">0</span> ready to ship</li>
                 <li><span class="pick-index-orderinfo-orders-span-dueToday">0</span> due today</li>
                 <li><span class="pick-index-orderinfo-orders-span-shippedToday">0</span> shipped today</li>
             </ul>
@@ -20,7 +22,7 @@
          <div class="pick-index-orderinfo-container">
             <ul class="pick-index-orderinfo-ul">
                 <li>Items</li>
-                <li><span class="pick-index-orderinfo-items-span-rdyToShip">14</span> ready to pick</li>
+                <li><span class="pick-index-orderinfo-items-span-rdyToShip">@Model.AllOrdersNumber</span> ready to pick</li>
                 <li><span class="pick-index-orderinfo-items-span-dueToday">0</span> due today</li>
                 <li><span class="pick-index-orderinfo-items-span-shippedToday">0</span> shipped today</li>
             </ul>
@@ -47,7 +49,7 @@
                 <div class="clearBoth"></div>
             </div>
 
-            <div class="pick-index-pickselection-container">
+            <a class="pick-index-pickselection-container" asp-action="MultiPickSite">
                 <div class="pick-index-pickselection-icon-container">
                     <span class="material-icons pick-index-pickselection-icon">shopping_basket</span>
                 </div>
@@ -59,7 +61,7 @@
                     <span class="material-icons pick-index-pickselection-arrow">navigate_next</span>
                 </div>
                 <div class="clearBoth"></div>
-            </div>
+            </a>
 
             <div class="pick-index-pickselection-container">
                 <div class="pick-index-pickselection-icon-container">
