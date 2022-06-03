@@ -30,9 +30,15 @@ Ide til et medarbejder point system.
 Når en medarbejder pakker eller er ude og plukke eller andre ting skal personen modtage xp til at level op i rank og skal modtage points for hver ting de plukker, de points skal de så kunne bruge til at købe ting for fx en gave kurv med chokolade, vin og sådan noget, eller andre ting. Systemet skal laves for at motivere medarbejdere og give dem mere glæde for at arbejde.
 
 Sider hvor jeg kan tage inspiration eller lære mere:
+
 https://shiphero.com/
+
 https://www.shipmonk.com/
+
 https://www.shipbob.com/
+
 https://deliverr.com/
+
 https://lagersystem.dk/
+
 https://apportsystems.com/da/
