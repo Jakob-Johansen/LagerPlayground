@@ -2950,10 +2950,10 @@ Firefox
 }
 
 .pickSite-pickBatchAmount-info-inputAndBtns-input {
-    width: 90px;
+    width: 105px;
     font-size: 28px;
     color: black !important;
-    padding: 2px 5px;
+    padding: 5px 5px;
     text-align: center;
     border-radius: 3px;
     border: 0;
@@ -2975,14 +2975,23 @@ Firefox
     -moz-appearance: textfield;
 }
 
-.pickSite-pickBatchAmount-info-inputAndBtns-btn {
-    padding: 1px 20px;
-    font-size: 40px;
-    background-color: transparent;
-    color: lightgray !important;
-    line-height: unset !important;
-    border: none;
-    outline: none;
+.pickSite-pickBatchAmount-info-inputAndBtns-btn-remove, .pickSite-pickBatchAmount-info-inputAndBtns-btn-add {
+    display: block;
+    font-size: 38px;
+    color: white !important;
+    user-select: none;
+}
+
+.pickSite-pickBatchAmount-info-inputAndBtns-btn-remove {
+    margin-right: 12px;
+}
+
+.pickSite-pickBatchAmount-info-inputAndBtns-btn-add {
+    margin-left: 12px;
+}
+
+.pickSite-pickBatchAmount-info-inputAndBtns-btn-remove:hover, .pickSite-pickBatchAmount-info-inputAndBtns-btn-add:hover {
+    cursor: pointer;
 }
 
 .pickSite-pickBatchAmount-info-start-btn-container {
@@ -3005,4 +3014,5 @@ Firefox
 
 .pickSite-pickBatchAmount-info-start-btn:hover {
     cursor: pointer;
+    color: white !important;
 }

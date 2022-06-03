@@ -20,9 +20,9 @@
             </div>
 
             <div class="pickSite-pickBatchAmount-info-inputAndBtns-container">
-                <button class="pickSite-pickBatchAmount-info-inputAndBtns-btn pickSite-pickBatchAmount-info-inputAndBtns-btn-sub">-</button>
-                <input type="number" class="pickSite-pickBatchAmount-info-inputAndBtns-input" placeholder="0" />
-                <button class="pickSite-pickBatchAmount-info-inputAndBtns-btn pickSite-pickBatchAmount-info-inputAndBtns-btn-add">+</button>
+                <span class="material-icons pickSite-pickBatchAmount-info-inputAndBtns-btn-remove">remove</span>
+                <input type="number" class="pickSite-pickBatchAmount-info-inputAndBtns-input" placeholder="1" value="1" />
+                <span class="material-icons pickSite-pickBatchAmount-info-inputAndBtns-btn-add">add</span>
             </div>
 
             <div class="pickSite-pickBatchAmount-info-start-btn-container">
@@ -33,3 +33,69 @@
 
     </div>
 </div>
+
+@section Scripts {
+<script>
+    // Variables
+        //-Pick Batch Amount Variables
+    const pickBatchAmountInput = $(".pickSite-pickBatchAmount-info-inputAndBtns-input");
+    const pickBatchAmountBtnRemove = $(".pickSite-pickBatchAmount-info-inputAndBtns-btn-remove");
+    const pickBatchAmountBtnAdd = $(".pickSite-pickBatchAmount-info-inputAndBtns-btn-add");
+    const pickBatchAmountBtnStart = $(".pickSite-pickBatchAmount-info-start-btn");
+
+    // Pick Batch Amount Funtions
+        //-Click Add Btn
+    pickBatchAmountBtnAdd.click(function() {
+        AddOrRemove(true);
+    });
+
+        //-Click Remove Btn
+    pickBatchAmountBtnRemove.click(function() {
+        AddOrRemove(false);
+    });
+
+        //-Add Or Remove Function (true is add, false is remove)
+    function AddOrRemove(prop) {
+        let parsedInput = parseInt(pickBatchAmountInput.val());
+        let checkNumber = CheckForNumber(parsedInput);
+
+        if (checkNumber) {
+            if (prop == true) {
+                pickBatchAmountInput.val(parsedInput + 1);
+            }
+
+            if (prop == false) {
+                if (parsedInput > 1) {
+                    pickBatchAmountInput.val(parsedInput - 1);
+                }
+            }
+        }
+        else {
+            pickBatchAmountInput.val("1");
+        }
+    }
+
+        //-On Input 
+    $(document).on("input", ".pickSite-pickBatchAmount-info-inputAndBtns-input", function (event) {
+        if ($(this).val() < 1) {
+            $(this).val("1");
+        }
+
+        if ($(this).val() != 0 && $(this).val().startsWith("0")) {
+            $(this).val("1");
+        }
+    });
+
+
+    // Functions
+        //-Check For Number
+    function CheckForNumber(numberToCheck) {
+        if (isNaN(numberToCheck)) {
+            return false;
+        }
+        else {
+            return true;
+        }
+    }
+</script>
+}
