@@ -57,9 +57,8 @@
         //-Add Or Remove Function (true is add, false is remove)
     function AddOrRemove(prop) {
         let parsedInput = parseInt(pickBatchAmountInput.val());
-        let checkNumber = CheckForNumber(parsedInput);
 
-        if (checkNumber) {
+        if (CheckForNumber(parsedInput)) {
             if (prop == true) {
                 pickBatchAmountInput.val(parsedInput + 1);
             }
@@ -84,6 +83,11 @@
         if ($(this).val() != 0 && $(this).val().startsWith("0")) {
             $(this).val("1");
         }
+    });
+
+        //-Click Start Picking
+    pickBatchAmountBtnStart.click(function() {
+        console.log("Start Picking");
     });
 
 
