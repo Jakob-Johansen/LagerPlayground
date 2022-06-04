@@ -4,7 +4,8 @@
 }
 
 <div class="pickSite-overall-container">
-    <div class="pickSite-pickBatchAmount-overall-container">
+    
+    <div class="pickSite-pickBatchAmount-overall-container" style="display: none;">
         <div class="pickSite-header-headline-container">
             <p class="trim pickSite-header-headline">Multi item batch picking</p>
         </div>
@@ -28,10 +29,47 @@
             <div class="pickSite-pickBatchAmount-info-start-btn-container">
                 <a class="pickSite-pickBatchAmount-info-start-btn">Start Picking</a>
             </div>
+        </div>
+    </div>
 
+    <div class="pickSite-itemsToPick-overall-container">
+        <div class="pickSite-header-headline-container">
+            <a class="trim pickSite-header-headline-back">Back</a>
+            <p class="trim pickSite-header-headline">Items To Pick</p>
+            <a class="trim pickSite-header-headline-progress">Progress</a>
         </div>
 
+        <div class="pickSite-itemsToPick-container">
+            
+            <div class="pickSite-itemsToPick-item-overall-container">
+                <div class="pickSite-itemsToPick-item-picknumber-container">
+                    <p class="trim pickSite-itemsToPick-item-picknumber-text">Pick</p>
+                    <p class="trim pickSite-itemsToPick-item-picknumber-number">1</p>
+                </div>
+
+                <div class="pickSite-itemsToPick-item-overall-info-container">
+                    <div class="pickSite-itemsToPick-item-image-container">
+                        <img class="pickSite-itemsToPick-item-image" src="~/Images/Placeholders/PlaceholderWhite.jpg" />
+                    </div>
+
+                    <div class="pickSite-itemsToPick-item-info-container">
+                        <div class="pickSite-itemsToPick-item-info-headline-container">
+                            <p>HWC-R-MD</p>
+                            <p>On Hand: <span>2</span></p>
+                        </div>
+                        <p>WIRELESS BARCODE SCANNER</p>
+                        <p>Bin: <span>A-01-01-01</span></p>
+                    </div>
+
+                    <div class="pickSite-itemsToPick-item-sidemenu-container">
+                        <span class="material-icons pickSite-itemsToPick-item-sidemenu-icon">more_vert</span>
+                    </div>
+                </div>
+            </div>
+
+        </div>
     </div>
+
 </div>
 
 @section Scripts {
@@ -89,7 +127,6 @@
     pickBatchAmountBtnStart.click(function() {
         console.log("Start Picking");
     });
-
 
     // Functions
         //-Check For Number
