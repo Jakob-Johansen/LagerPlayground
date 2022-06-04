@@ -2903,12 +2903,15 @@ Firefox
 
 /*---Pick Site---*/
 
+.pickSite-header-headline-container {
+    padding: 12px 0;
+    border-bottom: 1px solid lightgray;
+}
+
 .pickSite-header-headline {
     text-align: center;
     user-select: none;
-    padding: 12px 0 12px 0;
     font-size: 18px;
-    border-bottom: 1px solid lightgray;
 }
 
 .pickSite-pickBatchAmount-info-overall-container {
@@ -3015,4 +3018,108 @@ Firefox
 .pickSite-pickBatchAmount-info-start-btn:hover {
     cursor: pointer;
     color: white !important;
+}
+
+/*.pickSite-itemsToPick-overall-container {
+    display: none;
+}*/
+
+.pickSite-header-headline-container {
+    display: flex;
+    justify-content: space-between;
+}
+
+.pickSite-header-headline-back, .pickSite-header-headline-progress {
+    font-size: 18px;
+    margin-left: 13px;
+    color: deepskyblue !important;
+    text-decoration: none;
+}
+
+.pickSite-header-headline-progress {
+    margin-left: 0px;
+    margin-right: 13px;
+}
+
+.pickSite-header-headline-back:hover, .pickSite-header-headline-progress:hover {
+    cursor: pointer;
+}
+
+.pickSite-itemsToPick-item-overall-container, .pickSite-itemsToPick-item-overall-info-container, .pickSite-itemsToPick-item-info-headline-container, .pickSite-itemsToPick-item-sidemenu-container {
+    display: flex;
+}
+
+.pickSite-itemsToPick-item-overall-container {
+    width: 90%;
+    margin: 15px auto 0 auto;
+    background-color: #27292b;
+    border-radius: 3px;
+}
+
+.pickSite-itemsToPick-item-info-headline-container {
+    justify-content: space-between;
+}
+
+.pickSite-itemsToPick-item-overall-container {
+    padding: 12px  0;
+}
+
+.pickSite-itemsToPick-item-picknumber-container {
+    width: 10%;
+}
+
+.pickSite-itemsToPick-item-overall-info-container {
+    width: 90%;
+}
+
+.pickSite-itemsToPick-item-image-container {
+    width: 15%;
+}
+
+.pickSite-itemsToPick-item-info-container {
+    width: 80%;
+    padding: 0 15px;
+}
+
+.pickSite-itemsToPick-item-sidemenu-container {
+    width: 5%;
+}
+
+.pickSite-itemsToPick-item-picknumber-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.pickSite-itemsToPick-item-picknumber-text, .pickSite-itemsToPick-item-picknumber-number {
+    text-align: center;
+    line-height: 1.17;
+    user-select: none;
+}
+
+.pickSite-itemsToPick-item-picknumber-number {
+    font-size: 28px;
+}
+
+.pickSite-itemsToPick-item-image {
+    width: 100%;
+    display: block;
+    border-radius: 3px;
+    user-select: none;
+}
+
+.pickSite-itemsToPick-item-sidemenu-container {
+    flex-direction: column;
+    justify-content: center;
+}
+
+.pickSite-itemsToPick-item-sidemenu-icon {
+    color: lightgray !important;
+    text-align: center;
+    font-size: 30px;
+    user-select: none;
+}
+
+.pickSite-itemsToPick-item-sidemenu-icon:hover {
+    cursor: pointer;
 }
