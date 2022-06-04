@@ -3045,13 +3045,18 @@ Firefox
     cursor: pointer;
 }
 
+.pickSite-itemsToPick-container {
+    height: 75vh;
+    overflow: auto;
+}
+
 .pickSite-itemsToPick-item-overall-container, .pickSite-itemsToPick-item-overall-info-container, .pickSite-itemsToPick-item-info-headline-container, .pickSite-itemsToPick-item-sidemenu-container {
     display: flex;
 }
 
 .pickSite-itemsToPick-item-overall-container {
     width: 90%;
-    margin: 15px auto 0 auto;
+    margin: 18px auto 0 auto;
     background-color: #27292b;
     border-radius: 3px;
 }
@@ -3099,6 +3104,7 @@ Firefox
 
 .pickSite-itemsToPick-item-picknumber-number {
     font-size: 28px;
+    color: white !important;
 }
 
 .pickSite-itemsToPick-item-image {
@@ -3106,6 +3112,20 @@ Firefox
     display: block;
     border-radius: 3px;
     user-select: none;
+}
+
+.pickSite-itemsToPick-item-info-name {
+    margin-top: 12px;
+    font-size: 20px;
+    color: white !important;
+}
+
+.pickSite-itemsToPick-item-info-bin {
+    margin-top: 12px;
+}
+
+.pickSite-itemsToPick-item-info-headline-onhand-span, .pickSite-itemsToPick-item-info-bin-span {
+    color: white !important;
 }
 
 .pickSite-itemsToPick-item-sidemenu-container {
