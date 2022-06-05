@@ -3022,7 +3022,7 @@ Firefox
 
 /*- itemsToPick -*/
 
-.pickSite-itemsToPick-overall-container {
+.pickSite-itemsToPick-overall-container, .pickSite-selectTote-overall-container {
     display: none;
 }
 
@@ -3031,19 +3031,19 @@ Firefox
     justify-content: space-between;
 }
 
-.pickSite-header-headline-back, .pickSite-header-headline-progress {
+.pickSite-header-headline-back, .pickSite-header-headline-progress, .pickSite-header-headline-reportIssue {
     font-size: 18px;
     margin-left: 13px;
     color: white !important;
     text-decoration: none;
 }
 
-.pickSite-header-headline-progress {
+.pickSite-header-headline-progress, .pickSite-header-headline-reportIssue {
     margin-left: 0px;
     margin-right: 13px;
 }
 
-.pickSite-header-headline-back:hover, .pickSite-header-headline-progress:hover {
+.pickSite-header-headline-back:hover, .pickSite-header-headline-progress:hover, .pickSite-header-headline-reportIssue:hover {
     cursor: pointer;
 }
 
@@ -3258,4 +3258,32 @@ Firefox
 
 .pickSite-selectTote-tote-barcode {
     font-size: 15px;
+}
+
+/*--- Pick Into Tote ---*/
+
+.pickSite-pickIntoTote-info-name {
+    text-align: center;
+    color: white !important;
+    margin-top: 10px;
+    font-size: 20px;
+}
+
+.pickSite-pickIntoTote-info-barcode {
+    text-align: center;
+    margin-top: 15px;
+    font-size: 20px;
+}
+
+.pickSite-pickIntoTote-info-image-container {
+    width: 30%;
+    margin: auto;
+    margin-top: 15px
+}
+
+.pickSite-pickIntoTote-info-image {
+    display: block;
+    width: 100%;
+    margin: auto;
+    overflow: hidden;
 }
