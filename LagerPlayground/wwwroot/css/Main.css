@@ -2902,6 +2902,7 @@ Firefox
 }
 
 /*---Pick Site---*/
+/*- pickBatchAmount -*/
 
 .pickSite-header-headline-container {
     padding: 12px 0;
@@ -2916,7 +2917,6 @@ Firefox
 
 .pickSite-pickBatchAmount-info-overall-container {
     width: 500px;
-/*    background-color: red;*/
     margin: auto;
     padding: 50px 0;
 }
@@ -3020,9 +3020,11 @@ Firefox
     color: white !important;
 }
 
-/*.pickSite-itemsToPick-overall-container {
+/*- itemsToPick -*/
+
+.pickSite-itemsToPick-overall-container {
     display: none;
-}*/
+}
 
 .pickSite-header-headline-container {
     display: flex;
@@ -3032,7 +3034,7 @@ Firefox
 .pickSite-header-headline-back, .pickSite-header-headline-progress {
     font-size: 18px;
     margin-left: 13px;
-    color: deepskyblue !important;
+    color: white !important;
     text-decoration: none;
 }
 
@@ -3142,4 +3144,118 @@ Firefox
 
 .pickSite-itemsToPick-item-sidemenu-icon:hover {
     cursor: pointer;
+}
+
+/*- selectTote -*/
+
+.pickSite-selectTote-header-container {
+    padding: 10px 15px;
+}
+
+.pickSite-selectTote-header-nav-container {
+    text-align: right;
+}
+
+.pickSite-selectTote-header-nav-close-btn {
+    display: inline-block;
+    font-size: 20px;
+    color: white !important;
+    user-select: none;
+}
+
+.pickSite-selectTote-header-nav-close-btn:hover {
+    cursor: pointer;
+}
+
+.pickSite-selectTote-header-headlines-headline {
+    font-size: 23px;
+}
+
+.pickSite-selectTote-header-headlines-desc {
+    margin-top: 4px;
+    font-size: 18px;
+    color: white !important;
+}
+
+.pickSite-selectTote-search-overall-container {
+    padding: 15px;
+    background-color: #27292b;
+}
+
+.pickSite-selectTote-search-container {
+    display: flex;
+    align-items: center;
+    border-radius: 5px;
+    background-color: lightgray;
+    padding: 3px 10px;
+}
+
+.pickSite-selectTote-search-icon {
+    font-size: 28px;
+    user-select: none;
+}
+
+.pickSite-selectTote-search-input {
+    width: 100%;
+    border: 0;
+    outline: 0;
+    font-size: 21px;
+    margin-left: 4px;
+    color: black !important;
+    background-color: transparent;
+}
+
+.pickSite-selectTote-container {
+    height: 60vh;
+    overflow: auto;
+    padding: 15px 8px 0px 8px;
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+}
+
+.pickSite-selectTote-tote-overall-container {
+    width: 50%;
+    padding: 0 8px;
+    margin-bottom: 8px;
+}
+
+.pickSite-selectTote-tote-container {
+    width: 100%;
+    height: auto;
+    margin: auto !important;
+    background-color: #27292b;
+}
+
+.pickSite-selectTote-tote-container {
+    display: flex;
+    align-items: center;
+    padding: 2px;
+    border-radius: 3px;
+}
+
+.pickSite-selectTote-tote-icon-container {
+    padding: 5px 8px 5px 10px;
+}
+
+.pickSite-selectTote-tote-icon {
+    padding: 13px;
+    font-size: 28px;
+    background-color: #1d1f21;
+    border-radius: 100px;
+    color: lightgray !important;
+    user-select: none;
+}
+
+.pickSite-selectTote-tote-text-container {
+    margin-left: 1px;
+}
+
+.pickSite-selectTote-tote-text-name {
+    font-size: 17px;
+    color: white !important;
+}
+
+.pickSite-selectTote-tote-barcode {
+    font-size: 15px;
 }
