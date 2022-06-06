@@ -3262,23 +3262,29 @@ Firefox
 
 /*--- Pick Into Tote ---*/
 
+.pickSite-pickIntoTote-info-top-container {
+    background-color: #27292b !important;
+    padding-top: 10px;
+    border-bottom: 1px solid lightgray;
+}
+
 .pickSite-pickIntoTote-info-name {
     text-align: center;
     color: white !important;
-    margin-top: 10px;
     font-size: 20px;
 }
 
 .pickSite-pickIntoTote-info-barcode {
     text-align: center;
-    margin-top: 15px;
+    margin-top: 8px;
     font-size: 20px;
 }
 
 .pickSite-pickIntoTote-info-image-container {
     width: 30%;
     margin: auto;
-    margin-top: 15px
+    margin-top: 10px;
+    padding-bottom: 23px;
 }
 
 .pickSite-pickIntoTote-info-image {
@@ -3286,4 +3292,113 @@ Firefox
     width: 100%;
     margin: auto;
     overflow: hidden;
+    border-radius: 3px;
+    user-select: none;
+}
+
+.pickSite-pickIntoTote-quantity-overall-container {
+    position: relative;
+}
+
+.pickSite-pickIntoTote-quantity-info-container {
+    position: absolute;
+    width: 280px;
+    height: 160px;
+    background-color: rgba(39, 41, 43, 0.97);
+    border-radius: 3px;
+    border: 2px solid white;
+    top: -199px;
+    left: 0;
+    right: 0;
+    margin: auto;
+    /*    padding: 2px;*/
+    box-shadow: 0px 6px 5px 1px rgba(0,0,0,0.06);
+    -webkit-box-shadow: 0px 6px 5px 1px rgba(0,0,0,0.06);
+    -moz-box-shadow: 0px 6px 5px 1px rgba(0,0,0,0.06);
+}
+
+.pickSite-pickIntoTote-quantity-info-headline {
+    text-align: center;
+    font-size: 22px;
+    padding-top: 4px;
+}
+
+.pickSite-pickIntoTote-quantity-info-headline-number {
+    color: white !important;
+    font-size: 23px;
+}
+
+.pickSite-pickIntoTote-quantity-info-headline-position-barcode, .pickSite-pickIntoTote-quantity-info-underheadline {
+    text-align: center;
+    font-size: 16px;
+}
+
+.pickSite-pickIntoTote-quantity-info-headline--position-barcode-span {
+    color: white !important;
+}
+
+.pickSite-pickIntoTote-quantity-info-underheadline {
+    font-size: 15px;
+}
+
+.pickSite-pickIntoTote-quantity-icon-container {
+    position: absolute;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 70px;
+    height: 70px;
+    background-color: lightgray;
+    border-radius: 100%;
+    top: -35px;
+    left: 0;
+    right: 0;
+    margin: auto;
+}
+
+.pickSite-pickIntoTote-quantity-icon {
+    color: white !important;
+    font-size: 35px;
+    user-select: none;
+}
+
+.pickSite-pickIntoTote-info-bottom-container {
+    margin-top: 45px;
+    margin-bottom: 10px;
+}
+
+.pickSite-pickIntoTote-info-text, .pickSite-pickIntoTote-info-toteName {
+    text-align: center;
+    font-size: 17px;
+}
+
+.pickSite-pickIntoTote-info-toteName {
+    color: white !important;
+    font-size: 20px;
+}
+
+.pickSite-pickIntoTote-info-confirm-btn-container {
+    text-align: center;
+    margin-top: 15px;
+}
+
+.pickSite-pickIntoTote-info-confirm-btn {
+    display: inline-block;
+    font-size: 20px;
+    padding: 8px 75px;
+    color: white !important;
+    background-color: cornflowerblue;
+    text-decoration: none;
+    border-radius: 3px;
+}
+
+.pickSite-pickIntoTote-info-orderNumber {
+    font-size: 13px;
+    text-align: center;
+    margin-top: 18px;
+    color: white !important;
+}
+
+.pickSite-pickIntoTote-info-orderNumber-span {
+    color: lightgray !important;
 }
