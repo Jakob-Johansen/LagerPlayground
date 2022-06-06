@@ -36,7 +36,7 @@
     @*--- Items To Pick Modul ---*@
     <div class="pickSite-itemsToPick-overall-container">
         <div class="pickSite-header-headline-container">
-            <a class="trim pickSite-header-headline-back">Back</a>
+            <a class="trim pickSite-itemsToPick-header-headline-back">Back</a>
             <p class="trim pickSite-header-headline">Items To Pick</p>
             <a class="trim pickSite-header-headline-progress">Progress</a>
         </div>
@@ -82,7 +82,7 @@
     <div class="pickSite-selectTote-overall-container">
         <div class="pickSite-selectTote-header-container">
             <div  class="pickSite-selectTote-header-nav-container">
-                <p class="trim pickSite-selectTote-header-nav-close-btn">Close</p>
+                <p class="trim pickSite-selectTote-header-nav-back-btn">Back</p>
             </div>
             <div class="pickSite-selectTote-header-headlines-container">
                 <p class="trim pickSite-selectTote-header-headlines-headline">MULTIITEM BATCH PICKING</p>
@@ -112,10 +112,10 @@
         </div>
     </div>
 
-    @*--- Pick Inti Tote Modul ---*@
+    @*--- Pick Into Tote Modul ---*@
     <div class="pickSite-pickIntoTote-overall-container">
         <div class="pickSite-header-headline-container">
-            <a class="trim pickSite-header-headline-back">Back</a>
+            <a class="trim pickSite-pickIntoTote-header-headline-back">Back</a>
             <p class="trim pickSite-header-headline">Pick Into Tote</p>
             <a class="trim pickSite-header-headline-reportIssue">Report Issue</a>
         </div>
@@ -166,16 +166,27 @@
 <script>
     // Variables
         //-Pick Batch Amount Variables
+    const pickBatchAmountOverlay = $(".pickSite-pickBatchAmount-overall-container");
     const pickBatchAmountInput = $(".pickSite-pickBatchAmount-info-inputAndBtns-input");
     const pickBatchAmountBtnRemove = $(".pickSite-pickBatchAmount-info-inputAndBtns-btn-remove");
     const pickBatchAmountBtnAdd = $(".pickSite-pickBatchAmount-info-inputAndBtns-btn-add");
     const pickBatchAmountBtnStart = $(".pickSite-pickBatchAmount-info-start-btn");
         
+        //-Items To Pick
+    const itemsToPickOverlay = $(".pickSite-itemsToPick-overall-container");
+    const itemsToPickBtnBack = $(".pickSite-itemsToPick-header-headline-back");
+
+        //-Pick Or Scan Tote
+    const pickOrScanToteOverlay = $(".pickSite-selectTote-overall-container");
+    const pickOrScanToteBtnBack = $(".pickSite-selectTote-header-nav-back-btn");
+
         //-Pick Into Tote
+    const pickIntoToteOverlay = $(".pickSite-pickIntoTote-overall-container");
     const pickIntoToteInput = $(".pickSite-pickIntoTote-quantity-input");
     const pickIntoToteBtnRemove = $(".pickSite-pickIntoTote-quantity-btn-remove");
     const pickIntoToteBtnAdd = $(".pickSite-pickIntoTote-quantity-btn-add");
     const pickIntoToteBtnConfirm = $(".pickSite-pickIntoTote-info-confirm-btn");
+    const pickIntoToteBtnBack = $(".pickSite-pickIntoTote-header-headline-back");
 
     // Pick Batch Amount Funtions
         //-Click Add Btn
@@ -195,7 +206,42 @@
 
         //-Click Start Picking
     pickBatchAmountBtnStart.click(function() {
+        // TEST
         console.log("Start Picking");
+        pickBatchAmountOverlay.css("display", "none");
+        itemsToPickOverlay.css("display", "block");
+    });
+
+    // Items To Pick
+        //-Click Back Btn
+    itemsToPickBtnBack.click(function() {
+        // TEST
+        console.log("itemsToPickBtnBack");
+        itemsToPickOverlay.css("display", "none");
+        pickBatchAmountOverlay.css("display", "block");
+    });
+
+        //-Click On Item
+    $(document).on("click", ".pickSite-itemsToPick-item-overall-container", function () {
+        // TEST
+        itemsToPickOverlay.css("display", "none");
+        pickOrScanToteOverlay.css("display", "block");
+    });
+
+    // Pick Or Scan Tote
+        //-Click Back Btn
+    pickOrScanToteBtnBack.click(function () {
+        // TEST
+        console.log("pickOrScanToteBtnBack");
+        pickOrScanToteOverlay.css("display", "none");
+        itemsToPickOverlay.css("display", "block");
+    });
+
+        //-Click On Tote
+    $(document).on("click", ".pickSite-selectTote-tote-container", function () {
+        //TEST
+        pickOrScanToteOverlay.css("display", "none");
+        pickIntoToteOverlay.css("display", "block");
     });
 
     // Pick Into Tote
@@ -216,7 +262,18 @@
 
         //-Click Confirm Btn
     pickIntoToteBtnConfirm.click(function() {
+        // TEST
         console.log("Confirm");
+        pickIntoToteOverlay.css("display", "none");
+        itemsToPickOverlay.css("display", "block");
+    });
+
+        //-Click Back Btn
+    pickIntoToteBtnBack.click(function () {
+        // TEST
+        console.log("pickIntoToteBtnBack");
+        pickIntoToteOverlay.css("display", "none");
+        pickOrScanToteOverlay.css("display", "block");
     });
 
     // Functions

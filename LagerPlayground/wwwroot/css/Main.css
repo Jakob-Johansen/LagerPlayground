@@ -1055,6 +1055,7 @@ li.dropdown {
 .receive-top-btns-back {
     margin-right: 10px;
     background-color: #1962b5;
+    user-select: none;
 }
 
 .receive-top-btns-save {
@@ -3033,11 +3034,12 @@ Firefox
     border-bottom: 1px solid lightgray;
 }
 
-.pickSite-header-headline-back, .pickSite-header-headline-progress, .pickSite-header-headline-reportIssue {
+.pickSite-header-headline-back, .pickSite-header-headline-progress, .pickSite-header-headline-reportIssue, .pickSite-pickIntoTote-header-headline-back, .pickSite-itemsToPick-header-headline-back {
     font-size: 18px;
     margin-left: 13px;
     color: white !important;
     text-decoration: none;
+    user-select: none;
 }
 
 .pickSite-header-headline-progress, .pickSite-header-headline-reportIssue {
@@ -3045,7 +3047,7 @@ Firefox
     margin-right: 13px;
 }
 
-.pickSite-header-headline-back:hover, .pickSite-header-headline-progress:hover, .pickSite-header-headline-reportIssue:hover {
+.pickSite-header-headline-back:hover, .pickSite-header-headline-progress:hover, .pickSite-header-headline-reportIssue:hover, .pickSite-pickIntoTote-header-headline-back:hover, .pickSite-itemsToPick-header-headline-back:hover {
     cursor: pointer;
 }
 
@@ -3063,14 +3065,15 @@ Firefox
     margin: 18px auto 0 auto;
     background-color: #27292b;
     border-radius: 3px;
+    padding: 12px 0;
+}
+
+.pickSite-itemsToPick-item-overall-container:hover {
+    cursor: pointer;
 }
 
 .pickSite-itemsToPick-item-info-headline-container {
     justify-content: space-between;
-}
-
-.pickSite-itemsToPick-item-overall-container {
-    padding: 12px  0;
 }
 
 .pickSite-itemsToPick-item-picknumber-container {
@@ -3179,14 +3182,14 @@ Firefox
     text-align: right;
 }
 
-.pickSite-selectTote-header-nav-close-btn {
+.pickSite-selectTote-header-nav-back-btn {
     display: inline-block;
     font-size: 20px;
     color: white !important;
     user-select: none;
 }
 
-.pickSite-selectTote-header-nav-close-btn:hover {
+.pickSite-selectTote-header-nav-back-btn:hover {
     cursor: pointer;
 }
 
@@ -3244,17 +3247,18 @@ Firefox
 }
 
 .pickSite-selectTote-tote-container {
+    display: flex;
     width: 100%;
     height: auto;
     margin: auto !important;
     background-color: #27292b;
-}
-
-.pickSite-selectTote-tote-container {
-    display: flex;
-    align-items: center;
     padding: 2px;
     border-radius: 3px;
+    align-items: center;
+}
+
+.pickSite-selectTote-tote-container:hover {
+    cursor: pointer;
 }
 
 .pickSite-selectTote-tote-icon-container {
@@ -3277,16 +3281,18 @@ Firefox
 .pickSite-selectTote-tote-text-name {
     font-size: 17px;
     color: white !important;
+    user-select: none;
 }
 
 .pickSite-selectTote-tote-barcode {
     font-size: 15px;
+    user-select: none;
 }
 
 /*--- Pick Into Tote ---*/
 
 .pickSite-pickIntoTote-info-top-container {
-    background-color: #27292b !important;
+/*    background-color: #27292b !important;*/
     padding-top: 10px;
     border-bottom: 1px solid lightgray;
 }
