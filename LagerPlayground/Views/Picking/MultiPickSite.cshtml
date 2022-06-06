@@ -132,6 +132,12 @@
                 <p class="trim pickSite-pickIntoTote-quantity-info-headline"><span class="pickSite-pickIntoTote-quantity-info-headline-number">1</span> more required</p>
                 <p class="trim pickSite-pickIntoTote-quantity-info-headline-position-barcode">from <span class="pickSite-pickIntoTote-quantity-info-headline--position-barcode-span">A-01-01-01</span></p>
                 <p class="trim pickSite-pickIntoTote-quantity-info-underheadline">How many are you picking?</p>
+
+                <div class="pickSite-pickIntoTote-quantity-container">
+                    <span class="material-icons pickSite-pickIntoTote-quantity-btn-remove">remove</span>
+                    <input type="number" class="pickSite-pickIntoTote-quantity-input" placeholder="1" value="1" />
+                    <span class="material-icons pickSite-pickIntoTote-quantity-btn-add">add</span>
+                </div>
             </div>
 
             <div class="pickSite-pickIntoTote-quantity-icon-container">
@@ -162,52 +168,48 @@
     const pickBatchAmountBtnRemove = $(".pickSite-pickBatchAmount-info-inputAndBtns-btn-remove");
     const pickBatchAmountBtnAdd = $(".pickSite-pickBatchAmount-info-inputAndBtns-btn-add");
     const pickBatchAmountBtnStart = $(".pickSite-pickBatchAmount-info-start-btn");
+        
+        //-Pick Into Tote
+    const pickIntoToteInput = $(".pickSite-pickIntoTote-quantity-input");
+    const pickIntoToteBtnRemove = $(".pickSite-pickIntoTote-quantity-btn-remove");
+    const pickIntoToteBtnAdd = $(".pickSite-pickIntoTote-quantity-btn-add");
+    const pickIntoToteBtnConfirm = $(".pickSite-pickIntoTote-info-confirm-btn");
 
     // Pick Batch Amount Funtions
         //-Click Add Btn
     pickBatchAmountBtnAdd.click(function() {
-        AddOrRemove(true);
+        AddOrRemove(true, pickBatchAmountInput);
     });
 
         //-Click Remove Btn
     pickBatchAmountBtnRemove.click(function() {
-        AddOrRemove(false);
+        AddOrRemove(false, pickBatchAmountInput);
     });
-
-        //-Add Or Remove Function (true is add, false is remove)
-    function AddOrRemove(prop) {
-        let parsedInput = parseInt(pickBatchAmountInput.val());
-
-        if (CheckForNumber(parsedInput)) {
-            if (prop == true) {
-                pickBatchAmountInput.val(parsedInput + 1);
-            }
-
-            if (prop == false) {
-                if (parsedInput > 1) {
-                    pickBatchAmountInput.val(parsedInput - 1);
-                }
-            }
-        }
-        else {
-            pickBatchAmountInput.val("1");
-        }
-    }
 
         //-On Input 
     $(document).on("input", ".pickSite-pickBatchAmount-info-inputAndBtns-input", function (event) {
-        if ($(this).val() < 1) {
-            $(this).val("1");
-        }
-
-        if ($(this).val() != 0 && $(this).val().startsWith("0")) {
-            $(this).val("1");
-        }
+        ValidateInputNumber($(this), 1, 1);
     });
 
         //-Click Start Picking
     pickBatchAmountBtnStart.click(function() {
         console.log("Start Picking");
+    });
+
+    // Pick Into Tote
+        //-Click Add Btn
+    pickIntoToteBtnAdd.click(function() {
+        AddOrRemove(true, pickIntoToteInput);
+    });
+
+        //-Click Remove Btn
+    pickIntoToteBtnRemove.click(function() {
+        AddOrRemove(false, pickIntoToteInput);
+    });
+
+        //-On Input
+    $(document).on("input", ".pickSite-pickIntoTote-quantity-input", function (event) {
+        ValidateInputNumber($(this), 1, 1);    
     });
 
     // Functions
@@ -218,6 +220,38 @@
         }
         else {
             return true;
+        }
+    }
+
+        //-Validate Input - Number Only (minNumber = Can't go under, number = Standart Number)
+    function ValidateInputNumber( thisInput, minNumber, number) {
+        if (thisInput.val() < minNumber) {
+            thisInput.val(number);
+        }
+
+        if (thisInput.val() != 0 && thisInput.val().startsWith("0")) {
+            thisInput.val(number);
+        }
+    }
+
+        //-Add Or Remove Function (true is add, false is remove)
+    function AddOrRemove(bool, inputClass) {
+        let seclectedInput = $(inputClass);
+        let parsedInput = parseInt(seclectedInput.val());
+
+        if (CheckForNumber(parsedInput)) {
+            if (bool == true) {
+                seclectedInput.val(parsedInput + 1);
+            }
+
+            if (bool == false) {
+                if (parsedInput > 1) {
+                    seclectedInput.val(parsedInput - 1);
+                }
+            }
+        }
+        else {
+            seclectedInput.val("1");
         }
     }
 </script>
