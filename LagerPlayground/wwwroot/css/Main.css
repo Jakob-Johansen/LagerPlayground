@@ -2904,15 +2904,15 @@ Firefox
 /*---Pick Site---*/
 /*- pickBatchAmount -*/
 
-.pickSite-header-headline-container {
+.pickSite-pickBatchAmount-header-headline-container {
     padding: 12px 0;
     border-bottom: 1px solid lightgray;
 }
 
-.pickSite-header-headline {
-    text-align: center;
+.pickSite-pickBatchAmount-header-headline {
     user-select: none;
     font-size: 18px;
+    text-align: center;
 }
 
 .pickSite-pickBatchAmount-info-overall-container {
@@ -3022,13 +3022,15 @@ Firefox
 
 /*- itemsToPick -*/
 
-.pickSite-itemsToPick-overall-container, .pickSite-selectTote-overall-container {
+.pickSite-itemsToPick-overall-container, .pickSite-selectTote-overall-container, .pickSite-pickIntoTote-overall-container {
     display: none;
 }
 
 .pickSite-header-headline-container {
     display: flex;
     justify-content: space-between;
+    padding: 12px 0;
+    border-bottom: 1px solid lightgray;
 }
 
 .pickSite-header-headline-back, .pickSite-header-headline-progress, .pickSite-header-headline-reportIssue {
@@ -3048,7 +3050,7 @@ Firefox
 }
 
 .pickSite-itemsToPick-container {
-    height: 75vh;
+    height: 73vh;
     overflow: auto;
 }
 
@@ -3146,8 +3148,29 @@ Firefox
     cursor: pointer;
 }
 
-/*- selectTote -*/
+.pickSite-itemsToPick-footer-container {
+    display: flex;
+    justify-content: space-between;
+    padding-top: 8px;
+    border-top: 1px solid lightgray;
+    position: relative;
+    bottom: -8px;
+}
 
+.pickSite-itemsToPick-footer-orders, .pickSite-itemsToPick-footer-items {
+    font-size: 16px;
+    padding: 0 15px;
+}
+
+.pickSite-itemsToPick-footer-orders-span {
+    color: white !important;
+}
+
+.pickSite-itemsToPick-footer-items-span {
+    color: orange !important;
+}
+
+/*- selectTote -*/
 .pickSite-selectTote-header-container {
     padding: 10px 15px;
 }

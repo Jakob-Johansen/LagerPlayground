@@ -6,9 +6,9 @@
 <div class="pickSite-overall-container">
     
     @*--- Pick Batch Amount Modul ---*@
-    <div class="pickSite-pickBatchAmount-overall-container" style="display: none;">
-        <div class="pickSite-header-headline-container">
-            <p class="trim pickSite-header-headline">Multi item batch picking</p>
+    <div class="pickSite-pickBatchAmount-overall-container">
+        <div class="pickSite-pickBatchAmount-header-headline-container">
+            <p class="trim pickSite-pickBatchAmount-header-headline">Multi item batch picking</p>
         </div>
 
         <div class="pickSite-pickBatchAmount-info-overall-container">
@@ -34,7 +34,6 @@
     </div>
 
     @*--- Items To Pick Modul ---*@
-
     <div class="pickSite-itemsToPick-overall-container">
         <div class="pickSite-header-headline-container">
             <a class="trim pickSite-header-headline-back">Back</a>
@@ -72,10 +71,14 @@
             </div>
 
         </div>
+
+        <div class="pickSite-itemsToPick-footer-container">
+            <p class="trim pickSite-itemsToPick-footer-orders">You have <span class="pickSite-itemsToPick-footer-orders-span">1</span> orders</p>
+            <p class="trim pickSite-itemsToPick-footer-items"><span class="pickSite-itemsToPick-footer-items-span">5</span> items left to pick</p>
+        </div>
     </div>
 
     @*--- Pick Or Scan Tote Modul ---*@
-
     <div class="pickSite-selectTote-overall-container">
         <div class="pickSite-selectTote-header-container">
             <div  class="pickSite-selectTote-header-nav-container">
@@ -110,7 +113,6 @@
     </div>
 
     @*--- Pick Inti Tote Modul ---*@
-
     <div class="pickSite-pickIntoTote-overall-container">
         <div class="pickSite-header-headline-container">
             <a class="trim pickSite-header-headline-back">Back</a>
@@ -210,6 +212,11 @@
         //-On Input
     $(document).on("input", ".pickSite-pickIntoTote-quantity-input", function (event) {
         ValidateInputNumber($(this), 1, 1);    
+    });
+
+        //-Click Confirm Btn
+    pickIntoToteBtnConfirm.click(function() {
+        console.log("Confirm");
     });
 
     // Functions
