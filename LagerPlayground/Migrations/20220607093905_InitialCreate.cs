@@ -232,30 +232,26 @@ namespace LagerPlayground.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Order_Items",
+                name: "Picking_Infos",
                 columns: table => new
                 {
                     ID = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Order_DetailsID = table.Column<int>(type: "int", nullable: false),
-                    ProductID = table.Column<int>(type: "int", nullable: false),
+                    Order_ItemsID = table.Column<int>(type: "int", nullable: false),
+                    ToteSku = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Quantity = table.Column<int>(type: "int", nullable: false),
+                    Completed = table.Column<bool>(type: "bit", nullable: false, defaultValue: false),
                     Created = table.Column<DateTime>(type: "datetime2", nullable: true),
                     Modified = table.Column<DateTime>(type: "datetime2", nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Order_Items", x => x.ID);
+                    table.PrimaryKey("PK_Picking_Infos", x => x.ID);
                     table.ForeignKey(
-                        name: "FK_Order_Items_Order_Details_Order_DetailsID",
+                        name: "FK_Picking_Infos_Order_Details_Order_DetailsID",
                         column: x => x.Order_DetailsID,
                         principalTable: "Order_Details",
-                        principalColumn: "ID",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_Order_Items_Products_ProductID",
-                        column: x => x.ProductID,
-                        principalTable: "Products",
                         principalColumn: "ID",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -308,6 +304,41 @@ namespace LagerPlayground.Migrations
                         name: "FK_ReceivingOrder_Items_ReceivingOrder_Details_ReceivingOrder_DetailsID",
                         column: x => x.ReceivingOrder_DetailsID,
                         principalTable: "ReceivingOrder_Details",
+                        principalColumn: "ID",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Order_Items",
+                columns: table => new
+                {
+                    ID = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Order_DetailsID = table.Column<int>(type: "int", nullable: false),
+                    ProductID = table.Column<int>(type: "int", nullable: false),
+                    Quantity = table.Column<int>(type: "int", nullable: false),
+                    Created = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    Modified = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    Picking_InfoID = table.Column<int>(type: "int", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Order_Items", x => x.ID);
+                    table.ForeignKey(
+                        name: "FK_Order_Items_Order_Details_Order_DetailsID",
+                        column: x => x.Order_DetailsID,
+                        principalTable: "Order_Details",
+                        principalColumn: "ID",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_Order_Items_Picking_Infos_Picking_InfoID",
+                        column: x => x.Picking_InfoID,
+                        principalTable: "Picking_Infos",
+                        principalColumn: "ID");
+                    table.ForeignKey(
+                        name: "FK_Order_Items_Products_ProductID",
+                        column: x => x.ProductID,
+                        principalTable: "Products",
                         principalColumn: "ID",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -422,9 +453,19 @@ namespace LagerPlayground.Migrations
                 column: "Order_DetailsID");
 
             migrationBuilder.CreateIndex(
+                name: "IX_Order_Items_Picking_InfoID",
+                table: "Order_Items",
+                column: "Picking_InfoID");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Order_Items_ProductID",
                 table: "Order_Items",
                 column: "ProductID");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Picking_Infos_Order_DetailsID",
+                table: "Picking_Infos",
+                column: "Order_DetailsID");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Product_Locations_Locations_PositionsID",
@@ -491,7 +532,7 @@ namespace LagerPlayground.Migrations
                 name: "Totes");
 
             migrationBuilder.DropTable(
-                name: "Order_Details");
+                name: "Picking_Infos");
 
             migrationBuilder.DropTable(
                 name: "Locations_Positions");
@@ -506,7 +547,7 @@ namespace LagerPlayground.Migrations
                 name: "ReceivingOrder_Items");
 
             migrationBuilder.DropTable(
-                name: "Custommers");
+                name: "Order_Details");
 
             migrationBuilder.DropTable(
                 name: "Locations_Shelfs");
@@ -516,6 +557,9 @@ namespace LagerPlayground.Migrations
 
             migrationBuilder.DropTable(
                 name: "ReceivingOrder_Details");
+
+            migrationBuilder.DropTable(
+                name: "Custommers");
 
             migrationBuilder.DropTable(
                 name: "Locations_Racks");

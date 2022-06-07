@@ -31,12 +31,17 @@ namespace LagerPlayground.Data
         public DbSet<Locations_Shelfs> Locations_Shelfs { get; set; }
         public DbSet<Locations_Positions> Locations_Positions { get; set; }
         public DbSet<Product_Locations> Product_Locations { get; set; }
+        public DbSet<Picking_Info> Picking_Infos { get; set; }
 
-        protected override void OnModelCreating(ModelBuilder modelBuilder)
+    protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<Locations_Positions>()
                 .Property(x => x.Pickable)
                 .HasDefaultValue(true);
+
+            modelBuilder.Entity<Picking_Info>()
+                .Property(x => x.Completed)
+                .HasDefaultValue(false);
         }
     }
 }
