@@ -188,6 +188,9 @@
     const pickIntoToteBtnConfirm = $(".pickSite-pickIntoTote-info-confirm-btn");
     const pickIntoToteBtnBack = $(".pickSite-pickIntoTote-header-headline-back");
 
+        //-Other
+    let loadingIsRunning = false;
+
     // Pick Batch Amount Funtions
         //-Click Add Btn
     pickBatchAmountBtnAdd.click(function() {
@@ -206,10 +209,14 @@
 
         //-Click Start Picking
     pickBatchAmountBtnStart.click(function() {
-        // TEST
-        console.log("Start Picking");
-        pickBatchAmountOverlay.css("display", "none");
-        itemsToPickOverlay.css("display", "block");
+        let parsedNumber = parseInt(pickBatchAmountInput.val());
+
+        if (CheckForNumber(parsedNumber)) {
+            GetOrdersToPickAjax(parsedNumber);
+        }
+        else {
+            alert("Input field dosen't contain a number");
+        }
     });
 
     // Items To Pick
@@ -318,5 +325,38 @@
             seclectedInput.val("1");
         }
     }
+
+    // Ajax Functions
+        //-Get Orders To Pick
+    function GetOrdersToPickAjax(batchAmount) {
+        $.ajax({
+            type: "GET",
+            url: "/Picking/GetOrdersToPick",
+            data: { numberOfOrders: batchAmount },
+            success: function (result) {
+
+                if (result.booleanError == false) {
+                    console.log(result.msg);
+
+                    // HUSK LOADING!
+
+                    console.log("Start Picking");
+                    pickBatchAmountOverlay.css("display", "none");
+                    itemsToPickOverlay.css("display", "block");
+                }
+                else {
+                    console.log(result.msg);
+                    alert(result.msg);
+                }
+            },
+            error: function (req, status, error) {
+                console.log(status);
+                console.log(req);
+                console.log(error);
+                alert(status);
+            }
+        });
+    }
+
 </script>
 }
