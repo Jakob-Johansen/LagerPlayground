@@ -34,12 +34,13 @@ namespace LagerPlayground.Controllers
                 return Json(new { booleanError = true, msg = "Batch Amount can't be 0" });
             }
 
-            // Lav en Custom ef core query for at få det valgte antal ordre fra databasen.
-            //var orders = await _context.Order_Details
-            //    .AsNoTracking()
-            //    .ToListAsync();
+            var orders = await _context.Order_Details
+                .Take(numberOfOrders)
+                .Include(x => x.Order_Items)
+                .AsNoTracking().ToListAsync();
 
-            return Json(new { booleanError = false, msg = numberOfOrders + " orders to pick" });
+
+            return Json(new { booleanError = false, msg = orders.Count + " orders to pick", orders });
         }
     }
 }

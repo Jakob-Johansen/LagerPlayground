@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 
 namespace LagerPlayground.Models
@@ -15,6 +16,7 @@ namespace LagerPlayground.Models
         public DateTime? Created { get; set; }
         public DateTime? Modified { get; set; }
 
+        [JsonIgnore]
         public Order_Details Order_Details { get; set; }
         public Product Product { get; set; }
     }

@@ -336,10 +336,9 @@
             success: function (result) {
 
                 if (result.booleanError == false) {
+                    console.log(result.orders);
                     console.log(result.msg);
-
                     // HUSK LOADING!
-
                     console.log("Start Picking");
                     pickBatchAmountOverlay.css("display", "none");
                     itemsToPickOverlay.css("display", "block");
