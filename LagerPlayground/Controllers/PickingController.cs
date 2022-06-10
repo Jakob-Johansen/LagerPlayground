@@ -34,63 +34,81 @@ namespace LagerPlayground.Controllers
                 return Json(new { booleanError = true, msg = "Batch Amount can't be 0" });
             }
 
-            //var orders = await _context.Order_Details
-            //    .Take(numberOfOrders)
-            //    .Include(x => x.Order_Items)
-            //    .AsNoTracking().ToListAsync();
-
-            var oneOrder = await _context.Order_Details
+            var orders = await _context.Order_Details
+                .Take(numberOfOrders)
                 .Include(x => x.Order_Items)
                 .ThenInclude(x => x.Product)
-                .AsNoTracking().FirstOrDefaultAsync();
+                .AsNoTracking().ToListAsync();
+
+            if (orders.Count == 0)
+            {
+                return Json(new { booleanError = true, msg = "No orders was found" });
+            }
 
             var productLocations = await _context.Product_Locations
-                .OrderByDescending(x => x.LocationBarcode)
                 .Where(x => x.LocationBarcode != "Receiving-Station")
                 .AsNoTracking().ToListAsync();
 
-            List<DTOTest> dtoTests = new();
-            foreach (var item in oneOrder.Order_Items)
+            if(productLocations.Count == 0)
             {
-                int orderQuantity = item.Quantity;
-                DTOTest dtoTest = new();
-                dtoTest.Order_DetailsID = item.Order_DetailsID;
-                dtoTest.ProductID = item.ProductID;
-                dtoTest.ProductName = item.Product.Name;
-                dtoTest.ProductBarcode = item.Product.BarcodeID;
+                return Json(new { booleanError = true, msg = "No product locations was found" });
+            }
 
-                foreach (var pLocation in productLocations)
+            List<DTOPickLocation> dtoPickLocations = new();
+            List<string> EmptyLocations = new();
+            foreach (var order in orders)
+            {
+                foreach (var item in order.Order_Items)
                 {
-                    if(item.ProductID == pLocation.ProductID)
+                    int newOrderQuantity = item.Quantity;
+
+                    foreach (var pLocation in productLocations)
                     {
-                        // VIRKERR IKKE!
-                        if (orderQuantity >= pLocation.Quantity)
+                        // VIRKER KUN NÅR DET ER SAMME ORDRE ID.
+                        bool stopLoop = false;
+                        if (item.ProductID == pLocation.ProductID)
                         {
-                            orderQuantity -= pLocation.Quantity;
-                            int myTest = item.Quantity - orderQuantity;
+                            DTOPickLocation dtoPickLocation = new();
+                            dtoPickLocation.Order_DetailsID = item.Order_DetailsID;
+                            dtoPickLocation.ProductID = item.ProductID;
+                            dtoPickLocation.ProductName = item.Product.Name;
+                            dtoPickLocation.ProductBarcode = item.Product.BarcodeID;
+                            dtoPickLocation.LocationBarcode = pLocation.LocationBarcode;
 
-                            dtoTest.ProductQuantity = 10;
-                            dtoTest.LocationBarcode = pLocation.LocationBarcode;
+                            int productQuantity = 0;
 
-                            dtoTests.Add(dtoTest);
-                            if (orderQuantity != 0)
+                            if (newOrderQuantity <= pLocation.Quantity)
                             {
-                                continue;
+                                productQuantity = newOrderQuantity;
+                                stopLoop = true;
                             }
-                        }
-                        else
-                        {
-                            dtoTest.ProductQuantity = 20;
-                            dtoTest.LocationBarcode = pLocation.LocationBarcode;
-                            dtoTests.Add(dtoTest);
-                            break;
+                            else
+                            {
+                                int subResult = newOrderQuantity - pLocation.Quantity;
+                                newOrderQuantity -= subResult;
+                                productQuantity = newOrderQuantity;
+
+                                if (newOrderQuantity < 1)
+                                {
+                                    stopLoop = true;
+                                }
+
+                                newOrderQuantity = subResult;
+                            }
+
+                            dtoPickLocation.PickQuantity = productQuantity;
+                            dtoPickLocations.Add(dtoPickLocation);
+
+                            if (stopLoop)
+                            {
+                                break;
+                            }
                         }
                     }
                 }
             }
 
-            return Json(new { booleanError = false, msg = 1 + " orders to pick", dtoTests });
-            //return Json(new { booleanError = false, msg = orders.Count + " orders to pick", orders });
+            return Json(new { booleanError = false, msg = orders.Count + " orders to pick", dtoPickLocations });
         }
     }
 }
