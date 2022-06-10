@@ -1,4 +1,5 @@
 ﻿using LagerPlayground.Data;
+using LagerPlayground.Models;
 using LagerPlayground.Models.VM;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -46,7 +47,7 @@ namespace LagerPlayground.Controllers
             }
 
             var productLocations = await _context.Product_Locations
-                .Where(x => x.LocationBarcode != "Receiving-Station")
+                .Where(x => x.LocationBarcode != "Receiving-Station" && x.Locations_Positions.Pickable != false)
                 .AsNoTracking().ToListAsync();
 
             if(productLocations.Count == 0)
@@ -55,36 +56,38 @@ namespace LagerPlayground.Controllers
             }
 
             List<DTOPickLocation> dtoPickLocations = new();
-            List<string> EmptyLocations = new();
             foreach (var order in orders)
             {
                 foreach (var item in order.Order_Items)
                 {
                     int newOrderQuantity = item.Quantity;
-
-                    foreach (var pLocation in productLocations)
+                    for (int i = 0; i < productLocations.Count; i++)
                     {
                         // VIRKER KUN NÅR DET ER SAMME ORDRE ID.
                         bool stopLoop = false;
-                        if (item.ProductID == pLocation.ProductID)
+                        if (item.ProductID == productLocations[i].ProductID && productLocations[i].Quantity != 0)
                         {
                             DTOPickLocation dtoPickLocation = new();
                             dtoPickLocation.Order_DetailsID = item.Order_DetailsID;
                             dtoPickLocation.ProductID = item.ProductID;
                             dtoPickLocation.ProductName = item.Product.Name;
                             dtoPickLocation.ProductBarcode = item.Product.BarcodeID;
-                            dtoPickLocation.LocationBarcode = pLocation.LocationBarcode;
+                            dtoPickLocation.LocationBarcode = productLocations[i].LocationBarcode;
 
                             int productQuantity = 0;
+                            int subResult = 0;
 
-                            if (newOrderQuantity <= pLocation.Quantity)
+                            if (newOrderQuantity <= productLocations[i].Quantity)
                             {
                                 productQuantity = newOrderQuantity;
                                 stopLoop = true;
+
+                                subResult = productLocations[i].Quantity - newOrderQuantity;
+                                productLocations[i].Quantity = subResult;
                             }
                             else
                             {
-                                int subResult = newOrderQuantity - pLocation.Quantity;
+                                subResult = newOrderQuantity - productLocations[i].Quantity;
                                 newOrderQuantity -= subResult;
                                 productQuantity = newOrderQuantity;
 
@@ -94,6 +97,7 @@ namespace LagerPlayground.Controllers
                                 }
 
                                 newOrderQuantity = subResult;
+                                productLocations[i].Quantity = subResult;
                             }
 
                             dtoPickLocation.PickQuantity = productQuantity;
