@@ -63,9 +63,9 @@ namespace LagerPlayground.Controllers
                     int newOrderQuantity = item.Quantity;
                     for (int i = 0; i < productLocations.Count; i++)
                     {
-                        // VIRKER KUN NÅR DET ER SAMME ORDRE ID.
+                        // Works! Need more testing to be 100% sure, but it should work fine.
                         bool stopLoop = false;
-                        if (item.ProductID == productLocations[i].ProductID && productLocations[i].Quantity != 0)
+                        if (item.ProductID == productLocations[i].ProductID)
                         {
                             DTOPickLocation dtoPickLocation = new();
                             dtoPickLocation.Order_DetailsID = item.Order_DetailsID;
@@ -73,39 +73,42 @@ namespace LagerPlayground.Controllers
                             dtoPickLocation.ProductName = item.Product.Name;
                             dtoPickLocation.ProductBarcode = item.Product.BarcodeID;
                             dtoPickLocation.LocationBarcode = productLocations[i].LocationBarcode;
-
+                           
                             int productQuantity = 0;
                             int subResult = 0;
 
-                            if (newOrderQuantity <= productLocations[i].Quantity)
+                            if (productLocations[i].Quantity != 0 && newOrderQuantity != 0)
                             {
-                                productQuantity = newOrderQuantity;
-                                stopLoop = true;
-
-                                subResult = productLocations[i].Quantity - newOrderQuantity;
-                                productLocations[i].Quantity = subResult;
-                            }
-                            else
-                            {
-                                subResult = newOrderQuantity - productLocations[i].Quantity;
-                                newOrderQuantity -= subResult;
-                                productQuantity = newOrderQuantity;
-
-                                if (newOrderQuantity < 1)
+                                if (newOrderQuantity <= productLocations[i].Quantity)
                                 {
+                                    subResult = productLocations[i].Quantity - newOrderQuantity;
+                                    productQuantity = newOrderQuantity;
+                                    newOrderQuantity -= subResult;
+
+                                    productLocations[i].Quantity = subResult;
                                     stopLoop = true;
                                 }
+                                else
+                                {
+                                    subResult = newOrderQuantity - productLocations[i].Quantity;
+                                    productQuantity = newOrderQuantity - subResult;
 
-                                newOrderQuantity = subResult;
-                                productLocations[i].Quantity = subResult;
-                            }
+                                    if (newOrderQuantity < 1)
+                                    {
+                                        stopLoop = true;
+                                    }
 
-                            dtoPickLocation.PickQuantity = productQuantity;
-                            dtoPickLocations.Add(dtoPickLocation);
+                                    newOrderQuantity = subResult;
+                                    productLocations[i].Quantity = 0;
+                                }
 
-                            if (stopLoop)
-                            {
-                                break;
+                                dtoPickLocation.PickQuantity = productQuantity;
+                                dtoPickLocations.Add(dtoPickLocation);
+
+                                if (stopLoop)
+                                {
+                                    break;
+                                }
                             }
                         }
                     }
