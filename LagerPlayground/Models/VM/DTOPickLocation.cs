@@ -4,6 +4,7 @@
     {
         public int Order_DetailsID { get; set; }
         public int ProductID { get; set; }
+        public string ProductImage { get; set; }
         public string ProductName { get; set; }
         public string ProductBarcode { get; set; }
         public int PickQuantity { get; set; }
