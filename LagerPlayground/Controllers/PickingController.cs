@@ -123,8 +123,8 @@ namespace LagerPlayground.Controllers
             }
 
             var sortedPickLocations = dtoPickLocations.OrderBy(x => x.LocationBarcode).ToList(); ;
-
             List<DTOPickLocation> mergedLocations = new();
+
             foreach (var sortedPickLocation in sortedPickLocations)
             {
                 sortedPickLocation.Order_DetailsID = 0;

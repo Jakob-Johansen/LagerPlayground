@@ -3440,6 +3440,11 @@ Firefox
     background-color: #0c44c7;
     text-decoration: none;
     border-radius: 3px;
+    user-select: none;
+}
+
+.pickSite-pickIntoTote-info-confirm-btn:hover {
+    cursor: pointer;
 }
 
 .pickSite-pickIntoTote-info-orderNumber {
