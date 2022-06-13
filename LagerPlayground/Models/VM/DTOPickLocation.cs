@@ -8,6 +8,7 @@
         public string ProductName { get; set; }
         public string ProductBarcode { get; set; }
         public int PickQuantity { get; set; }
+        public int OnHandQuantity { get; set; }
         public string LocationBarcode { get; set; }
     }
 }

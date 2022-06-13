@@ -43,7 +43,7 @@
 
         <div class="pickSite-itemsToPick-container">
             
-            <div class="pickSite-itemsToPick-item-overall-container">
+@*            <div class="pickSite-itemsToPick-item-overall-container">
                 <div class="pickSite-itemsToPick-item-picknumber-container">
                     <p class="trim pickSite-itemsToPick-item-picknumber-text">Pick</p>
                     <p class="trim pickSite-itemsToPick-item-picknumber-number">1</p>
@@ -56,7 +56,6 @@
 
                     <div class="pickSite-itemsToPick-item-info-container">
                         <div class="pickSite-itemsToPick-item-info-headline-container">
-                            @* Product Barcode *@
                             <p class="trim">HWC-R-MD</p>
                             <p class="trim">On Hand: <span class="pickSite-itemsToPick-item-info-headline-onhand-span">2</span></p>
                         </div>
@@ -68,7 +67,7 @@
                         <span class="material-icons pickSite-itemsToPick-item-sidemenu-icon">more_vert</span>
                     </div>
                 </div>
-            </div>
+            </div>*@
 
         </div>
 
@@ -326,6 +325,50 @@
         }
     }
 
+        //-Add pick location to html
+    function AddPickLocationToHtml(mergedLocations) {
+        for (var i = 0; i < mergedLocations.length; i++) {
+            let productImage;
+
+            if (mergedLocations[i].productImage == null) {
+              productImage = "Placeholders/PlaceholderWhite.jpg";
+            }
+            else {
+                productImage = "Products/" + mergedLocations[i].productImage;
+            }
+
+            $(".pickSite-itemsToPick-container").append(
+            `
+            <div class="pickSite-itemsToPick-item-overall-container">
+                <div class="pickSite-itemsToPick-item-picknumber-container">
+                    <p class="trim pickSite-itemsToPick-item-picknumber-text">Pick</p>
+                    <p class="trim pickSite-itemsToPick-item-picknumber-number">${mergedLocations[i].pickQuantity}</p>
+                </div>
+
+                <div class="pickSite-itemsToPick-item-overall-info-container">
+                    <div class="pickSite-itemsToPick-item-image-container">
+                        <img class="pickSite-itemsToPick-item-image" src="/Images/${productImage}" />
+                    </div>
+
+                    <div class="pickSite-itemsToPick-item-info-container">
+                        <div class="pickSite-itemsToPick-item-info-headline-container">
+                            <p class="trim">${mergedLocations[i].productBarcode}</p>
+                            <p class="trim">On Hand: <span class="pickSite-itemsToPick-item-info-headline-onhand-span">${mergedLocations[i].onHandQuantity}</span></p>
+                        </div>
+                        <p class="trim pickSite-itemsToPick-item-info-name">${mergedLocations[i].productName}</p>
+                        <p class="trim pickSite-itemsToPick-item-info-bin">Bin: <span class="pickSite-itemsToPick-item-info-bin-span">${mergedLocations[i].locationBarcode}</span></p>
+                    </div>
+
+                    <div class="pickSite-itemsToPick-item-sidemenu-container">
+                        <span class="material-icons pickSite-itemsToPick-item-sidemenu-icon">more_vert</span>
+                    </div>
+                </div>
+            </div>
+            `
+            );
+        }
+    }
+
     // Ajax Functions
         //-Get Orders To Pick
     function GetOrdersToPickAjax(batchAmount) {
@@ -337,7 +380,15 @@
 
                 if (result.booleanError == false) {
                     console.log(result.sortedPickLocations);
+                    console.log(result.mergedLocations);
                     console.log(result.msg);
+                    AddPickLocationToHtml(result.mergedLocations);
+                    
+                    //-Testing
+                    $(".pickSite-itemsToPick-footer-orders-span").text(result.ordersToPick);
+                    $(".pickSite-itemsToPick-footer-items-span").text(result.itemsToPick);
+                    //
+
                     // HUSK LOADING!
                     console.log("Start Picking");
                     pickBatchAmountOverlay.css("display", "none");

@@ -55,11 +55,16 @@ namespace LagerPlayground.Controllers
                 return Json(new { booleanError = true, msg = "No product locations was found" });
             }
 
+            int itemsToPick = 0;
+            int ordersToPick = 0;
+
             List<DTOPickLocation> dtoPickLocations = new();
             foreach (var order in orders)
             {
+                ordersToPick++;
                 foreach (var item in order.Order_Items)
                 {
+                    itemsToPick += item.Quantity;
                     int newOrderQuantity = item.Quantity;
                     for (int i = 0; i < productLocations.Count; i++)
                     {
@@ -73,6 +78,7 @@ namespace LagerPlayground.Controllers
                             dtoPickLocation.ProductName = item.Product.Name;
                             dtoPickLocation.ProductBarcode = item.Product.BarcodeID;
                             dtoPickLocation.LocationBarcode = productLocations[i].LocationBarcode;
+                            dtoPickLocation.OnHandQuantity = productLocations[i].Quantity;
 
                             int productQuantity = 0;
                             int subResult = 0;
@@ -116,8 +122,39 @@ namespace LagerPlayground.Controllers
                 }
             }
 
-            var sortedPickLocations = dtoPickLocations.OrderBy(x => x.LocationBarcode);
-            return Json(new { booleanError = false, msg = orders.Count + " orders to pick", sortedPickLocations });
+            var sortedPickLocations = dtoPickLocations.OrderBy(x => x.LocationBarcode).ToList(); ;
+
+            List<DTOPickLocation> mergedLocations = new();
+            foreach (var sortedPickLocation in sortedPickLocations)
+            {
+                sortedPickLocation.Order_DetailsID = 0;
+                int containsThis = 0;
+
+                if (mergedLocations.Count != 0)
+                {
+                    for (var i = 0; i < mergedLocations.Count; i++)
+                    {
+                        if (sortedPickLocation.ProductID == mergedLocations[i].ProductID && sortedPickLocation.LocationBarcode == mergedLocations[i].LocationBarcode)
+                        {
+                            containsThis = i;
+                        }
+                    }
+                    if (containsThis != 0)
+                    {
+                        mergedLocations[containsThis].PickQuantity += sortedPickLocation.PickQuantity;
+                    }
+                    else
+                    {
+                        mergedLocations.Add(sortedPickLocation);
+                    }
+                }
+                else
+                {
+                    mergedLocations.Add(sortedPickLocation);
+                }
+            }
+
+            return Json(new { booleanError = false, msg = orders.Count + " orders to pick", sortedPickLocations, mergedLocations, itemsToPick, ordersToPick });
         }
     }
 }
