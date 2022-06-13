@@ -63,22 +63,23 @@ namespace LagerPlayground.Controllers
                     int newOrderQuantity = item.Quantity;
                     for (int i = 0; i < productLocations.Count; i++)
                     {
-                        // Works! Need more testing to be 100% sure, but it should work fine.
                         bool stopLoop = false;
                         if (item.ProductID == productLocations[i].ProductID)
                         {
                             DTOPickLocation dtoPickLocation = new();
                             dtoPickLocation.Order_DetailsID = item.Order_DetailsID;
                             dtoPickLocation.ProductID = item.ProductID;
+                            dtoPickLocation.ProductImage = item.Product.Image;
                             dtoPickLocation.ProductName = item.Product.Name;
                             dtoPickLocation.ProductBarcode = item.Product.BarcodeID;
                             dtoPickLocation.LocationBarcode = productLocations[i].LocationBarcode;
-                           
+
                             int productQuantity = 0;
                             int subResult = 0;
 
                             if (productLocations[i].Quantity != 0 && newOrderQuantity != 0)
                             {
+                                // If order item quantity is less than the quantity lays in a product location, it will say you should pick from tahat location.
                                 if (newOrderQuantity <= productLocations[i].Quantity)
                                 {
                                     subResult = productLocations[i].Quantity - newOrderQuantity;
@@ -88,7 +89,7 @@ namespace LagerPlayground.Controllers
                                     productLocations[i].Quantity = subResult;
                                     stopLoop = true;
                                 }
-                                else
+                                else // If not, it will add the next location, you would need to go to, to get the rest of the same product.
                                 {
                                     subResult = newOrderQuantity - productLocations[i].Quantity;
                                     productQuantity = newOrderQuantity - subResult;
@@ -115,7 +116,8 @@ namespace LagerPlayground.Controllers
                 }
             }
 
-            return Json(new { booleanError = false, msg = orders.Count + " orders to pick", dtoPickLocations });
+            var sortedPickLocations = dtoPickLocations.OrderBy(x => x.LocationBarcode);
+            return Json(new { booleanError = false, msg = orders.Count + " orders to pick", sortedPickLocations });
         }
     }
 }
