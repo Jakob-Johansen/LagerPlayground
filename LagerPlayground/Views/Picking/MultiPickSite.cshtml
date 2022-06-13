@@ -187,7 +187,22 @@
     const pickIntoToteBtnConfirm = $(".pickSite-pickIntoTote-info-confirm-btn");
     const pickIntoToteBtnBack = $(".pickSite-pickIntoTote-header-headline-back");
 
+        // Barcode scanner variables
+    let barcode = '';
+    let lastScannedBarcode = '';
+    var currentBarcode = '';
+    let productExist = false;
+    let interval;
+
         //-Other
+    let barcodeToScan = "";
+    let OrderToPickList = [];
+
+    let pickToteAmountIsRunning = true;
+    let itemsToPickIsRunning = false;
+    let toteToPickIsRunning = false;
+    let pickIntoToteIsRunning = false;
+
     let loadingIsRunning = false;
 
     // Pick Batch Amount Funtions
@@ -222,14 +237,22 @@
         //-Click Back Btn
     itemsToPickBtnBack.click(function() {
         // TEST
+        $(".pickSite-itemsToPick-item-overall-container").remove();
+        pickToteAmountIsRunning = true;
+        itemsToPickIsRunning = false;
+
         console.log("itemsToPickBtnBack");
         itemsToPickOverlay.css("display", "none");
         pickBatchAmountOverlay.css("display", "block");
+
     });
 
         //-Click On Item
     $(document).on("click", ".pickSite-itemsToPick-item-overall-container", function () {
         // TEST
+        itemsToPickIsRunning = false;
+        toteToPickIsRunning = true;
+
         itemsToPickOverlay.css("display", "none");
         pickOrScanToteOverlay.css("display", "block");
     });
@@ -238,6 +261,9 @@
         //-Click Back Btn
     pickOrScanToteBtnBack.click(function () {
         // TEST
+        toteToPickIsRunning = false;
+        itemsToPickIsRunning = true;
+
         console.log("pickOrScanToteBtnBack");
         pickOrScanToteOverlay.css("display", "none");
         itemsToPickOverlay.css("display", "block");
@@ -246,6 +272,9 @@
         //-Click On Tote
     $(document).on("click", ".pickSite-selectTote-tote-container", function () {
         //TEST
+        toteToPickIsRunning = false;
+        pickIntoToteIsRunning = true;
+
         pickOrScanToteOverlay.css("display", "none");
         pickIntoToteOverlay.css("display", "block");
     });
@@ -269,6 +298,9 @@
         //-Click Confirm Btn
     pickIntoToteBtnConfirm.click(function() {
         // TEST
+        pickIntoToteIsRunning = false;
+        itemsToPickIsRunning = true;
+
         console.log("Confirm");
         pickIntoToteOverlay.css("display", "none");
         itemsToPickOverlay.css("display", "block");
@@ -277,6 +309,9 @@
         //-Click Back Btn
     pickIntoToteBtnBack.click(function () {
         // TEST
+        pickIntoToteIsRunning = false;
+        toteToPickIsRunning = true;
+
         console.log("pickIntoToteBtnBack");
         pickIntoToteOverlay.css("display", "none");
         pickOrScanToteOverlay.css("display", "block");
@@ -369,6 +404,51 @@
         }
     }
 
+    // Scanner Fucntions
+        // Scanner event and functions
+    document.addEventListener("keydown", function (evt) {
+        if (interval) {
+            clearInterval(interval);
+        }
+
+        if (evt.code.includes("Enter")) {
+            if (barcode) {
+                handleBarcode(barcode);
+                barcode = '';
+                return;
+            }
+        }
+        if (!evt.code.includes("Shift") && !evt.code.includes("CapsLock")) {
+            barcode += evt.key;
+        }
+        interval = setInterval(() => barcode = '', 20);
+    });
+
+    function handleBarcode(scanned_barcode) {
+        scanned_barcode = scanned_barcode.trim();
+
+        if (scanned_barcode.length >= 1) {
+            if (pickToteAmountIsRunning != true) {
+                currentBarcode = scanned_barcode;
+
+                if (itemsToPickIsRunning) {
+                    console.log(currentBarcode);
+                }
+
+                if (toteToPickIsRunning) {
+                    console.log("toteToPickIsRunning = true");
+                }
+
+                if (pickIntoToteIsRunning) {
+                    console.log("pickIntoToteIsRunning = true");
+                }
+            }
+            else {
+                console.log("pickToteAmountIsRunning = true");
+            }
+        }
+    }
+
     // Ajax Functions
         //-Get Orders To Pick
     function GetOrdersToPickAjax(batchAmount) {
@@ -377,14 +457,13 @@
             url: "/Picking/GetOrdersToPick",
             data: { numberOfOrders: batchAmount },
             success: function (result) {
-
                 if (result.booleanError == false) {
-                    console.log(result.sortedPickLocations);
-                    console.log(result.mergedLocations);
-                    console.log(result.msg);
                     AddPickLocationToHtml(result.mergedLocations);
                     
                     //-Testing
+                    barcodeToScan = result.sortedPickLocations[0].productBarcode;
+                    OrderToPickList = result.sortedPickLocations;
+
                     $(".pickSite-itemsToPick-footer-orders-span").text(result.ordersToPick);
                     $(".pickSite-itemsToPick-footer-items-span").text(result.itemsToPick);
                     //
@@ -393,6 +472,8 @@
                     console.log("Start Picking");
                     pickBatchAmountOverlay.css("display", "none");
                     itemsToPickOverlay.css("display", "block");
+                    pickToteAmountIsRunning = false;
+                    itemsToPickIsRunning = true;
                 }
                 else {
                     console.log(result.msg);
