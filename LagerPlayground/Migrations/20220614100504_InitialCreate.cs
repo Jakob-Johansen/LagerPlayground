@@ -125,6 +125,7 @@ namespace LagerPlayground.Migrations
                     Name = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Barcode = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Number = table.Column<int>(type: "int", nullable: false),
+                    InUse = table.Column<bool>(type: "bit", nullable: false, defaultValue: false),
                     Warehouse = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Created = table.Column<DateTime>(type: "datetime2", nullable: true),
                     Modified = table.Column<DateTime>(type: "datetime2", nullable: true)

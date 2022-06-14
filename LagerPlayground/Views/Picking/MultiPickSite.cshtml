@@ -196,7 +196,10 @@
 
         //-Other
     let barcodeToScan = "";
-    let OrderToPickList = [];
+    let orderToPickList = [];
+
+    let currentOrderToPick;
+    let selectedTote = "";
 
     let pickToteAmountIsRunning = true;
     let itemsToPickIsRunning = false;
@@ -403,6 +406,24 @@
             );
         }
     }
+    
+        //-Validate scanned barcode
+    function ValidateScannedBarcode(scannedBarcode) {
+        if (scannedBarcode == barcodeToScan) {
+            console.log(scannedBarcode);
+
+            GetTotes(currentOrderToPick.order_DetailsID);
+
+            // TEST
+            itemsToPickIsRunning = false;
+            toteToPickIsRunning = true;
+            itemsToPickOverlay.css("display", "none");
+            pickOrScanToteOverlay.css("display", "block");
+        }
+        else {
+            alert("Wrong product scanned!");
+        }
+    }
 
     // Scanner Fucntions
         // Scanner event and functions
@@ -432,7 +453,7 @@
                 currentBarcode = scanned_barcode;
 
                 if (itemsToPickIsRunning) {
-                    console.log(currentBarcode);
+                    ValidateScannedBarcode(currentBarcode);
                 }
 
                 if (toteToPickIsRunning) {
@@ -462,7 +483,9 @@
                     
                     //-Testing
                     barcodeToScan = result.sortedPickLocations[0].productBarcode;
-                    OrderToPickList = result.sortedPickLocations;
+                    orderToPickList = result.sortedPickLocations;
+                    currentOrderToPick = orderToPickList[0];
+                    console.log(currentOrderToPick);
 
                     $(".pickSite-itemsToPick-footer-orders-span").text(result.ordersToPick);
                     $(".pickSite-itemsToPick-footer-items-span").text(result.itemsToPick);
@@ -474,6 +497,31 @@
                     itemsToPickOverlay.css("display", "block");
                     pickToteAmountIsRunning = false;
                     itemsToPickIsRunning = true;
+                }
+                else {
+                    console.log(result.msg);
+                    alert(result.msg);
+                }
+            },
+            error: function (req, status, error) {
+                console.log(status);
+                console.log(req);
+                console.log(error);
+                alert(status);
+            }
+        });
+    }
+
+        //-Get Totes
+        function GetTotes(orderID) {
+        $.ajax({
+            type: "GET",
+            url: "/Picking/GetTotes",
+            data: { orderID: orderID },
+            success: function (result) {
+                if (result.booleanError == false) {
+                    console.log("Success!")
+                    // HUSK LOADING
                 }
                 else {
                     console.log(result.msg);
