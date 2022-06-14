@@ -122,39 +122,67 @@ namespace LagerPlayground.Controllers
                 }
             }
 
-            var sortedPickLocations = dtoPickLocations.OrderBy(x => x.LocationBarcode).ToList(); ;
+            var sortedPickLocations = dtoPickLocations.OrderBy(x => x.LocationBarcode).ToList();
+            
             List<DTOPickLocation> mergedLocations = new();
 
             foreach (var sortedPickLocation in sortedPickLocations)
             {
-                sortedPickLocation.Order_DetailsID = 0;
+                //-Until i find a better solution
+                DTOPickLocation newdtoPickLocation = new()
+                {
+                    Order_DetailsID = 0,
+                    ProductID = sortedPickLocation.ProductID,
+                    LocationBarcode = sortedPickLocation.LocationBarcode,
+                    ProductBarcode = sortedPickLocation.ProductBarcode,
+                    ProductName = sortedPickLocation.ProductName,
+                    ProductImage = sortedPickLocation.ProductImage,
+                    PickQuantity = sortedPickLocation.PickQuantity,
+                    OnHandQuantity = sortedPickLocation.OnHandQuantity
+                };
+                //
+
                 int containsThis = 0;
 
                 if (mergedLocations.Count != 0)
                 {
                     for (var i = 0; i < mergedLocations.Count; i++)
                     {
-                        if (sortedPickLocation.ProductID == mergedLocations[i].ProductID && sortedPickLocation.LocationBarcode == mergedLocations[i].LocationBarcode)
+                        if (newdtoPickLocation.ProductID == mergedLocations[i].ProductID && newdtoPickLocation.LocationBarcode == mergedLocations[i].LocationBarcode)
                         {
                             containsThis = i;
                         }
                     }
                     if (containsThis != 0)
                     {
-                        mergedLocations[containsThis].PickQuantity += sortedPickLocation.PickQuantity;
+                        mergedLocations[containsThis].PickQuantity += newdtoPickLocation.PickQuantity;
                     }
                     else
                     {
-                        mergedLocations.Add(sortedPickLocation);
+                        mergedLocations.Add(newdtoPickLocation);
                     }
                 }
                 else
                 {
-                    mergedLocations.Add(sortedPickLocation);
+                    mergedLocations.Add(newdtoPickLocation);
                 }
             }
 
             return Json(new { booleanError = false, msg = orders.Count + " orders to pick", sortedPickLocations, mergedLocations, itemsToPick, ordersToPick });
+        }
+
+        public async Task<JsonResult> GetTotes(int orderID)
+        {
+            if (orderID == 0)
+            {
+                return Json(new { booleanError = true, msg = "No orderID was received" });
+            }
+
+            var totes = await _context.Totes
+                .AsNoTracking().ToListAsync();
+
+            return Json(new { booleanError = false, totes });
+
         }
     }
 }

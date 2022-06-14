@@ -42,6 +42,10 @@ namespace LagerPlayground.Data
             modelBuilder.Entity<Picking_Info>()
                 .Property(x => x.Completed)
                 .HasDefaultValue(false);
+
+            modelBuilder.Entity<Tote>()
+                .Property(x => x.InUse)
+                .HasDefaultValue(false);
         }
     }
 }

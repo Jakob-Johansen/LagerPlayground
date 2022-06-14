@@ -129,6 +129,7 @@ namespace LagerPlayground.Controllers
                     Name = toteName + "-" + toteNumber,
                     Barcode = "T-" + toteNumber.ToString("D15"),
                     Number = toteNumber,
+                    InUse = false,
                     Created = DateTime.Now
                 });
 
