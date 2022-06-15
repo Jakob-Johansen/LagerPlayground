@@ -364,7 +364,7 @@
     }
 
         //-Add pick location to html
-    function AddPickLocationToHtml(mergedLocations) {
+    function AddPickLocationsToHtml(mergedLocations) {
         for (var i = 0; i < mergedLocations.length; i++) {
             let productImage;
 
@@ -479,13 +479,15 @@
             data: { numberOfOrders: batchAmount },
             success: function (result) {
                 if (result.booleanError == false) {
-                    AddPickLocationToHtml(result.mergedLocations);
-                    
+                    AddPickLocationsToHtml(result.mergedLocations);
+                    console.log(result.sortedPickLocations);
+                    console.log(result.mergedLocations);
+
                     //-Testing
                     barcodeToScan = result.sortedPickLocations[0].productBarcode;
                     orderToPickList = result.sortedPickLocations;
                     currentOrderToPick = orderToPickList[0];
-                    console.log(currentOrderToPick);
+                    //console.log(currentOrderToPick);
 
                     $(".pickSite-itemsToPick-footer-orders-span").text(result.ordersToPick);
                     $(".pickSite-itemsToPick-footer-items-span").text(result.itemsToPick);
@@ -521,6 +523,8 @@
             success: function (result) {
                 if (result.booleanError == false) {
                     console.log("Success!")
+
+
                     // HUSK LOADING
                 }
                 else {
