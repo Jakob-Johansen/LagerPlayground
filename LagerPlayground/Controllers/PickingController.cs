@@ -125,7 +125,7 @@ namespace LagerPlayground.Controllers
             var sortedPickLocations = dtoPickLocations.OrderBy(x => x.LocationBarcode).ToList();
             
             List<DTOPickLocation> mergedLocations = new();
-
+            int containsThis = 0;
             foreach (var sortedPickLocation in sortedPickLocations)
             {
                 //-Until i find a better solution
@@ -142,9 +142,9 @@ namespace LagerPlayground.Controllers
                 };
                 //
 
-                int containsThis = 0;
+                containsThis = 0;
 
-                if (mergedLocations.Count != 0)
+                if (mergedLocations.Count != 0 || mergedLocations != null)
                 {
                     for (var i = 0; i < mergedLocations.Count; i++)
                     {
@@ -153,6 +153,7 @@ namespace LagerPlayground.Controllers
                             containsThis = i;
                         }
                     }
+
                     if (containsThis != 0)
                     {
                         mergedLocations[containsThis].PickQuantity += newdtoPickLocation.PickQuantity;
@@ -179,7 +180,13 @@ namespace LagerPlayground.Controllers
             }
 
             var totes = await _context.Totes
+                .Where(x => x.InUse == false)
                 .AsNoTracking().ToListAsync();
+
+            if (totes.Count == 0)
+            {
+                return Json(new { booleanError = true, msg = "No totes where found" });
+            }
 
             return Json(new { booleanError = false, totes });
 
