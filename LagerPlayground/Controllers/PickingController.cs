@@ -125,7 +125,6 @@ namespace LagerPlayground.Controllers
             var sortedPickLocations = dtoPickLocations.OrderBy(x => x.LocationBarcode).ToList();
             
             List<DTOPickLocation> mergedLocations = new();
-            int containsThis = 0;
             foreach (var sortedPickLocation in sortedPickLocations)
             {
                 //-Until i find a better solution
@@ -142,21 +141,22 @@ namespace LagerPlayground.Controllers
                 };
                 //
 
-                containsThis = 0;
+                int? containsThis = null;
 
-                if (mergedLocations.Count != 0 || mergedLocations != null)
+                if (mergedLocations.Count != 0)
                 {
                     for (var i = 0; i < mergedLocations.Count; i++)
                     {
                         if (newdtoPickLocation.ProductID == mergedLocations[i].ProductID && newdtoPickLocation.LocationBarcode == mergedLocations[i].LocationBarcode)
                         {
                             containsThis = i;
+                            break;
                         }
                     }
 
-                    if (containsThis != 0)
+                    if (containsThis != null)
                     {
-                        mergedLocations[containsThis].PickQuantity += newdtoPickLocation.PickQuantity;
+                        mergedLocations[(int)containsThis].PickQuantity += newdtoPickLocation.PickQuantity;
                     }
                     else
                     {

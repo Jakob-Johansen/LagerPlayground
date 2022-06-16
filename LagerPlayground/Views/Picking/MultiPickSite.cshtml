@@ -480,8 +480,6 @@
             success: function (result) {
                 if (result.booleanError == false) {
                     AddPickLocationsToHtml(result.mergedLocations);
-                    console.log(result.sortedPickLocations);
-                    console.log(result.mergedLocations);
 
                     //-Testing
                     barcodeToScan = result.sortedPickLocations[0].productBarcode;
