@@ -172,13 +172,8 @@ namespace LagerPlayground.Controllers
             return Json(new { booleanError = false, msg = orders.Count + " orders to pick", sortedPickLocations, mergedLocations, itemsToPick, ordersToPick });
         }
 
-        public async Task<JsonResult> GetTotes(int orderID)
+        public async Task<JsonResult> GetAllTotes()
         {
-            if (orderID == 0)
-            {
-                return Json(new { booleanError = true, msg = "No orderID was received" });
-            }
-
             var totes = await _context.Totes
                 .Where(x => x.InUse == false)
                 .AsNoTracking().ToListAsync();
@@ -190,6 +185,25 @@ namespace LagerPlayground.Controllers
 
             return Json(new { booleanError = false, totes });
 
+        }
+
+        public async Task<JsonResult> GetTote(string scannedBarcode)
+        {
+
+            if (scannedBarcode == null || scannedBarcode.Trim() == "")
+            {
+                return Json(new { booleanError = true, msg = "No barcode was scanned, try again" });
+            }
+
+            var tote = await _context.Totes
+                .AsNoTracking().FirstOrDefaultAsync(x => x.Barcode == scannedBarcode);
+
+            if (tote == null)
+            {
+                return Json(new { booleanError = true, msg = "No tote white the scanned barcode was found, try again" });
+            }
+
+            return Json(new { booleanError = false, tote });
         }
     }
 }
