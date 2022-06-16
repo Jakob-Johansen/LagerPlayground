@@ -96,7 +96,7 @@
         </div>
         <div class="pickSite-selectTote-container">
 
-            <div class="pickSite-selectTote-tote-overall-container">
+@*            <div class="pickSite-selectTote-tote-overall-container">
                 <div class="pickSite-selectTote-tote-container">
                     <div class="pickSite-selectTote-tote-icon-container">
                         <span class="material-icons pickSite-selectTote-tote-icon">inventory_2</span>
@@ -106,7 +106,7 @@
                         <p class="trim pickSite-selectTote-tote-barcode">Barcode 250947278</p>
                     </div>
                 </div>
-            </div>
+            </div>*@
 
         </div>
     </div>
@@ -120,8 +120,8 @@
         </div>
 
         <div class="pickSite-pickIntoTote-info-top-container">
-            <p class="trim pickSite-pickIntoTote-info-name">WIRELESS BARCODE SCANNER</p>
-            <p class="trim pickSite-pickIntoTote-info-barcode"><b>SKU</b> <span class="pickSite-pickIntoTote-info-barcode-span">K50874</span></p>
+            <p class="trim pickSite-pickIntoTote-info-name">PLACEHOLDER</p>
+            <p class="trim pickSite-pickIntoTote-info-barcode"><b>SKU</b> <span class="pickSite-pickIntoTote-info-barcode-span">PLACEHOLDER</span></p>
 
             <div class="pickSite-pickIntoTote-info-image-container">
                 <img class="pickSite-pickIntoTote-info-image" src="~/Images/Placeholders/Placeholder.jpg" />
@@ -130,13 +130,13 @@
 
         <div class="pickSite-pickIntoTote-quantity-overall-container">
             <div class="pickSite-pickIntoTote-quantity-info-container">
-                <p class="trim pickSite-pickIntoTote-quantity-info-headline"><span class="pickSite-pickIntoTote-quantity-info-headline-number">1</span> more required</p>
-                <p class="trim pickSite-pickIntoTote-quantity-info-headline-position-barcode">from <span class="pickSite-pickIntoTote-quantity-info-headline--position-barcode-span">A-01-01-01</span></p>
+                <p class="trim pickSite-pickIntoTote-quantity-info-headline"><span class="pickSite-pickIntoTote-quantity-info-headline-number">0</span> more required</p>
+                <p class="trim pickSite-pickIntoTote-quantity-info-headline-position-barcode">from <span class="pickSite-pickIntoTote-quantity-info-headline-position-barcode-span">PLACEHOLDER</span></p>
                 <p class="trim pickSite-pickIntoTote-quantity-info-underheadline">How many are you picking?</p>
 
                 <div class="pickSite-pickIntoTote-quantity-container">
                     <span class="material-icons pickSite-pickIntoTote-quantity-btn-remove">remove</span>
-                    <input type="number" class="pickSite-pickIntoTote-quantity-input" placeholder="1" value="1" />
+                    <input type="number" class="pickSite-pickIntoTote-quantity-input" placeholder="1" value="0" />
                     <span class="material-icons pickSite-pickIntoTote-quantity-btn-add">add</span>
                 </div>
             </div>
@@ -148,7 +148,7 @@
 
         <div class="pickSite-pickIntoTote-info-bottom-container">
             <p class="trim pickSite-pickIntoTote-info-text">Put picked items in</p>
-            <p class="trim pickSite-pickIntoTote-info-toteName">Tote-52982</p>
+            <p class="trim pickSite-pickIntoTote-info-toteName">PLACEHOLDER</p>
 
             <div class="pickSite-pickIntoTote-info-confirm-btn-container">
                 <a class="pickSite-pickIntoTote-info-confirm-btn">Confirm</a>
@@ -199,7 +199,7 @@
     let orderToPickList = [];
 
     let currentOrderToPick;
-    let selectedTote = "";
+    let selectedTote;
 
     let pickToteAmountIsRunning = true;
     let itemsToPickIsRunning = false;
@@ -252,17 +252,14 @@
 
         //-Click On Item
     $(document).on("click", ".pickSite-itemsToPick-item-overall-container", function () {
-        // TEST
-        itemsToPickIsRunning = false;
-        toteToPickIsRunning = true;
-
-        itemsToPickOverlay.css("display", "none");
-        pickOrScanToteOverlay.css("display", "block");
+        ValidateScannedBarcode(currentBarcode);
     });
 
     // Pick Or Scan Tote
         //-Click Back Btn
     pickOrScanToteBtnBack.click(function () {
+        $(".pickSite-selectTote-container").remove();
+
         // TEST
         toteToPickIsRunning = false;
         itemsToPickIsRunning = true;
@@ -301,6 +298,9 @@
         //-Click Confirm Btn
     pickIntoToteBtnConfirm.click(function() {
         // TEST
+        selectedTote = null;
+        PickIntoToteEditHtml(true);
+
         pickIntoToteIsRunning = false;
         itemsToPickIsRunning = true;
 
@@ -312,6 +312,9 @@
         //-Click Back Btn
     pickIntoToteBtnBack.click(function () {
         // TEST
+        selectedTote = null;
+        PickIntoToteEditHtml(true);
+
         pickIntoToteIsRunning = false;
         toteToPickIsRunning = true;
 
@@ -407,26 +410,88 @@
         }
     }
     
+    function AddTotesToHtml(allTotes) {
+        // Måske add en data id og barcode
+        for (var i = 0; i < allTotes.length; i++) {
+            $(".pickSite-selectTote-container").append(
+            `
+            <div class="pickSite-selectTote-tote-overall-container">
+                <div class="pickSite-selectTote-tote-container">
+                    <div class="pickSite-selectTote-tote-icon-container">
+                        <span class="material-icons pickSite-selectTote-tote-icon">inventory_2</span>
+                    </div>
+                    <div class="pickSite-selectTote-tote-text-container">
+                        <p class="trim pickSite-selectTote-tote-text-name">${allTotes[i].name}</p>
+                        <p class="trim pickSite-selectTote-tote-barcode">Barcode <span class="pickSite-selectTote-tote-barcode-span">${allTotes[i].barcode}</span></p>
+                    </div>
+                </div>
+            </div>
+            `
+            );
+        }
+
+        // TEST
+        itemsToPickIsRunning = false;
+        toteToPickIsRunning = true;
+        itemsToPickOverlay.css("display", "none");
+        pickOrScanToteOverlay.css("display", "block");
+    }
+
         //-Validate scanned barcode
     function ValidateScannedBarcode(scannedBarcode) {
         if (scannedBarcode == barcodeToScan) {
-            console.log(scannedBarcode);
-
-            GetTotes(currentOrderToPick.order_DetailsID);
-
-            // TEST
-            itemsToPickIsRunning = false;
-            toteToPickIsRunning = true;
-            itemsToPickOverlay.css("display", "none");
-            pickOrScanToteOverlay.css("display", "block");
+            GetAllTotesAjax();
         }
         else {
             alert("Wrong product scanned!");
         }
     }
 
+        //-Edit Pick Into Tote html (default can be true or false)
+    function PickIntoToteEditHtml(selectDefault) {
+        let productName;
+        let productBarcode;
+        let productLocation;
+        let productImage = "/Images/Placeholders/Placeholder.jpg";
+        let toteName;
+        let pickrequired;
+        let pickInput;
+        let orderID;
+
+        if (selectDefault == true) {
+            productName = "PLACEHOLDER";
+            productBarcode = "PLACEHOLDER";
+            productLocation = "PLACEHOLDER";
+            toteName = "PLACEHOLDER";
+            pickrequired = "0";
+            pickInput = "0";
+            orderID = "0";
+        }
+        else {
+            productName = currentOrderToPick.productName;
+            productBarcode = currentOrderToPick.productBarcode;
+            productLocation = currentOrderToPick.locationBarcode;
+            toteName = selectedTote.name;
+            pickrequired = currentOrderToPick.pickQuantity;
+            pickInput = "1";
+            orderID = currentOrderToPick.order_DetailsID;
+
+            if (currentOrderToPick.productImage != null) {
+                productImage = "/Images/Products/" + currentOrderToPick.productImage;
+            }
+        }
+
+        $(".pickSite-pickIntoTote-info-name").text(productName);
+        $(".pickSite-pickIntoTote-info-barcode-span").text(productBarcode);
+        $(".pickSite-pickIntoTote-quantity-info-headline-number").text(pickrequired);
+        $(".pickSite-pickIntoTote-quantity-info-headline-position-barcode-span").text(productLocation);
+        $(".pickSite-pickIntoTote-quantity-input").val(pickInput);
+        $(".pickSite-pickIntoTote-info-toteName").text(toteName);
+        $(".pickSite-pickIntoTote-info-orderNumber-span").text(orderID);
+    }
+
     // Scanner Fucntions
-        // Scanner event and functions
+        //-Scanner event and functions
     document.addEventListener("keydown", function (evt) {
         if (interval) {
             clearInterval(interval);
@@ -450,18 +515,27 @@
 
         if (scanned_barcode.length >= 1) {
             if (pickToteAmountIsRunning != true) {
+                lastScannedBarcode = currentBarcode;
                 currentBarcode = scanned_barcode;
 
                 if (itemsToPickIsRunning) {
                     ValidateScannedBarcode(currentBarcode);
+                    //console.log("itemsToPickIsRunning = true");
                 }
 
                 if (toteToPickIsRunning) {
-                    console.log("toteToPickIsRunning = true");
+                    GetToteAjax(currentBarcode);
+                    //console.log("toteToPickIsRunning = true");
                 }
 
                 if (pickIntoToteIsRunning) {
-                    console.log("pickIntoToteIsRunning = true");
+                    if (currentBarcode == currentOrderToPick.productBarcode) {
+                        console.log("YES!");
+                    }
+                    else {
+                        console.log("NO!");
+                    }
+                    //console.log("pickIntoToteIsRunning = true");
                 }
             }
             else {
@@ -513,17 +587,49 @@
     }
 
         //-Get Totes
-        function GetTotes(orderID) {
+    function GetAllTotesAjax() {
         $.ajax({
             type: "GET",
-            url: "/Picking/GetTotes",
-            data: { orderID: orderID },
+            url: "/Picking/GetAllTotes",
             success: function (result) {
                 if (result.booleanError == false) {
-                    console.log("Success!")
+                    // HUSK LOADING
+                    AddTotesToHtml(result.totes);
+                }
+                else {
+                    console.log(result.msg);
+                    alert(result.msg);
+                }
+            },
+            error: function (req, status, error) {
+                console.log(status);
+                console.log(req);
+                console.log(error);
+                alert(status);
+            }
+        });
+    }
 
+        //-CheckTote
+    function GetToteAjax(scanned_barcode) {
+        $.ajax({
+            type: "GET",
+            url: "/Picking/GetTote",
+            data: { scannedBarcode: scanned_barcode },
+            success: function (result) {
+                if (result.booleanError == false) {
+                    selectedTote = result.tote;
+                    console.log(selectedTote);
 
                     // HUSK LOADING
+
+                    PickIntoToteEditHtml(false);
+
+                    //-Testing
+                    toteToPickIsRunning = false;
+                    pickIntoToteIsRunning = true;
+                    pickOrScanToteOverlay.css("display", "none");
+                    pickIntoToteOverlay.css("display", "block");
                 }
                 else {
                     console.log(result.msg);
