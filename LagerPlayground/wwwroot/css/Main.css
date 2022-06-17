@@ -3323,6 +3323,7 @@ Firefox
     overflow: hidden;
     border-radius: 3px;
     user-select: none;
+    background-color: white;
 }
 
 .pickSite-pickIntoTote-quantity-overall-container {
@@ -3419,12 +3420,12 @@ Firefox
 
 .pickSite-pickIntoTote-info-text, .pickSite-pickIntoTote-info-toteName {
     text-align: center;
-    font-size: 17px;
+    font-size: 18px;
 }
 
 .pickSite-pickIntoTote-info-toteName {
     color: white !important;
-    font-size: 20px;
+    font-size: 23px;
 }
 
 .pickSite-pickIntoTote-info-confirm-btn-container {
