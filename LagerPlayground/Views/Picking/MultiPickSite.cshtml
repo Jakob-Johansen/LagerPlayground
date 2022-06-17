@@ -251,8 +251,12 @@
     });
 
         //-Click On Item
-    $(document).on("click", ".pickSite-itemsToPick-item-overall-container", function () {
-        ValidateScannedBarcode(currentBarcode);
+    $(document).on("click", ".productToPick", function () {
+        let dataBarcode = $(this).data("producttopickbarcode"); 
+        if (dataBarcode == barcodeToScan) {
+            console.log("PICK!");
+            ValidateScannedBarcode(dataBarcode);
+        }
     });
 
     // Pick Or Scan Tote
@@ -271,12 +275,15 @@
 
         //-Click On Tote
     $(document).on("click", ".pickSite-selectTote-tote-container", function () {
-        //TEST
-        toteToPickIsRunning = false;
-        pickIntoToteIsRunning = true;
+        console.log();
+        GetToteAjax($(this).data("totebarcode"));
 
-        pickOrScanToteOverlay.css("display", "none");
-        pickIntoToteOverlay.css("display", "block");
+        //TEST
+        //toteToPickIsRunning = false;
+        //pickIntoToteIsRunning = true;
+
+        //pickOrScanToteOverlay.css("display", "none");
+        //pickIntoToteOverlay.css("display", "block");
     });
 
     // Pick Into Tote
@@ -378,9 +385,15 @@
                 productImage = "Products/" + mergedLocations[i].productImage;
             }
 
+            let productToPickClass = "";
+
+            if (i == 0) {
+                productToPickClass = " productToPick";
+            }
+
             $(".pickSite-itemsToPick-container").append(
             `
-            <div class="pickSite-itemsToPick-item-overall-container">
+            <div class="pickSite-itemsToPick-item-overall-container${productToPickClass}" data-producttopickbarcode="${mergedLocations[i].productBarcode}">
                 <div class="pickSite-itemsToPick-item-picknumber-container">
                     <p class="trim pickSite-itemsToPick-item-picknumber-text">Pick</p>
                     <p class="trim pickSite-itemsToPick-item-picknumber-number">${mergedLocations[i].pickQuantity}</p>
@@ -416,7 +429,7 @@
             $(".pickSite-selectTote-container").append(
             `
             <div class="pickSite-selectTote-tote-overall-container">
-                <div class="pickSite-selectTote-tote-container">
+                <div class="pickSite-selectTote-tote-container" data-totebarcode="${allTotes[i].barcode}">
                     <div class="pickSite-selectTote-tote-icon-container">
                         <span class="material-icons pickSite-selectTote-tote-icon">inventory_2</span>
                     </div>
