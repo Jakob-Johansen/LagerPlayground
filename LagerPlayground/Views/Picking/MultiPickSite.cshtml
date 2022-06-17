@@ -130,13 +130,13 @@
 
         <div class="pickSite-pickIntoTote-quantity-overall-container">
             <div class="pickSite-pickIntoTote-quantity-info-container">
-                <p class="trim pickSite-pickIntoTote-quantity-info-headline"><span class="pickSite-pickIntoTote-quantity-info-headline-number">0</span> more required</p>
+                <p class="trim pickSite-pickIntoTote-quantity-info-headline">Pick <span class="pickSite-pickIntoTote-quantity-info-headline-number">0</span> Units</p>
                 <p class="trim pickSite-pickIntoTote-quantity-info-headline-position-barcode">from <span class="pickSite-pickIntoTote-quantity-info-headline-position-barcode-span">PLACEHOLDER</span></p>
                 <p class="trim pickSite-pickIntoTote-quantity-info-underheadline">How many are you picking?</p>
 
                 <div class="pickSite-pickIntoTote-quantity-container">
                     <span class="material-icons pickSite-pickIntoTote-quantity-btn-remove">remove</span>
-                    <input type="number" class="pickSite-pickIntoTote-quantity-input" placeholder="1" value="0" />
+                    <input type="number" class="pickSite-pickIntoTote-quantity-input" placeholder="0" value="0" />
                     <span class="material-icons pickSite-pickIntoTote-quantity-btn-add">add</span>
                 </div>
             </div>
@@ -201,6 +201,8 @@
     let currentOrderToPick;
     let selectedTote;
 
+    let numberToPick = 0;
+
     let pickToteAmountIsRunning = true;
     let itemsToPickIsRunning = false;
     let toteToPickIsRunning = false;
@@ -254,7 +256,6 @@
     $(document).on("click", ".productToPick", function () {
         let dataBarcode = $(this).data("producttopickbarcode"); 
         if (dataBarcode == barcodeToScan) {
-            console.log("PICK!");
             ValidateScannedBarcode(dataBarcode);
         }
     });
@@ -275,26 +276,18 @@
 
         //-Click On Tote
     $(document).on("click", ".pickSite-selectTote-tote-container", function () {
-        console.log();
         GetToteAjax($(this).data("totebarcode"));
-
-        //TEST
-        //toteToPickIsRunning = false;
-        //pickIntoToteIsRunning = true;
-
-        //pickOrScanToteOverlay.css("display", "none");
-        //pickIntoToteOverlay.css("display", "block");
     });
 
     // Pick Into Tote
         //-Click Add Btn
     pickIntoToteBtnAdd.click(function() {
-        AddOrRemove(true, pickIntoToteInput);
+        AddOrRemovePickIntoTote(true);
     });
 
         //-Click Remove Btn
     pickIntoToteBtnRemove.click(function() {
-        AddOrRemove(false, pickIntoToteInput);
+        AddOrRemovePickIntoTote(false);
     });
 
         //-On Input
@@ -305,6 +298,7 @@
         //-Click Confirm Btn
     pickIntoToteBtnConfirm.click(function() {
         // TEST
+        numberToPick = 0;
         selectedTote = null;
         PickIntoToteEditHtml(true);
 
@@ -319,6 +313,7 @@
         //-Click Back Btn
     pickIntoToteBtnBack.click(function () {
         // TEST
+        numberToPick = 0
         selectedTote = null;
         PickIntoToteEditHtml(true);
 
@@ -467,8 +462,7 @@
         let productLocation;
         let productImage = "/Images/Placeholders/Placeholder.jpg";
         let toteName;
-        let pickrequired;
-        let pickInput;
+        let pickInput = 0;
         let orderID;
 
         if (selectDefault == true) {
@@ -476,8 +470,7 @@
             productBarcode = "PLACEHOLDER";
             productLocation = "PLACEHOLDER";
             toteName = "PLACEHOLDER";
-            pickrequired = "0";
-            pickInput = "0";
+            numberToPick = "0";
             orderID = "0";
         }
         else {
@@ -485,8 +478,7 @@
             productBarcode = currentOrderToPick.productBarcode;
             productLocation = currentOrderToPick.locationBarcode;
             toteName = selectedTote.name;
-            pickrequired = currentOrderToPick.pickQuantity;
-            pickInput = "1";
+            numberToPick = currentOrderToPick.pickQuantity;
             orderID = currentOrderToPick.order_DetailsID;
 
             if (currentOrderToPick.productImage != null) {
@@ -494,13 +486,64 @@
             }
         }
 
+        $(".pickSite-pickIntoTote-info-image").attr("src", productImage);
         $(".pickSite-pickIntoTote-info-name").text(productName);
         $(".pickSite-pickIntoTote-info-barcode-span").text(productBarcode);
-        $(".pickSite-pickIntoTote-quantity-info-headline-number").text(pickrequired);
+        $(".pickSite-pickIntoTote-quantity-info-headline-number").text(numberToPick);
         $(".pickSite-pickIntoTote-quantity-info-headline-position-barcode-span").text(productLocation);
         $(".pickSite-pickIntoTote-quantity-input").val(pickInput);
         $(".pickSite-pickIntoTote-info-toteName").text(toteName);
         $(".pickSite-pickIntoTote-info-orderNumber-span").text(orderID);
+    }
+
+        //-Scan Product Into Tote
+    function ScanAddQuantityPickIntoTote() {
+        let seclectedInput = $(".pickSite-pickIntoTote-quantity-input");
+        let parsedInput = parseInt(seclectedInput.val());
+
+        if (CheckForNumber(parsedInput)) {
+            if (parsedInput < currentOrderToPick.pickQuantity) {
+                seclectedInput.val(parsedInput + 1);
+                NumberToPickAddOrSub(true);
+            }
+        }
+        else {
+            seclectedInput.val("1");
+        }
+    }
+
+            //-Add Or Remove Pick Into Tote (true is add, false is remove)
+    function AddOrRemovePickIntoTote(bool) {
+        let selectedInput = $(".pickSite-pickIntoTote-quantity-input");
+        let parsedInput = parseInt(selectedInput.val());
+
+        if (CheckForNumber(parsedInput)) {
+            if (bool == true && parsedInput < currentOrderToPick.pickQuantity) {
+                selectedInput.val(parsedInput + 1);
+                NumberToPickAddOrSub(true);
+            }
+
+            if (bool == false && parsedInput > 0) {
+                selectedInput.val(parsedInput - 1);
+                NumberToPickAddOrSub(false);
+            }
+        }
+        else {
+            selectedInput.val("1");
+        }
+    }
+
+        //-Used for AddOrRemovePickIntoTote and ScanAddQuantityPickIntoTote
+    function NumberToPickAddOrSub(bool) {
+        if (bool == true && numberToPick > 0) {
+            numberToPick--;
+        }
+
+        if (bool == false && numberToPick < currentOrderToPick.pickQuantity) {
+            numberToPick++;
+        }
+
+        $(".pickSite-pickIntoTote-quantity-info-headline-number").text(numberToPick);
     }
 
     // Scanner Fucntions
@@ -543,10 +586,10 @@
 
                 if (pickIntoToteIsRunning) {
                     if (currentBarcode == currentOrderToPick.productBarcode) {
-                        console.log("YES!");
+                        ScanAddQuantityPickIntoTote();
                     }
                     else {
-                        console.log("NO!");
+                        alert("Wrong product scanned!");
                     }
                     //console.log("pickIntoToteIsRunning = true");
                 }
