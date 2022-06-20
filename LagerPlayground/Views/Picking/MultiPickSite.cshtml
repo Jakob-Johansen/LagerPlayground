@@ -1,4 +1,12 @@
-﻿
+﻿@inject Microsoft.AspNetCore.Antiforgery.IAntiforgery Xsrf
+
+@functions {
+    public string GetAntiXsrfRequestToken()
+    {
+        return Xsrf.GetAndStoreTokens(Context).RequestToken;
+    }
+}
+
 @{
     ViewData["Title"] = "Multi Pick";
 }
@@ -301,20 +309,8 @@
         //HERE
 
         let parsedInputQuantity = parseInt($(".pickSite-pickIntoTote-quantity-input").val());
-
         if (CheckForNumber(parsedInputQuantity) && parsedInputQuantity != 0) {
-            //AddToTote();
-            // TEST
-            numberToPick = 0;
-            selectedTote = null;
-            PickIntoToteEditHtml(true);
-
-            pickIntoToteIsRunning = false;
-            itemsToPickIsRunning = true;
-
-            console.log("Confirm");
-            pickIntoToteOverlay.css("display", "none");
-            itemsToPickOverlay.css("display", "block");
+            AddToTote(parsedInputQuantity);
         }
         else {
             alert("Your pick quantity can't be 0 or NULL");
@@ -713,29 +709,27 @@
     }
 
         //-AddToTote
-    function AddToTote() {
-        //if () {
-
-        //}
-
+    function AddToTote(inputQuantity) {
         $.ajax({
-            type: "GET",
+            type: "POST",
             url: "/Picking/AddToTote",
-            data: { orderID: 0, pickedQuantity: 0 },
+            headers: { "RequestVerificationToken": "@GetAntiXsrfRequestToken()" },
+            data: { orderID: currentOrderToPick.order_DetailsID, itemID: currentOrderToPick.productID, pickedQuantity: inputQuantity},
             success: function (result) {
                 if (result.booleanError == false) {
-                    selectedTote = result.tote;
-                    console.log(selectedTote);
+                    console.log("Success");
 
-                    // HUSK LOADING
+                    // TEST
+                    numberToPick = 0;
+                    selectedTote = null;
+                    PickIntoToteEditHtml(true);
 
-                    PickIntoToteEditHtml(false);
+                    pickIntoToteIsRunning = false;
+                    itemsToPickIsRunning = true;
 
-                    //-Testing
-                    toteToPickIsRunning = false;
-                    pickIntoToteIsRunning = true;
-                    pickOrScanToteOverlay.css("display", "none");
-                    pickIntoToteOverlay.css("display", "block");
+                    console.log("Confirm");
+                    pickIntoToteOverlay.css("display", "none");
+                    itemsToPickOverlay.css("display", "block");
                 }
                 else {
                     console.log(result.msg);
