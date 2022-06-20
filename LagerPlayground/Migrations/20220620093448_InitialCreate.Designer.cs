@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace LagerPlayground.Migrations
 {
     [DbContext(typeof(Context))]
-    [Migration("20220614100504_InitialCreate")]
+    [Migration("20220620093448_InitialCreate")]
     partial class InitialCreate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)

@@ -54,6 +54,40 @@ namespace LagerPlayground.Models.SeedData
                 }
             );
 
+            context.ReceiveRejectedReasons.AddRange(
+                new ReceiveRejectedReasons
+                {
+                    Reason = "Damaged",
+                    Created = DateTime.Now
+                },
+
+                new ReceiveRejectedReasons
+                {
+                    Reason = "Water Damage",
+                    Created = DateTime.Now
+                },
+
+                new ReceiveRejectedReasons
+                {
+                    Reason = "Wrong Color",
+                    Created = DateTime.Now
+                },
+
+                new ReceiveRejectedReasons
+                {
+                    Reason = "Dirty",
+                    Created = DateTime.Now
+                },
+
+                new ReceiveRejectedReasons
+                {
+                    Reason = "Other",
+                    Created = DateTime.Now
+                }
+            );
+
+            //-Test
+
             //context.Locations.Add(
             //    new Locations
             //    {
@@ -268,7 +302,7 @@ namespace LagerPlayground.Models.SeedData
             //        LocationBarcode = "Receiving-Station",
             //        Created = DateTime.Now
             //    },
-                
+
             //    new Product_Locations
             //    {
             //        Locations_PositionsID = null,
@@ -279,46 +313,14 @@ namespace LagerPlayground.Models.SeedData
             //    },
 
             //     new Product_Locations
-            //    {
-            //        Locations_PositionsID = null,
-            //        ProductID = 3,
-            //        Quantity = 1000,
-            //        LocationBarcode = "Receiving-Station",
-            //        Created = DateTime.Now
-            //    }
+            //     {
+            //         Locations_PositionsID = null,
+            //         ProductID = 3,
+            //         Quantity = 1000,
+            //         LocationBarcode = "Receiving-Station",
+            //         Created = DateTime.Now
+            //     }
             //);
-
-            context.ReceiveRejectedReasons.AddRange(
-                new ReceiveRejectedReasons
-                {
-                    Reason = "Damaged",
-                    Created = DateTime.Now
-                },
-
-                new ReceiveRejectedReasons
-                {
-                    Reason = "Water Damage",
-                    Created = DateTime.Now
-                },
-
-                new ReceiveRejectedReasons
-                {
-                    Reason = "Wrong Color",
-                    Created = DateTime.Now
-                },
-
-                new ReceiveRejectedReasons
-                {
-                    Reason = "Dirty",
-                    Created = DateTime.Now
-                },
-
-                new ReceiveRejectedReasons
-                {
-                    Reason = "Other",
-                    Created = DateTime.Now
-                }
-            );
 
             context.SaveChanges();
         }

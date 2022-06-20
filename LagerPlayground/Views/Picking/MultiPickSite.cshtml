@@ -297,17 +297,28 @@
 
         //-Click Confirm Btn
     pickIntoToteBtnConfirm.click(function() {
-        // TEST
-        numberToPick = 0;
-        selectedTote = null;
-        PickIntoToteEditHtml(true);
 
-        pickIntoToteIsRunning = false;
-        itemsToPickIsRunning = true;
+        //HERE
 
-        console.log("Confirm");
-        pickIntoToteOverlay.css("display", "none");
-        itemsToPickOverlay.css("display", "block");
+        let parsedInputQuantity = parseInt($(".pickSite-pickIntoTote-quantity-input").val());
+
+        if (CheckForNumber(parsedInputQuantity) && parsedInputQuantity != 0) {
+            //AddToTote();
+            // TEST
+            numberToPick = 0;
+            selectedTote = null;
+            PickIntoToteEditHtml(true);
+
+            pickIntoToteIsRunning = false;
+            itemsToPickIsRunning = true;
+
+            console.log("Confirm");
+            pickIntoToteOverlay.css("display", "none");
+            itemsToPickOverlay.css("display", "block");
+        }
+        else {
+            alert("Your pick quantity can't be 0 or NULL");
+        }
     });
 
         //-Click Back Btn
@@ -546,7 +557,7 @@
         $(".pickSite-pickIntoTote-quantity-info-headline-number").text(numberToPick);
     }
 
-    // Scanner Fucntions
+    // Scanner Functions
         //-Scanner event and functions
     document.addEventListener("keydown", function (evt) {
         if (interval) {
@@ -701,5 +712,43 @@
         });
     }
 
+        //-AddToTote
+    function AddToTote() {
+        //if () {
+
+        //}
+
+        $.ajax({
+            type: "GET",
+            url: "/Picking/AddToTote",
+            data: { orderID: 0, pickedQuantity: 0 },
+            success: function (result) {
+                if (result.booleanError == false) {
+                    selectedTote = result.tote;
+                    console.log(selectedTote);
+
+                    // HUSK LOADING
+
+                    PickIntoToteEditHtml(false);
+
+                    //-Testing
+                    toteToPickIsRunning = false;
+                    pickIntoToteIsRunning = true;
+                    pickOrScanToteOverlay.css("display", "none");
+                    pickIntoToteOverlay.css("display", "block");
+                }
+                else {
+                    console.log(result.msg);
+                    alert(result.msg);
+                }
+            },
+            error: function (req, status, error) {
+                console.log(status);
+                console.log(req);
+                console.log(error);
+                alert(status);
+            }
+        });
+    }
 </script>
 }
