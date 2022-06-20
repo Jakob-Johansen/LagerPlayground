@@ -205,5 +205,47 @@ namespace LagerPlayground.Controllers
 
             return Json(new { booleanError = false, tote });
         }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<JsonResult> AddToTote(int? orderID, int? itemID, int? pickedQuantity, string toteBarcode)
+        {
+            if (orderID == 0 || orderID == null)
+            {
+                return Json(new { booleanError = true, msg = "No Order ID was found" });
+            }
+
+            if (itemID == 0 || itemID == null)
+            {
+                return Json(new { booleanError = true, msg = "No Product ID was found" });
+            }
+
+            if (pickedQuantity == 0 || pickedQuantity == null)
+            {
+                return Json(new { booleanError = true, msg = "Picked quantity can't be 0 or NULL" });
+            }
+
+            var order = await _context.Order_Details
+                .Include(x => x.Order_Items)
+                    .ThenInclude(x => x.Product)
+               .FirstOrDefaultAsync(x => x.ID == orderID);
+
+            if (order == null)
+            {
+                return Json(new { booleanError = true, msg = "No Order was found" });
+            }
+
+            var tote = await _context.Totes
+                .FirstOrDefaultAsync(x => x.Barcode == toteBarcode);
+
+            if (tote == null)
+            {
+                return Json(new { booleanError = true, msg = "No Tote with the scanned barcode was found" });
+            }
+
+
+
+            return Json(new { booleanError = false });
+        }
     }
 }
