@@ -3334,7 +3334,7 @@ Firefox
     position: absolute;
     width: 280px;
     height: 160px;
-    background-color: rgba(39, 41, 43, 0.97);
+    background-color: rgba(20, 20, 20, 0.94); /*rgba(39, 41, 43, 0.97)*/
     border-radius: 3px;
     border: 2px solid white;
     top: -199px;
