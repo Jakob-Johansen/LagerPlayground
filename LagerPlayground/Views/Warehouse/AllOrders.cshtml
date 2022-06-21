@@ -16,6 +16,7 @@
             <th>
                 @Html.DisplayNameFor(model => model.Custommer.Name)
             </th>
+            <th>Status</th>
             <th>Products Ordered</th>
             <th>
                 @Html.DisplayNameFor(model => model.Created)
@@ -29,6 +30,7 @@
             <tr>
                 <td>@Html.DisplayFor(modelItem => item.ID)</td>
                 <td>@Html.DisplayFor(modelItem => item.Custommer.Name)</td>
+                <td>@Html.DisplayFor(modelItem => item.OrderStatus)</td>
                 <td>
                     @{
                         int productQuantity = 0;

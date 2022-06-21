@@ -633,7 +633,6 @@
                     barcodeToScan = result.sortedPickLocations[0].productBarcode;
                     orderToPickList = result.sortedPickLocations;
                     currentOrderToPick = orderToPickList[0];
-                    //console.log(currentOrderToPick);
 
                     $(".pickSite-itemsToPick-footer-orders-span").text(result.ordersToPick);
                     $(".pickSite-itemsToPick-footer-items-span").text(result.itemsToPick);
@@ -724,10 +723,12 @@
             type: "POST",
             url: "/Picking/AddToTote",
             headers: { "RequestVerificationToken": "@GetAntiXsrfRequestToken()" },
-            data: { orderID: currentOrderToPick.order_DetailsID, productID: currentOrderToPick.productID, pickedQuantity: inputQuantity, toteBarcode: selectedTote.barcode},
+            data: { orderID: currentOrderToPick.order_DetailsID, productID: currentOrderToPick.productID, pickedQuantity: inputQuantity, onHandQuantity: currentOrderToPick.onHandQuantity, toteBarcode: selectedTote.barcode, locationBarcode: currentOrderToPick.locationBarcode},
             success: function (result) {
                 if (result.booleanError == false) {
                     console.log("Success");
+                    currentOrderToPick = result.dtoPickLocation;
+                    console.log(currentOrderToPick);
 
                     // TEST
                     numberToPick = 0;
