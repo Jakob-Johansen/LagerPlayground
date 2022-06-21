@@ -270,7 +270,7 @@ namespace LagerPlayground.Controllers
                 return Json(new { booleanError = true, msg = "The selected Tote is already in use by another order" });
             }
 
-            int newPickQuantity = orderItem.PickingQuantity += (int)pickedQuantity;
+            int newPickedQuantity = orderItem.PickingQuantity += (int)pickedQuantity;
             string newOrderStatus = orderDetails.OrderStatus;
 
             try
@@ -289,14 +289,14 @@ namespace LagerPlayground.Controllers
                     _context.Order_Details.Update(orderDetails);
                 }
 
-                if (newPickQuantity <= orderItem.Quantity)
+                if (newPickedQuantity <= orderItem.Quantity)
                 {
                     if (await TryUpdateModelAsync<Order_Items>(
                         orderItem,
                         "",
                         x => x.PickingQuantity, x => x.Modified, x => x.PickingToteBarcode))
                     {
-                        orderItem.PickingQuantity = newPickQuantity;
+                        orderItem.PickingQuantity = newPickedQuantity;
                         orderItem.PickingToteBarcode = toteBarcode;
                         orderItem.Modified = DateTime.Now;
                     }
@@ -324,6 +324,8 @@ namespace LagerPlayground.Controllers
                 return Json(new { booleanError = true, msg = "An database error has occured" });
             }
 
+            // FIX
+            int newPickQuantity = orderItem.Quantity -= (int)pickedQuantity;
             DTOPickLocation dtoPickLocation = new()
             {
                 Order_DetailsID = orderDetails.ID,
@@ -331,7 +333,7 @@ namespace LagerPlayground.Controllers
                 ProductImage = orderItem.Product.Image,
                 ProductName = orderItem.Product.Name,
                 ProductBarcode = orderItem.Product.BarcodeID,
-                PickQuantity = orderItem.Quantity,
+                PickQuantity = newPickQuantity,
                 OnHandQuantity = (int)(onHandQuantity -= newPickQuantity),
                 LocationBarcode = locationBarcode,
                 OrderStatus = newOrderStatus,
