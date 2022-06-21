@@ -31,21 +31,23 @@ namespace LagerPlayground.Data
         public DbSet<Locations_Shelfs> Locations_Shelfs { get; set; }
         public DbSet<Locations_Positions> Locations_Positions { get; set; }
         public DbSet<Product_Locations> Product_Locations { get; set; }
-        public DbSet<Picking_Info> Picking_Infos { get; set; }
 
-    protected override void OnModelCreating(ModelBuilder modelBuilder)
+        // https://docs.microsoft.com/en-us/ef/core/modeling/relationships?tabs=fluent-api%2Cfluent-api-simple-key%2Csimple-key
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<Locations_Positions>()
                 .Property(x => x.Pickable)
                 .HasDefaultValue(true);
 
-            modelBuilder.Entity<Picking_Info>()
-                .Property(x => x.Completed)
-                .HasDefaultValue(false);
+            modelBuilder.Entity<Order_Items>()
+                .Property(x => x.PickingQuantity)
+                .HasDefaultValue(0);
 
             modelBuilder.Entity<Tote>()
                 .Property(x => x.InUse)
                 .HasDefaultValue(false);
+
+            base.OnModelCreating(modelBuilder);
         }
     }
 }

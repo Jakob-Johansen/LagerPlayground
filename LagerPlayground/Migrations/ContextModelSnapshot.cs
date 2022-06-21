@@ -230,8 +230,13 @@ namespace LagerPlayground.Migrations
                     b.Property<int>("Order_DetailsID")
                         .HasColumnType("int");
 
-                    b.Property<int?>("Picking_InfoID")
-                        .HasColumnType("int");
+                    b.Property<int>("PickingQuantity")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasDefaultValue(0);
+
+                    b.Property<string>("PickingToteBarcode")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("ProductID")
                         .HasColumnType("int");
@@ -243,49 +248,9 @@ namespace LagerPlayground.Migrations
 
                     b.HasIndex("Order_DetailsID");
 
-                    b.HasIndex("Picking_InfoID");
-
                     b.HasIndex("ProductID");
 
                     b.ToTable("Order_Items");
-                });
-
-            modelBuilder.Entity("LagerPlayground.Models.Picking_Info", b =>
-                {
-                    b.Property<int>("ID")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ID"), 1L, 1);
-
-                    b.Property<bool>("Completed")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("bit")
-                        .HasDefaultValue(false);
-
-                    b.Property<DateTime?>("Created")
-                        .HasColumnType("datetime2");
-
-                    b.Property<DateTime?>("Modified")
-                        .HasColumnType("datetime2");
-
-                    b.Property<int>("Order_DetailsID")
-                        .HasColumnType("int");
-
-                    b.Property<int>("Order_ItemsID")
-                        .HasColumnType("int");
-
-                    b.Property<int>("Quantity")
-                        .HasColumnType("int");
-
-                    b.Property<string>("ToteSku")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("ID");
-
-                    b.HasIndex("Order_DetailsID");
-
-                    b.ToTable("Picking_Infos");
                 });
 
             modelBuilder.Entity("LagerPlayground.Models.Product", b =>
@@ -659,10 +624,6 @@ namespace LagerPlayground.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("LagerPlayground.Models.Picking_Info", null)
-                        .WithMany("Order_Items")
-                        .HasForeignKey("Picking_InfoID");
-
                     b.HasOne("LagerPlayground.Models.Product", "Product")
                         .WithMany()
                         .HasForeignKey("ProductID")
@@ -672,17 +633,6 @@ namespace LagerPlayground.Migrations
                     b.Navigation("Order_Details");
 
                     b.Navigation("Product");
-                });
-
-            modelBuilder.Entity("LagerPlayground.Models.Picking_Info", b =>
-                {
-                    b.HasOne("LagerPlayground.Models.Order_Details", "Order_Details")
-                        .WithMany()
-                        .HasForeignKey("Order_DetailsID")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Order_Details");
                 });
 
             modelBuilder.Entity("LagerPlayground.Models.Product_Locations", b =>
@@ -796,11 +746,6 @@ namespace LagerPlayground.Migrations
                 });
 
             modelBuilder.Entity("LagerPlayground.Models.Order_Details", b =>
-                {
-                    b.Navigation("Order_Items");
-                });
-
-            modelBuilder.Entity("LagerPlayground.Models.Picking_Info", b =>
                 {
                     b.Navigation("Order_Items");
                 });
