@@ -300,7 +300,7 @@
 
         //-On Input
     $(document).on("input", ".pickSite-pickIntoTote-quantity-input", function (event) {
-        ValidateInputNumber($(this), 1, 1);    
+        ValidateInputNumber($(this), 0, currentOrderToPick.pickQuantity, 1);    
     });
 
         //-Click Confirm Btn
@@ -344,8 +344,19 @@
     }
 
         //-Validate Input - Number Only (minNumber = Can't go under, number = Standart Number)
-    function ValidateInputNumber( thisInput, minNumber, number) {
+    function ValidateInputNumber(thisInput, minNumber, number) {
         if (thisInput.val() < minNumber) {
+            thisInput.val(number);
+        }
+
+        if (thisInput.val() != 0 && thisInput.val().startsWith("0")) {
+            thisInput.val(number);
+        }
+    }
+
+        //-Validate Input - Number Only (minNumber = Can't go under, number = Standart Number)
+    function ValidateInputNumber(thisInput, minNumber, maxNumber, number) {
+        if (thisInput.val() < minNumber || thisInput.val() > maxNumber) {
             thisInput.val(number);
         }
 
@@ -682,7 +693,6 @@
             success: function (result) {
                 if (result.booleanError == false) {
                     selectedTote = result.tote;
-                    console.log(selectedTote);
 
                     // HUSK LOADING
 
@@ -714,7 +724,7 @@
             type: "POST",
             url: "/Picking/AddToTote",
             headers: { "RequestVerificationToken": "@GetAntiXsrfRequestToken()" },
-            data: { orderID: currentOrderToPick.order_DetailsID, itemID: currentOrderToPick.productID, pickedQuantity: inputQuantity},
+            data: { orderID: currentOrderToPick.order_DetailsID, productID: currentOrderToPick.productID, pickedQuantity: inputQuantity, toteBarcode: selectedTote.barcode},
             success: function (result) {
                 if (result.booleanError == false) {
                     console.log("Success");

@@ -208,14 +208,14 @@ namespace LagerPlayground.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<JsonResult> AddToTote(int? orderID, int? itemID, int? pickedQuantity, string toteBarcode)
+        public async Task<JsonResult> AddToTote(int? orderID, int? productID, int? pickedQuantity, string toteBarcode)
         {
             if (orderID == 0 || orderID == null)
             {
                 return Json(new { booleanError = true, msg = "No Order ID was found" });
             }
 
-            if (itemID == 0 || itemID == null)
+            if (productID == 0 || productID == null)
             {
                 return Json(new { booleanError = true, msg = "No Product ID was found" });
             }
@@ -225,14 +225,20 @@ namespace LagerPlayground.Controllers
                 return Json(new { booleanError = true, msg = "Picked quantity can't be 0 or NULL" });
             }
 
-            var order = await _context.Order_Details
-                .Include(x => x.Order_Items)
-                    .ThenInclude(x => x.Product)
-               .FirstOrDefaultAsync(x => x.ID == orderID);
+            var orderDetails = await _context.Order_Details
+               .FindAsync(orderID);
 
-            if (order == null)
+            if (orderDetails == null)
             {
                 return Json(new { booleanError = true, msg = "No Order was found" });
+            }
+
+            var orderItem = await _context.Order_Items
+                .FirstOrDefaultAsync(x => x.Order_DetailsID == orderID && x.ProductID == productID);
+
+            if (orderItem == null)
+            {
+                return Json(new { booleanError = true, msg = "No Order Item was found" });
             }
 
             var tote = await _context.Totes
