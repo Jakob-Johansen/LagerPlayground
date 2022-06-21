@@ -37,6 +37,7 @@ namespace LagerPlayground.Controllers
 
             var orders = await _context.Order_Details
                 .Take(numberOfOrders)
+                .Where(x => x.OrderStatus != "Complete" || x.OrderStatus != "Picking")
                 .Include(x => x.Order_Items)
                 .ThenInclude(x => x.Product)
                 .AsNoTracking().ToListAsync();
@@ -79,6 +80,8 @@ namespace LagerPlayground.Controllers
                             dtoPickLocation.ProductBarcode = item.Product.BarcodeID;
                             dtoPickLocation.LocationBarcode = productLocations[i].LocationBarcode;
                             dtoPickLocation.OnHandQuantity = productLocations[i].Quantity;
+                            dtoPickLocation.OrderStatus = order.OrderStatus;
+                            dtoPickLocation.PickingToteBarcode = item.PickingToteBarcode;
 
                             int productQuantity = 0;
                             int subResult = 0;
@@ -137,7 +140,9 @@ namespace LagerPlayground.Controllers
                     ProductName = sortedPickLocation.ProductName,
                     ProductImage = sortedPickLocation.ProductImage,
                     PickQuantity = sortedPickLocation.PickQuantity,
-                    OnHandQuantity = sortedPickLocation.OnHandQuantity
+                    OnHandQuantity = sortedPickLocation.OnHandQuantity,
+                    OrderStatus = null,
+                    PickingToteBarcode = null
                 };
                 //
 
@@ -208,7 +213,7 @@ namespace LagerPlayground.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<JsonResult> AddToTote(int? orderID, int? productID, int? pickedQuantity, string toteBarcode)
+        public async Task<JsonResult> AddToTote(int? orderID, int? productID, int? pickedQuantity, int? onHandQuantity, string toteBarcode, string locationBarcode)
         {
             if (orderID == 0 || orderID == null)
             {
@@ -225,6 +230,16 @@ namespace LagerPlayground.Controllers
                 return Json(new { booleanError = true, msg = "Picked quantity can't be 0 or NULL" });
             }
 
+            if (onHandQuantity == 0 || onHandQuantity == null)
+            {
+                return Json(new { booleanError = true, msg = "No On Hand Quantity was found" });
+            }
+
+            if (locationBarcode == null)
+            {
+                return Json(new { booleanError = true, msg = "No Location Barcode was found" });
+            }
+
             var orderDetails = await _context.Order_Details
                .FindAsync(orderID);
 
@@ -234,6 +249,7 @@ namespace LagerPlayground.Controllers
             }
 
             var orderItem = await _context.Order_Items
+                .Include(x =>  x.Product)
                 .FirstOrDefaultAsync(x => x.Order_DetailsID == orderID && x.ProductID == productID);
 
             if (orderItem == null)
@@ -249,9 +265,80 @@ namespace LagerPlayground.Controllers
                 return Json(new { booleanError = true, msg = "No Tote with the scanned barcode was found" });
             }
 
+            if (tote.Order_DetailsID != null && tote.Order_DetailsID != orderID)
+            {
+                return Json(new { booleanError = true, msg = "The selected Tote is already in use by another order" });
+            }
 
+            int newPickQuantity = orderItem.PickingQuantity += (int)pickedQuantity;
+            string newOrderStatus = orderDetails.OrderStatus;
 
-            return Json(new { booleanError = false });
+            try
+            {
+                if (orderDetails.OrderStatus == "Pending")
+                {
+                    if (await TryUpdateModelAsync<Order_Details>(
+                        orderDetails,
+                        "",
+                         x => x.OrderStatus, x => x.Modified))
+                    {
+                        orderDetails.OrderStatus = "Picking";
+                        orderDetails.Modified = DateTime.Now;
+                    }
+                    newOrderStatus = "Picking";
+                    _context.Order_Details.Update(orderDetails);
+                }
+
+                if (newPickQuantity <= orderItem.Quantity)
+                {
+                    if (await TryUpdateModelAsync<Order_Items>(
+                        orderItem,
+                        "",
+                        x => x.PickingQuantity, x => x.Modified, x => x.PickingToteBarcode))
+                    {
+                        orderItem.PickingQuantity = newPickQuantity;
+                        orderItem.PickingToteBarcode = toteBarcode;
+                        orderItem.Modified = DateTime.Now;
+                    }
+
+                    _context.Order_Items.Update(orderItem);
+                }
+
+                if (tote.Order_DetailsID == null)
+                {
+                    if (await TryUpdateModelAsync<Tote>(
+                        tote,
+                        "",
+                        x => x.Order_DetailsID, x => x.Modified))
+                    {
+                        tote.Order_DetailsID = orderID;
+                        tote.Modified = DateTime.Now;
+                    }
+                    _context.Totes.Update(tote);
+                }
+
+                await _context.SaveChangesAsync();
+            }
+            catch (DbUpdateException)
+            {
+                return Json(new { booleanError = true, msg = "An database error has occured" });
+            }
+
+            DTOPickLocation dtoPickLocation = new()
+            {
+                Order_DetailsID = orderDetails.ID,
+                ProductID = orderItem.ProductID,
+                ProductImage = orderItem.Product.Image,
+                ProductName = orderItem.Product.Name,
+                ProductBarcode = orderItem.Product.BarcodeID,
+                PickQuantity = orderItem.Quantity,
+                OnHandQuantity = (int)(onHandQuantity -= newPickQuantity),
+                LocationBarcode = locationBarcode,
+                OrderStatus = newOrderStatus,
+                PickingToteBarcode = toteBarcode
+            };
+
+            return Json(new { booleanError = false, dtoPickLocation, newPickQuantity });
         }
     }
 }

@@ -10,5 +10,7 @@
         public int PickQuantity { get; set; }
         public int OnHandQuantity { get; set; }
         public string LocationBarcode { get; set; }
+        public string OrderStatus { get; set; }
+        public string PickingToteBarcode { get; set; }
     }
 }
