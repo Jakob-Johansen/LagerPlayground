@@ -211,6 +211,9 @@
 
     let numberToPick = 0;
 
+    let allOrdersToPick = 0;
+    let allItemsToPick = 0;
+
     let pickToteAmountIsRunning = true;
     let itemsToPickIsRunning = false;
     let toteToPickIsRunning = false;
@@ -634,8 +637,11 @@
                     orderToPickList = result.sortedPickLocations;
                     currentOrderToPick = orderToPickList[0];
 
-                    $(".pickSite-itemsToPick-footer-orders-span").text(result.ordersToPick);
-                    $(".pickSite-itemsToPick-footer-items-span").text(result.itemsToPick);
+                    allOrdersToPick = result.ordersToPick;
+                    allItemsToPick = result.itemsToPick;
+
+                    $(".pickSite-itemsToPick-footer-orders-span").text(allOrdersToPick);
+                    $(".pickSite-itemsToPick-footer-items-span").text(allItemsToPick);
                     //
 
                     // HUSK LOADING!
@@ -748,6 +754,10 @@
                         currentOrderToPick = result.dtoPickLocation;
                         orderToPickList[0] = currentOrderToPick;
                     }
+
+                    allItemsToPick -= inputQuantity;
+
+                    $(".pickSite-itemsToPick-footer-items-span").text(allItemsToPick);
 
                     $(".pickSite-itemsToPick-item-overall-container").remove();
                     AddPickLocationsToHtml(orderToPickList);
