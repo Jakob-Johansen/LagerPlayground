@@ -723,7 +723,7 @@
             type: "POST",
             url: "/Picking/AddToTote",
             headers: { "RequestVerificationToken": "@GetAntiXsrfRequestToken()" },
-            data: { orderID: currentOrderToPick.order_DetailsID, productID: currentOrderToPick.productID, pickedQuantity: inputQuantity, onHandQuantity: currentOrderToPick.onHandQuantity, toteBarcode: selectedTote.barcode, locationBarcode: currentOrderToPick.locationBarcode},
+            data: { orderID: currentOrderToPick.order_DetailsID, productID: currentOrderToPick.productID, pickedQuantity: inputQuantity, onHandQuantity: currentOrderToPick.onHandQuantity, quantityToPick: currentOrderToPick.pickQuantity , toteBarcode: selectedTote.barcode, locationBarcode: currentOrderToPick.locationBarcode},
             success: function (result) {
                 if (result.booleanError == false) {
                     console.log("Success");
@@ -743,13 +743,14 @@
                         orderToPickList.splice(0, 1);
                         currentOrderToPick = orderToPickList[0];
                         barcodeToScan = orderToPickList[0].productBarcode;
-
-                        $(".productToPick").remove();
                     }
                     else {
                         currentOrderToPick = result.dtoPickLocation;
                         orderToPickList[0] = currentOrderToPick;
                     }
+
+                    $(".pickSite-itemsToPick-item-overall-container").remove();
+                    AddPickLocationsToHtml(orderToPickList);
 
                     // TESTING
                     console.log("NEW")
