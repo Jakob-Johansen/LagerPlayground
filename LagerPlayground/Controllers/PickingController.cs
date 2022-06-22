@@ -15,12 +15,15 @@ namespace LagerPlayground.Controllers
             _context = context;
         }
 
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
-            OrdersReadyToPickCount vmOrders = new();
-            vmOrders.AllOrdersNumber = _context.Order_Details.ToList().Count;
+            var orders = await _context.Order_Details
+                .Where(x => x.OrderStatus == "Pending")
+                .AsNoTracking().ToListAsync();
 
-            return View(vmOrders);
+            ViewBag.Orders = orders.Count;
+
+            return View();
         }
 
         public IActionResult MultiPickSite()
@@ -36,8 +39,8 @@ namespace LagerPlayground.Controllers
             }
 
             var orders = await _context.Order_Details
+                .Where(x => x.OrderStatus == "Pending")
                 .Take(numberOfOrders)
-                .Where(x => x.OrderStatus != "Complete" || x.OrderStatus != "Picking")
                 .Include(x => x.Order_Items)
                 .ThenInclude(x => x.Product)
                 .AsNoTracking().ToListAsync();
@@ -48,6 +51,7 @@ namespace LagerPlayground.Controllers
             }
 
             var productLocations = await _context.Product_Locations
+                .OrderBy(x => x.LocationBarcode)
                 .Where(x => x.LocationBarcode != "Receiving-Station" && x.Locations_Positions.Pickable != false)
                 .AsNoTracking().ToListAsync();
 
@@ -275,6 +279,14 @@ namespace LagerPlayground.Controllers
                 return Json(new { booleanError = true, msg = "The selected Tote is already in use by another order" });
             }
 
+            var productLocation = await _context.Product_Locations
+                .FirstOrDefaultAsync(x => x.LocationBarcode == locationBarcode);
+
+            if (productLocation == null)
+            {
+                return Json(new { booleanError = true, msg = "No Product Location with the scanned location barcode was found" });
+            }
+
             int newPickedQuantity = orderItem.PickingQuantity += (int)pickedQuantity;
             string newOrderStatus = orderDetails.OrderStatus;
 
@@ -322,9 +334,24 @@ namespace LagerPlayground.Controllers
                     _context.Totes.Update(tote);
                 }
 
-                // REMOVE THE AMOUNT OG PRODUCTS THAT WAS PICKED FROM THE SPECIFIC PRODUCT LOCATION
+                if (productLocation.Quantity - pickedQuantity == 0)
+                {
+                    _context.Product_Locations.Remove(productLocation);
+                }
+                else
+                {
+                    if (await TryUpdateModelAsync<Product_Locations>(
+                        productLocation,
+                        "",
+                        x => x.Quantity, x => x.Modified))
+                    {
+                        productLocation.Quantity -= (int)pickedQuantity;
+                        productLocation.Modified = DateTime.Now;
+                    }
+                    _context.Product_Locations.Update(productLocation);
+                }
 
-                //await _context.SaveChangesAsync();
+                await _context.SaveChangesAsync();
             }
             catch (DbUpdateException)
             {
@@ -347,10 +374,31 @@ namespace LagerPlayground.Controllers
                     OrderStatus = newOrderStatus,
                     PickingToteBarcode = toteBarcode
                 };
-                return Json(new { booleanError = false, pickNext = false, dtoPickLocation });
+                return Json(new { booleanError = false, pickNext = false, dtoPickLocation, orderComplete = false });
             }
+            else
+            {
+                var allOrderItems = await _context.Order_Items
+                    .Where(x => x.Order_DetailsID == orderID)
+                    .AsNoTracking().ToListAsync();
 
-            return Json(new { booleanError = false, pickNext = true });
+                bool isComplete = false;
+
+                foreach (var item in allOrderItems)
+                {
+                    if (item.Quantity == item.PickingQuantity)
+                    {
+                        isComplete = true;
+                    }
+                    else
+                    {
+                        isComplete = false;
+                        break;
+                    }
+                }
+
+                return Json(new { booleanError = false, pickNext = true, orderComplete = isComplete });
+            }
         }
     }
 }
