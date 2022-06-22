@@ -469,7 +469,12 @@
         //-Validate scanned barcode
     function ValidateScannedBarcode(scannedBarcode) {
         if (scannedBarcode == barcodeToScan) {
-            GetAllTotesAjax();
+            if (currentOrderToPick.pickingToteBarcode != null || currentOrderToPick.pickingToteBarcode != "") {
+                GetToteAjax(currentOrderToPick.pickingToteBarcode);
+            }
+            else {
+                GetAllTotesAjax();
+            }
         }
         else {
             alert("Wrong product scanned!");
@@ -631,6 +636,7 @@
             success: function (result) {
                 if (result.booleanError == false) {
                     AddPickLocationsToHtml(result.mergedLocations);
+                    console.log(result.sortedPickLocations);
 
                     //-Testing
                     barcodeToScan = result.sortedPickLocations[0].productBarcode;
@@ -747,8 +753,10 @@
                     // KEEEP! CLEAN IT UP
                     if (result.pickNext == true) {
                         orderToPickList.splice(0, 1);
-                        currentOrderToPick = orderToPickList[0];
-                        barcodeToScan = orderToPickList[0].productBarcode;
+                        if (orderToPickList.length != 0) {
+                            currentOrderToPick = orderToPickList[0];
+                            barcodeToScan = orderToPickList[0].productBarcode;
+                        }
                     }
                     else {
                         currentOrderToPick = result.dtoPickLocation;
@@ -756,6 +764,12 @@
                     }
 
                     allItemsToPick -= inputQuantity;
+
+                    if (result.orderComplete == true) {
+                        allOrdersToPick -= 1;
+                        $(".pickSite-itemsToPick-footer-orders-span").text(allOrdersToPick);
+                        console.log("Order Complete: " + true);
+                    }
 
                     $(".pickSite-itemsToPick-footer-items-span").text(allItemsToPick);
 
