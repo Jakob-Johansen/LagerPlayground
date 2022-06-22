@@ -213,7 +213,7 @@ namespace LagerPlayground.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<JsonResult> AddToTote(int? orderID, int? productID, int? pickedQuantity, int? onHandQuantity, string toteBarcode, string locationBarcode)
+        public async Task<JsonResult> AddToTote(int? orderID, int? productID, int? pickedQuantity, int? onHandQuantity, int? quantityToPick, string toteBarcode, string locationBarcode)
         {
             if (orderID == 0 || orderID == null)
             {
@@ -233,6 +233,11 @@ namespace LagerPlayground.Controllers
             if (onHandQuantity == 0 || onHandQuantity == null)
             {
                 return Json(new { booleanError = true, msg = "No On Hand Quantity was found" });
+            }
+
+            if (quantityToPick == 0 || quantityToPick == null)
+            {
+                return Json(new { booleanError = true, msg = "No To Pick Quantity was found" });
             }
 
             if (locationBarcode == null)
@@ -336,7 +341,7 @@ namespace LagerPlayground.Controllers
                     ProductImage = orderItem.Product.Image,
                     ProductName = orderItem.Product.Name,
                     ProductBarcode = orderItem.Product.BarcodeID,
-                    PickQuantity = newPickQuantity,
+                    PickQuantity = (int)quantityToPick - orderItem.PickingQuantity,
                     OnHandQuantity = newPickQuantity,
                     LocationBarcode = locationBarcode,
                     OrderStatus = newOrderStatus,
