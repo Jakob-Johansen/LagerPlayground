@@ -300,7 +300,6 @@ namespace LagerPlayground.Controllers
                         orderItem.PickingToteBarcode = toteBarcode;
                         orderItem.Modified = DateTime.Now;
                     }
-
                     _context.Order_Items.Update(orderItem);
                 }
 
@@ -309,38 +308,44 @@ namespace LagerPlayground.Controllers
                     if (await TryUpdateModelAsync<Tote>(
                         tote,
                         "",
-                        x => x.Order_DetailsID, x => x.Modified))
+                        x => x.Order_DetailsID, x => x.InUse , x => x.Modified))
                     {
                         tote.Order_DetailsID = orderID;
+                        tote.InUse = true;
                         tote.Modified = DateTime.Now;
                     }
                     _context.Totes.Update(tote);
                 }
 
-                await _context.SaveChangesAsync();
+                // REMOVE THE AMOUNT OG PRODUCTS THAT WAS PICKED FROM THE SPECIFIC PRODUCT LOCATION
+
+                //await _context.SaveChangesAsync();
             }
             catch (DbUpdateException)
             {
                 return Json(new { booleanError = true, msg = "An database error has occured" });
             }
 
-            // FIX
-            int newPickQuantity = orderItem.Quantity -= (int)pickedQuantity;
-            DTOPickLocation dtoPickLocation = new()
+            int newPickQuantity = (int)(onHandQuantity -= pickedQuantity);
+            if (newPickQuantity > 0)
             {
-                Order_DetailsID = orderDetails.ID,
-                ProductID = orderItem.ProductID,
-                ProductImage = orderItem.Product.Image,
-                ProductName = orderItem.Product.Name,
-                ProductBarcode = orderItem.Product.BarcodeID,
-                PickQuantity = newPickQuantity,
-                OnHandQuantity = (int)(onHandQuantity -= newPickQuantity),
-                LocationBarcode = locationBarcode,
-                OrderStatus = newOrderStatus,
-                PickingToteBarcode = toteBarcode
-            };
+                DTOPickLocation dtoPickLocation = new()
+                {
+                    Order_DetailsID = orderDetails.ID,
+                    ProductID = orderItem.ProductID,
+                    ProductImage = orderItem.Product.Image,
+                    ProductName = orderItem.Product.Name,
+                    ProductBarcode = orderItem.Product.BarcodeID,
+                    PickQuantity = newPickQuantity,
+                    OnHandQuantity = newPickQuantity,
+                    LocationBarcode = locationBarcode,
+                    OrderStatus = newOrderStatus,
+                    PickingToteBarcode = toteBarcode
+                };
+                return Json(new { booleanError = false, pickNext = false, dtoPickLocation });
+            }
 
-            return Json(new { booleanError = false, dtoPickLocation, newPickQuantity });
+            return Json(new { booleanError = false, pickNext = true });
         }
     }
 }

@@ -727,16 +727,38 @@
             success: function (result) {
                 if (result.booleanError == false) {
                     console.log("Success");
-                    currentOrderToPick = result.dtoPickLocation;
+
+                    // TESTING
+                    console.log("OLD");
+                    console.log("Current Order To Pick");
                     console.log(currentOrderToPick);
+                    console.log("--------------------------");
+                    console.log("Order To Pick List");
+                    console.log(orderToPickList);
+                    console.log("--------------------------");
 
-                    //console.log("----------------------------");
 
-                    //console.log(orderToPickList[0]);
-                    //orderToPickList[0].pickQuantity = result.dtoPickLocation.pickQuantity;
-                    //orderToPickList[0].orderStatus = result.dtoPickLocation.orderStatus;
-                    //orderToPickList[0].pickingToteBarcode = result.dtoPickLocation.pickingToteBarcode;
-                    //console.log(orderToPickList[0]);
+                    // KEEEP! CLEAN IT UP
+                    if (result.pickNext == true) {
+                        orderToPickList.splice(0, 1);
+                        currentOrderToPick = orderToPickList[0];
+                        barcodeToScan = orderToPickList[0].productBarcode;
+
+                        $(".productToPick").remove();
+                    }
+                    else {
+                        currentOrderToPick = result.dtoPickLocation;
+                        orderToPickList[0] = currentOrderToPick;
+                    }
+
+                    // TESTING
+                    console.log("NEW")
+                    console.log("Current Order To Pick");
+                    console.log(currentOrderToPick);
+                    console.log("--------------------------");
+                    console.log("Order To Pick List");
+                    console.log(orderToPickList);
+                    console.log("--------------------------");
 
                     // TEST
                     numberToPick = 0;
