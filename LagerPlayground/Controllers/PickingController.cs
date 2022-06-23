@@ -358,8 +358,11 @@ namespace LagerPlayground.Controllers
                 return Json(new { booleanError = true, msg = "An database error has occured" });
             }
 
+            // FIX
             int newPickQuantity = (int)(onHandQuantity -= pickedQuantity);
-            if (newPickQuantity > 0)
+            int myTest = orderItem.Quantity - orderItem.PickingQuantity;
+
+            if (orderItem.Quantity != orderItem.PickingQuantity || newPickQuantity > 0)
             {
                 DTOPickLocation dtoPickLocation = new()
                 {
@@ -368,7 +371,7 @@ namespace LagerPlayground.Controllers
                     ProductImage = orderItem.Product.Image,
                     ProductName = orderItem.Product.Name,
                     ProductBarcode = orderItem.Product.BarcodeID,
-                    PickQuantity = (int)quantityToPick - orderItem.PickingQuantity,
+                    PickQuantity = myTest,
                     OnHandQuantity = newPickQuantity,
                     LocationBarcode = locationBarcode,
                     OrderStatus = newOrderStatus,
