@@ -469,7 +469,7 @@
         //-Validate scanned barcode
     function ValidateScannedBarcode(scannedBarcode) {
         if (scannedBarcode == barcodeToScan) {
-            if (currentOrderToPick.pickingToteBarcode != null || currentOrderToPick.pickingToteBarcode != "") {
+            if (currentOrderToPick.pickingToteBarcode != null) {
                 GetToteAjax(currentOrderToPick.pickingToteBarcode);
             }
             else {
@@ -710,9 +710,11 @@
                     PickIntoToteEditHtml(false);
 
                     //-Testing
+                    itemsToPickIsRunning = false
                     toteToPickIsRunning = false;
                     pickIntoToteIsRunning = true;
                     pickOrScanToteOverlay.css("display", "none");
+                    itemsToPickOverlay.css("display", "none");
                     pickIntoToteOverlay.css("display", "block");
                 }
                 else {
@@ -774,16 +776,19 @@
                     $(".pickSite-itemsToPick-footer-items-span").text(allItemsToPick);
 
                     $(".pickSite-itemsToPick-item-overall-container").remove();
-                    AddPickLocationsToHtml(orderToPickList);
+                    
+                    if (orderToPickList.length != 0) {
+                        AddPickLocationsToHtml(orderToPickList);
+                    }
 
                     // TESTING
-                    console.log("NEW")
-                    console.log("Current Order To Pick");
-                    console.log(currentOrderToPick);
-                    console.log("--------------------------");
-                    console.log("Order To Pick List");
-                    console.log(orderToPickList);
-                    console.log("--------------------------");
+                    //console.log("NEW")
+                    //console.log("Current Order To Pick");
+                    //console.log(currentOrderToPick);
+                    //console.log("--------------------------");
+                    //console.log("Order To Pick List");
+                    //console.log(orderToPickList);
+                    //console.log("--------------------------");
 
                     // TEST
                     numberToPick = 0;
