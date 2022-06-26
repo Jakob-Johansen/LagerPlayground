@@ -205,6 +205,7 @@
         //-Other
     let barcodeToScan = "";
     let orderToPickList = [];
+    let mergedLocationsList = [];
 
     let currentOrderToPick;
     let selectedTote;
@@ -635,13 +636,19 @@
             data: { numberOfOrders: batchAmount },
             success: function (result) {
                 if (result.booleanError == false) {
+                    mergedLocationsList = result.mergedLocations;
                     AddPickLocationsToHtml(result.mergedLocations);
-                    console.log(result.sortedPickLocations);
 
                     //-Testing
                     barcodeToScan = result.sortedPickLocations[0].productBarcode;
                     orderToPickList = result.sortedPickLocations;
                     currentOrderToPick = orderToPickList[0];
+
+                    //console.log("Merged List");
+                    //console.log(mergedLocationsList);
+                    //console.log("");
+                    //console.log("Order To Pick List");
+                    //console.log(orderToPickList);
 
                     allOrdersToPick = result.ordersToPick;
                     allItemsToPick = result.itemsToPick;
@@ -737,49 +744,49 @@
             type: "POST",
             url: "/Picking/AddToTote",
             headers: { "RequestVerificationToken": "@GetAntiXsrfRequestToken()" },
-            data: { orderID: currentOrderToPick.order_DetailsID, productID: currentOrderToPick.productID, pickedQuantity: inputQuantity, onHandQuantity: currentOrderToPick.onHandQuantity, quantityToPick: currentOrderToPick.pickQuantity , toteBarcode: selectedTote.barcode, locationBarcode: currentOrderToPick.locationBarcode},
+            data: { pickedQuantity: inputQuantity, toteBarcode: selectedTote.barcode, orderToPickList, mergedLocations: mergedLocationsList },
             success: function (result) {
                 if (result.booleanError == false) {
-                    console.log("Success");
-
-                    // TESTING
-                    console.log("OLD");
-                    console.log("Current Order To Pick");
-                    console.log(currentOrderToPick);
-                    console.log("--------------------------");
-                    console.log("Order To Pick List");
-                    console.log(orderToPickList);
-                    console.log("--------------------------");
-
-
-                    // KEEEP! CLEAN IT UP
-                    if (result.pickNext == true) {
-                        orderToPickList.splice(0, 1);
-                        if (orderToPickList.length != 0) {
-                            currentOrderToPick = orderToPickList[0];
-                            barcodeToScan = orderToPickList[0].productBarcode;
-                        }
-                    }
-                    else {
-                        currentOrderToPick = result.dtoPickLocation;
-                        orderToPickList[0] = currentOrderToPick;
-                    }
-
-                    allItemsToPick -= inputQuantity;
 
                     if (result.orderComplete == true) {
                         allOrdersToPick -= 1;
                         $(".pickSite-itemsToPick-footer-orders-span").text(allOrdersToPick);
                         console.log("Order Complete: " + true);
                     }
-
-                    $(".pickSite-itemsToPick-footer-items-span").text(allItemsToPick);
-
-                    $(".pickSite-itemsToPick-item-overall-container").remove();
                     
+                    allItemsToPick -= inputQuantity;
+                    $(".pickSite-itemsToPick-footer-items-span").text(allItemsToPick);
+                    
+                    $(".pickSite-itemsToPick-item-overall-container").remove();
+
+                    mergedLocationsList = result.mergedLocations;
+                    orderToPickList = result.orderToPickList;
+
                     if (orderToPickList.length != 0) {
-                        AddPickLocationsToHtml(orderToPickList);
+                        currentOrderToPick = orderToPickList[0];
+                        barcodeToScan = currentOrderToPick.productBarcode;
+                        AddPickLocationsToHtml(mergedLocationsList);
                     }
+                    else {
+                        alert("Pick Complete!");
+                    }
+
+                    //console.log("Order To Pick List");
+
+                    //console.log("Merged Locations");
+                    //console.log(result.mergedLocations);
+
+                    //console.log("Current Order To Pick");
+                    //console.log(currentOrderToPick);
+
+                    //console.log("Orders To Pick List");
+                    //console.log(orderToPickList);
+
+                    //AddPickLocationsToHtml(orderToPickList);
+
+                    //if (orderToPickList.length != 0) {
+                    // AddPickLocationsToHtml(orderToPickList);
+                    //}
 
                     // TESTING
                     //console.log("NEW")

@@ -92,7 +92,7 @@ namespace LagerPlayground.Controllers
 
                             if (productLocations[i].Quantity != 0 && newOrderQuantity != 0)
                             {
-                                // If order item quantity is less than the quantity lays in a product location, it will say you should pick from tahat location.
+                                // If order item quantity is less than the quantity that stored in a product location, it will say you should pick from that location.
                                 if (newOrderQuantity <= productLocations[i].Quantity)
                                 {
                                     subResult = productLocations[i].Quantity - newOrderQuantity;
@@ -217,37 +217,22 @@ namespace LagerPlayground.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<JsonResult> AddToTote(int? orderID, int? productID, int? pickedQuantity, int? onHandQuantity, int? quantityToPick, string toteBarcode, string locationBarcode)
+        public async Task<JsonResult> AddToTote(int? pickedQuantity, string toteBarcode, List<DTOPickLocation> orderToPickList, List<DTOPickLocation> mergedLocations)
         {
-            if (orderID == 0 || orderID == null)
-            {
-                return Json(new { booleanError = true, msg = "No Order ID was found" });
-            }
-
-            if (productID == 0 || productID == null)
-            {
-                return Json(new { booleanError = true, msg = "No Product ID was found" });
-            }
-
             if (pickedQuantity == 0 || pickedQuantity == null)
             {
                 return Json(new { booleanError = true, msg = "Picked quantity can't be 0 or NULL" });
             }
 
-            if (onHandQuantity == 0 || onHandQuantity == null)
+            if (orderToPickList.Count == 0)
             {
-                return Json(new { booleanError = true, msg = "No On Hand Quantity was found" });
+                return Json(new { booleanError = true, msg = "No Current Order To Pick was found" });
             }
 
-            if (quantityToPick == 0 || quantityToPick == null)
-            {
-                return Json(new { booleanError = true, msg = "No To Pick Quantity was found" });
-            }
-
-            if (locationBarcode == null)
-            {
-                return Json(new { booleanError = true, msg = "No Location Barcode was found" });
-            }
+            int orderID = orderToPickList[0].Order_DetailsID;
+            int productID = orderToPickList[0].ProductID;
+            int? onHandQuantity = orderToPickList[0].OnHandQuantity;
+            string locationBarcode = orderToPickList[0].LocationBarcode;
 
             var orderDetails = await _context.Order_Details
                .FindAsync(orderID);
@@ -351,41 +336,43 @@ namespace LagerPlayground.Controllers
                     _context.Product_Locations.Update(productLocation);
                 }
 
-                await _context.SaveChangesAsync();
+                //await _context.SaveChangesAsync();
             }
             catch (DbUpdateException)
             {
                 return Json(new { booleanError = true, msg = "An database error has occured" });
             }
 
-            // FIX
-            int newPickQuantity = (int)(onHandQuantity -= pickedQuantity);
-            int myTest = orderItem.Quantity - orderItem.PickingQuantity;
-
-            if (orderItem.Quantity != orderItem.PickingQuantity || newPickQuantity > 0)
+            bool checkForRemove = false;
+            bool isComplete = false;
+            if (mergedLocations[0].OnHandQuantity - pickedQuantity == 0 || mergedLocations[0].PickQuantity - pickedQuantity == 0)
             {
-                DTOPickLocation dtoPickLocation = new()
-                {
-                    Order_DetailsID = orderDetails.ID,
-                    ProductID = orderItem.ProductID,
-                    ProductImage = orderItem.Product.Image,
-                    ProductName = orderItem.Product.Name,
-                    ProductBarcode = orderItem.Product.BarcodeID,
-                    PickQuantity = myTest,
-                    OnHandQuantity = newPickQuantity,
-                    LocationBarcode = locationBarcode,
-                    OrderStatus = newOrderStatus,
-                    PickingToteBarcode = toteBarcode
-                };
-                return Json(new { booleanError = false, pickNext = false, dtoPickLocation, orderComplete = false });
+                mergedLocations.RemoveAt(0);
+                orderToPickList.RemoveAt(0);
+                checkForRemove = true;
             }
             else
+            {
+                mergedLocations[0].PickQuantity -= (int)pickedQuantity;
+                mergedLocations[0].OnHandQuantity -= (int)pickedQuantity;
+
+                if (orderItem.Quantity == orderItem.PickingQuantity)
+                {
+                    orderToPickList.RemoveAt(0);
+                    checkForRemove = true;
+                }
+                else
+                {
+                    orderToPickList[0].OnHandQuantity -= (int)pickedQuantity;
+                    orderToPickList[0].PickQuantity -= (int)pickedQuantity;
+                }
+            }
+
+            if (checkForRemove)
             {
                 var allOrderItems = await _context.Order_Items
                     .Where(x => x.Order_DetailsID == orderID)
                     .AsNoTracking().ToListAsync();
-
-                bool isComplete = false;
 
                 foreach (var item in allOrderItems)
                 {
@@ -399,9 +386,55 @@ namespace LagerPlayground.Controllers
                         break;
                     }
                 }
-
-                return Json(new { booleanError = false, pickNext = true, orderComplete = isComplete });
             }
+            else
+            {
+                isComplete = false;
+            }
+
+            return Json(new { booleanError = false, mergedLocations, orderToPickList, orderComplete = isComplete });
+
+            // newPickQuantity > 0
+            //if (newPickedQuantity != 0 && myTest != 0)
+            //{
+            //    DTOPickLocation dtoPickLocation = new()
+            //    {
+            //        Order_DetailsID = orderDetails.ID,
+            //        ProductID = orderItem.ProductID,
+            //        ProductImage = orderItem.Product.Image,
+            //        ProductName = orderItem.Product.Name,
+            //        ProductBarcode = orderItem.Product.BarcodeID,
+            //        PickQuantity = myTest,
+            //        OnHandQuantity = newPickQuantity,
+            //        LocationBarcode = locationBarcode,
+            //        OrderStatus = newOrderStatus,
+            //        PickingToteBarcode = toteBarcode
+            //    };
+            //    return Json(new { booleanError = false, pickNext = false, dtoPickLocation, orderComplete = false });
+            //}
+            //else
+            //{
+            //    var allOrderItems = await _context.Order_Items
+            //        .Where(x => x.Order_DetailsID == orderID)
+            //        .AsNoTracking().ToListAsync();
+
+            //    bool isComplete = false;
+
+            //    foreach (var item in allOrderItems)
+            //    {
+            //        if (item.Quantity == item.PickingQuantity)
+            //        {
+            //            isComplete = true;
+            //        }
+            //        else
+            //        {
+            //            isComplete = false;
+            //            break;
+            //        }
+            //    }
+
+            //    return Json(new { booleanError = false, pickNext = true, orderComplete = isComplete });
+            //}
         }
     }
 }

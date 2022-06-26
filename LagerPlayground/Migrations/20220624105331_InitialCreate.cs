@@ -117,25 +117,6 @@ namespace LagerPlayground.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Totes",
-                columns: table => new
-                {
-                    ID = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    Name = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Barcode = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Number = table.Column<int>(type: "int", nullable: false),
-                    InUse = table.Column<bool>(type: "bit", nullable: false, defaultValue: false),
-                    Warehouse = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Created = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    Modified = table.Column<DateTime>(type: "datetime2", nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Totes", x => x.ID);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "Order_Details",
                 columns: table => new
                 {
@@ -261,6 +242,31 @@ namespace LagerPlayground.Migrations
                         principalTable: "Products",
                         principalColumn: "ID",
                         onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Totes",
+                columns: table => new
+                {
+                    ID = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Order_DetailsID = table.Column<int>(type: "int", nullable: true),
+                    Name = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Barcode = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Number = table.Column<int>(type: "int", nullable: false),
+                    InUse = table.Column<bool>(type: "bit", nullable: false, defaultValue: false),
+                    Warehouse = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Created = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    Modified = table.Column<DateTime>(type: "datetime2", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Totes", x => x.ID);
+                    table.ForeignKey(
+                        name: "FK_Totes_Order_Details_Order_DetailsID",
+                        column: x => x.Order_DetailsID,
+                        principalTable: "Order_Details",
+                        principalColumn: "ID");
                 });
 
             migrationBuilder.CreateTable(
@@ -474,6 +480,11 @@ namespace LagerPlayground.Migrations
                 name: "IX_ReceivingOrder_Items_ReceivingOrder_DetailsID",
                 table: "ReceivingOrder_Items",
                 column: "ReceivingOrder_DetailsID");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Totes_Order_DetailsID",
+                table: "Totes",
+                column: "Order_DetailsID");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
@@ -494,9 +505,6 @@ namespace LagerPlayground.Migrations
                 name: "Totes");
 
             migrationBuilder.DropTable(
-                name: "Order_Details");
-
-            migrationBuilder.DropTable(
                 name: "Locations_Positions");
 
             migrationBuilder.DropTable(
@@ -509,7 +517,7 @@ namespace LagerPlayground.Migrations
                 name: "ReceivingOrder_Items");
 
             migrationBuilder.DropTable(
-                name: "Custommers");
+                name: "Order_Details");
 
             migrationBuilder.DropTable(
                 name: "Locations_Shelfs");
@@ -519,6 +527,9 @@ namespace LagerPlayground.Migrations
 
             migrationBuilder.DropTable(
                 name: "ReceivingOrder_Details");
+
+            migrationBuilder.DropTable(
+                name: "Custommers");
 
             migrationBuilder.DropTable(
                 name: "Locations_Racks");
