@@ -404,48 +404,6 @@ namespace LagerPlayground.Controllers
             }
 
             return Json(new { booleanError = false, mergedLocations, orderToPickList, orderComplete = isComplete });
-
-            // newPickQuantity > 0
-            //if (newPickedQuantity != 0 && myTest != 0)
-            //{
-            //    DTOPickLocation dtoPickLocation = new()
-            //    {
-            //        Order_DetailsID = orderDetails.ID,
-            //        ProductID = orderItem.ProductID,
-            //        ProductImage = orderItem.Product.Image,
-            //        ProductName = orderItem.Product.Name,
-            //        ProductBarcode = orderItem.Product.BarcodeID,
-            //        PickQuantity = myTest,
-            //        OnHandQuantity = newPickQuantity,
-            //        LocationBarcode = locationBarcode,
-            //        OrderStatus = newOrderStatus,
-            //        PickingToteBarcode = toteBarcode
-            //    };
-            //    return Json(new { booleanError = false, pickNext = false, dtoPickLocation, orderComplete = false });
-            //}
-            //else
-            //{
-            //    var allOrderItems = await _context.Order_Items
-            //        .Where(x => x.Order_DetailsID == orderID)
-            //        .AsNoTracking().ToListAsync();
-
-            //    bool isComplete = false;
-
-            //    foreach (var item in allOrderItems)
-            //    {
-            //        if (item.Quantity == item.PickingQuantity)
-            //        {
-            //            isComplete = true;
-            //        }
-            //        else
-            //        {
-            //            isComplete = false;
-            //            break;
-            //        }
-            //    }
-
-            //    return Json(new { booleanError = false, pickNext = true, orderComplete = isComplete });
-            //}
         }
     }
 }
