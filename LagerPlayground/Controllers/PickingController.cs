@@ -336,7 +336,7 @@ namespace LagerPlayground.Controllers
                     _context.Product_Locations.Update(productLocation);
                 }
 
-                //await _context.SaveChangesAsync();
+                await _context.SaveChangesAsync();
             }
             catch (DbUpdateException)
             {
@@ -365,6 +365,17 @@ namespace LagerPlayground.Controllers
                 {
                     orderToPickList[0].OnHandQuantity -= (int)pickedQuantity;
                     orderToPickList[0].PickQuantity -= (int)pickedQuantity;
+                }
+            }
+
+            if (orderToPickList.Count != 0)
+            {
+                foreach (var item in orderToPickList)
+                {
+                    if (item.Order_DetailsID == orderID)
+                    {
+                        item.PickingToteBarcode = toteBarcode;
+                    }
                 }
             }
 

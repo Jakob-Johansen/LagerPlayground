@@ -441,6 +441,7 @@
     }
     
     function AddTotesToHtml(allTotes) {
+        $(".pickSite-selectTote-tote-overall-container").remove();
         // Måske add en data id og barcode
         for (var i = 0; i < allTotes.length; i++) {
             $(".pickSite-selectTote-container").append(
@@ -644,6 +645,8 @@
                     orderToPickList = result.sortedPickLocations;
                     currentOrderToPick = orderToPickList[0];
 
+                    console.log(orderToPickList);
+
                     //console.log("Merged List");
                     //console.log(mergedLocationsList);
                     //console.log("");
@@ -748,6 +751,9 @@
             success: function (result) {
                 if (result.booleanError == false) {
 
+                    console.log("Old");
+                    console.log(orderToPickList);
+
                     if (result.orderComplete == true) {
                         allOrdersToPick -= 1;
                         $(".pickSite-itemsToPick-footer-orders-span").text(allOrdersToPick);
@@ -767,35 +773,9 @@
                         barcodeToScan = currentOrderToPick.productBarcode;
                         AddPickLocationsToHtml(mergedLocationsList);
                     }
-                    else {
-                        alert("Pick Complete!");
-                    }
 
-                    //console.log("Order To Pick List");
-
-                    //console.log("Merged Locations");
-                    //console.log(result.mergedLocations);
-
-                    //console.log("Current Order To Pick");
-                    //console.log(currentOrderToPick);
-
-                    //console.log("Orders To Pick List");
-                    //console.log(orderToPickList);
-
-                    //AddPickLocationsToHtml(orderToPickList);
-
-                    //if (orderToPickList.length != 0) {
-                    // AddPickLocationsToHtml(orderToPickList);
-                    //}
-
-                    // TESTING
-                    //console.log("NEW")
-                    //console.log("Current Order To Pick");
-                    //console.log(currentOrderToPick);
-                    //console.log("--------------------------");
-                    //console.log("Order To Pick List");
-                    //console.log(orderToPickList);
-                    //console.log("--------------------------");
+                    console.log("New");
+                    console.log(orderToPickList);
 
                     // TEST
                     numberToPick = 0;
@@ -808,6 +788,12 @@
                     console.log("Confirm");
                     pickIntoToteOverlay.css("display", "none");
                     itemsToPickOverlay.css("display", "block");
+
+                    if (orderToPickList.length == 0) {
+                        currentOrderToPick = null;
+                        barcodeToScan = "";
+                        alert("Pick Complete!");
+                    }
                 }
                 else {
                     console.log(result.msg);
