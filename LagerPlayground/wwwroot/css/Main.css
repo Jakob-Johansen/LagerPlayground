@@ -3458,3 +3458,92 @@ Firefox
 .pickSite-pickIntoTote-info-orderNumber-span {
     color: lightgray !important;
 }
+
+/*---Packing---*/
+.packing-headline-container {
+    display: flex;
+    align-items: center;
+}
+
+.packing-headline-text {
+    font-size: 27px;
+}
+
+.packing-headline-pending, .packing-headline-snapshot {
+    font-size: 15px;
+    margin-left: 20px;
+    padding: 1px 13px;
+    color: black !important;
+    background-color: #e7e876;
+    border-radius: 100px;
+}
+
+.packing-headline-snapshot {
+    background-color: #66acf2;
+}
+
+.packing-ovarall-container {
+    display: flex;
+    width: 100%;
+    height: 79vh;
+    margin-top: 4px;
+    overflow: auto;
+    border-radius: 3px;
+}
+
+.packing-left-container, .packing-right-container {
+    width: 50%;
+    height: 100%;
+    background-color: #1d1f21;
+}
+
+.packing-left-container {
+    border-right: 2px solid rgb(20, 22, 23);
+}
+
+.packing-left-headline-container {
+    display: flex;
+    justify-content: space-between;
+    padding: 15px 20px;
+}
+
+.picking-left-headline-itemsQuantity, .picking-left-headline-printLabels {
+    font-size: 18px;
+    color: white !important;
+}
+
+.picking-left-table-tbody-tr {
+    border-bottom: 1px solid rgb(20, 22, 23);
+}
+
+.picking-left-table-thead-item {
+    padding-left: 20px;
+}
+
+.picking-left-table-image-td {
+    width: 15%;
+    padding: 5px 5px 5px 20px;
+    background-color: green;
+}
+
+.picking-left-table-image {
+    display: block;
+    width: 80%;
+}
+
+.picking-left-table-info-td {
+    width: 58%;
+    background-color: red;
+}
+
+.picking-left-table-quantity-td {
+    width: 16%;
+    background-color: yellow;
+}
+
+.picking-left-table-image-options-td {
+    width: 11%;
+    text-align: center;
+    font-size: 19px;
+    background-color: blue;
+}
