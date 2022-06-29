@@ -3476,6 +3476,7 @@ Firefox
     color: black !important;
     background-color: #e7e876;
     border-radius: 100px;
+    user-select: none;
 }
 
 .packing-headline-snapshot {
@@ -3487,7 +3488,6 @@ Firefox
     width: 100%;
     height: 79vh;
     margin-top: 4px;
-    overflow: auto;
     border-radius: 3px;
 }
 
@@ -3504,16 +3504,27 @@ Firefox
 .packing-left-headline-container {
     display: flex;
     justify-content: space-between;
-    padding: 15px 20px;
+    padding: 15px 20px 25px 20px;
 }
 
 .picking-left-headline-itemsQuantity, .picking-left-headline-printLabels {
-    font-size: 18px;
+    font-size: 16px;
     color: white !important;
+    user-select: none;
+}
+
+.picking-left-table-container {
+    width: 100%;
+    height: 91.1%;
+    overflow: auto;
 }
 
 .picking-left-table-tbody-tr {
-    border-bottom: 2px solid rgb(20, 22, 23);
+    border-top: 2px solid rgb(20, 22, 23);
+}
+
+.picking-left-table-tbody-tr:first-child {
+    border: 0;
 }
 
 .picking-left-table-thead-item {
@@ -3564,6 +3575,76 @@ Firefox
 .picking-left-table-options-icon {
     display: inline-block;
     font-size: 33px;
-    line-height: 31px; 
+    line-height: 31px;
+    user-select: none;
 /*    background-color: red;*/
+}
+
+.picking-left-table-options-icon:hover {
+    cursor: pointer
+}
+
+.packing-right-headline-container {
+    display: flex;
+    justify-content: space-between;
+    align-content: center;
+    padding: 20px 20px;
+    border-bottom: 2px solid rgb(20, 22, 23);
+}
+
+.picking-right-headline-text, .picking-right-headline-icon {
+    font-size: 18px;
+    color: white !important;
+    user-select: none;
+}
+
+.picking-right-headline-icon {
+    display: inline-block;
+    font-size: 30px;
+    line-height: 25.5px;
+}
+
+.picking-right-headline-icon:hover {
+    cursor: pointer;
+}
+
+.packing-right-shippingInfo-container {
+    display: flex;
+    padding: 20px 45px;
+/*    background-color: red;*/
+}
+
+.packing-right-shippingInfo-address-container, .packing-right-shippingInfo-shipMethod-container {
+    width: 50%;
+}
+
+.packing-right-shippingInfo-address-shipTo-icon, .packing-right-shippingInfo-address-shipMethod-icon {
+    font-size: 21px;
+    position: relative;
+    left: 2px;
+    top: 2px;
+}
+
+.packing-right-shippingInfo-address-name {
+    font-weight: bold;
+    margin-top: 3px;
+}
+
+.packing-right-shippingInfo-shipMethod-text {
+    font-size: 15px;
+    margin-top: 3px;
+}
+
+.packing-right-shippingInfo-address-shipMethod-icon {
+    font-size: 18px;
+}
+
+.packing-right-shippingInfo-btn {
+    background-color: transparent;
+    border: 1px solid lightgray;
+    padding: 7px 20px;
+    border-radius: 3px;
+    margin-top: 12px;
+    color: white !important;
+    user-select: none;
 }

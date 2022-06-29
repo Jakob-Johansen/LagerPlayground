@@ -15,31 +15,52 @@
             <p class="trim picking-left-headline-printLabels">Print labels</p>
         </div>
 
-        <table class="picking-left-table">
-            <thead>
-                <tr>
-                    <th class="picking-left-table-thead-item">Item</th>
-                    <th></th>
-                    <th>Quantity</th>
-                    <th></th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr class="picking-left-table-tbody-tr">
-                    <td class="picking-left-table-image-td"><img class="picking-left-table-image" src="~/Images/Placeholders/Placeholder.jpg" /></td>
-                    <td class="picking-left-table-info-td">
-                        <p class="trim picking-left-table-info-td-name">Wireless Barcode Scanner</p>
-                        <p class="trim picking-left-table-info-td-sku">SKU <span>832473294732</span></p>
-                    </td>
-                    <td class="picking-left-table-quantity-td">1</td>
-                    <td class="picking-left-table-options-td">
-                        <span class="material-icons picking-left-table-options-icon">more_horiz</span>
-                    </td>
-                </tr>
-            </tbody>
-        </table>
+        <div class="picking-left-table-container">
+            <table class="picking-left-table">
+                <thead>
+                    <tr>
+                        <th class="picking-left-table-thead-item">Item</th>
+                        <th></th>
+                        <th>Quantity</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+
+                    <tr class="picking-left-table-tbody-tr">
+                        <td class="picking-left-table-image-td"><img class="picking-left-table-image" src="~/Images/Placeholders/Placeholder.jpg" /></td>
+                        <td class="picking-left-table-info-td">
+                            <p class="trim picking-left-table-info-td-name">Wireless Barcode Scanner</p>
+                            <p class="trim picking-left-table-info-td-sku">SKU <span>832473294732</span></p>
+                        </td>
+                        <td class="picking-left-table-quantity-td">1</td>
+                        <td class="picking-left-table-options-td">
+                            <span class="material-icons picking-left-table-options-icon">more_horiz</span>
+                        </td>
+                    </tr>
+
+                </tbody>
+            </table>
+        </div>
     </div>
     <div class="packing-right-container">
-        T
+        <div class="packing-right-headline-container">
+            <p class="trim picking-right-headline-text">Shipping details</p>
+            <span class="material-icons picking-right-headline-icon">more_horiz</span>
+        </div>
+
+        <div class="packing-right-shippingInfo-container">
+            <div class="packing-right-shippingInfo-address-container">
+                <p class="trim">Ship to <span class="material-icons packing-right-shippingInfo-address-shipTo-icon">edit</span></p>
+                <p class="trim packing-right-shippingInfo-address-name">Hans Erik</p>
+                <p>Test vej 0, <br />Grenaa 8500, Denmark</p>
+            </div>
+            <div class="packing-right-shippingInfo-shipMethod-container">
+                <p class="trim">Shipping method</p>
+                <p class="trim packing-right-shippingInfo-shipMethod-text">Postnord <span class="material-icons packing-right-shippingInfo-address-shipMethod-icon">edit</span></p>
+                <button class="packing-right-shippingInfo-btn">Calculate shipping rates</button>
+            </div>
+        </div>
+
     </div>
 </div>
