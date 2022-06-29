@@ -3497,6 +3497,10 @@ Firefox
     background-color: #1d1f21;
 }
 
+.packing-right-container {
+    background-color: #27292b;
+}
+
 .packing-left-container {
     border-right: 2px solid rgb(20, 22, 23);
 }
@@ -3589,6 +3593,7 @@ Firefox
     justify-content: space-between;
     align-content: center;
     padding: 20px 20px;
+    background-color: #1d1f21;
     border-bottom: 2px solid rgb(20, 22, 23);
 }
 
@@ -3610,8 +3615,8 @@ Firefox
 
 .packing-right-shippingInfo-container {
     display: flex;
-    padding: 20px 45px;
-/*    background-color: red;*/
+    padding: 13px 45px;
+    background-color: #1d1f21;
 }
 
 .packing-right-shippingInfo-address-container, .packing-right-shippingInfo-shipMethod-container {
@@ -3647,4 +3652,13 @@ Firefox
     margin-top: 12px;
     color: white !important;
     user-select: none;
+}
+
+.packing-right-packageInfo-overall-container {
+    height: auto;
+}
+
+.packing-right-packageInfo-headline-container {
+    padding: 13px 0;
+    text-align: center;
 }
