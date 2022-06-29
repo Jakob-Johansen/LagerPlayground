@@ -3513,17 +3513,22 @@ Firefox
 }
 
 .picking-left-table-tbody-tr {
-    border-bottom: 1px solid rgb(20, 22, 23);
+    border-bottom: 2px solid rgb(20, 22, 23);
 }
 
 .picking-left-table-thead-item {
     padding-left: 20px;
 }
 
+.picking-left-table-image-td, .picking-left-table-info-td, .picking-left-table-quantity-td, .picking-left-table-options-td {
+    padding: 12px 0;
+}
+
 .picking-left-table-image-td {
-    width: 15%;
-    padding: 5px 5px 5px 20px;
-    background-color: green;
+    width: 14%;
+    /*padding: 5px 0px 5px 20px;*/
+    padding-left: 20px;
+    /*    background-color: green;*/
 }
 
 .picking-left-table-image {
@@ -3532,18 +3537,33 @@ Firefox
 }
 
 .picking-left-table-info-td {
-    width: 58%;
-    background-color: red;
+    width: 59%;
+    /*background-color: red;*/
+}
+
+.picking-left-table-info-td-name {
+    font-size: 17px;
+}
+
+.picking-left-table-info-td-sku {
+    font-size: 15px;
 }
 
 .picking-left-table-quantity-td {
-    width: 16%;
-    background-color: yellow;
+    width: 15%;
+    /*background-color: yellow;*/
+    font-size: 19px;
 }
 
-.picking-left-table-image-options-td {
-    width: 11%;
+.picking-left-table-options-td {
+    width: 12%;
+    /*background-color: blue;*/
     text-align: center;
-    font-size: 19px;
-    background-color: blue;
+}
+
+.picking-left-table-options-icon {
+    display: inline-block;
+    font-size: 33px;
+    line-height: 31px; 
+/*    background-color: red;*/
 }
