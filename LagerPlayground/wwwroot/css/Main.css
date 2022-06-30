@@ -3656,9 +3656,112 @@ Firefox
 
 .packing-right-packageInfo-overall-container {
     height: auto;
+    border-top: 2px solid rgb(20, 22, 23);
+    border-bottom: 2px solid rgb(20, 22, 23);
 }
 
 .packing-right-packageInfo-headline-container {
-    padding: 13px 0;
+    display: flex;
+    height: 43px;
+    border-bottom: 2px solid rgb(20, 22, 23);
+}
+
+.packing-right-packageInfo-headline-text-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 93%;
+    border-right: 2px solid rgb(20, 22, 23);
+}
+
+.packing-right-packageInfo-headline-icon-container {
+    width: 7%;
+}
+
+.packing-right-packageInfo-headline-text {
+    color: white !important;
+}
+
+.packing-right-packageInfo-headline-productNumbers-span {
+    background-color: #1d1f21;
+    padding: 0 18px;
+    border-radius: 20px;
+    margin-left: 8px;
+    color: white !important;
+}
+
+.packing-right-packageInfo-headline-icon {
+    display: block;
     text-align: center;
+    line-height: 43px;
+    color: white !important;
+}
+
+.packing-right-packageInfo-headline-icon:hover {
+    cursor: pointer;
+}
+
+.packing-right-packageInfo-container {
+    display: flex;
+    padding: 13px 0;
+}
+
+.packing-right-packageInfo-left-container {
+    width: 75%;
+/*    background-color: red;*/
+    padding-left: 20px;
+}
+
+.packing-right-packageInfo-right-container {
+    width: 25%;
+/*    background-color: yellow;*/
+    padding-left: 43px;
+}
+
+.packing-right-packageInfo-left-ul {
+    display: flex;
+    list-style: none;
+    padding: 0;
+    margin: 0 0 5px 0;
+}
+
+.packing-right-packageInfo-left-ul > li {
+    padding: 0 0 0 23px;
+    margin: 0;
+}
+
+.packing-right-packageInfo-left-ul > :first-child {
+    display: inline-block;
+    width: 140px;
+    padding-left: 0px;
+}
+
+.packing-right-packageInfo-left-ul-length-span, .packing-right-packageInfo-left-ul-width-span, .packing-right-packageInfo-left-ul-height-span {
+    font-weight: bold;
+}
+
+.packing-right-packageInfo-left-select {
+    display: inline-block;
+    width: 100%;
+    padding: 3px 0;
+    border-radius: 3px;
+}
+
+.packing-right-packageInfo-left-select:focus, .packing-right-packageInfo-left-select:active {
+    outline: none;
+}
+
+.packing-right-packageInfo-right-weight-text-number-container {
+    display: flex;
+    align-items: center;
+}
+
+.packing-right-packageInfo-right-weight-text-number {
+    font-size: 26px;
+    color: white !important;
+}
+
+.packing-right-packageInfo-right-weight-text-kg {
+    margin-left: 3px;
+    color: white !important;
 }
