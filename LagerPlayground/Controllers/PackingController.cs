@@ -8,5 +8,10 @@ namespace LagerPlayground.Controllers
         {
             return View();
         }
+
+        public IActionResult Pack()
+        {
+            return View();
+        }
     }
 }
