@@ -3523,68 +3523,68 @@ Firefox
     overflow: auto;
 }
 
-.picking-left-table-tbody-tr {
+.picking-left-table-tbody-tr, .picking-right-table-tbody-tr {
     border-top: 2px solid rgb(20, 22, 23);
 }
 
-.picking-left-table-tbody-tr:first-child {
-    border: 0;
-}
+    .picking-left-table-tbody-tr:first-child, .picking-right-table-tbody-tr:first-child {
+        border: 0;
+    }
 
 .picking-left-table-thead-item {
     padding-left: 20px;
 }
 
-.picking-left-table-image-td, .picking-left-table-info-td, .picking-left-table-quantity-td, .picking-left-table-options-td {
+.picking-left-table-image-td, .picking-left-table-info-td, .picking-left-table-quantity-td, .picking-left-table-options-td, .picking-right-table-image-td, .picking-right-table-info-td, .picking-right-table-quantity-td, .picking-right-table-options-td {
     padding: 12px 0;
 }
 
-.picking-left-table-image-td {
+.picking-left-table-image-td, .picking-right-table-image-td {
     width: 14%;
     /*padding: 5px 0px 5px 20px;*/
     padding-left: 20px;
     /*    background-color: green;*/
 }
 
-.picking-left-table-image {
+.picking-left-table-image, .picking-right-table-image {
     display: block;
     width: 80%;
 }
 
-.picking-left-table-info-td {
+.picking-left-table-info-td, .picking-right-table-info-td {
     width: 59%;
     /*background-color: red;*/
 }
 
-.picking-left-table-info-td-name {
+.picking-left-table-info-td-name, .picking-right-table-info-td-name {
     font-size: 17px;
 }
 
-.picking-left-table-info-td-sku {
+.picking-left-table-info-td-sku, .picking-right-table-info-td-sku {
     font-size: 15px;
 }
 
-.picking-left-table-quantity-td {
+.picking-left-table-quantity-td, .picking-right-table-quantity-td {
     width: 15%;
     /*background-color: yellow;*/
     font-size: 19px;
 }
 
-.picking-left-table-options-td {
+.picking-left-table-options-td, .picking-right-table-options-td {
     width: 12%;
     /*background-color: blue;*/
     text-align: center;
 }
 
-.picking-left-table-options-icon {
+.picking-left-table-options-icon, .picking-right-table-options-icon {
     display: inline-block;
     font-size: 33px;
     line-height: 31px;
     user-select: none;
-/*    background-color: red;*/
+    /*    background-color: red;*/
 }
 
-.picking-left-table-options-icon:hover {
+.picking-left-table-options-icon:hover, .picking-right-table-options-icon:hover {
     cursor: pointer
 }
 
@@ -3657,7 +3657,7 @@ Firefox
 .packing-right-packageInfo-overall-container {
     height: auto;
     border-top: 2px solid rgb(20, 22, 23);
-    border-bottom: 2px solid rgb(20, 22, 23);
+/*    border-bottom: 2px solid rgb(20, 22, 23);*/
 }
 
 .packing-right-packageInfo-headline-container {
@@ -3704,6 +3704,7 @@ Firefox
 .packing-right-packageInfo-container {
     display: flex;
     padding: 13px 0;
+    border-bottom: 2px solid rgb(20, 22, 23);
 }
 
 .packing-right-packageInfo-left-container {
