@@ -35,11 +35,8 @@
                             <div class="readyToShip-table-td-image-container">
                                 @foreach (var item in order.ProductImages)
                                 {
-                                    <img class="readyToShip-table-td-image" src="~/Images/Products/@item" />
+                                    <img class="readyToShip-table-td-image" src="~/Images/@(item == null ? "Placeholders/PlaceholderWhite.jpg" : "Products/" + item)" />
                                 }
-@*                                <img class="readyToShip-table-td-image" src="~/Images/Products/K50675.png" />
-                                <img class="readyToShip-table-td-image" src="~/Images/Products/K50675.png" />
-                                <img class="readyToShip-table-td-image" src="~/Images/Products/K50675.png" />*@
                             </div>
                         </td>
                         <td class="readyToShip-table-td-status-container">
