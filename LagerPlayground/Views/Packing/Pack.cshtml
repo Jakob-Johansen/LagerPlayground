@@ -116,10 +116,10 @@
                 </div>
 
                 <div class="packing-right-table-container">
-@*                    <table class="picking-right-table">
-                        <tbody>
+                    <table class="picking-right-table">
+                        <tbody class="picking-right-table-tbody">
 
-                            <tr class="picking-right-table-tbody-tr">
+@*                            <tr class="picking-right-table-tbody-tr" data-itemid="2">
                                 <td class="picking-right-table-image-td"><img class="picking-right-table-image" src="~/Images/Placeholders/Placeholder.jpg" /></td>
                                 <td class="picking-right-table-info-td">
                                     <p class="trim picking-right-table-info-td-name">Wireless Barcode Scanner</p>
@@ -129,10 +129,10 @@
                                 <td class="picking-right-table-options-td">
                                     <span class="material-icons picking-right-table-options-icon">more_horiz</span>
                                 </td>
-                            </tr>
+                            </tr>*@
 
                         </tbody>
-                    </table>*@
+                    </table>
                 </div>
             </div>
         </div>
@@ -162,10 +162,43 @@
         $(this).data("itemquantity", itemQuantityParsed);
         $(this).find(".picking-left-table-quantity-td").text(itemQuantityParsed);
 
+        AddHtmlToPackage($(this).data("itemid"));
+
         if (itemQuantityParsed == 0) {
             $(this).remove();
         }
     });
+
+    // Add product to package function
+    function AddHtmlToPackage(id) {
+        let thisClass = $(".picking-right-table-tbody-tr[data-itemid='" + id +"']");
+
+        //console.log(thisClass.find(".picking-right-table-info-td-name").text("Test"));
+
+        if (thisClass.length == 0) {
+            console.log("NULL");
+            $(".picking-right-table-tbody").append(
+            `
+            <tr class="picking-right-table-tbody-tr" data-itemid="0">
+                <td class="picking-right-table-image-td"><img class="picking-right-table-image" src="/Images/Placeholders/Placeholder.jpg" /></td>
+                <td class="picking-right-table-info-td">
+                    <p class="trim picking-right-table-info-td-name">TEST</p>
+                    <p class="trim picking-right-table-info-td-sku">SKU <span>TEST</span></p>
+                </td>
+                <td class="picking-right-table-quantity-td">0</td>
+                <td class="picking-right-table-options-td">
+                    <span class="material-icons picking-right-table-options-icon">more_horiz</span>
+                </td>
+            </tr>
+            `);
+        }
+        else {
+            console.log("NOT NULL")
+            let parsedItemQuantity = parseInt(thisClass.find(".picking-right-table-quantity-td").text());
+            parsedItemQuantity++;
+            thisClass.find(".picking-right-table-quantity-td").text(parsedItemQuantity);
+        }
+    }
 
 </script>
 }
