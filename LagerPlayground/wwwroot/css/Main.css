@@ -3489,9 +3489,13 @@ Firefox
     padding-left: 20px !important;
 }
 
+.readyToShip-table-td-order, .readyToShip-table-td-tote, .readyToShip-table-td-items, .readyToShip-table-td-image-overall-container, .readyToShip-table-td-status-container, .readyToShip-table-td-date, .readyToShip-table-td-pack-btn {
+    padding: 10px 0;
+}
+
 .readyToShip-table-td-order {
     width: 9%;
-/*    background-color: hotpink;*/
+    /*    background-color: hotpink;*/
 }
 
 .readyToShip-table-td-tote {
@@ -3505,18 +3509,23 @@ Firefox
 }
 
 .readyToShip-table-td-image-overall-container {
-    width: 18%;
+    width: 17%;
 /*    background-color: red;*/
 }
 
+.readyToShip-table-td-status-container {
+    width: 12%;
+    /*    background-color: orange;*/
+}
+
 .readyToShip-table-td-date {
-    width: 10%;
+    width: 11%;
 /*    background-color: darkred;*/
 }
 
-.readyToShip-table-td-status-container {
+.readyToShip-table-td-pack-btn {
     width: 10%;
-/*    background-color: orange;*/
+/*    background-color: aliceblue;*/
 }
 
 .readyToShip-table-td-image-container {
@@ -3526,6 +3535,8 @@ Firefox
 .readyToShip-table-td-image {
     display: block;
     width: 20%;
+    background-color: white;
+    margin-right: 10px;
 }
 
 .readyToShip-table-td-status {

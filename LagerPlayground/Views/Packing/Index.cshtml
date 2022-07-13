@@ -1,4 +1,6 @@
-﻿@{
+﻿@model IEnumerable<LagerPlayground.Models.VM.DTOPack>
+
+@{
     ViewData["Title"] = "Pack";
 }
 
@@ -18,11 +20,37 @@
                         <th>Preview</th>
                         <th>Status</th>
                         <th>Ship by date</th>
+                        <th></th>
                     </tr>
                 </thead>
                 <tbody>
 
+                    @foreach (var order in Model)
+                    {
                     <tr class="readyToShip-table-tbody-tr">
+                        <td class="readyToShip-table-td-order">#@order.Id</td>
+                        <td class="readyToShip-table-td-tote">@order.Tote</td>
+                        <td class="readyToShip-table-td-items">@order.Items</td>
+                        <td class="readyToShip-table-td-image-overall-container">
+                            <div class="readyToShip-table-td-image-container">
+                                @foreach (var item in order.ProductImages)
+                                {
+                                    <img class="readyToShip-table-td-image" src="~/Images/Products/@item" />
+                                }
+@*                                <img class="readyToShip-table-td-image" src="~/Images/Products/K50675.png" />
+                                <img class="readyToShip-table-td-image" src="~/Images/Products/K50675.png" />
+                                <img class="readyToShip-table-td-image" src="~/Images/Products/K50675.png" />*@
+                            </div>
+                        </td>
+                        <td class="readyToShip-table-td-status-container">
+                            <p class="trim readyToShip-table-td-status">@order.Status</p>
+                        </td>
+                        <td class="readyToShip-table-td-date">@order.ShipByDate.Value.ToShortDateString()</td>
+                        <td class="readyToShip-table-td-pack-btn"><a href="/Packing/Pack/@order.Id">Pack</a></td>
+                    </tr>
+                    }
+
+@*                    <tr class="readyToShip-table-tbody-tr">
                         <td class="readyToShip-table-td-order">#1001</td>
                         <td class="readyToShip-table-td-tote">T-000000000000001</td>
                         <td class="readyToShip-table-td-items">1</td>
@@ -37,7 +65,8 @@
                             <p class="trim readyToShip-table-td-status">Default</p>
                         </td>
                         <td class="readyToShip-table-td-date">12/07/2022</td>
-                    </tr>
+                        <td class="readyToShip-table-td-pack-btn"><a href="#">Pack</a></td>
+                    </tr>*@
 
                 </tbody>
             </table>
