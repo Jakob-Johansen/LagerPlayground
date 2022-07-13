@@ -51,14 +51,35 @@ namespace LagerPlayground.Controllers
             return View(dtoPackList);
         }
 
-        public IActionResult Pack(int? Id)
+        public async Task<IActionResult> Pack(int? Id)
         {
             if (Id == null || Id == 0)
             {
                 return NotFound();
             }
 
-            return View();
+            var order = await _context.Order_Details
+                .Include(x => x.Custommer)
+                .Include(x => x.Order_Items)
+                    .ThenInclude(x => x.Product)
+                .AsNoTracking().FirstOrDefaultAsync(x => x.ID == Id);
+
+            if (order == null)
+            {
+                return NotFound();
+            }
+
+            int items = 0;
+
+            foreach (var item in order.Order_Items)
+            {
+                items += item.PickingQuantity;
+            }
+
+            ViewBag.items = items;
+            ViewBag.tote = order.Order_Items.ToArray()[0].PickingToteBarcode;
+
+            return View(order);
         }
     }
 }

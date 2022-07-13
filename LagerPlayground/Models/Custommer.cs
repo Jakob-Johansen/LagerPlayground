@@ -20,6 +20,6 @@ namespace LagerPlayground.Models
         public DateTime? Created { get; set; }
         public DateTime? Modified { get; set; }
 
-        public Order_Details OrderDetail { get; set; }
+        //public Order_Details OrderDetail { get; set; }
     }
 }

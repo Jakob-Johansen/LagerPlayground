@@ -1,18 +1,20 @@
-﻿@{
+﻿@model LagerPlayground.Models.Order_Details
+
+@{
     ViewData["Title"] = "Packing";
 }
 
 <div class="packing-pack-overall-container">
     <div class="packing-headline-container">
-        <p class="trim packing-headline-text">Order #01 . Tote-1</p>
-        <p class="trim packing-headline-pending">Pending</p>
+        <p class="trim packing-headline-text">Order #@Model.ID . @ViewBag.tote</p>
+        <p class="trim packing-headline-pending">@Model.OrderStatus</p>
         <p class="trim packing-headline-snapshot">0/1 Snapshot</p>
     </div>
 
     <div class="packing-ovarall-container">
         <div class="packing-left-container">
             <div class="packing-left-headline-container">
-                <p class="trim picking-left-headline-itemsQuantity"><span>1</span> Items</p>
+                <p class="trim picking-left-headline-itemsQuantity"><span>@ViewBag.items</span> Items</p>
                 <p class="trim picking-left-headline-printLabels">Print labels</p>
             </div>
 
@@ -28,7 +30,22 @@
                     </thead>
                     <tbody>
 
-                        <tr class="picking-left-table-tbody-tr">
+                        @foreach (var item in @Model.Order_Items)
+                        {
+                        <tr class="picking-left-table-tbody-tr" data-itemid="@item.ID" data-itemquantity="@item.PickingQuantity">
+                            <td class="picking-left-table-image-td"><img class="picking-left-table-image" src="~/Images/@(item.Product.Image == null ? "Placeholders/PlaceholderWhite.jpg" : "Products/" + item.Product.Image)" /></td>
+                            <td class="picking-left-table-info-td">
+                                <p class="trim picking-left-table-info-td-name">@item.Product.Name</p>
+                                <p class="trim picking-left-table-info-td-sku">SKU <span>@item.Product.BarcodeID</span></p>
+                            </td>
+                            <td class="picking-left-table-quantity-td">@item.PickingQuantity</td>
+                            <td class="picking-left-table-options-td">
+                                <span class="material-icons picking-left-table-options-icon">more_horiz</span>
+                            </td>
+                        </tr>
+                        }
+
+@*                        <tr class="picking-left-table-tbody-tr">
                             <td class="picking-left-table-image-td"><img class="picking-left-table-image" src="~/Images/Placeholders/Placeholder.jpg" /></td>
                             <td class="picking-left-table-info-td">
                                 <p class="trim picking-left-table-info-td-name">Wireless Barcode Scanner</p>
@@ -38,7 +55,7 @@
                             <td class="picking-left-table-options-td">
                                 <span class="material-icons picking-left-table-options-icon">more_horiz</span>
                             </td>
-                        </tr>
+                        </tr>*@
 
                     </tbody>
                 </table>
@@ -53,8 +70,8 @@
             <div class="packing-right-shippingInfo-container">
                 <div class="packing-right-shippingInfo-address-container">
                     <p class="trim">Ship to <span class="material-icons packing-right-shippingInfo-address-shipTo-icon">edit</span></p>
-                    <p class="trim packing-right-shippingInfo-address-name">Hans Erik</p>
-                    <p>Test vej 1, <br />Grenaa 8500, Denmark</p>
+                    <p class="trim packing-right-shippingInfo-address-name">@Model.Custommer.Name</p>
+                    <p>@Model.Custommer.Address, <br />@Model.Custommer.City @Model.Custommer.Zipcode, @Model.Custommer.Country</p>
                 </div>
                 <div class="packing-right-shippingInfo-shipMethod-container">
                     <p class="trim">Shipping method</p>
@@ -99,7 +116,7 @@
                 </div>
 
                 <div class="packing-right-table-container">
-                    <table class="picking-right-table">
+@*                    <table class="picking-right-table">
                         <tbody>
 
                             <tr class="picking-right-table-tbody-tr">
@@ -115,7 +132,7 @@
                             </tr>
 
                         </tbody>
-                    </table>
+                    </table>*@
                 </div>
             </div>
         </div>
@@ -129,3 +146,16 @@
         </div>
     </div>
 </div>
+
+@section Scripts {
+<script>
+    let ItemsLeftPanelCount = @ViewBag.items;
+
+    // Left panel item click
+    $(document).on("click", ".picking-left-table-tbody-tr", function() {
+        console.log($(this).data("itemid"));
+        console.log($(this).data("itemquantity"));
+    });
+
+</script>
+}

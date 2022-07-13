@@ -3615,6 +3615,10 @@ Firefox
     border-top: 2px solid rgb(20, 22, 23);
 }
 
+.picking-left-table-tbody-tr:hover {
+    cursor: pointer;
+}
+
     .picking-left-table-tbody-tr:first-child, .picking-right-table-tbody-tr:first-child {
         border: 0;
     }
@@ -3637,6 +3641,7 @@ Firefox
 .picking-left-table-image, .picking-right-table-image {
     display: block;
     width: 80%;
+    background-color: white;
 }
 
 .picking-left-table-info-td, .picking-right-table-info-td {
