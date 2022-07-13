@@ -14,7 +14,7 @@
     <div class="packing-ovarall-container">
         <div class="packing-left-container">
             <div class="packing-left-headline-container">
-                <p class="trim picking-left-headline-itemsQuantity"><span>@ViewBag.items</span> Items</p>
+                <p class="trim picking-left-headline-itemsQuantity"><span class="picking-left-headline-itemsQuantity-number">@ViewBag.items</span> Items</p>
                 <p class="trim picking-left-headline-printLabels">Print labels</p>
             </div>
 
@@ -149,12 +149,22 @@
 
 @section Scripts {
 <script>
-    let ItemsLeftPanelCount = @ViewBag.items;
+    let itemsLeftPanelCount = @ViewBag.items;
 
     // Left panel item click
     $(document).on("click", ".picking-left-table-tbody-tr", function() {
         console.log($(this).data("itemid"));
-        console.log($(this).data("itemquantity"));
+        let itemQuantityParsed = parseInt($(this).data("itemquantity"));
+        itemQuantityParsed -= 1;
+        itemsLeftPanelCount -= 1;
+        $(".picking-left-headline-itemsQuantity-number").text(itemsLeftPanelCount);
+
+        $(this).data("itemquantity", itemQuantityParsed);
+        $(this).find(".picking-left-table-quantity-td").text(itemQuantityParsed);
+
+        if (itemQuantityParsed == 0) {
+            $(this).remove();
+        }
     });
 
 </script>
